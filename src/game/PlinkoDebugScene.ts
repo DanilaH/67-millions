@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { balance } from '../config/balance';
+import { PlinkoAudio } from '../audio/PlinkoAudio';
 import {
   assertDropBoardCompatible,
   commitBareDrop,
@@ -38,6 +39,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private physicsSaveQueued = false;
   private lastPersistedPhysicsTick = 0;
   private visibilityHandler: (() => void) | null = null;
+  private audio: PlinkoAudio | null = null;
 
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
@@ -78,6 +80,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setOrigin(0, 0);
     this.casinoLayer.add(this.statusText);
 
+    this.audio = new PlinkoAudio(() => this.game.sound.mute);
+    this.matter.world.on('collisionstart', this.handleAudioCollision);
+
     this.installMapLayer();
     void this.initialize();
 
@@ -87,6 +92,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         document.removeEventListener('visibilitychange', this.visibilityHandler);
         this.visibilityHandler = null;
       }
+      this.matter.world.off('collisionstart', this.handleAudioCollision);
+      this.audio?.dispose();
+      this.audio = null;
       this.runtime?.destroy();
       this.runtime = null;
       this.balls.clear();
@@ -124,6 +132,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
     this.runtime = createBarePlinko(this, balance, this.random, {
       onPocket: (index, body) => {
+        this.audio?.pocket(balance.plinko.basePockets[index] ?? 1);
         void this.resolvePocket(index, body);
       },
       onFixedTick: (fixedTicksElapsed) => {
@@ -218,6 +227,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         })
         .setInteractive({ useHandCursor: true })
         .on('pointerup', () => {
+          this.audio?.prime();
           void this.commitAndSpawn(fraction);
         });
       this.casinoLayer!.add(button);
@@ -415,11 +425,30 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const terminalSuffix = result.state.terminalReason
       ? ` / GAME OVER: ${result.state.terminalReason}`
       : '';
+    this.audio?.result(result.losing);
     this.lastResultMessage =
       `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
     this.showStatus(this.lastResultMessage);
     this.renderAll();
   }
+
+  private readonly handleAudioCollision = (
+    _event: unknown,
+    bodyA: MatterJS.BodyType,
+    bodyB: MatterJS.BodyType,
+  ): void => {
+    const ball = this.balls.has(bodyA)
+      ? bodyA
+      : this.balls.has(bodyB)
+        ? bodyB
+        : null;
+    if (!ball) return;
+
+    const other = bodyA === ball ? bodyB : bodyA;
+    if (other.label.startsWith('plinko:pocket:')) return;
+
+    this.audio?.bounce();
+  };
 
   private createRootBallMetadata(dropId: string): BallSnapshotMetadata {
     return {
