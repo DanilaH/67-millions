@@ -81,11 +81,13 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 
 - Logical viewport: 1280×720.
 - Board area: 560×540.
-- 9 rows / 10 pockets; peg spacing 48×42 px; ball radius 10; peg radius 6.
+- 9 rows / 10 pockets; peg spacing 48×27 px; ball radius 10; peg radius 6.
 - Spawn jitter: ±4 px around center.
 - Fixed timestep: 60 Hz.
-- Physics seed: gravityY 1.0, ball restitution 0.52, peg restitution 0.6, frictionAir 0.003, wall restitution 0.2.
+- Physics seed: gravityY 1.0, ball restitution 0.155, peg restitution 0.6, frictionAir 0.023, wall restitution 0.2.
 - All values are tunable through JSON + physical reports.
+- Accepted bare-board 100k evidence: EV 0.870225x; combined center 52.188%; edge pockets 1.161%; symmetry delta 0.613%; stuck/watchdog 0/100,000.
+- The ideal-binomial shape remains a target/reference; production payout uses the measured Matter physics, never a hidden probability override.
 
 ## Plinko base
 - Pockets: `12x | 4x | 1.5x | 1x | 0.25x | 0.25x | 1x | 1.5x | 4x | 12x`.
