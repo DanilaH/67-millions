@@ -72,26 +72,27 @@ export const deriveBarePlinkoLayout = (
   const pocketBottomY =
     geometry.topPegY + geometry.boardAreaHeight - geometry.ballRadius * 2;
 
-  const guideTopOffset = geometry.horizontalPegSpacing;
+  const guidePegClearance =
+    geometry.horizontalPegSpacing + geometry.ballRadius + geometry.pegRadius;
   const lastPegRowY =
     geometry.topPegY + (rows - 1) * geometry.verticalPegSpacing;
   const leftGuide = deriveGuide(
     {
-      x: geometry.centerX - guideTopOffset,
+      x: geometry.centerX - guidePegClearance,
       y: geometry.topPegY,
     },
     {
-      x: leftWallX,
+      x: leftWallX - (geometry.ballRadius + geometry.pegRadius),
       y: lastPegRowY,
     },
   );
   const rightGuide = deriveGuide(
     {
-      x: geometry.centerX + guideTopOffset,
+      x: geometry.centerX + guidePegClearance,
       y: geometry.topPegY,
     },
     {
-      x: rightWallX,
+      x: rightWallX + (geometry.ballRadius + geometry.pegRadius),
       y: lastPegRowY,
     },
   );
