@@ -13,6 +13,14 @@ export interface PhysicalReportMetadata {
   engine: string;
   seed: number;
   runs: number;
+  boardLabel?: string;
+  boardHash?: string;
+  pocketLevels?: {
+    centerLevel: number;
+    midLevel: number;
+    jackpotLevel: number;
+  };
+  pocketMultipliers?: readonly number[];
 }
 
 export interface PhysicalReport {
@@ -45,7 +53,16 @@ const toMarkdown = (report: PhysicalReport): string => {
     )
     .join('\n');
 
-  return `# Bare Plinko physical calibration
+  const boardTitle = metadata.boardLabel ?? 'Bare';
+  const boardDetails = metadata.pocketLevels
+    ? `
+- board hash: \`${metadata.boardHash ?? 'unknown'}\`
+- pocket levels: center L${metadata.pocketLevels.centerLevel}, mid L${metadata.pocketLevels.midLevel}, jackpot L${metadata.pocketLevels.jackpotLevel}
+- pocket multipliers: \`${metadata.pocketMultipliers?.join(' | ') ?? 'unknown'}\`
+`
+    : '';
+
+  return `# ${boardTitle} Plinko physical calibration
 
 ## Provenance
 
@@ -55,7 +72,7 @@ const toMarkdown = (report: PhysicalReport): string => {
 - engine: \`${metadata.engine}\`
 - seed: \`${metadata.seed}\`
 - runs: \`${metadata.runs}\`
-- generated: \`${metadata.generatedAt}\`
+- generated: \`${metadata.generatedAt}\`${boardDetails}
 
 ## Summary
 
