@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import type { ActiveAction, WorkActiveAction } from '../core/actions/ActiveAction';
+import type { ActiveAction } from '../core/actions/ActiveAction';
 import {
   applyTimedPaidCompletion,
   startTimedPaidAction,
@@ -8,10 +8,8 @@ import {
 } from '../core/actions/timedPaidAction';
 import { getBarryPayment, resolveBarryPayment } from '../core/barry/barry';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
-import {
-  createLocalSaveRepository,
-  type SaveState,
-} from '../core/save/repository';
+import { createLocalSaveRepository } from '../core/save/repository';
+import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import { startSleep } from '../core/sleep/sleep';
 import {
   createInitialGameState,
@@ -290,7 +288,7 @@ export class BootstrapScene extends Phaser.Scene {
   private async persist(): Promise<void> {
     if (!this.repository || !this.state) return;
     const save: SaveState = {
-      version: 2,
+      version: SAVE_VERSION,
       game: this.state,
       activeAction: this.activeAction,
       pendingDrop: null,
