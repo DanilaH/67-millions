@@ -8,7 +8,8 @@ on:
   pull_request:
     paths:
       - 'simulation/plinko/**'
-      - 'src/core/plinko-rules/**'
+      - 'src/core/plinko-rules/boardLayout.ts'
+      - 'src/phaser/plinko/**'
       - 'balance.v0.json'
       - 'package.json'
       - '.github/workflows/plinko-calibration.yml'

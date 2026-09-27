@@ -5,6 +5,28 @@ import { applyNeedsDelta } from '../state/mutations';
 
 export type BetFraction = 0.25 | 0.5 | 1;
 
+export interface DropBallSnapshot {
+  ballId: string;
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
+  angle: number;
+  angularVelocity: number;
+  currentValue: number;
+  lineageId: string;
+  splitDepth: number;
+  amplifierProcIds: string[];
+  returnUsed: boolean;
+  blockedSplitterId: string | null;
+}
+
+export interface DropPhysicsSnapshot {
+  fixedTicksElapsed: number;
+  alreadySettledPayout: number;
+  balls: DropBallSnapshot[];
+}
+
 export interface PendingDrop {
   dropId: string;
   originalStake: number;
@@ -14,6 +36,8 @@ export interface PendingDrop {
   committedMinuteOfDay: number;
   remainingActionMinutes: number;
   rngStateAtCommit: number;
+  boardFingerprint: string;
+  physics: DropPhysicsSnapshot | null;
 }
 
 export interface DropSettlement {
@@ -31,6 +55,17 @@ const getMaxBetEntry = (
   if (!entry) throw new Error(`Unknown max-bet level ${level}`);
   return entry;
 };
+
+export const createBareBoardFingerprint = (
+  config: BalanceConfig,
+): string =>
+  JSON.stringify({
+    version: 1,
+    rows: config.plinko.rows,
+    basePockets: config.plinko.basePockets,
+    geometry: config.plinko.geometry,
+    physics: config.plinko.physicsSeed,
+  });
 
 export const calculateActualBet = (
   cash: number,
@@ -73,8 +108,35 @@ export const commitBareDrop = (
       committedMinuteOfDay: state.clock.minuteOfDay,
       remainingActionMinutes: config.time.plinkoDropTimeMinutes,
       rngStateAtCommit: state.rngState,
+      boardFingerprint: createBareBoardFingerprint(config),
+      physics: null,
     },
   };
+};
+
+export const setDropPhysicsSnapshot = (
+  pendingDrop: PendingDrop,
+  physics: DropPhysicsSnapshot,
+): PendingDrop => ({
+  ...pendingDrop,
+  physics: {
+    ...physics,
+    balls: physics.balls.map((ball) => ({
+      ...ball,
+      amplifierProcIds: [...ball.amplifierProcIds],
+    })),
+  },
+});
+
+export const assertDropBoardCompatible = (
+  pendingDrop: PendingDrop,
+  config: BalanceConfig,
+): void => {
+  if (pendingDrop.boardFingerprint !== createBareBoardFingerprint(config)) {
+    throw new Error(
+      'Pending Drop board fingerprint does not match the current runtime board',
+    );
+  }
 };
 
 export const settleBareDrop = (
