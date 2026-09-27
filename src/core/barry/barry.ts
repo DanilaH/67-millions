@@ -20,15 +20,26 @@ export const getBarryPayment = (
   return roundMoney(last * config.barry.afterLastMultiplier ** extraSteps);
 };
 
+export const beginBarryInterrupt = (state: GameState): GameState => {
+  if (state.terminalReason !== null || state.victory) return state;
+  return { ...state, barryInterruptPending: true };
+};
+
 export const resolveBarryPayment = (
   state: GameState,
   config: BalanceConfig,
 ): GameState => {
+  if (!state.barryInterruptPending) {
+    throw new Error('Barry payment is not currently due');
+  }
   if (state.terminalReason !== null || state.victory) return state;
 
   const due = getBarryPayment(config, state.barryPaymentIndex);
   if (state.cash < due) {
-    return markTerminal(state, 'BARRY_PAYMENT_FAILED').state;
+    return {
+      ...markTerminal(state, 'BARRY_PAYMENT_FAILED').state,
+      barryInterruptPending: false,
+    };
   }
 
   return {
@@ -36,5 +47,6 @@ export const resolveBarryPayment = (
     cash: debitCash(state.cash, due),
     barryPaymentIndex: state.barryPaymentIndex + 1,
     totalBarryPaid: state.totalBarryPaid + due,
+    barryInterruptPending: false,
   };
 };
