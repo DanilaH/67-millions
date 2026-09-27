@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: 20.19.0
       - run: npm install --no-audit --no-fund
+      - run: npm run simulate:plinko:sweep
       - run: npm run simulate:plinko -- --runs 100000 --seed 67000000 --output artifacts/plinko/bare
       - uses: actions/upload-artifact@v4
         with:
