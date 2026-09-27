@@ -4,7 +4,7 @@
     "date": "2026-09-27",
     "sourceOfTruth": true,
     "targetMedianSuccessfulRealMinutes": 30,
-    "balanceEvidence": "Bare Plinko physical calibration candidate selected from reproducible Matter parameter sweeps: 5000-drop evidence EV 0.8631x, center 52.8%, zero stuck; 10k/100k validation pending. Full-game balance report pending.",
+    "balanceEvidence": "Bare Plinko physical calibration candidate validated at 10,000 Drops: EV 0.875425x, combined center 51.63%, symmetry delta 0.59%, zero stuck; final 100,000-drop validation pending. Full-game balance report pending.",
     "moneyRounding": "nearestInteger"
   },
   "time": {
