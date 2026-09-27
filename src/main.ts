@@ -49,6 +49,8 @@ try {
   const viewport = installViewportRuntime(game, platform.activity);
   const removeBlockedListener = platform.activity.onBlockedChange((blocked) => {
     game.sound.mute = blocked;
+    if (blocked) game.loop.sleep();
+    else game.loop.wake();
   });
   const debug = installDebugPanel(() => getStartupSnapshot(runtimeImageFormat));
 
