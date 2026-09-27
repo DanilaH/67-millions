@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
+import type { ActiveAction } from '../actions/ActiveAction';
 import type { GameState } from '../state/GameState';
 
 export const SAVE_VERSION = 1 as const;
 
 const gameClockSchema = z.object({
-  dayIndex: z.number().int().nonnegative(),
+  gameDayIndex: z.number().int().nonnegative(),
   minuteOfDay: z.number().min(0).lt(24 * 60),
 });
 
@@ -24,17 +25,26 @@ const gameStateSchema = z.object({
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
 });
 
+const activeActionSchema = z.object({
+  kind: z.enum(['TIMED_PAID', 'WORK', 'DUMPSTER', 'SLEEP']),
+  actionId: z.string().min(1),
+  remainingMinutes: z.number().nonnegative(),
+  upfrontApplied: z.boolean(),
+  startedAtGameDayIndex: z.number().int().nonnegative(),
+  startedAtMinuteOfDay: z.number().min(0).lt(24 * 60),
+});
+
 export interface SaveState {
   version: typeof SAVE_VERSION;
   game: GameState;
-  activeAction: null;
+  activeAction: ActiveAction | null;
   pendingDrop: null;
 }
 
 const saveStateSchema = z.object({
   version: z.literal(SAVE_VERSION),
   game: gameStateSchema,
-  activeAction: z.null(),
+  activeAction: activeActionSchema.nullable(),
   pendingDrop: z.null(),
 });
 
@@ -45,4 +55,4 @@ export const createSaveState = (game: GameState): SaveState => ({
   pendingDrop: null,
 });
 
-export const decodeSaveState = (value: unknown): SaveState => saveStateSchema.parse(value);
+export const parseSaveState = (value: unknown): SaveState => saveStateSchema.parse(value);
