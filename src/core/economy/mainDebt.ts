@@ -3,6 +3,7 @@ import type { GameState } from '../state/GameState';
 
 export const canPayMainDebt = (state: GameState): boolean =>
   state.terminalReason === null &&
+  !state.barryInterruptPending &&
   !state.victory &&
   state.mainDebt > 0 &&
   state.cash >= state.mainDebt;
