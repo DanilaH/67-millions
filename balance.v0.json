@@ -1,0 +1,794 @@
+{
+  "meta": {
+    "version": "0.7-canonical-preproduction",
+    "date": "2026-09-27",
+    "sourceOfTruth": true,
+    "targetMedianSuccessfulRealMinutes": 30,
+    "balanceEvidence": "No reproducible full-game report exists for this exact config yet; simulation corridors are hypotheses until runner artifacts exist.",
+    "moneyRounding": "nearestInteger"
+  },
+  "time": {
+    "realSecondsPerGameMinute": 3,
+    "gameDayBoundary": "09:00",
+    "offlineProgression": false,
+    "navigationTimeMinutes": 0,
+    "plinkoDropTimeMinutes": 15,
+    "eventCheckpoints": [
+      "13:00",
+      "17:00",
+      "21:00",
+      "01:00",
+      "05:00"
+    ],
+    "eventChecksDuringSleep": false
+  },
+  "game": {
+    "mainDebt": 67000000,
+    "startCash": 500,
+    "startTime": "09:05",
+    "startHealth": 100,
+    "startSatiety": 100,
+    "startEnergy": 100,
+    "startHappiness": 100,
+    "restartResetsEverything": true,
+    "permanentMetaprogression": false
+  },
+  "barry": {
+    "time": "09:00",
+    "payments": [
+      3000,
+      3600,
+      4300,
+      5200,
+      6200,
+      8100,
+      10500,
+      13600,
+      17700,
+      23000,
+      34500,
+      51800,
+      77700,
+      116600,
+      174900,
+      314800,
+      566600,
+      1020000,
+      1840000,
+      3300000,
+      5950000,
+      10700000,
+      19300000,
+      34700000,
+      62400000
+    ],
+    "afterLastMultiplier": 2.0,
+    "mainDebtPaymentsReducePrincipal": false
+  },
+  "needs": {
+    "min": 0,
+    "max": 100,
+    "satietyPerHour": -4,
+    "energyAwakePerHour": -1.5,
+    "happinessAwakePerHour": -0.3,
+    "lowThreshold": 20,
+    "hpLossPerLowNeedPerHour": 1.5,
+    "extraHpLossPerZeroNeedPerHour": 8,
+    "plinkoLosingDropHappiness": -1
+  },
+  "sleep": {
+    "fullSleepHours": 7,
+    "fullSleepHealthRestore": 20,
+    "workPenaltyPerMissingHour": 0.05,
+    "workPayoutFloorMultiplier": 0.65,
+    "barryStopsSleep": true
+  },
+  "work": {
+    "requiresEnergyAtLeastCost": true,
+    "windowChecksStartOnly": true,
+    "failure": {
+      "payoutMultiplier": 0,
+      "fineAsPotentialPayout": 0.25,
+      "extraHappiness": -8
+    },
+    "jobs": {
+      "dishes": {
+        "minigame": {
+          "timerRealSeconds": 20,
+          "successCleanPercent": 0.9
+        },
+        "levels": [
+          {
+            "level": 1,
+            "payout": 3000,
+            "durationMinutes": 120,
+            "energyCost": 12,
+            "happinessCost": 3,
+            "window": "16:00-00:00",
+            "upgradePrice": 0
+          },
+          {
+            "level": 2,
+            "payout": 6500,
+            "durationMinutes": 120,
+            "energyCost": 12,
+            "happinessCost": 3,
+            "window": "13:00-03:00",
+            "upgradePrice": 5000
+          },
+          {
+            "level": 3,
+            "payout": 12000,
+            "durationMinutes": 120,
+            "energyCost": 12,
+            "happinessCost": 3,
+            "window": "24/7",
+            "upgradePrice": 40000
+          }
+        ]
+      },
+      "trash": {
+        "minigame": {
+          "timerRealSeconds": 25,
+          "bagCount": 5
+        },
+        "levels": [
+          {
+            "level": 1,
+            "payout": 3600,
+            "durationMinutes": 150,
+            "energyCost": 18,
+            "happinessCost": 5,
+            "window": "00:00-08:00",
+            "upgradePrice": 0
+          },
+          {
+            "level": 2,
+            "payout": 7600,
+            "durationMinutes": 150,
+            "energyCost": 18,
+            "happinessCost": 5,
+            "window": "21:00-11:00",
+            "upgradePrice": 6000
+          },
+          {
+            "level": 3,
+            "payout": 14500,
+            "durationMinutes": 150,
+            "energyCost": 18,
+            "happinessCost": 5,
+            "window": "24/7",
+            "upgradePrice": 50000
+          }
+        ]
+      },
+      "courier": {
+        "minigame": {
+          "obstacleCountMin": 2,
+          "obstacleCountMax": 4,
+          "redrawsBeforeStart": 1
+        },
+        "levels": [
+          {
+            "level": 1,
+            "payout": 4200,
+            "durationMinutes": 180,
+            "energyCost": 15,
+            "happinessCost": 4,
+            "window": "08:00-16:00",
+            "upgradePrice": 0
+          },
+          {
+            "level": 2,
+            "payout": 8500,
+            "durationMinutes": 180,
+            "energyCost": 15,
+            "happinessCost": 4,
+            "window": "05:00-19:00",
+            "upgradePrice": 7000
+          },
+          {
+            "level": 3,
+            "payout": 17000,
+            "durationMinutes": 180,
+            "energyCost": 15,
+            "happinessCost": 4,
+            "window": "24/7",
+            "upgradePrice": 60000
+          }
+        ]
+      }
+    }
+  },
+  "food": [
+    {
+      "id": "FOOD_01",
+      "price": 150,
+      "satiety": 30,
+      "happiness": -2,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 45
+    },
+    {
+      "id": "FOOD_02",
+      "price": 250,
+      "satiety": 20,
+      "happiness": 0,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 10
+    },
+    {
+      "id": "FOOD_03",
+      "price": 350,
+      "satiety": 40,
+      "happiness": 1,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 25
+    },
+    {
+      "id": "FOOD_04",
+      "price": 500,
+      "satiety": 45,
+      "happiness": 6,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 15
+    },
+    {
+      "id": "FOOD_05",
+      "price": 700,
+      "satiety": 60,
+      "happiness": 8,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 20
+    },
+    {
+      "id": "FOOD_06",
+      "price": 900,
+      "satiety": 75,
+      "happiness": 10,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 25
+    },
+    {
+      "id": "FOOD_07",
+      "price": 1200,
+      "satiety": 90,
+      "happiness": 12,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 30
+    },
+    {
+      "id": "FOOD_08",
+      "price": 1800,
+      "satiety": 100,
+      "happiness": 20,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 45
+    },
+    {
+      "id": "FOOD_09",
+      "price": 350,
+      "satiety": 5,
+      "happiness": -2,
+      "energy": 25,
+      "hp": -3,
+      "durationMinutes": 5
+    },
+    {
+      "id": "FOOD_10",
+      "price": 1100,
+      "satiety": 60,
+      "happiness": 25,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 60
+    }
+  ],
+  "entertainment": [
+    {
+      "id": "FREE_FUN",
+      "price": 0,
+      "happiness": 15,
+      "durationMinutes": 60
+    },
+    {
+      "id": "PC_CLUB",
+      "price": 500,
+      "happiness": 40,
+      "durationMinutes": 90
+    },
+    {
+      "id": "CINEMA",
+      "price": 900,
+      "happiness": 70,
+      "durationMinutes": 120
+    }
+  ],
+  "statuses": {
+    "SMELLY": {
+      "blocksJobs": [
+        "courier"
+      ],
+      "paidEntertainmentMultiplier": 0.5
+    }
+  },
+  "shower": {
+    "price": 300,
+    "durationMinutes": 30,
+    "removes": [
+      "SMELLY"
+    ]
+  },
+  "dumpster": {
+    "durationMinutes": 45,
+    "energyCost": 20,
+    "energyShortfallToHappiness": 0.75,
+    "happinessShortfallToHp": 0.5,
+    "emptyChanceByConsecutiveSearch": [
+      0.55,
+      0.62,
+      0.7,
+      0.78
+    ],
+    "emptyChanceCap": 0.78,
+    "resetStreakAtGameDayBoundary": true,
+    "resetStreakAfterSleep": true,
+    "appliesStatus": "SMELLY",
+    "inventoryEnabled": false,
+    "loot": {
+      "cheapFood": {
+        "conditionalWeight": 25,
+        "resolution": "immediateStats",
+        "satiety": 30,
+        "happiness": -2,
+        "energy": 0,
+        "hp": 0
+      },
+      "cash": {
+        "conditionalWeight": 12,
+        "resolution": "immediateCashUniformInteger",
+        "min": 200,
+        "max": 800
+      },
+      "sellableObject": {
+        "conditionalWeight": 6,
+        "resolution": "autoSellUniformInteger",
+        "min": 1000,
+        "max": 3000
+      },
+      "rareFind": {
+        "conditionalWeight": 2,
+        "resolution": "immediateCashUniformInteger",
+        "min": 3000,
+        "max": 7000
+      }
+    },
+    "lootRollMode": "rollEmptyFirstThenNormalizeNonEmptyWeights"
+  },
+  "events": {
+    "chancePerCheckpoint": 0.2,
+    "maxPerGameDay": 2,
+    "noImmediateRepeat": true,
+    "sameModifierStacks": false,
+    "definitions": [
+      {
+        "id": "EVENT_01",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.25
+        },
+        "b": {
+          "happiness": -20,
+          "durationMinutes": 120
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_02",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.2
+        },
+        "b": {
+          "type": "nextWorksPayoutMultiplier",
+          "count": 2,
+          "multiplier": 0.7
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_03",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.35
+        },
+        "b": {
+          "type": "nextBarryMultiplier",
+          "multiplier": 1.15,
+          "count": 1
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_04",
+        "a": {
+          "energy": -25
+        },
+        "b": {
+          "hp": -10
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_05",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.15
+        },
+        "b": {
+          "durationMinutes": 180
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_06",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.2
+        },
+        "b": {
+          "hp": -15
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_07",
+        "a": {
+          "type": "payMax",
+          "fixed": 300,
+          "barryFraction": 0.05
+        },
+        "b": {
+          "status": "SMELLY"
+        },
+        "eligibility": "NOT_SMELLY"
+      },
+      {
+        "id": "EVENT_08",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.25
+        },
+        "b": {
+          "type": "lockPlinko",
+          "durationMinutes": 180
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_09",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.15
+        },
+        "b": {
+          "type": "lockRandomJob",
+          "durationMinutes": 360
+        },
+        "eligibility": "AT_LEAST_ONE_JOB_NOT_EVENT_LOCKED"
+      },
+      {
+        "id": "EVENT_10",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.1
+        },
+        "b": {
+          "type": "foodPriceMultiplier",
+          "multiplier": 1.3,
+          "durationMinutes": 720
+        },
+        "eligibility": "ALWAYS"
+      }
+    ],
+    "pendingLimit": 1,
+    "suppressRollsWhilePending": true,
+    "payChoiceRequiresCash": true
+  },
+  "plinko": {
+    "casinoAlwaysOpen": true,
+    "rows": 9,
+    "basePockets": [
+      12,
+      4,
+      1.5,
+      1,
+      0.25,
+      0.25,
+      1,
+      1.5,
+      4,
+      12
+    ],
+    "targetBareEV": 0.85,
+    "payoutMultiplierMeansTotalReturn": true,
+    "spawn": {
+      "mode": "centerWithSeededJitter",
+      "manualAim": false
+    },
+    "quickBetFractions": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "maxActiveBalls": 24,
+    "maxSplitDepth": 2,
+    "maxBetLevels": [
+      {
+        "level": 0,
+        "maxBet": 500,
+        "price": 0
+      },
+      {
+        "level": 1,
+        "maxBet": 2500,
+        "price": 500
+      },
+      {
+        "level": 2,
+        "maxBet": 12500,
+        "price": 1800
+      },
+      {
+        "level": 3,
+        "maxBet": 62500,
+        "price": 7000
+      },
+      {
+        "level": 4,
+        "maxBet": 312500,
+        "price": 26000
+      },
+      {
+        "level": 5,
+        "maxBet": 1562500,
+        "price": 105000
+      },
+      {
+        "level": 6,
+        "maxBet": 7812500,
+        "price": 420000
+      }
+    ],
+    "centerUpgrades": [
+      {
+        "level": 1,
+        "price": 1000,
+        "center": 0.35
+      },
+      {
+        "level": 2,
+        "price": 2500,
+        "center": 0.4,
+        "inner": 1.05
+      }
+    ],
+    "midUpgrades": [
+      {
+        "level": 1,
+        "price": 5000,
+        "mid": 1.8,
+        "inner": 1.1
+      },
+      {
+        "level": 2,
+        "price": 30000,
+        "mid": 2.2,
+        "inner": 1.25
+      },
+      {
+        "level": 3,
+        "price": 150000,
+        "mid": 2.8,
+        "inner": 1.4
+      }
+    ],
+    "jackpotUpgrades": [
+      {
+        "level": 1,
+        "price": 10000,
+        "edge": 25
+      },
+      {
+        "level": 2,
+        "price": 50000,
+        "edge": 50
+      },
+      {
+        "level": 3,
+        "price": 250000,
+        "edge": 100
+      }
+    ],
+    "amplifier": [
+      {
+        "level": 1,
+        "price": 10000,
+        "count": 1,
+        "multiplier": 1.25
+      },
+      {
+        "level": 2,
+        "price": 45000,
+        "count": 2,
+        "multiplier": 1.25
+      },
+      {
+        "level": 3,
+        "price": 150000,
+        "count": 2,
+        "multiplier": 1.4
+      },
+      {
+        "level": 4,
+        "price": 500000,
+        "count": 3,
+        "multiplier": 1.4
+      },
+      {
+        "level": 5,
+        "price": 1500000,
+        "count": 3,
+        "multiplier": 1.6
+      }
+    ],
+    "return": [
+      {
+        "level": 1,
+        "price": 30000,
+        "targetFrequency": 0.07
+      },
+      {
+        "level": 2,
+        "price": 150000,
+        "targetFrequency": 0.11
+      },
+      {
+        "level": 3,
+        "price": 600000,
+        "targetFrequency": 0.15
+      },
+      {
+        "level": 4,
+        "price": 2000000,
+        "targetFrequency": 0.2
+      }
+    ],
+    "splitter": [
+      {
+        "level": 1,
+        "price": 15000,
+        "childValue": 0.48
+      },
+      {
+        "level": 2,
+        "price": 90000,
+        "childValue": 0.5
+      },
+      {
+        "level": 3,
+        "price": 350000,
+        "childValue": 0.52
+      },
+      {
+        "level": 4,
+        "price": 1000000,
+        "childValue": 0.55
+      },
+      {
+        "level": 5,
+        "price": 3000000,
+        "childValue": 0.58
+      }
+    ],
+    "jackpotBias": [
+      {
+        "level": 1,
+        "price": 8000
+      },
+      {
+        "level": 2,
+        "price": 45000
+      },
+      {
+        "level": 3,
+        "price": 180000
+      },
+      {
+        "level": 4,
+        "price": 700000
+      }
+    ],
+    "insurance": [
+      {
+        "level": 1,
+        "price": 1000,
+        "lossesNeeded": 3,
+        "floor": 0.75
+      },
+      {
+        "level": 2,
+        "price": 5000,
+        "lossesNeeded": 2,
+        "floor": 0.9
+      },
+      {
+        "level": 3,
+        "price": 25000,
+        "lossesNeeded": 1,
+        "floor": 1.0
+      }
+    ],
+    "boardChangesLockedWhileDropActive": true,
+    "maxBetPriceStatus": "latestKnownTunedDiscussionValue; rerun canonical simulator before freeze",
+    "otherUpgradePriceStatus": "provisional V0 seed; not validated by a reproducible report for this exact config",
+    "pendingDropLocksAllOtherCashMutations": true,
+    "clockFreezesAtBarryBoundaryUntilActiveCascadeResolves": true,
+    "geometry": {
+      "logicalViewportWidth": 1280,
+      "logicalViewportHeight": 720,
+      "boardAreaWidth": 560,
+      "boardAreaHeight": 540,
+      "centerX": 640,
+      "topPegY": 130,
+      "horizontalPegSpacing": 48,
+      "verticalPegSpacing": 42,
+      "ballRadius": 10,
+      "pegRadius": 6,
+      "pocketCenterSpacing": 48,
+      "fixedTimestepHz": 60,
+      "spawnHorizontalJitterPx": 4
+    },
+    "physicsSeed": {
+      "gravityY": 1.0,
+      "ballRestitution": 0.52,
+      "pegRestitution": 0.6,
+      "friction": 0.0,
+      "frictionAir": 0.003,
+      "wallRestitution": 0.2
+    }
+  },
+  "ads": {
+    "interstitialRequired": true,
+    "v0SafePlacements": [
+      "afterGameOverBeforeRestart",
+      "afterVictorySummary"
+    ],
+    "rewardedCoreBalance": false
+  },
+  "actions": {
+    "timedPaidAction": {
+      "cashCostTiming": "START",
+      "effectTiming": "COMPLETION"
+    },
+    "work": {
+      "stateCostTiming": "START",
+      "payoutFineTiming": "COMPLETION"
+    },
+    "dumpster": {
+      "stateCostTiming": "START",
+      "lootTiming": "COMPLETION"
+    },
+    "sleep": {
+      "restoreMode": "LINEAR_OVER_SLEPT_GAME_TIME"
+    }
+  }
+}
