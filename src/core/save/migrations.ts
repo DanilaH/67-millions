@@ -195,7 +195,7 @@ const migrateV4 = (value: unknown): SaveState => {
         ? null
         : {
             ...old.pendingDrop,
-            pocketLevelsAtCommit: ZERO_POCKET_LEVELS,
+            pocketLevelsAtCommit: ZERO_DROP_POCKET_LEVELS,
           },
   });
 };
