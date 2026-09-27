@@ -4,7 +4,7 @@
     "date": "2026-09-27",
     "sourceOfTruth": true,
     "targetMedianSuccessfulRealMinutes": 30,
-    "balanceEvidence": "No reproducible full-game report exists for this exact config yet; simulation corridors are hypotheses until runner artifacts exist.",
+    "balanceEvidence": "Bare Plinko V0 physically calibrated with Matter runner at 100,000 Drops: EV 0.870225x, combined center 52.188%, symmetry delta 0.613%, zero stuck. Reproducible report is required after any gameplay-affecting geometry/physics change. Full-game balance report pending.",
     "moneyRounding": "nearestInteger"
   },
   "time": {
@@ -62,7 +62,7 @@
       34700000,
       62400000
     ],
-    "afterLastMultiplier": 2.0,
+    "afterLastMultiplier": 2,
     "mainDebtPaymentsReducePrincipal": false
   },
   "needs": {
@@ -527,7 +527,7 @@
     "quickBetFractions": [
       0.25,
       0.5,
-      1.0
+      1
     ],
     "maxActiveBalls": 24,
     "maxSplitDepth": 2,
@@ -734,7 +734,7 @@
         "level": 3,
         "price": 25000,
         "lossesNeeded": 1,
-        "floor": 1.0
+        "floor": 1
       }
     ],
     "boardChangesLockedWhileDropActive": true,
@@ -750,7 +750,7 @@
       "centerX": 640,
       "topPegY": 130,
       "horizontalPegSpacing": 48,
-      "verticalPegSpacing": 42,
+      "verticalPegSpacing": 27,
       "ballRadius": 10,
       "pegRadius": 6,
       "pocketCenterSpacing": 48,
@@ -758,11 +758,11 @@
       "spawnHorizontalJitterPx": 4
     },
     "physicsSeed": {
-      "gravityY": 1.0,
-      "ballRestitution": 0.52,
+      "gravityY": 1,
+      "ballRestitution": 0.155,
       "pegRestitution": 0.6,
-      "friction": 0.0,
-      "frictionAir": 0.003,
+      "friction": 0,
+      "frictionAir": 0.023,
       "wallRestitution": 0.2
     }
   },

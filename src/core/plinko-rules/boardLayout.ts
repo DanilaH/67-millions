@@ -38,6 +38,10 @@ export const deriveBarePlinkoLayout = (
   const pocketCount = rows + 1;
   const pocketRowWidth = (pocketCount - 1) * geometry.pocketCenterSpacing;
   const firstPocketX = geometry.centerX - pocketRowWidth / 2;
+  const lastPocketX =
+    firstPocketX + (pocketCount - 1) * geometry.pocketCenterSpacing;
+  const leftWallX = firstPocketX - geometry.pocketCenterSpacing / 2;
+  const rightWallX = lastPocketX + geometry.pocketCenterSpacing / 2;
   const pocketTopY =
     geometry.topPegY +
     (rows - 1) * geometry.verticalPegSpacing +
@@ -51,11 +55,8 @@ export const deriveBarePlinkoLayout = (
       x: firstPocketX + index * geometry.pocketCenterSpacing,
       y: pocketBottomY,
     })),
-    leftWallX: firstPocketX - geometry.pocketCenterSpacing / 2,
-    rightWallX:
-      firstPocketX +
-      (pocketCount - 1) * geometry.pocketCenterSpacing +
-      geometry.pocketCenterSpacing / 2,
+    leftWallX,
+    rightWallX,
     pocketTopY,
     pocketBottomY,
   };

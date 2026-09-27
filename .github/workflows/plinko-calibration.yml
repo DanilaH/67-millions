@@ -1,0 +1,30 @@
+name: Plinko calibration
+
+concurrency:
+  group: plinko-calibration-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/**'
+      - 'src/core/plinko-rules/**'
+      - 'balance.v0.json'
+      - 'package.json'
+      - '.github/workflows/plinko-calibration.yml'
+
+jobs:
+  bare-100k:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - run: npm run simulate:plinko -- --runs 100000 --seed 67000000 --output artifacts/plinko/bare
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bare-plinko-calibration
+          path: artifacts/plinko/bare
+          if-no-files-found: error
