@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 4 as const;
+export const SAVE_VERSION = 5 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -28,6 +28,9 @@ const gameStateSchema = z.object({
   workPayoutMultiplier: z.number().min(0).max(1),
   plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
   plinkoMaxBetLevel: z.number().int().nonnegative(),
+  plinkoCenterLevel: z.number().int().nonnegative(),
+  plinkoMidLevel: z.number().int().nonnegative(),
+  plinkoJackpotLevel: z.number().int().nonnegative(),
   rngState: z.number().int().nonnegative(),
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
   victory: z.boolean(),
@@ -84,6 +87,11 @@ const pendingDropSchema = z.object({
   originalStake: z.number().int().positive(),
   selectedFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
   maxBetLevel: z.number().int().nonnegative(),
+  pocketLevelsAtCommit: z.object({
+    centerLevel: z.number().int().nonnegative(),
+    midLevel: z.number().int().nonnegative(),
+    jackpotLevel: z.number().int().nonnegative(),
+  }),
   committedGameDayIndex: z.number().int().nonnegative(),
   committedMinuteOfDay: z.number().min(0).lt(24 * 60),
   remainingActionMinutes: z.number().nonnegative(),
