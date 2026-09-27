@@ -174,9 +174,17 @@ export const balanceSchema = z.object({
     maxBetLevels: z.array(plinkoLevelSchema.extend({
       maxBet: z.number().int().positive(),
     })).min(1),
-    centerUpgrades: z.array(plinkoLevelSchema),
-    midUpgrades: z.array(plinkoLevelSchema),
-    jackpotUpgrades: z.array(plinkoLevelSchema),
+    centerUpgrades: z.array(plinkoLevelSchema.extend({
+      center: z.number().positive(),
+      inner: z.number().positive().optional(),
+    })),
+    midUpgrades: z.array(plinkoLevelSchema.extend({
+      mid: z.number().positive(),
+      inner: z.number().positive().optional(),
+    })),
+    jackpotUpgrades: z.array(plinkoLevelSchema.extend({
+      edge: z.number().positive(),
+    })),
     amplifier: z.array(plinkoLevelSchema),
     return: z.array(plinkoLevelSchema),
     splitter: z.array(plinkoLevelSchema),
