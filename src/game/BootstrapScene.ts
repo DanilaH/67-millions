@@ -26,6 +26,7 @@ import {
   startWork,
 } from '../core/work/work';
 import { balance } from '../config/balance';
+import { isPlinkoPerfMode } from '../app/perfMode';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
@@ -119,6 +120,13 @@ export class BootstrapScene extends Phaser.Scene {
       this.state = save.game;
       this.activeAction = save.activeAction;
       this.pendingDrop = save.pendingDrop;
+
+      if (isPlinkoPerfMode()) {
+        this.game.events.emit(GAME_PRESENTABLE_EVENT);
+        this.scene.start('plinko-debug');
+        return;
+      }
+
       this.installControls();
       this.render();
       this.game.events.emit(GAME_PRESENTABLE_EVENT);

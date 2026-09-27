@@ -15,7 +15,9 @@
     "preview": "vite preview",
     "release:check": "npm run build && node tools/yandex-audit.mjs",
     "simulate:plinko": "tsx simulation/plinko/cli.ts",
-    "simulate:plinko:sweep": "tsx simulation/plinko/sweep.ts"
+    "simulate:plinko:sweep": "tsx simulation/plinko/sweep.ts",
+    "build:perf": "tsc --noEmit && vite build --mode performance",
+    "perf:plinko": "node tools/plinko-perf-smoke.mjs"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
@@ -29,6 +31,7 @@
     "vitest": "4.1.11",
     "matter-js": "0.20.0",
     "@types/matter-js": "0.20.2",
-    "tsx": "4.23.15"
+    "tsx": "4.23.15",
+    "playwright": "1.63.0"
   }
 }

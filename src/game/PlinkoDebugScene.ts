@@ -3,6 +3,10 @@ import Phaser from 'phaser';
 import { balance } from '../config/balance';
 import { PlinkoAudio } from '../audio/PlinkoAudio';
 import {
+  clearPlinkoPerfProbe,
+  isPlinkoPerfMode,
+} from '../app/perfMode';
+import {
   assertDropBoardCompatible,
   commitBareDrop,
   setDropPhysicsSnapshot,
@@ -93,6 +97,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.visibilityHandler = null;
       }
       this.matter.world.off('collisionstart', this.handleAudioCollision);
+      clearPlinkoPerfProbe();
       this.audio?.dispose();
       this.audio = null;
       this.runtime?.destroy();
@@ -210,6 +215,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+
+    if (isPlinkoPerfMode() && !this.save.pendingDrop) {
+      this.installPerfProbe();
+    }
   }
 
   private installCasinoControls(): void {
@@ -429,7 +438,45 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.lastResultMessage =
       `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
     this.showStatus(this.lastResultMessage);
+
+    if (window.__PLINKO_PERF__?.phase === 'running') {
+      window.__PLINKO_PERF__.phase = 'resolved';
+      window.__PLINKO_PERF__.resolvedAtMs = performance.now();
+      window.__PLINKO_PERF__.activeBallCount = this.balls.size;
+    }
+
     this.renderAll();
+  }
+
+  private installPerfProbe(): void {
+    if (!this.save || !this.runtime) return;
+
+    window.__PLINKO_PERF__ = {
+      phase: 'ready',
+      startedAtMs: null,
+      resolvedAtMs: null,
+      activeBallCount: this.balls.size,
+      error: null,
+      start: async () => {
+        const probe = window.__PLINKO_PERF__;
+        if (!probe || probe.phase !== 'ready') return;
+
+        probe.phase = 'running';
+        probe.startedAtMs = performance.now();
+
+        try {
+          await this.commitAndSpawn(1);
+          probe.activeBallCount = this.balls.size;
+          if (this.save?.game.terminalReason !== null) {
+            probe.phase = 'error';
+            probe.error = this.save?.game.terminalReason ?? 'terminal';
+          }
+        } catch (error: unknown) {
+          probe.phase = 'error';
+          probe.error = error instanceof Error ? error.message : String(error);
+        }
+      },
+    };
   }
 
   private readonly handleAudioCollision = (

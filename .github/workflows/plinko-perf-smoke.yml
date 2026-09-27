@@ -1,0 +1,39 @@
+name: Plinko performance smoke
+
+on:
+  pull_request:
+    paths:
+      - 'src/game/PlinkoDebugScene.ts'
+      - 'src/game/BootstrapScene.ts'
+      - 'src/phaser/plinko/**'
+      - 'src/audio/**'
+      - 'src/app/perfMode.ts'
+      - 'balance.v0.json'
+      - 'package.json'
+      - '.env.performance'
+      - 'tools/plinko-perf-smoke.mjs'
+      - '.github/workflows/plinko-perf-smoke.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-perf-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromium-mobile-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build:perf
+      - run: npm run perf:plinko
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plinko-bare-perf-smoke
+          path: artifacts/perf
+          if-no-files-found: warn
