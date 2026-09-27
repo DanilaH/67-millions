@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { ActiveAction } from '../actions/ActiveAction';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 1 as const;
+export const SAVE_VERSION = 2 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -12,7 +12,7 @@ const gameClockSchema = z.object({
 
 const gameStateSchema = z.object({
   cash: z.number().int().nonnegative(),
-  mainDebt: z.number().int().positive(),
+  mainDebt: z.number().int().nonnegative(),
   clock: gameClockSchema,
   needs: z.object({
     health: z.number(),
@@ -21,18 +21,38 @@ const gameStateSchema = z.object({
     happiness: z.number(),
   }),
   barryPaymentIndex: z.number().int().nonnegative(),
+  barryInterruptPending: z.boolean(),
+  totalBarryPaid: z.number().int().nonnegative(),
+  sleepMinutesCurrentGameDay: z.number().int().nonnegative(),
+  workPayoutMultiplier: z.number().min(0).max(1),
   rngState: z.number().int().nonnegative(),
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
+  victory: z.boolean(),
+}).superRefine((state, context) => {
+  if (state.victory && state.mainDebt !== 0) {
+    context.addIssue({ code: 'custom', path: ['mainDebt'], message: 'Victory requires paid principal' });
+  }
 });
 
-const activeActionSchema = z.object({
-  kind: z.enum(['TIMED_PAID', 'WORK', 'DUMPSTER', 'SLEEP']),
+const activeBase = {
   actionId: z.string().min(1),
   remainingMinutes: z.number().nonnegative(),
-  upfrontApplied: z.boolean(),
   startedAtGameDayIndex: z.number().int().nonnegative(),
   startedAtMinuteOfDay: z.number().min(0).lt(24 * 60),
-});
+};
+
+const activeActionSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('TIMED_PAID'), upfrontApplied: z.literal(true), ...activeBase }),
+  z.object({
+    kind: z.literal('WORK'),
+    upfrontApplied: z.literal(true),
+    level: z.number().int().positive(),
+    result: z.enum(['SUCCESS', 'FAILURE']).nullable(),
+    ...activeBase,
+  }),
+  z.object({ kind: z.literal('DUMPSTER'), upfrontApplied: z.literal(true), ...activeBase }),
+  z.object({ kind: z.literal('SLEEP'), upfrontApplied: z.literal(false), ...activeBase }),
+]);
 
 export interface SaveState {
   version: typeof SAVE_VERSION;

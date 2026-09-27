@@ -16,8 +16,13 @@ export interface GameState {
   clock: GameClockState;
   needs: NeedsState;
   barryPaymentIndex: number;
+  barryInterruptPending: boolean;
+  totalBarryPaid: number;
+  sleepMinutesCurrentGameDay: number;
+  workPayoutMultiplier: number;
   rngState: number;
   terminalReason: TerminalReason | null;
+  victory: boolean;
 }
 
 export const createInitialGameState = (
@@ -34,6 +39,16 @@ export const createInitialGameState = (
     happiness: config.game.startHappiness,
   },
   barryPaymentIndex: 0,
+  barryInterruptPending: false,
+  totalBarryPaid: 0,
+  sleepMinutesCurrentGameDay: 0,
+  workPayoutMultiplier: 1,
   rngState: seed >>> 0,
   terminalReason: null,
+  victory: false,
 });
+
+export const restartGame = (
+  config: BalanceConfig,
+  newSeed: number,
+): GameState => createInitialGameState(config, newSeed);

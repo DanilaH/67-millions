@@ -1,13 +1,37 @@
-export type ActiveActionKind = 'TIMED_PAID' | 'WORK' | 'DUMPSTER' | 'SLEEP';
-
-export interface ActiveAction {
-  kind: ActiveActionKind;
+interface ActiveActionBase {
   actionId: string;
   remainingMinutes: number;
-  upfrontApplied: boolean;
   startedAtGameDayIndex: number;
   startedAtMinuteOfDay: number;
 }
+
+export interface TimedPaidActiveAction extends ActiveActionBase {
+  kind: 'TIMED_PAID';
+  upfrontApplied: true;
+}
+
+export interface WorkActiveAction extends ActiveActionBase {
+  kind: 'WORK';
+  upfrontApplied: true;
+  level: number;
+  result: 'SUCCESS' | 'FAILURE' | null;
+}
+
+export interface DumpsterActiveAction extends ActiveActionBase {
+  kind: 'DUMPSTER';
+  upfrontApplied: true;
+}
+
+export interface SleepActiveAction extends ActiveActionBase {
+  kind: 'SLEEP';
+  upfrontApplied: false;
+}
+
+export type ActiveAction =
+  | TimedPaidActiveAction
+  | WorkActiveAction
+  | DumpsterActiveAction
+  | SleepActiveAction;
 
 export const createActiveAction = (input: ActiveAction): ActiveAction => {
   if (!input.actionId) throw new Error('Active action requires actionId');
@@ -23,6 +47,9 @@ export const createActiveAction = (input: ActiveAction): ActiveAction => {
     input.startedAtMinuteOfDay >= 24 * 60
   ) {
     throw new RangeError('startedAtMinuteOfDay must be within one day');
+  }
+  if (input.kind === 'WORK' && (!Number.isInteger(input.level) || input.level <= 0)) {
+    throw new RangeError('Work action level must be a positive integer');
   }
   return { ...input };
 };
