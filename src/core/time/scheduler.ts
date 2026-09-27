@@ -1,32 +1,53 @@
 import {
   advanceClock,
-  minutesUntilBoundary,
+  minutesUntilClockTime,
   type GameClockState,
 } from './GameClock';
 
-export interface BoundaryAdvance {
+export interface ScheduledAdvance {
   clock: GameClockState;
   advancedMinutes: number;
   remainingMinutes: number;
-  hitBoundary: boolean;
+  hitHardBoundary: boolean;
+  softCheckpointsCrossed: string[];
 }
 
-export const advanceUntilBoundary = (
+const isCheckpointWithinAdvance = (
+  clock: GameClockState,
+  checkpoint: string,
+  advancedMinutes: number,
+): boolean =>
+  minutesUntilClockTime(clock, checkpoint) <= advancedMinutes;
+
+export const advanceScheduledTime = (
   clock: GameClockState,
   durationMinutes: number,
-  boundaryTime: string,
-): BoundaryAdvance => {
+  options: {
+    gameDayBoundary: string;
+    hardBoundaryTime: string;
+    softCheckpointTimes?: readonly string[];
+  },
+): ScheduledAdvance => {
   if (!Number.isFinite(durationMinutes) || durationMinutes < 0) {
     throw new RangeError('durationMinutes must be finite and non-negative');
   }
 
-  const toBoundary = minutesUntilBoundary(clock, boundaryTime);
-  const advancedMinutes = Math.min(durationMinutes, toBoundary);
+  const toHardBoundary = minutesUntilClockTime(clock, options.hardBoundaryTime);
+  const advancedMinutes = Math.min(durationMinutes, toHardBoundary);
+  const hitHardBoundary = durationMinutes >= toHardBoundary;
+
+  const softCheckpointsCrossed = (options.softCheckpointTimes ?? [])
+    .filter((checkpoint) => isCheckpointWithinAdvance(clock, checkpoint, advancedMinutes))
+    .sort(
+      (left, right) =>
+        minutesUntilClockTime(clock, left) - minutesUntilClockTime(clock, right),
+    );
 
   return {
-    clock: advanceClock(clock, advancedMinutes),
+    clock: advanceClock(clock, advancedMinutes, options.gameDayBoundary),
     advancedMinutes,
     remainingMinutes: durationMinutes - advancedMinutes,
-    hitBoundary: durationMinutes >= toBoundary,
+    hitHardBoundary,
+    softCheckpointsCrossed,
   };
 };
