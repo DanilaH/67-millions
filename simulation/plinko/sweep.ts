@@ -4,8 +4,8 @@ import { runBarePhysicalDrops } from './physicalRunner';
 
 const candidates = [];
 
-for (const ballRestitution of [0.15, 0.16, 0.17, 0.18]) {
-  for (const frictionAir of [0.022, 0.023, 0.024, 0.025]) {
+for (const ballRestitution of [0.155, 0.16, 0.165]) {
+  for (const frictionAir of [0.023, 0.02325, 0.0235, 0.02375]) {
     const config = structuredClone(balance);
     config.plinko.geometry.verticalPegSpacing = 27;
     config.plinko.physicsSeed.ballRestitution = ballRestitution;
@@ -13,9 +13,9 @@ for (const ballRestitution of [0.15, 0.16, 0.17, 0.18]) {
     config.plinko.physicsSeed.frictionAir = frictionAir;
 
     const samples = runBarePhysicalDrops(config, {
-      runs: 3000,
+      runs: 5000,
       seed: 67_000_000,
-      batchSize: 150,
+      batchSize: 200,
       maxTicks: config.plinko.geometry.fixedTimestepHz * 12,
     });
     const metrics = summarizePhysicalDrops(config, samples);
