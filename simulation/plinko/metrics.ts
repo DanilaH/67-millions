@@ -25,6 +25,14 @@ export interface PhysicalRunnerMetrics {
   symmetryDelta: number;
   childBallCount: number;
   returnCount: number;
+  stuckInsideBoard: number;
+  escapedBelowSensors: number;
+  stuckPositionBounds: {
+    minX: number | null;
+    maxX: number | null;
+    minY: number | null;
+    maxY: number | null;
+  };
 }
 
 const quantileSorted = (sorted: readonly number[], quantile: number): number => {
@@ -79,6 +87,13 @@ export const summarizePhysicalDrops = (
   const ratio = (predicate: (value: number) => boolean): number =>
     resolvedRuns === 0 ? 0 : multipliers.filter(predicate).length / resolvedRuns;
 
+  const stuckSamples = samples.filter((sample) => sample.stuck);
+  const escapedBelowSensors = stuckSamples.filter(
+    (sample) => sample.finalY > config.plinko.geometry.topPegY + config.plinko.geometry.boardAreaHeight,
+  ).length;
+  const stuckXs = stuckSamples.map((sample) => sample.finalX);
+  const stuckYs = stuckSamples.map((sample) => sample.finalY);
+
   return {
     runs: samples.length,
     resolvedRuns,
@@ -106,5 +121,13 @@ export const summarizePhysicalDrops = (
     symmetryDelta,
     childBallCount: 0,
     returnCount: 0,
+    stuckInsideBoard: stuckSamples.length - escapedBelowSensors,
+    escapedBelowSensors,
+    stuckPositionBounds: {
+      minX: stuckXs.length === 0 ? null : Math.min(...stuckXs),
+      maxX: stuckXs.length === 0 ? null : Math.max(...stuckXs),
+      minY: stuckYs.length === 0 ? null : Math.min(...stuckYs),
+      maxY: stuckYs.length === 0 ? null : Math.max(...stuckYs),
+    },
   };
 };
