@@ -68,7 +68,12 @@ const toMarkdown = (report: PhysicalReport): string => {
 - P(>=2x): **${percent(metrics.probabilityAtLeast2x)}**
 - P(>=5x): **${percent(metrics.probabilityAtLeast5x)}**
 - P(>=10x): **${percent(metrics.probabilityAtLeast10x)}**
+- combined center probability: **${percent(metrics.combinedCenterProbability)}** (acceptance corridor 45–54%)
 - edge/jackpot probability: **${percent(metrics.edgePocketProbability)}**
+- ideal Galton edge probability: **${percent(metrics.idealEdgeProbability)}**
+- edge probability delta: **${percent(metrics.edgeProbabilityDelta)}**
+- EV delta vs configured target: **${metrics.targetEvDelta.toFixed(6)}x**
+- Galton-shape L1 error: **${metrics.galtonShapeL1Error.toFixed(6)}**
 - p95 payout: **${metrics.p95Multiplier.toFixed(4)}x**
 - p99 payout: **${metrics.p99Multiplier.toFixed(4)}x**
 - mean collisions: **${metrics.meanCollisions.toFixed(3)}**
