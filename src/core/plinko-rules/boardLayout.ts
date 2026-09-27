@@ -7,7 +7,6 @@ export interface PlinkoPoint {
 
 export interface PlinkoBoardLayout {
   pegs: PlinkoPoint[];
-  sideGuardPegs: PlinkoPoint[];
   pocketCenters: PlinkoPoint[];
   leftWallX: number;
   rightWallX: number;
@@ -21,7 +20,6 @@ export const deriveBarePlinkoLayout = (
   const geometry = config.plinko.geometry;
   const rows = config.plinko.rows;
   const pegs: PlinkoPoint[] = [];
-  const sideGuardPegs: PlinkoPoint[] = [];
 
   for (let row = 0; row < rows; row += 1) {
     const count = row + 1;
@@ -34,21 +32,6 @@ export const deriveBarePlinkoLayout = (
         x: startX + column * geometry.horizontalPegSpacing,
         y,
       });
-    }
-
-    if (row < rows - 1) {
-      const halfStepX = geometry.horizontalPegSpacing / 2;
-      const halfStepY = geometry.verticalPegSpacing / 2;
-      sideGuardPegs.push(
-        {
-          x: startX - halfStepX,
-          y: y + halfStepY,
-        },
-        {
-          x: startX + rowWidth + halfStepX,
-          y: y + halfStepY,
-        },
-      );
     }
   }
 
@@ -68,7 +51,6 @@ export const deriveBarePlinkoLayout = (
 
   return {
     pegs,
-    sideGuardPegs,
     pocketCenters: Array.from({ length: pocketCount }, (_, index) => ({
       x: firstPocketX + index * geometry.pocketCenterSpacing,
       y: pocketBottomY,
