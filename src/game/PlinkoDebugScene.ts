@@ -5,10 +5,13 @@ import {
   assertDropBoardCompatible,
   commitBareDrop,
   setDropPhysicsSnapshot,
-  settleBareDrop,
   type BetFraction,
   type DropBallSnapshot,
 } from '../core/plinko-rules/drop';
+import {
+  advancePendingDropTime,
+  settlePendingDropAndResumeTime,
+} from '../core/plinko-rules/dropTiming';
 import { SeededRandom } from '../core/rng/SeededRandom';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
@@ -160,19 +163,40 @@ export class PlinkoDebugScene extends Phaser.Scene {
           `RESTORED DROP ${pendingAtLoad.dropId} at fixed tick ${pendingAtLoad.physics.fixedTicksElapsed}.`,
         );
       } else {
-        const body = this.runtime.spawnBall();
-        this.balls.set(body, this.createRootBallMetadata(pendingAtLoad.dropId));
+        const timed = advancePendingDropTime(
+          this.save.game,
+          pendingAtLoad,
+          balance,
+        );
         this.save = {
           ...this.save,
-          game: {
-            ...this.save.game,
-            rngState: this.random.snapshot().state,
-          },
+          game: timed.state,
+          pendingDrop: timed.pendingDrop,
         };
-        await this.persistPendingPhysics(true);
-        this.showStatus(
-          `REPLAYED COMMITTED DROP ${pendingAtLoad.dropId} from its durable commit RNG state.`,
-        );
+        await this.enqueueSave(true);
+
+        if (this.save.game.terminalReason === null) {
+          const body = this.runtime.spawnBall();
+          this.balls.set(
+            body,
+            this.createRootBallMetadata(pendingAtLoad.dropId),
+          );
+          this.save = {
+            ...this.save,
+            game: {
+              ...this.save.game,
+              rngState: this.random.snapshot().state,
+            },
+          };
+          await this.persistPendingPhysics(true);
+          this.showStatus(
+            `REPLAYED COMMITTED DROP ${pendingAtLoad.dropId} from its durable commit RNG state.`,
+          );
+        } else {
+          this.showStatus(
+            `DROP ${pendingAtLoad.dropId} stopped by terminal run state before physics spawn.`,
+          );
+        }
       }
     }
 
@@ -321,8 +345,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
         pendingDrop: committed.pendingDrop,
       };
 
-      // Stake + pendingDrop are durable before physical outcome generation.
+      // Stake + pendingDrop are durable before time or physical outcome generation.
       await this.enqueueSave(true);
+
+      const timed = advancePendingDropTime(
+        this.save.game,
+        committed.pendingDrop,
+        balance,
+      );
+      this.save = {
+        ...this.save,
+        game: timed.state,
+        pendingDrop: timed.pendingDrop,
+      };
+      await this.enqueueSave(true);
+
+      if (this.save.game.terminalReason !== null) {
+        this.showStatus(
+          `Drop committed, but run ended with ${this.save.game.terminalReason} before physics spawn.`,
+        );
+        this.renderAll();
+        return;
+      }
 
       const body = this.runtime.spawnBall();
       this.balls.set(
@@ -351,7 +395,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.save || !this.repository || !this.save.pendingDrop) return;
 
     const pending = this.save.pendingDrop;
-    const result = settleBareDrop(this.save.game, pending, index, balance);
+    const result = settlePendingDropAndResumeTime(
+      this.save.game,
+      pending,
+      index,
+      balance,
+    );
 
     this.balls.delete(body);
     this.matter.world.remove(body);
@@ -359,12 +408,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.save = {
       ...this.save,
       game: result.state,
-      pendingDrop: null,
+      pendingDrop: result.pendingDrop,
     };
     await this.enqueueSave(true);
 
+    const terminalSuffix = result.state.terminalReason
+      ? ` / GAME OVER: ${result.state.terminalReason}`
+      : '';
     this.lastResultMessage =
-      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}`;
+      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
     this.showStatus(this.lastResultMessage);
     this.renderAll();
   }
