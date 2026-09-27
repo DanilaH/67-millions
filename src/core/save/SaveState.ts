@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 3 as const;
+export const SAVE_VERSION = 4 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -57,6 +57,28 @@ const activeActionSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('SLEEP'), upfrontApplied: z.literal(false), ...activeBase }),
 ]);
 
+const ballSnapshotSchema = z.object({
+  ballId: z.string().min(1),
+  x: z.number().finite(),
+  y: z.number().finite(),
+  velocityX: z.number().finite(),
+  velocityY: z.number().finite(),
+  angle: z.number().finite(),
+  angularVelocity: z.number().finite(),
+  currentValue: z.number().positive(),
+  lineageId: z.string().min(1),
+  splitDepth: z.number().int().nonnegative(),
+  amplifierProcIds: z.array(z.string()),
+  returnUsed: z.boolean(),
+  blockedSplitterId: z.string().nullable(),
+});
+
+const dropPhysicsSnapshotSchema = z.object({
+  fixedTicksElapsed: z.number().int().nonnegative(),
+  alreadySettledPayout: z.number().int().nonnegative(),
+  balls: z.array(ballSnapshotSchema).max(24),
+});
+
 const pendingDropSchema = z.object({
   dropId: z.string().min(1),
   originalStake: z.number().int().positive(),
@@ -66,6 +88,8 @@ const pendingDropSchema = z.object({
   committedMinuteOfDay: z.number().min(0).lt(24 * 60),
   remainingActionMinutes: z.number().nonnegative(),
   rngStateAtCommit: z.number().int().nonnegative(),
+  boardFingerprint: z.string().min(1),
+  physics: dropPhysicsSnapshotSchema.nullable(),
 });
 
 export interface SaveState {
