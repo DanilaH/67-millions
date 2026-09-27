@@ -52,6 +52,24 @@ export const createBarePlinko = (
   const wallCenterY = geometry.topPegY + geometry.boardAreaHeight / 2;
   const wallHeight = geometry.boardAreaHeight;
 
+  for (const [index, guide] of layout.sideGuides.entries()) {
+    createdBodies.push(
+      matter.add.rectangle(
+        guide.center.x,
+        guide.center.y,
+        guide.length,
+        wallThickness,
+        {
+          isStatic: true,
+          angle: guide.angle,
+          label: index === 0 ? 'plinko:left-guide' : 'plinko:right-guide',
+          restitution: physics.wallRestitution,
+          friction: physics.friction,
+        },
+      ),
+    );
+  }
+
   createdBodies.push(
     matter.add.rectangle(
       layout.leftWallX - wallThickness / 2,
