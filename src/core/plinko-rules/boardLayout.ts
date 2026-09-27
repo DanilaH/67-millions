@@ -73,6 +73,8 @@ export const deriveBarePlinkoLayout = (
     geometry.topPegY + geometry.boardAreaHeight - geometry.ballRadius * 2;
 
   const guideTopOffset = geometry.horizontalPegSpacing;
+  const lastPegRowY =
+    geometry.topPegY + (rows - 1) * geometry.verticalPegSpacing;
   const leftGuide = deriveGuide(
     {
       x: geometry.centerX - guideTopOffset,
@@ -80,7 +82,7 @@ export const deriveBarePlinkoLayout = (
     },
     {
       x: leftWallX,
-      y: pocketTopY,
+      y: lastPegRowY,
     },
   );
   const rightGuide = deriveGuide(
@@ -90,7 +92,7 @@ export const deriveBarePlinkoLayout = (
     },
     {
       x: rightWallX,
-      y: pocketTopY,
+      y: lastPegRowY,
     },
   );
 
