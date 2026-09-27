@@ -28,6 +28,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
   private readonly balls = new Set<MatterJS.BodyType>();
   private infoText?: Phaser.GameObjects.Text;
+  private statusText?: Phaser.GameObjects.Text;
   private graphics?: Phaser.GameObjects.Graphics;
 
   public constructor() {
@@ -42,6 +43,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
       fontSize: '16px',
       lineSpacing: 5,
     });
+
+    this.statusText = this.add
+      .text(680, 28, '', {
+        color: '#f4f6f8',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '14px',
+        wordWrap: { width: 560 },
+      })
+      .setOrigin(0, 0);
 
     void this.initialize();
 
@@ -226,14 +236,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private showStatus(message: string): void {
-    this.add
-      .text(680, 28, message, {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
-        fontSize: '14px',
-        wordWrap: { width: 560 },
-      })
-      .setOrigin(0, 0);
+    this.statusText?.setText(message);
   }
 
   private installPocketLabels(): void {
