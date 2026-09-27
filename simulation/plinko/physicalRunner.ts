@@ -1,4 +1,4 @@
-import * as Matter from 'matter-js';
+import Matter from 'matter-js';
 
 import type { BalanceConfig } from '../../src/config/balance.schema';
 import { deriveBarePlinkoLayout, getSpawnX } from '../../src/core/plinko-rules/boardLayout';
