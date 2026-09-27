@@ -147,6 +147,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
       const committed = commitBareDrop(
         this.save.game,
+        this.save.pendingDrop,
         balance,
         dropId,
         fraction,
