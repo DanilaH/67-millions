@@ -42,3 +42,12 @@
 ## Intentional bootstrap deviations
 
 None at M0 bootstrap creation.
+
+
+## Plinko pocket-family derivation
+
+- V0 pocket upgrade families are explicit data in `balance.v0.json`, not Scene constants.
+- Symmetric index mapping: edge `[0,9]`, outerStatic `[1,8]`, mid `[2,7]`, inner `[3,6]`, center `[4,5]`.
+- The current Center/Mid/Jackpot tracks do not alter the existing outerStatic 4x pair.
+- When active Center and Mid levels both define an inner-pocket value, derivation uses the maximum active configured value (never below base), so purchase order cannot change the final board.
+- A committed Drop snapshots its pocket upgrade levels and derived board fingerprint; upgrades cannot retroactively alter an in-flight payout.
