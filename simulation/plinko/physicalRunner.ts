@@ -58,18 +58,6 @@ const createStaticBoard = (
   const wallCenterY = geometry.topPegY + geometry.boardAreaHeight / 2;
   const wallHeight = geometry.boardAreaHeight;
 
-  for (const guard of layout.sideGuardPegs) {
-    bodies.push(
-      Matter.Bodies.circle(guard.x, guard.y, geometry.pegRadius, {
-        isStatic: true,
-        label: 'sim:side-guard',
-        restitution: physics.pegRestitution,
-        friction: physics.friction,
-        collisionFilter: { category: STATIC_CATEGORY, mask: 0xffff },
-      }),
-    );
-  }
-
   bodies.push(
     Matter.Bodies.rectangle(
       layout.leftWallX - wallThickness / 2,
