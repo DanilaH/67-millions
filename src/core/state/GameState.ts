@@ -1,6 +1,8 @@
 import type { BalanceConfig } from '../../config/balance.schema';
 import { createGameClock, type GameClockState } from '../time/GameClock';
 
+export type TerminalReason = 'BARRY_PAYMENT_FAILED' | 'HEALTH_ZERO';
+
 export interface NeedsState {
   health: number;
   satiety: number;
@@ -15,7 +17,7 @@ export interface GameState {
   needs: NeedsState;
   barryPaymentIndex: number;
   rngState: number;
-  terminalReason: 'BARRY_PAYMENT_FAILED' | 'HEALTH_ZERO' | null;
+  terminalReason: TerminalReason | null;
 }
 
 export const createInitialGameState = (
