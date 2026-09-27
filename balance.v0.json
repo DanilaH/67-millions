@@ -764,6 +764,28 @@
       "friction": 0,
       "frictionAir": 0.023,
       "wallRestitution": 0.2
+    },
+    "pocketFamilies": {
+      "edge": [
+        0,
+        9
+      ],
+      "outerStatic": [
+        1,
+        8
+      ],
+      "mid": [
+        2,
+        7
+      ],
+      "inner": [
+        3,
+        6
+      ],
+      "center": [
+        4,
+        5
+      ]
     }
   },
   "ads": {
