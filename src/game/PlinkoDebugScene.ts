@@ -27,22 +27,35 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private save: SaveState | null = null;
   private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
   private readonly balls = new Set<MatterJS.BodyType>();
+
+  private casinoLayer?: Phaser.GameObjects.Container;
+  private mapLayer?: Phaser.GameObjects.Container;
+  private graphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
-  private graphics?: Phaser.GameObjects.Graphics;
+  private mapText?: Phaser.GameObjects.Text;
+  private mapMessageText?: Phaser.GameObjects.Text;
+  private mapMode = false;
+  private lastResultMessage = '';
 
   public constructor() {
     super('plinko-debug');
   }
 
   public create(): void {
+    this.casinoLayer = this.add.container(0, 0);
+    this.mapLayer = this.add.container(0, 0).setVisible(false);
+
     this.graphics = this.add.graphics();
+    this.casinoLayer.add(this.graphics);
+
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
       color: '#f4f6f8',
       fontFamily: 'ui-monospace, monospace',
       fontSize: '16px',
       lineSpacing: 5,
     });
+    this.casinoLayer.add(this.infoText);
 
     this.statusText = this.add
       .text(680, 28, '', {
@@ -52,7 +65,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         wordWrap: { width: 560 },
       })
       .setOrigin(0, 0);
+    this.casinoLayer.add(this.statusText);
 
+    this.installMapLayer();
     void this.initialize();
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -63,7 +78,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public update(): void {
-    if (!this.graphics) return;
+    if (!this.graphics || this.mapMode) return;
 
     this.graphics.clear();
     this.drawStaticBoard();
@@ -96,20 +111,22 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.drawStaticBoard();
     this.installPocketLabels();
-    this.installControls();
-    this.render();
+    this.installCasinoControls();
+    this.renderAll();
 
     if (this.save.pendingDrop) {
       this.showStatus(
-        'PENDING DROP FOUND. Exact active-physics restore is reserved for T029; no reroll/refund is allowed.',
+        'PENDING DROP FOUND. Exact active-physics restore is T029; this build will not reroll or refund it.',
       );
     }
   }
 
-  private installControls(): void {
+  private installCasinoControls(): void {
+    if (!this.casinoLayer) return;
+
     const fractions: BetFraction[] = [0.25, 0.5, 1];
     fractions.forEach((fraction, index) => {
-      this.add
+      const button = this.add
         .text(28 + index * 155, 650, `[ DROP ${fraction * 100}% ]`, {
           color: '#f4f6f8',
           backgroundColor: '#252a31',
@@ -121,10 +138,23 @@ export class PlinkoDebugScene extends Phaser.Scene {
         .on('pointerup', () => {
           void this.commitAndSpawn(fraction);
         });
+      this.casinoLayer!.add(button);
     });
 
-    this.add
-      .text(535, 650, '[ BACK ]', {
+    const leaveButton = this.add
+      .text(500, 650, '[ MAP / LEAVE CASINO ]', {
+        color: '#f4f6f8',
+        backgroundColor: '#252a31',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '17px',
+        padding: { x: 10, y: 8 },
+      })
+      .setInteractive({ useHandCursor: true })
+      .on('pointerup', () => this.leaveCasino());
+    this.casinoLayer.add(leaveButton);
+
+    const backButton = this.add
+      .text(790, 650, '[ BACK TO M1 ]', {
         color: '#f4f6f8',
         backgroundColor: '#252a31',
         fontFamily: 'system-ui, sans-serif',
@@ -134,19 +164,82 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true })
       .on('pointerup', () => {
         if (this.save?.pendingDrop) {
-          this.showStatus('Active Drop cannot be destroyed. Hidden-Casino continuation is T024.');
+          this.showStatus('Resolve the pending Drop before leaving the Plinko runtime.');
           return;
         }
         this.scene.start('bootstrap');
       });
+    this.casinoLayer.add(backButton);
+  }
+
+  private installMapLayer(): void {
+    if (!this.mapLayer) return;
+
+    const title = this.add
+      .text(40, 36, 'MAP / READ-ONLY WHILE PLINKO RESOLVES', {
+        color: '#f4f6f8',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '24px',
+      })
+      .setOrigin(0, 0);
+
+    this.mapText = this.add
+      .text(40, 100, '', {
+        color: '#f4f6f8',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '18px',
+        lineSpacing: 6,
+      })
+      .setOrigin(0, 0);
+
+    this.mapMessageText = this.add
+      .text(40, 330, '', {
+        color: '#f4f6f8',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '17px',
+        wordWrap: { width: 900 },
+      })
+      .setOrigin(0, 0);
+
+    const returnButton = this.add
+      .text(40, 620, '[ RETURN TO CASINO ]', {
+        color: '#f4f6f8',
+        backgroundColor: '#252a31',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '17px',
+        padding: { x: 10, y: 8 },
+      })
+      .setInteractive({ useHandCursor: true })
+      .on('pointerup', () => this.returnToCasino());
+
+    this.mapLayer.add([title, this.mapText, this.mapMessageText, returnButton]);
+  }
+
+  private leaveCasino(): void {
+    if (!this.save) return;
+
+    if (!this.save.pendingDrop) {
+      this.scene.start('bootstrap');
+      return;
+    }
+
+    this.mapMode = true;
+    this.casinoLayer?.setVisible(false);
+    this.mapLayer?.setVisible(true);
+    this.lastResultMessage =
+      'Drop is still physically resolving off-screen. All gameplay/cash actions are intentionally unavailable.';
+    this.renderMap();
+  }
+
+  private returnToCasino(): void {
+    this.mapMode = false;
+    this.mapLayer?.setVisible(false);
+    this.casinoLayer?.setVisible(true);
+    this.renderCasino();
   }
 
   private async commitAndSpawn(fraction: BetFraction): Promise<void> {
     if (!this.save || !this.repository || !this.runtime || !this.random) return;
-    if (this.save.pendingDrop) {
-      this.showStatus('A Drop is already pending.');
-      return;
-    }
     if (this.save.activeAction) {
       this.showStatus('Finish the active non-Plinko action first.');
       return;
@@ -185,7 +278,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         },
       };
       await this.repository.write(this.save);
-      this.render();
+      this.renderAll();
     } catch (error: unknown) {
       this.showStatus(error instanceof Error ? error.message : String(error));
     }
@@ -211,13 +304,18 @@ export class PlinkoDebugScene extends Phaser.Scene {
     await this.repository.write(this.save);
     await this.repository.flush();
 
-    this.showStatus(
-      `Drop settled: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / losing Drop: Happiness -1' : ''}`,
-    );
-    this.render();
+    this.lastResultMessage =
+      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}`;
+    this.showStatus(this.lastResultMessage);
+    this.renderAll();
   }
 
-  private render(): void {
+  private renderAll(): void {
+    this.renderCasino();
+    this.renderMap();
+  }
+
+  private renderCasino(): void {
     if (!this.infoText || !this.save) return;
 
     const maxBet =
@@ -235,15 +333,36 @@ export class PlinkoDebugScene extends Phaser.Scene {
     ]);
   }
 
+  private renderMap(): void {
+    if (!this.mapText || !this.mapMessageText || !this.save) return;
+
+    this.mapText.setText([
+      `Cash: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
+      `Principal: ${this.save.game.mainDebt.toLocaleString('ru-RU')} ₽`,
+      `HP: ${this.save.game.needs.health.toFixed(1)}`,
+      `Satiety: ${this.save.game.needs.satiety.toFixed(1)}`,
+      `Energy: ${this.save.game.needs.energy.toFixed(1)}`,
+      `Happiness: ${this.save.game.needs.happiness.toFixed(1)}`,
+      `Pending Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake} ₽ resolving` : 'none'}`,
+    ]);
+
+    this.mapMessageText.setText(
+      this.lastResultMessage ||
+        (this.save.pendingDrop
+          ? 'Drop is resolving. Read-only inspection only.'
+          : 'No active Drop.'),
+    );
+  }
+
   private showStatus(message: string): void {
     this.statusText?.setText(message);
   }
 
   private installPocketLabels(): void {
-    if (!this.runtime) return;
+    if (!this.runtime || !this.casinoLayer) return;
 
     this.runtime.layout.pocketCenters.forEach((pocket, index) => {
-      this.add
+      const label = this.add
         .text(
           pocket.x,
           this.runtime!.layout.pocketBottomY + 18,
@@ -255,6 +374,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           },
         )
         .setOrigin(0.5, 0);
+      this.casinoLayer!.add(label);
     });
   }
 
