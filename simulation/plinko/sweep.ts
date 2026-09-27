@@ -2,65 +2,76 @@ import { balance } from '../../src/config/balance';
 import { summarizePhysicalDrops } from './metrics';
 import { runBarePhysicalDrops } from './physicalRunner';
 
-const IDEAL = [1, 9, 36, 84, 126, 126, 84, 36, 9, 1].map((value) => value / 512);
-const TARGET_EV = 0.849609375;
-
-interface CandidateResult {
+interface Candidate {
   horizontalSpacing: number;
   verticalSpacing: number;
   ballRestitution: number;
   pegRestitution: number;
+  frictionAir: number;
   ev: number;
+  combinedCenterProbability: number;
+  edgePocketProbability: number;
   stuckRate: number;
-  shapeError: number;
+  galtonShapeL1Error: number;
   score: number;
-  frequencies: number[];
+  pocketFrequencies: number[];
 }
 
-const results: CandidateResult[] = [];
-let candidateIndex = 0;
+const candidates: Candidate[] = [];
+let index = 0;
 
 for (const horizontalSpacing of [40, 44, 48]) {
-  for (const verticalSpacing of [28, 34, 42]) {
-    for (const ballRestitution of [0.2, 0.35, 0.52]) {
-      for (const pegRestitution of [0.3, 0.45, 0.6]) {
-        const config = structuredClone(balance);
-        config.plinko.geometry.horizontalPegSpacing = horizontalSpacing;
-        config.plinko.geometry.pocketCenterSpacing = horizontalSpacing;
-        config.plinko.geometry.verticalPegSpacing = verticalSpacing;
-        config.plinko.physicsSeed.ballRestitution = ballRestitution;
-        config.plinko.physicsSeed.pegRestitution = pegRestitution;
+  for (const verticalSpacing of [20, 24, 28, 32]) {
+    for (const ballRestitution of [0.1, 0.3, 0.5]) {
+      for (const pegRestitution of [0.15, 0.35, 0.55]) {
+        for (const frictionAir of [0.003, 0.012, 0.025]) {
+          const config = structuredClone(balance);
+          config.plinko.geometry.horizontalPegSpacing = horizontalSpacing;
+          config.plinko.geometry.pocketCenterSpacing = horizontalSpacing;
+          config.plinko.geometry.verticalPegSpacing = verticalSpacing;
+          config.plinko.physicsSeed.ballRestitution = ballRestitution;
+          config.plinko.physicsSeed.pegRestitution = pegRestitution;
+          config.plinko.physicsSeed.frictionAir = frictionAir;
 
-        const samples = runBarePhysicalDrops(config, {
-          runs: 1000,
-          seed: 67_000_000 + candidateIndex * 10_007,
-          batchSize: 128,
-        });
-        candidateIndex += 1;
+          const samples = runBarePhysicalDrops(config, {
+            runs: 200,
+            seed: 67_000_000 + index * 7_919,
+            batchSize: 100,
+            maxTicks: config.plinko.geometry.fixedTimestepHz * 12,
+          });
+          index += 1;
 
-        const metrics = summarizePhysicalDrops(config, samples);
-        const shapeError = metrics.pocketFrequencies.reduce(
-          (sum, frequency, index) => sum + Math.abs(frequency - (IDEAL[index] ?? 0)),
-          0,
-        );
-        const evError = Math.abs(metrics.ev - TARGET_EV);
-        const score = shapeError + evError * 0.35 + metrics.stuckRate * 10;
+          const metrics = summarizePhysicalDrops(config, samples);
+          const centerError = Math.abs(metrics.combinedCenterProbability - 0.4921875);
+          const edgeError = Math.abs(
+            metrics.edgePocketProbability - metrics.idealEdgeProbability,
+          );
+          const evError = Math.abs(metrics.ev - config.plinko.targetBareEV);
 
-        results.push({
-          horizontalSpacing,
-          verticalSpacing,
-          ballRestitution,
-          pegRestitution,
-          ev: metrics.ev,
-          stuckRate: metrics.stuckRate,
-          shapeError,
-          score,
-          frequencies: metrics.pocketFrequencies,
-        });
+          candidates.push({
+            horizontalSpacing,
+            verticalSpacing,
+            ballRestitution,
+            pegRestitution,
+            frictionAir,
+            ev: metrics.ev,
+            combinedCenterProbability: metrics.combinedCenterProbability,
+            edgePocketProbability: metrics.edgePocketProbability,
+            stuckRate: metrics.stuckRate,
+            galtonShapeL1Error: metrics.galtonShapeL1Error,
+            score:
+              metrics.galtonShapeL1Error +
+              centerError * 2 +
+              edgeError * 2 +
+              evError * 0.5 +
+              metrics.stuckRate * 20,
+            pocketFrequencies: metrics.pocketFrequencies,
+          });
+        }
       }
     }
   }
 }
 
-results.sort((left, right) => left.score - right.score);
-process.stdout.write(JSON.stringify(results.slice(0, 12), null, 2) + '\n');
+candidates.sort((left, right) => left.score - right.score);
+process.stdout.write(JSON.stringify(candidates.slice(0, 20), null, 2) + '\n');
