@@ -186,13 +186,12 @@ export const createBarePlinko = (
       ),
     restoreBall: (snapshot) => {
       const body = createBallAt(snapshot.x, snapshot.y);
-      const MatterBody = Phaser.Physics.Matter.Matter.Body;
-      MatterBody.setVelocity(body, {
+      matter.body.setVelocity(body, {
         x: snapshot.velocityX,
         y: snapshot.velocityY,
       });
-      MatterBody.setAngle(body, snapshot.angle);
-      MatterBody.setAngularVelocity(body, snapshot.angularVelocity);
+      matter.body.setAngle(body, snapshot.angle);
+      matter.body.setAngularVelocity(body, snapshot.angularVelocity);
       return body;
     },
     snapshotBall: (body, metadata) => ({
