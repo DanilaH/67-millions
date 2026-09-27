@@ -18,7 +18,7 @@ describe('needs and sleep', () => {
   it('restores Energy fully across a seven-hour sleep and partially restores Health', () => {
     const initial = {
       ...createInitialGameState(balance, 1),
-      needs: { health: 50, satiety: 100, energy: 0, happiness: 70 },
+      needs: { health: 50, satiety: 100, energy: 30, happiness: 70 },
     };
     const { state } = advanceNeeds(initial, 7 * 60, 'SLEEP', balance);
 
