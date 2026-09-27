@@ -44,11 +44,13 @@ export const calculateActualBet = (
 
 export const commitBareDrop = (
   state: GameState,
+  existingPendingDrop: PendingDrop | null,
   config: BalanceConfig,
   dropId: string,
   selectedFraction: BetFraction = state.plinkoSelectedBetFraction,
 ): { state: GameState; pendingDrop: PendingDrop } => {
   if (!dropId) throw new Error('Drop requires a stable dropId');
+  if (existingPendingDrop !== null) throw new Error('A Drop is already pending');
   if (state.terminalReason !== null || state.victory || state.barryInterruptPending) {
     throw new Error('Cannot commit Drop in the current run state');
   }
