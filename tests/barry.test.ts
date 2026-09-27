@@ -7,7 +7,7 @@ import {
   resolveBarryPayment,
 } from '../src/core/barry/barry';
 import { canPayMainDebt, payMainDebt } from '../src/core/economy/mainDebt';
-import { createInitialGameState } from '../src/core/state/GameState';
+import { createInitialGameState, restartGame } from '../src/core/state/GameState';
 
 describe('Barry and principal', () => {
   it('uses the configured ladder and exponential continuation', () => {
@@ -46,4 +46,28 @@ describe('Barry and principal', () => {
     expect(state.mainDebt).toBe(0);
     expect(state.cash).toBe(0);
   });
+  it('restart creates a fresh run and resets progression/state', () => {
+    const dirty = {
+      ...createInitialGameState(balance, 1),
+      cash: 999999,
+      mainDebt: 0,
+      barryPaymentIndex: 7,
+      totalBarryPaid: 12345,
+      sleepMinutesCurrentGameDay: 120,
+      workPayoutMultiplier: 0.65,
+      terminalReason: 'BARRY_PAYMENT_FAILED' as const,
+      victory: true,
+    };
+
+    const restarted = restartGame(balance, 2);
+    expect(restarted.cash).toBe(balance.game.startCash);
+    expect(restarted.mainDebt).toBe(balance.game.mainDebt);
+    expect(restarted.barryPaymentIndex).toBe(0);
+    expect(restarted.totalBarryPaid).toBe(0);
+    expect(restarted.terminalReason).toBeNull();
+    expect(restarted.victory).toBe(false);
+    expect(restarted.rngState).toBe(2);
+    expect(restarted).not.toEqual(dirty);
+  });
+
 });
