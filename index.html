@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <title>67 миллионов</title>
+  </head>
+  <body>
+    <main id="game-shell" aria-label="67 миллионов">
+      <div id="game-root"></div>
+      <section id="rotate-gate" aria-live="polite" aria-hidden="true">
+        <strong>ПОВЕРНИТЕ УСТРОЙСТВО</strong>
+        <span>Игра работает в горизонтальной ориентации.</span>
+      </section>
+      <section id="startup-preload" data-state="idle" aria-hidden="true">
+        <div class="startup-card">
+          <strong id="startup-preload-heading">ЗАГРУЗКА</strong>
+          <span id="startup-preload-status">Подготавливаем игру…</span>
+          <div id="startup-preload-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="startup-preload-progress-fill"></div>
+          </div>
+          <span id="startup-preload-progress-percent">00%</span>
+        </div>
+      </section>
+      <aside id="debug-root" hidden></aside>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
