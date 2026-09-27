@@ -1,0 +1,28 @@
+{
+  "name": "67-millions",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "vite --mode development",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "tsc --noEmit && vite build --mode yandex",
+    "build:yandex:debug": "tsc --noEmit && vite build --mode yandex-debug",
+    "preview": "vite preview",
+    "release:check": "npm run build && node tools/yandex-audit.mjs"
+  },
+  "dependencies": {
+    "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
+    "phaser": "4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.1",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  }
+}
