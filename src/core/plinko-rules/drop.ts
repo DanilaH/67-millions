@@ -13,6 +13,7 @@ export interface PendingDrop {
   committedGameDayIndex: number;
   committedMinuteOfDay: number;
   remainingActionMinutes: number;
+  rngStateAtCommit: number;
 }
 
 export interface DropSettlement {
@@ -69,6 +70,7 @@ export const commitBareDrop = (
       committedGameDayIndex: state.clock.gameDayIndex,
       committedMinuteOfDay: state.clock.minuteOfDay,
       remainingActionMinutes: config.time.plinkoDropTimeMinutes,
+      rngStateAtCommit: state.rngState,
     },
   };
 };
