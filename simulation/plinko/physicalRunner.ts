@@ -58,22 +58,15 @@ const createStaticBoard = (
   const wallCenterY = geometry.topPegY + geometry.boardAreaHeight / 2;
   const wallHeight = geometry.boardAreaHeight;
 
-  for (const [index, guide] of layout.sideGuides.entries()) {
+  for (const guard of layout.sideGuardPegs) {
     bodies.push(
-      Matter.Bodies.rectangle(
-        guide.center.x,
-        guide.center.y,
-        guide.length,
-        wallThickness,
-        {
-          isStatic: true,
-          angle: guide.angle,
-          label: index === 0 ? 'sim:left-guide' : 'sim:right-guide',
-          restitution: physics.wallRestitution,
-          friction: physics.friction,
-          collisionFilter: { category: STATIC_CATEGORY, mask: 0xffff },
-        },
-      ),
+      Matter.Bodies.circle(guard.x, guard.y, geometry.pegRadius, {
+        isStatic: true,
+        label: 'sim:side-guard',
+        restitution: physics.pegRestitution,
+        friction: physics.friction,
+        collisionFilter: { category: STATIC_CATEGORY, mask: 0xffff },
+      }),
     );
   }
 
