@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import { balance } from '../src/config/balance';
 import {
+  assertDropBoardCompatible,
   calculateActualBet,
   commitBareDrop,
+  setDropPhysicsSnapshot,
   settleBareDrop,
 } from '../src/core/plinko-rules/drop';
 import { createInitialGameState } from '../src/core/state/GameState';
@@ -30,6 +32,47 @@ describe('bare Plinko transaction', () => {
     expect(committed.pendingDrop.rngStateAtCommit).toBe(123);
     expect(committed.state.cash).toBe(250);
     expect(committed.state.plinkoSelectedBetFraction).toBe(0.5);
+    expect(committed.pendingDrop.boardFingerprint.length).toBeGreaterThan(0);
+    expect(committed.pendingDrop.physics).toBeNull();
+  });
+
+  it('persists an isolated physical snapshot and validates board compatibility', () => {
+    const initial = createInitialGameState(balance, 123);
+    const committed = commitBareDrop(initial, null, balance, 'drop-1', 1);
+    const snapshot = {
+      fixedTicksElapsed: 42,
+      alreadySettledPayout: 0,
+      balls: [
+        {
+          ballId: 'drop-1:root',
+          x: 640,
+          y: 200,
+          velocityX: 1.25,
+          velocityY: 2.5,
+          angle: 0,
+          angularVelocity: 0.1,
+          currentValue: 1,
+          lineageId: 'drop-1:root',
+          splitDepth: 0,
+          amplifierProcIds: ['amp-a'],
+          returnUsed: false,
+          blockedSplitterId: null,
+        },
+      ],
+    };
+
+    const pending = setDropPhysicsSnapshot(committed.pendingDrop, snapshot);
+    snapshot.balls[0]!.amplifierProcIds.push('mutated-after-save');
+
+    expect(pending.physics?.fixedTicksElapsed).toBe(42);
+    expect(pending.physics?.balls[0]?.amplifierProcIds).toEqual(['amp-a']);
+    expect(() => assertDropBoardCompatible(pending, balance)).not.toThrow();
+
+    const incompatible = structuredClone(balance);
+    incompatible.plinko.geometry.verticalPegSpacing += 1;
+    expect(() => assertDropBoardCompatible(pending, incompatible)).toThrow(
+      'fingerprint',
+    );
   });
 
   it('refuses a second Drop while one is pending', () => {
