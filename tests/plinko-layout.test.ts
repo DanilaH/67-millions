@@ -39,6 +39,18 @@ describe('bare Plinko layout', () => {
     }
   });
 
+  it('derives symmetric side guides that close the escape corridor without probability routing', () => {
+    const layout = deriveBarePlinkoLayout(balance);
+    const [left, right] = layout.sideGuides;
+
+    expect(left.center.x + right.center.x).toBeCloseTo(
+      balance.plinko.geometry.centerX * 2,
+    );
+    expect(left.center.y).toBeCloseTo(right.center.y);
+    expect(left.length).toBeCloseTo(right.length);
+    expect(left.angle).toBeCloseTo(Math.PI - right.angle);
+  });
+
   it('spawns only inside configured seeded horizontal jitter', () => {
     const center = balance.plinko.geometry.centerX;
     const jitter = balance.plinko.geometry.spawnHorizontalJitterPx;
