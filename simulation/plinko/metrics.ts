@@ -16,6 +16,11 @@ export interface PhysicalRunnerMetrics {
   probabilityAtLeast5x: number;
   probabilityAtLeast10x: number;
   edgePocketProbability: number;
+  combinedCenterProbability: number;
+  targetEvDelta: number;
+  galtonShapeL1Error: number;
+  idealEdgeProbability: number;
+  edgeProbabilityDelta: number;
   p95Multiplier: number;
   p99Multiplier: number;
   meanCollisions: number;
@@ -67,6 +72,16 @@ export const summarizePhysicalDrops = (
     resolvedRuns === 0 ? 0 : count / resolvedRuns,
   );
   const ev = mean(multipliers);
+  const idealGalton = [1, 9, 36, 84, 126, 126, 84, 36, 9, 1].map(
+    (value) => value / 512,
+  );
+  const idealEdgeProbability =
+    (idealGalton[0] ?? 0) + (idealGalton[idealGalton.length - 1] ?? 0);
+  const galtonShapeL1Error = pocketFrequencies.reduce(
+    (sum, frequency, index) =>
+      sum + Math.abs(frequency - (idealGalton[index] ?? 0)),
+    0,
+  );
   const variance =
     multipliers.length === 0
       ? 0
@@ -112,6 +127,18 @@ export const summarizePhysicalDrops = (
       resolvedRuns === 0
         ? 0
         : (pocketCounts[0]! + pocketCounts[pocketCounts.length - 1]!) / resolvedRuns,
+    combinedCenterProbability:
+      resolvedRuns === 0
+        ? 0
+        : (pocketCounts[4]! + pocketCounts[5]!) / resolvedRuns,
+    targetEvDelta: ev - config.plinko.targetBareEV,
+    galtonShapeL1Error,
+    idealEdgeProbability,
+    edgeProbabilityDelta:
+      (resolvedRuns === 0
+        ? 0
+        : (pocketCounts[0]! + pocketCounts[pocketCounts.length - 1]!) / resolvedRuns) -
+      idealEdgeProbability,
     p95Multiplier: quantileSorted(multipliers, 0.95),
     p99Multiplier: quantileSorted(multipliers, 0.99),
     meanCollisions: mean(resolved.map((sample) => sample.collisions)),
