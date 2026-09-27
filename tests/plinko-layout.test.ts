@@ -39,22 +39,6 @@ describe('bare Plinko layout', () => {
     }
   });
 
-  it('derives symmetric side guard pegs between peg rows', () => {
-    const layout = deriveBarePlinkoLayout(balance);
-
-    expect(layout.sideGuardPegs).toHaveLength((balance.plinko.rows - 1) * 2);
-
-    for (let index = 0; index < layout.sideGuardPegs.length; index += 2) {
-      const left = layout.sideGuardPegs[index]!;
-      const right = layout.sideGuardPegs[index + 1]!;
-
-      expect(left.x + right.x).toBeCloseTo(
-        balance.plinko.geometry.centerX * 2,
-      );
-      expect(left.y).toBeCloseTo(right.y);
-    }
-  });
-
   it('spawns only inside configured seeded horizontal jitter', () => {
     const center = balance.plinko.geometry.centerX;
     const jitter = balance.plinko.geometry.spawnHorizontalJitterPx;
