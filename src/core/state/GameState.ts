@@ -20,6 +20,8 @@ export interface GameState {
   totalBarryPaid: number;
   sleepMinutesCurrentGameDay: number;
   workPayoutMultiplier: number;
+  plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
+  plinkoMaxBetLevel: number;
   rngState: number;
   terminalReason: TerminalReason | null;
   victory: boolean;
@@ -43,6 +45,8 @@ export const createInitialGameState = (
   totalBarryPaid: 0,
   sleepMinutesCurrentGameDay: 0,
   workPayoutMultiplier: 1,
+  plinkoSelectedBetFraction: 1,
+  plinkoMaxBetLevel: 0,
   rngState: seed >>> 0,
   terminalReason: null,
   victory: false,

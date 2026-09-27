@@ -1,9 +1,10 @@
 import { z } from 'zod';
 
 import type { ActiveAction } from '../actions/ActiveAction';
+import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 2 as const;
+export const SAVE_VERSION = 3 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -25,6 +26,8 @@ const gameStateSchema = z.object({
   totalBarryPaid: z.number().int().nonnegative(),
   sleepMinutesCurrentGameDay: z.number().int().nonnegative(),
   workPayoutMultiplier: z.number().min(0).max(1),
+  plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+  plinkoMaxBetLevel: z.number().int().nonnegative(),
   rngState: z.number().int().nonnegative(),
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
   victory: z.boolean(),
@@ -54,18 +57,37 @@ const activeActionSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('SLEEP'), upfrontApplied: z.literal(false), ...activeBase }),
 ]);
 
+const pendingDropSchema = z.object({
+  dropId: z.string().min(1),
+  originalStake: z.number().int().positive(),
+  selectedFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+  maxBetLevel: z.number().int().nonnegative(),
+  committedGameDayIndex: z.number().int().nonnegative(),
+  committedMinuteOfDay: z.number().min(0).lt(24 * 60),
+  remainingActionMinutes: z.number().nonnegative(),
+  rngStateAtCommit: z.number().int().nonnegative(),
+});
+
 export interface SaveState {
   version: typeof SAVE_VERSION;
   game: GameState;
   activeAction: ActiveAction | null;
-  pendingDrop: null;
+  pendingDrop: PendingDrop | null;
 }
 
 const saveStateSchema = z.object({
   version: z.literal(SAVE_VERSION),
   game: gameStateSchema,
   activeAction: activeActionSchema.nullable(),
-  pendingDrop: z.null(),
+  pendingDrop: pendingDropSchema.nullable(),
+}).superRefine((save, context) => {
+  if (save.pendingDrop !== null && save.activeAction !== null) {
+    context.addIssue({
+      code: 'custom',
+      path: ['pendingDrop'],
+      message: 'pendingDrop and activeAction cannot coexist',
+    });
+  }
 });
 
 export const createSaveState = (game: GameState): SaveState => ({

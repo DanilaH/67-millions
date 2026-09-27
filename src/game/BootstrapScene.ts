@@ -10,6 +10,7 @@ import { getBarryPayment, resolveBarryPayment } from '../core/barry/barry';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
+import type { PendingDrop } from '../core/plinko-rules/drop';
 import { startSleep } from '../core/sleep/sleep';
 import {
   createInitialGameState,
@@ -54,6 +55,7 @@ const cheapFoodDefinition = (): TimedPaidActionDefinition => {
 export class BootstrapScene extends Phaser.Scene {
   private state: GameState | null = null;
   private activeAction: ActiveAction | null = null;
+  private pendingDrop: PendingDrop | null = null;
   private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
@@ -116,6 +118,7 @@ export class BootstrapScene extends Phaser.Scene {
       const save = await this.repository.load();
       this.state = save.game;
       this.activeAction = save.activeAction;
+      this.pendingDrop = save.pendingDrop;
       this.installControls();
       this.render();
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
@@ -211,7 +214,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private startCourier(): void {
-    if (!this.state || this.activeAction) {
+    if (!this.state || this.activeAction || this.pendingDrop) {
       throw new Error('Finish the current action first');
     }
 
@@ -223,7 +226,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private startCheapFood(): void {
-    if (!this.state || this.activeAction) {
+    if (!this.state || this.activeAction || this.pendingDrop) {
       throw new Error('Finish the current action first');
     }
 
@@ -235,7 +238,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private startSleeping(): void {
-    if (!this.state || this.activeAction) {
+    if (!this.state || this.activeAction || this.pendingDrop) {
       throw new Error('Finish the current action first');
     }
 
@@ -245,6 +248,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private finishActiveAction(): void {
+    if (this.pendingDrop) throw new Error('Pending Plinko Drop locks other actions');
     if (!this.activeAction) throw new Error('No active action');
     this.advance(this.activeAction.remainingMinutes);
   }
@@ -270,6 +274,7 @@ export class BootstrapScene extends Phaser.Scene {
 
   private payPrincipal(): void {
     if (!this.state) return;
+    if (this.pendingDrop) throw new Error('Pending Plinko Drop locks cash mutations');
     if (!canPayMainDebt(this.state)) {
       throw new Error('Need 67,000,000 ₽ cash and no pending Barry flow');
     }
@@ -282,6 +287,7 @@ export class BootstrapScene extends Phaser.Scene {
     if (!this.state) return;
     this.state = restartGame(balance, createRunSeed());
     this.activeAction = null;
+    this.pendingDrop = null;
     this.showMessage('Fresh run created with a new seed.');
     void this.persist();
   }
@@ -292,7 +298,7 @@ export class BootstrapScene extends Phaser.Scene {
       version: SAVE_VERSION,
       game: this.state,
       activeAction: this.activeAction,
-      pendingDrop: null,
+      pendingDrop: this.pendingDrop,
     };
     await this.repository.write(save);
   }
@@ -313,6 +319,7 @@ export class BootstrapScene extends Phaser.Scene {
       `HP ${this.state.needs.health.toFixed(1)} | Satiety ${this.state.needs.satiety.toFixed(1)} | Energy ${this.state.needs.energy.toFixed(1)} | Happiness ${this.state.needs.happiness.toFixed(1)}`,
       `Work payout x${this.state.workPayoutMultiplier.toFixed(2)} | Slept ${this.state.sleepMinutesCurrentGameDay}m`,
       `Active: ${action}`,
+      `Pending Drop: ${this.pendingDrop ? `${this.pendingDrop.dropId} / stake ${this.pendingDrop.originalStake} ₽` : 'none'}`,
       `Barry interrupt: ${this.state.barryInterruptPending ? 'YES' : 'no'}`,
       `Terminal: ${this.state.terminalReason ?? 'no'} | Victory: ${this.state.victory ? 'YES' : 'no'}`,
     ]);
