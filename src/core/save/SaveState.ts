@@ -65,6 +65,7 @@ const pendingDropSchema = z.object({
   committedGameDayIndex: z.number().int().nonnegative(),
   committedMinuteOfDay: z.number().min(0).lt(24 * 60),
   remainingActionMinutes: z.number().nonnegative(),
+  rngStateAtCommit: z.number().int().nonnegative(),
 });
 
 export interface SaveState {
