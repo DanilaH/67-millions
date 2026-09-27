@@ -138,6 +138,7 @@ export class BootstrapScene extends Phaser.Scene {
       ['PAY BARRY', () => this.payBarry()],
       ['PAY 67M', () => this.payPrincipal()],
       ['Restart run', () => this.restart()],
+      ['M2 Plinko probe', () => this.scene.start('plinko-debug')],
     ];
 
     items.forEach(([label, handler], index) => {
