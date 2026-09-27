@@ -57,6 +57,11 @@ const v2GameSchema = z.object({
   victory: z.boolean(),
 });
 
+const v3GameSchema = v2GameSchema.extend({
+  plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+  plinkoMaxBetLevel: z.number().int().nonnegative(),
+});
+
 const v2Schema = z.object({
   version: z.literal(2),
   game: v2GameSchema,
@@ -66,13 +71,36 @@ const v2Schema = z.object({
 
 const v3Schema = z.object({
   version: z.literal(3),
-  game: v2GameSchema.extend({
-    plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
-    plinkoMaxBetLevel: z.number().int().nonnegative(),
-  }),
+  game: v3GameSchema,
   activeAction: z.unknown().nullable(),
   pendingDrop: z.unknown().nullable(),
 });
+
+const v4PendingDropSchema = z.object({
+  dropId: z.string().min(1),
+  originalStake: z.number().int().positive(),
+  selectedFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+  maxBetLevel: z.number().int().nonnegative(),
+  committedGameDayIndex: z.number().int().nonnegative(),
+  committedMinuteOfDay: z.number().min(0).lt(24 * 60),
+  remainingActionMinutes: z.number().nonnegative(),
+  rngStateAtCommit: z.number().int().nonnegative(),
+  boardFingerprint: z.string().min(1),
+  physics: z.unknown().nullable(),
+}).passthrough();
+
+const v4Schema = z.object({
+  version: z.literal(4),
+  game: v3GameSchema,
+  activeAction: z.unknown().nullable(),
+  pendingDrop: v4PendingDropSchema.nullable(),
+});
+
+const ZERO_POCKET_LEVELS = {
+  centerLevel: 0,
+  midLevel: 0,
+  jackpotLevel: 0,
+} as const;
 
 export class UnsupportedSaveVersionError extends Error {
   public constructor(public readonly version: number) {
@@ -85,6 +113,12 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
   ...game,
   plinkoSelectedBetFraction: 1 as const,
   plinkoMaxBetLevel: 0,
+  ...ZERO_POCKET_LEVELS,
+});
+
+const addPocketDefaults = <T extends object>(game: T) => ({
+  ...game,
+  ...ZERO_POCKET_LEVELS,
 });
 
 const migrateV1 = (value: unknown): SaveState => {
@@ -137,9 +171,26 @@ const migrateV3 = (value: unknown): SaveState => {
 
   return parseSaveState({
     version: SAVE_VERSION,
-    game: old.game,
+    game: addPocketDefaults(old.game),
     activeAction: old.activeAction,
     pendingDrop: null,
+  });
+};
+
+const migrateV4 = (value: unknown): SaveState => {
+  const old = v4Schema.parse(value);
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: addPocketDefaults(old.game),
+    activeAction: old.activeAction,
+    pendingDrop:
+      old.pendingDrop === null
+        ? null
+        : {
+            ...old.pendingDrop,
+            pocketLevelsAtCommit: ZERO_POCKET_LEVELS,
+          },
   });
 };
 
@@ -147,6 +198,7 @@ export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 4) return migrateV4(value);
   if (version === 3) return migrateV3(value);
   if (version === 2) return migrateV2(value);
   if (version === 1) return migrateV1(value);
