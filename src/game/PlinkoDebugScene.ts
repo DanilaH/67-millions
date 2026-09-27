@@ -39,6 +39,20 @@ export class PlinkoDebugScene extends Phaser.Scene {
     });
 
     this.drawStaticBoard();
+    this.runtime.layout.pocketCenters.forEach((pocket, index) => {
+      this.add
+        .text(
+          pocket.x,
+          this.runtime!.layout.pocketBottomY + 18,
+          `${balance.plinko.basePockets[index]}x`,
+          {
+            color: '#c5ccd5',
+            fontFamily: 'ui-monospace, monospace',
+            fontSize: '13px',
+          },
+        )
+        .setOrigin(0.5, 0);
+    });
 
     this.add
       .text(28, 650, '[ DROP TEST BALL ]', {
@@ -135,19 +149,5 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
     }
 
-    layout.pocketCenters.forEach((pocket, index) => {
-      this.add
-        .text(
-          pocket.x,
-          layout.pocketBottomY + 18,
-          `${balance.plinko.basePockets[index]}x`,
-          {
-            color: '#c5ccd5',
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: '13px',
-          },
-        )
-        .setOrigin(0.5, 0);
-    });
   }
 }
