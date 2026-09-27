@@ -68,7 +68,7 @@ describe('save repository', () => {
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(1);
+    expect(restored.version).toBe(2);
     expect(restored.game.cash).toBe(777);
   });
 
@@ -109,6 +109,33 @@ describe('save repository', () => {
     expect(restored.activeAction?.upfrontApplied).toBe(true);
   });
 
+  it('migrates a valid v1 core save to v2', async () => {
+    const storage = new MemoryStorage();
+    const legacyGame = createInitialGameState(balance, 123);
+    const raw = JSON.stringify({
+      version: 1,
+      game: {
+        cash: legacyGame.cash,
+        mainDebt: legacyGame.mainDebt,
+        clock: legacyGame.clock,
+        needs: legacyGame.needs,
+        barryPaymentIndex: legacyGame.barryPaymentIndex,
+        rngState: legacyGame.rngState,
+        terminalReason: legacyGame.terminalReason,
+      },
+      activeAction: null,
+      pendingDrop: null,
+    });
+    await storage.setItem(SAVE_STORAGE_KEY, raw);
+
+    const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
+    const migrated = await repo.load();
+
+    expect(migrated.version).toBe(2);
+    expect(migrated.game.barryInterruptPending).toBe(false);
+    expect(migrated.game.workPayoutMultiplier).toBe(1);
+  });
+
   it('rejects incompatible save versions without mutating stored data', async () => {
     const storage = new MemoryStorage();
     const raw = JSON.stringify({ version: 999, untouched: true });
@@ -122,7 +149,7 @@ describe('save repository', () => {
 
   it('rejects corrupt current-version data instead of silently resetting it', async () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ version: 1, game: { cash: -999 } });
+    const raw = JSON.stringify({ version: 2, game: { cash: -999 } });
     await storage.setItem(SAVE_STORAGE_KEY, raw);
 
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 123));
