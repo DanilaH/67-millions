@@ -1,0 +1,121 @@
+# BALANCE V0 — human-readable view
+
+> **Non-authoritative view.** Runtime numeric source of truth is `balance.v0.json`. This file should be regenerated/updated whenever the JSON changes.
+
+Config version: `0.7-canonical-preproduction`. Target successful median: ~30 real minutes.
+
+## Time / start
+- 1 game minute = 3 real seconds.
+- Game day boundary: 09:00.
+- Navigation: 0 game minutes.
+- One initial Plinko Drop: +15 game minutes.
+- Start: 09:05, cash 500 ₽, all four stats = 100.
+- Principal: 67 000 000 ₽, manual one-time payment only.
+
+## Barry ladder
+`3 000 → 3 600 → 4 300 → 5 200 → 6 200 → 8 100 → 10 500 → 13 600 → 17 700 → 23 000 → 34 500 → 51 800 → 77 700 → 116 600 → 174 900 → 314 800 → 566 600 → 1 020 000 → 1 840 000 → 3 300 000 → 5 950 000 → 10 700 000 → 19 300 000 → 34 700 000 → 62 400 000 ₽`
+After listed ladder: ×2 if run continues.
+
+## Needs / sleep
+- Satiety: -4/h.
+- Energy awake: -1.5/h.
+- Happiness awake: -0.3/h.
+- Each need <= 20: -1.5 HP/h; at zero additionally -8 HP/h.
+- Full sleep: 7h; Health +20; Energy ->100.
+- Missing sleep: -5% work payout/hour, floor 65%.
+
+## Work
+### dishes
+- L1: 16:00-00:00; 3 000 ₽; 120m; Energy -12; Happiness -3; upgrade 0 ₽.
+- L2: 13:00-03:00; 6 500 ₽; 120m; Energy -12; Happiness -3; upgrade 5 000 ₽.
+- L3: 24/7; 12 000 ₽; 120m; Energy -12; Happiness -3; upgrade 40 000 ₽.
+### trash
+- L1: 00:00-08:00; 3 600 ₽; 150m; Energy -18; Happiness -5; upgrade 0 ₽.
+- L2: 21:00-11:00; 7 600 ₽; 150m; Energy -18; Happiness -5; upgrade 6 000 ₽.
+- L3: 24/7; 14 500 ₽; 150m; Energy -18; Happiness -5; upgrade 50 000 ₽.
+### courier
+- L1: 08:00-16:00; 4 200 ₽; 180m; Energy -15; Happiness -4; upgrade 0 ₽.
+- L2: 05:00-19:00; 8 500 ₽; 180m; Energy -15; Happiness -4; upgrade 7 000 ₽.
+- L3: 24/7; 17 000 ₽; 180m; Energy -15; Happiness -4; upgrade 60 000 ₽.
+
+Failure: salary 0; fine 25% potential payout; extra Happiness -8.
+
+## Food
+| ID | Price | Satiety | Happiness | Energy | HP | Time |
+|---|---:|---:|---:|---:|---:|---:|
+| FOOD_01 | 150 | +30 | -2 | +0 | +0 | 45m |
+| FOOD_02 | 250 | +20 | +0 | +0 | +0 | 10m |
+| FOOD_03 | 350 | +40 | +1 | +0 | +0 | 25m |
+| FOOD_04 | 500 | +45 | +6 | +0 | +0 | 15m |
+| FOOD_05 | 700 | +60 | +8 | +0 | +0 | 20m |
+| FOOD_06 | 900 | +75 | +10 | +0 | +0 | 25m |
+| FOOD_07 | 1 200 | +90 | +12 | +0 | +0 | 30m |
+| FOOD_08 | 1 800 | +100 | +20 | +0 | +0 | 45m |
+| FOOD_09 | 350 | +5 | -2 | +25 | -3 | 5m |
+| FOOD_10 | 1 100 | +60 | +25 | +0 | +0 | 60m |
+
+## Entertainment / hygiene
+- FREE_FUN: 0 ₽; Happiness +15; 60m.
+- PC_CLUB: 500 ₽; Happiness +40; 90m.
+- CINEMA: 900 ₽; Happiness +70; 120m.
+- Shower: 300 ₽; 30m; removes SMELLY.
+
+## Dumpster
+- 45m; Energy cost 20.
+- Missing Energy -> Happiness ×0.75; then missing Happiness -> HP ×0.5.
+- Empty chance by consecutive search: 55% → 62% → 70% → 78% (cap).
+- Loot algorithm: first roll empty chance; only on non-empty result choose category with normalized conditional weights 25:12:6:2.
+- Cheap food: +30 Satiety, -2 Happiness immediately.
+- Cash: uniform integer 200–800 ₽.
+- Sellable object: immediately auto-sold for uniform integer 1,000–3,000 ₽.
+- Rare find: immediate uniform integer 3,000–7,000 ₽.
+- Every search applies SMELLY.
+
+## Events
+- Checkpoints: 13:00, 17:00, 21:00, 01:00, 05:00.
+- Chance/checkpoint: 20%; max 2/game day.
+- No check during sleep; one pending event maximum; rolls suppressed while one is pending.
+- Pay choice disabled if unaffordable.
+
+## Plinko geometry / physics seed
+
+- Logical viewport: 1280×720.
+- Board area: 560×540.
+- 9 rows / 10 pockets; peg spacing 48×42 px; ball radius 10; peg radius 6.
+- Spawn jitter: ±4 px around center.
+- Fixed timestep: 60 Hz.
+- Physics seed: gravityY 1.0, ball restitution 0.52, peg restitution 0.6, frictionAir 0.003, wall restitution 0.2.
+- All values are tunable through JSON + physical reports.
+
+## Plinko base
+- Pockets: `12x | 4x | 1.5x | 1x | 0.25x | 0.25x | 1x | 1.5x | 4x | 12x`.
+- Target bare EV ≈ 0.85x; ideal-binomial exact EV for these pockets = 0.849609375x.
+- Quick bets: 25% / 50% / 100% current max bet; multiplier = total return.
+
+### Max bet progression
+| Level | Max bet | Upgrade price |
+|---:|---:|---:|
+| 0 | 500 ₽ | 0 ₽ |
+| 1 | 2 500 ₽ | 500 ₽ |
+| 2 | 12 500 ₽ | 1 800 ₽ |
+| 3 | 62 500 ₽ | 7 000 ₽ |
+| 4 | 312 500 ₽ | 26 000 ₽ |
+| 5 | 1 562 500 ₽ | 105 000 ₽ |
+| 6 | 7 812 500 ₽ | 420 000 ₽ |
+
+**Price provenance:** latestKnownTunedDiscussionValue; rerun canonical simulator before freeze.
+
+### Insurance
+- L1: 1 000 ₽; after 3 losing Drop(s), next Drop floor 0.75x.
+- L2: 5 000 ₽; after 2 losing Drop(s), next Drop floor 0.90x.
+- L3: 25 000 ₽; after 1 losing Drop(s), next Drop floor 1.00x.
+
+### Other Plinko upgrade prices
+provisional V0 seed; not validated by a reproducible report for this exact config. Effects and current seed values live only in JSON and must be revalidated by physical + full-game simulators before freeze.
+
+## Initial calibration hypotheses
+- Baseline rational policy should not be near-guaranteed; initial tuning hypothesis ≈30–45% wins.
+- Very cautious / mostly-work policy should usually fail Barry growth.
+- Aggressive/high-variance policies should win faster when successful but fail more often.
+- Initial work-count corridor 25–50 minigames is subordinate to the stronger ~30-real-minute session target; lower repetition is acceptable/preferred if required.
+- These are design targets, not measured facts for this exact config.
