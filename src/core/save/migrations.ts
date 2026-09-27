@@ -96,7 +96,13 @@ const v4Schema = z.object({
   pendingDrop: v4PendingDropSchema.nullable(),
 });
 
-const ZERO_POCKET_LEVELS = {
+const ZERO_GAME_POCKET_LEVELS = {
+  plinkoCenterLevel: 0,
+  plinkoMidLevel: 0,
+  plinkoJackpotLevel: 0,
+} as const;
+
+const ZERO_DROP_POCKET_LEVELS = {
   centerLevel: 0,
   midLevel: 0,
   jackpotLevel: 0,
@@ -113,12 +119,12 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
   ...game,
   plinkoSelectedBetFraction: 1 as const,
   plinkoMaxBetLevel: 0,
-  ...ZERO_POCKET_LEVELS,
+  ...ZERO_GAME_POCKET_LEVELS,
 });
 
 const addPocketDefaults = <T extends object>(game: T) => ({
   ...game,
-  ...ZERO_POCKET_LEVELS,
+  ...ZERO_GAME_POCKET_LEVELS,
 });
 
 const migrateV1 = (value: unknown): SaveState => {
