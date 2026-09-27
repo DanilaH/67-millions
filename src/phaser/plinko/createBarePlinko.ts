@@ -119,7 +119,7 @@ export const createBarePlinko = (
   }
 
   const handleCollision = (
-    _event: Phaser.Physics.Matter.Events.CollisionStartEvent,
+    _event: unknown,
     bodyA: MatterJS.BodyType,
     bodyB: MatterJS.BodyType,
   ): void => {
