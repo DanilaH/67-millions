@@ -13,7 +13,8 @@
     "build": "tsc --noEmit && vite build --mode yandex",
     "build:yandex:debug": "tsc --noEmit && vite build --mode yandex-debug",
     "preview": "vite preview",
-    "release:check": "npm run build && node tools/yandex-audit.mjs"
+    "release:check": "npm run build && node tools/yandex-audit.mjs",
+    "simulate:plinko": "tsx simulation/plinko/cli.ts"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
@@ -24,6 +25,9 @@
     "@types/node": "26.4.1",
     "typescript": "7.0.2",
     "vite": "8.2.2",
-    "vitest": "4.1.11"
+    "vitest": "4.1.11",
+    "matter-js": "0.20.0",
+    "@types/matter-js": "0.20.2",
+    "tsx": "4.23.15"
   }
 }
