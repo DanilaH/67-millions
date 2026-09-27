@@ -8,7 +8,7 @@ Plinko is the primary capital-scaling engine. It starts with a house edge, becom
 
 Logical viewport: `1280×720`.
 
-Runtime geometry comes from `balance.v0.json -> plinko.geometry`. Current calibration seed is approximately a 560×540 board, 9 rows / 10 pockets, 48 px horizontal spacing and 42 px vertical spacing. Exact runtime values must not be duplicated in Scene code.
+Runtime geometry comes from `balance.v0.json -> plinko.geometry`. Current calibrated V0 is approximately a 560×540 board, 9 rows / 10 pockets, 48 px horizontal spacing and 27 px vertical spacing. Exact runtime values must not be duplicated in Scene code.
 
 Initial ball spawn: board center + configured seeded horizontal jitter. No manual X aim.
 
@@ -22,11 +22,11 @@ Bare pockets:
 
 `12x | 4x | 1.5x | 1x | 0.25x | 0.25x | 1x | 1.5x | 4x | 12x`
 
-Theoretical ideal-binomial EV = **0.849609375x**. Real Phaser board is accepted only after measured calibration; the ideal distribution is a target shape, not a fake probability override.
+Theoretical ideal-binomial EV = **0.849609375x**. Bare V0 has been physically calibrated with the Matter runner; the accepted 100k sample measured **0.870225x EV**, **52.188% combined center**, **0.613% maximum mirrored-pocket delta**, and **0 stuck/watchdog outcomes**. The ideal distribution is a target shape, not a fake probability override.
 
 ## 4. Physics seed
 
-Exact initial physics seed lives in `balance.v0.json -> plinko.physicsSeed`. It intentionally starts near gravity 1.0, moderate restitution and near-zero friction. These values are TUNABLE V0 and must be changed through config + measured reports, never Scene constants.
+Exact calibrated physics values live in `balance.v0.json -> plinko.physicsSeed`. Bare V0 currently uses gravity 1.0, ball restitution 0.155, peg restitution 0.6, frictionAir 0.023 and wall restitution 0.2. These values remain TUNABLE V0 and may change only through config + measured physical reports, never Scene constants.
 
 ## 5. Bet / payout semantics
 
@@ -85,7 +85,7 @@ Board state is a pure derivation from base board + upgrade levels. Purchase orde
 
 Special positions are data, never hardcoded in Scene code.
 
-Exact production special-pin positions are intentionally **TUNABLE V0**. E09 calibration creates `BOARD_LAYOUT_V0` using symmetric seed positions and 100k+ physical runs; the agent must not treat visual preference as balance evidence.
+Exact production special-pin positions are intentionally **TUNABLE V0**. E07 provides the physical report machinery; E10/T034 creates `BOARD_LAYOUT_V0` from symmetric seed positions and 100k+ physical runs. The agent must not treat visual preference as balance evidence.
 
 ## 10. Upgrade systems
 
