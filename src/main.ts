@@ -13,6 +13,8 @@ import {
 } from './app/startup';
 import { getInitialGameSize, installViewportRuntime } from './app/viewport';
 import { BootstrapScene, GAME_PRESENTABLE_EVENT } from './game/BootstrapScene';
+import { PlinkoDebugScene } from './game/PlinkoDebugScene';
+import { balance } from './config/balance';
 
 const preload = new StartupPreloadController(createStartupPreloadDomView());
 preload.begin();
@@ -37,7 +39,15 @@ try {
     width: Math.round(initialSize.width),
     height: Math.round(initialSize.height),
     backgroundColor: '#0b0d10',
-    scene: [BootstrapScene],
+    physics: {
+      default: 'matter',
+      matter: {
+        gravity: { x: 0, y: balance.plinko.physicsSeed.gravityY },
+        enableSleeping: false,
+        runner: { fps: balance.plinko.geometry.fixedTimestepHz },
+      },
+    },
+    scene: [BootstrapScene, PlinkoDebugScene],
     scale: { mode: Phaser.Scale.NONE },
     callbacks: {
       preBoot: (bootingGame) => {
