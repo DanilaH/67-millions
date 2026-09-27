@@ -5,14 +5,38 @@ export interface PlinkoPoint {
   y: number;
 }
 
+export interface PlinkoGuide {
+  center: PlinkoPoint;
+  length: number;
+  angle: number;
+}
+
 export interface PlinkoBoardLayout {
   pegs: PlinkoPoint[];
   pocketCenters: PlinkoPoint[];
+  sideGuides: [PlinkoGuide, PlinkoGuide];
   leftWallX: number;
   rightWallX: number;
   pocketTopY: number;
   pocketBottomY: number;
 }
+
+const deriveGuide = (
+  start: PlinkoPoint,
+  end: PlinkoPoint,
+): PlinkoGuide => {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+
+  return {
+    center: {
+      x: (start.x + end.x) / 2,
+      y: (start.y + end.y) / 2,
+    },
+    length: Math.hypot(dx, dy),
+    angle: Math.atan2(dy, dx),
+  };
+};
 
 export const deriveBarePlinkoLayout = (
   config: BalanceConfig,
@@ -38,6 +62,9 @@ export const deriveBarePlinkoLayout = (
   const pocketCount = rows + 1;
   const pocketRowWidth = (pocketCount - 1) * geometry.pocketCenterSpacing;
   const firstPocketX = geometry.centerX - pocketRowWidth / 2;
+  const lastPocketX = firstPocketX + (pocketCount - 1) * geometry.pocketCenterSpacing;
+  const leftWallX = firstPocketX - geometry.pocketCenterSpacing / 2;
+  const rightWallX = lastPocketX + geometry.pocketCenterSpacing / 2;
   const pocketTopY =
     geometry.topPegY +
     (rows - 1) * geometry.verticalPegSpacing +
@@ -45,17 +72,37 @@ export const deriveBarePlinkoLayout = (
   const pocketBottomY =
     geometry.topPegY + geometry.boardAreaHeight - geometry.ballRadius * 2;
 
+  const guideTopOffset = geometry.horizontalPegSpacing;
+  const leftGuide = deriveGuide(
+    {
+      x: geometry.centerX - guideTopOffset,
+      y: geometry.topPegY,
+    },
+    {
+      x: leftWallX,
+      y: pocketTopY,
+    },
+  );
+  const rightGuide = deriveGuide(
+    {
+      x: geometry.centerX + guideTopOffset,
+      y: geometry.topPegY,
+    },
+    {
+      x: rightWallX,
+      y: pocketTopY,
+    },
+  );
+
   return {
     pegs,
     pocketCenters: Array.from({ length: pocketCount }, (_, index) => ({
       x: firstPocketX + index * geometry.pocketCenterSpacing,
       y: pocketBottomY,
     })),
-    leftWallX: firstPocketX - geometry.pocketCenterSpacing / 2,
-    rightWallX:
-      firstPocketX +
-      (pocketCount - 1) * geometry.pocketCenterSpacing +
-      geometry.pocketCenterSpacing / 2,
+    sideGuides: [leftGuide, rightGuide],
+    leftWallX,
+    rightWallX,
     pocketTopY,
     pocketBottomY,
   };
