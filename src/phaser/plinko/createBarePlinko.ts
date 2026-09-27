@@ -52,17 +52,6 @@ export const createBarePlinko = (
   const wallCenterY = geometry.topPegY + geometry.boardAreaHeight / 2;
   const wallHeight = geometry.boardAreaHeight;
 
-  for (const guard of layout.sideGuardPegs) {
-    createdBodies.push(
-      matter.add.circle(guard.x, guard.y, geometry.pegRadius, {
-        isStatic: true,
-        label: 'plinko:side-guard',
-        restitution: physics.pegRestitution,
-        friction: physics.friction,
-      }),
-    );
-  }
-
   createdBodies.push(
     matter.add.rectangle(
       layout.leftWallX - wallThickness / 2,
