@@ -42,24 +42,36 @@ const v1Schema = z.object({
   pendingDrop: z.null(),
 });
 
+const v2GameSchema = z.object({
+  cash: z.number().int().nonnegative(),
+  mainDebt: z.number().int().nonnegative(),
+  clock: clockSchema,
+  needs: needsSchema,
+  barryPaymentIndex: z.number().int().nonnegative(),
+  barryInterruptPending: z.boolean(),
+  totalBarryPaid: z.number().int().nonnegative(),
+  sleepMinutesCurrentGameDay: z.number().int().nonnegative(),
+  workPayoutMultiplier: z.number().min(0).max(1),
+  rngState: z.number().int().nonnegative(),
+  terminalReason: terminalSchema,
+  victory: z.boolean(),
+});
+
 const v2Schema = z.object({
   version: z.literal(2),
-  game: z.object({
-    cash: z.number().int().nonnegative(),
-    mainDebt: z.number().int().nonnegative(),
-    clock: clockSchema,
-    needs: needsSchema,
-    barryPaymentIndex: z.number().int().nonnegative(),
-    barryInterruptPending: z.boolean(),
-    totalBarryPaid: z.number().int().nonnegative(),
-    sleepMinutesCurrentGameDay: z.number().int().nonnegative(),
-    workPayoutMultiplier: z.number().min(0).max(1),
-    rngState: z.number().int().nonnegative(),
-    terminalReason: terminalSchema,
-    victory: z.boolean(),
-  }),
+  game: v2GameSchema,
   activeAction: z.unknown().nullable(),
   pendingDrop: z.null(),
+});
+
+const v3Schema = z.object({
+  version: z.literal(3),
+  game: v2GameSchema.extend({
+    plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+    plinkoMaxBetLevel: z.number().int().nonnegative(),
+  }),
+  activeAction: z.unknown().nullable(),
+  pendingDrop: z.unknown().nullable(),
 });
 
 export class UnsupportedSaveVersionError extends Error {
@@ -114,10 +126,28 @@ const migrateV2 = (value: unknown): SaveState => {
   });
 };
 
+const migrateV3 = (value: unknown): SaveState => {
+  const old = v3Schema.parse(value);
+
+  if (old.pendingDrop !== null) {
+    throw new Error(
+      'Cannot safely migrate a v3 active pendingDrop without exact physics state',
+    );
+  }
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: old.game,
+    activeAction: old.activeAction,
+    pendingDrop: null,
+  });
+};
+
 export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 3) return migrateV3(value);
   if (version === 2) return migrateV2(value);
   if (version === 1) return migrateV1(value);
 
