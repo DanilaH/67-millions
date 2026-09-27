@@ -26,6 +26,21 @@ export const advanceRunTime = (
   if (state.barryInterruptPending) {
     throw new Error('Cannot advance time while Barry interrupt is pending');
   }
+
+  if (
+    activeAction !== null &&
+    activeAction.remainingMinutes === 0 &&
+    state.terminalReason === null &&
+    !state.victory
+  ) {
+    return {
+      state,
+      activeAction: null,
+      actionCompleted: true,
+      softCheckpointsCrossed: [],
+    };
+  }
+
   if (state.terminalReason !== null || state.victory || requestedMinutes <= 0) {
     return {
       state,
@@ -52,7 +67,7 @@ export const advanceRunTime = (
   let nextAction = activeAction
     ? consumeActiveActionTime(activeAction, actualMinutes)
     : null;
-  const actionCompleted = activeAction !== null && nextAction === null;
+  let actionCompleted = activeAction !== null && nextAction === null;
 
   const actualSchedule = advanceScheduledTime(state.clock, actualMinutes, {
     gameDayBoundary: config.time.gameDayBoundary,
@@ -71,17 +86,22 @@ export const advanceRunTime = (
 
   if (scheduled.hitHardBoundary && actualMinutes === scheduled.advancedMinutes) {
     nextState = finalizeSleepCycle(nextState, config);
+
     if (activeAction?.kind === 'SLEEP') {
       nextAction = null;
+      actionCompleted = true;
+    } else if (activeAction !== null && nextAction === null) {
+      nextAction = { ...activeAction, remainingMinutes: 0 };
+      actionCompleted = false;
     }
+
     nextState = beginBarryInterrupt(nextState);
   }
 
   return {
     state: nextState,
     activeAction: nextAction,
-    actionCompleted:
-      actionCompleted || (activeAction?.kind === 'SLEEP' && nextAction === null),
+    actionCompleted,
     softCheckpointsCrossed: actualSchedule.softCheckpointsCrossed,
   };
 };
