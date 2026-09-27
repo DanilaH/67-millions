@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import type { BalanceConfig } from '../../config/balance.schema';
+import type { DropBallSnapshot } from '../../core/plinko-rules/drop';
 import {
   deriveBarePlinkoLayout,
   getSpawnX,
@@ -12,14 +13,32 @@ const PEG_LABEL = 'plinko:peg';
 const BALL_LABEL = 'plinko:ball';
 const POCKET_SENSOR_LABEL_PREFIX = 'plinko:pocket:';
 
+export interface BallSnapshotMetadata {
+  ballId: string;
+  currentValue: number;
+  lineageId: string;
+  splitDepth: number;
+  amplifierProcIds: string[];
+  returnUsed: boolean;
+  blockedSplitterId: string | null;
+}
+
 export interface BarePlinkoRuntime {
   layout: PlinkoBoardLayout;
   spawnBall(): MatterJS.BodyType;
+  restoreBall(snapshot: DropBallSnapshot): MatterJS.BodyType;
+  snapshotBall(
+    body: MatterJS.BodyType,
+    metadata: BallSnapshotMetadata,
+  ): DropBallSnapshot;
+  getFixedTicksElapsed(): number;
+  setFixedTicksElapsed(ticks: number): void;
   destroy(): void;
 }
 
 export interface BarePlinkoCallbacks {
   onPocket?: (index: number, body: MatterJS.BodyType) => void;
+  onFixedTick?: (fixedTicksElapsed: number) => void;
 }
 
 export const createBarePlinko = (
@@ -33,6 +52,7 @@ export const createBarePlinko = (
   const geometry = config.plinko.geometry;
   const physics = config.plinko.physicsSeed;
   const createdBodies: MatterJS.BodyType[] = [];
+  let fixedTicksElapsed = 0;
 
   matter.set60Hz();
   matter.world.setGravity(0, physics.gravityY);
@@ -138,27 +158,63 @@ export const createBarePlinko = (
     if (Number.isInteger(index)) callbacks.onPocket?.(index, ball);
   };
 
+  const handleAfterUpdate = (): void => {
+    fixedTicksElapsed += 1;
+    callbacks.onFixedTick?.(fixedTicksElapsed);
+  };
+
+  const createBallAt = (x: number, y: number): MatterJS.BodyType => {
+    const body = matter.add.circle(x, y, geometry.ballRadius, {
+      label: BALL_LABEL,
+      restitution: physics.ballRestitution,
+      friction: physics.friction,
+      frictionAir: physics.frictionAir,
+    });
+    createdBodies.push(body);
+    return body;
+  };
+
   matter.world.on('collisionstart', handleCollision);
+  matter.world.on('afterupdate', handleAfterUpdate);
 
   return {
     layout,
-    spawnBall: () => {
-      const body = matter.add.circle(
+    spawnBall: () =>
+      createBallAt(
         getSpawnX(config, random.next()),
         geometry.topPegY - geometry.verticalPegSpacing,
-        geometry.ballRadius,
-        {
-          label: BALL_LABEL,
-          restitution: physics.ballRestitution,
-          friction: physics.friction,
-          frictionAir: physics.frictionAir,
-        },
-      );
-      createdBodies.push(body);
+      ),
+    restoreBall: (snapshot) => {
+      const body = createBallAt(snapshot.x, snapshot.y);
+      const MatterBody = Phaser.Physics.Matter.Matter.Body;
+      MatterBody.setVelocity(body, {
+        x: snapshot.velocityX,
+        y: snapshot.velocityY,
+      });
+      MatterBody.setAngle(body, snapshot.angle);
+      MatterBody.setAngularVelocity(body, snapshot.angularVelocity);
       return body;
+    },
+    snapshotBall: (body, metadata) => ({
+      ...metadata,
+      amplifierProcIds: [...metadata.amplifierProcIds],
+      x: body.position.x,
+      y: body.position.y,
+      velocityX: body.velocity.x,
+      velocityY: body.velocity.y,
+      angle: body.angle,
+      angularVelocity: body.angularVelocity,
+    }),
+    getFixedTicksElapsed: () => fixedTicksElapsed,
+    setFixedTicksElapsed: (ticks) => {
+      if (!Number.isInteger(ticks) || ticks < 0) {
+        throw new RangeError('fixedTicksElapsed must be a non-negative integer');
+      }
+      fixedTicksElapsed = ticks;
     },
     destroy: () => {
       matter.world.off('collisionstart', handleCollision);
+      matter.world.off('afterupdate', handleAfterUpdate);
       for (const body of createdBodies) {
         matter.world.remove(body);
       }
