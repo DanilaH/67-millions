@@ -1,0 +1,66 @@
+[
+  {
+    "name": "ART_AUDIO_DIRECTION.md",
+    "bytes": 3119
+  },
+  {
+    "name": "AUDIT_RESULT.md",
+    "bytes": 2345
+  },
+  {
+    "name": "BACKLOG.md",
+    "bytes": 10822
+  },
+  {
+    "name": "BALANCE_V0.md",
+    "bytes": 5548
+  },
+  {
+    "name": "DECISION_STATUS.md",
+    "bytes": 3024
+  },
+  {
+    "name": "DEPENDENCY_GRAPH.md",
+    "bytes": 2959
+  },
+  {
+    "name": "GAME_DESIGN.md",
+    "bytes": 14086
+  },
+  {
+    "name": "MINIGAMES_SPEC.md",
+    "bytes": 3033
+  },
+  {
+    "name": "MVP_ACCEPTANCE.md",
+    "bytes": 5346
+  },
+  {
+    "name": "PLINKO_SPEC.md",
+    "bytes": 5929
+  },
+  {
+    "name": "README.md",
+    "bytes": 4425
+  },
+  {
+    "name": "ROADMAP.md",
+    "bytes": 4078
+  },
+  {
+    "name": "SCREEN_FLOW.md",
+    "bytes": 4321
+  },
+  {
+    "name": "SIMULATION_SPEC.md",
+    "bytes": 3710
+  },
+  {
+    "name": "TECH_SPEC.md",
+    "bytes": 8220
+  },
+  {
+    "name": "balance.v0.json",
+    "bytes": 16407
+  }
+]
