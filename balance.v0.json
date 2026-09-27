@@ -4,7 +4,7 @@
     "date": "2026-09-27",
     "sourceOfTruth": true,
     "targetMedianSuccessfulRealMinutes": 30,
-    "balanceEvidence": "Bare Plinko calibration candidate selected from reproducible physical parameter sweeps; 10k/100k validation pending on this exact config. Full-game balance report still pending.",
+    "balanceEvidence": "Bare Plinko physical calibration candidate selected from reproducible Matter parameter sweeps: 5000-drop evidence EV 0.8631x, center 52.8%, zero stuck; 10k/100k validation pending. Full-game balance report pending.",
     "moneyRounding": "nearestInteger"
   },
   "time": {
@@ -759,10 +759,10 @@
     },
     "physicsSeed": {
       "gravityY": 1,
-      "ballRestitution": 0.15,
-      "pegRestitution": 0.65,
+      "ballRestitution": 0.155,
+      "pegRestitution": 0.6,
       "friction": 0,
-      "frictionAir": 0.024,
+      "frictionAir": 0.023,
       "wallRestitution": 0.2
     }
   },
