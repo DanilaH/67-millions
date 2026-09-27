@@ -6,8 +6,8 @@ export const startSleep = (
   state: GameState,
   config: BalanceConfig,
 ): SleepActiveAction => {
-  if (state.terminalReason !== null || state.victory) {
-    throw new Error('Cannot sleep after run end');
+  if (state.terminalReason !== null || state.victory || state.barryInterruptPending) {
+    throw new Error('Cannot sleep in the current run state');
   }
 
   return createActiveAction({
