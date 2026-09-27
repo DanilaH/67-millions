@@ -15,6 +15,8 @@ export interface PhysicalDropSample {
   collisions: number;
   ticks: number;
   stuck: boolean;
+  finalX: number;
+  finalY: number;
 }
 
 export interface PhysicalRunnerOptions {
@@ -259,6 +261,8 @@ export const runBarePhysicalDrops = (
             collisions: meta.collisions,
             ticks: meta.ticks,
             stuck: false,
+            finalX: body.position.x,
+            finalY: body.position.y,
           };
           Matter.Composite.remove(engine.world, body);
           activeBodies.delete(body);
@@ -276,6 +280,8 @@ export const runBarePhysicalDrops = (
         collisions: meta.collisions,
         ticks: meta.ticks || maxTicks,
         stuck: true,
+        finalX: body.position.x,
+        finalY: body.position.y,
       };
       Matter.Composite.remove(engine.world, body);
     }
