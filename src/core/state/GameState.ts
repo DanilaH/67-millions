@@ -16,6 +16,7 @@ export interface GameState {
   clock: GameClockState;
   needs: NeedsState;
   barryPaymentIndex: number;
+  barryInterruptPending: boolean;
   totalBarryPaid: number;
   sleepMinutesCurrentGameDay: number;
   workPayoutMultiplier: number;
@@ -38,6 +39,7 @@ export const createInitialGameState = (
     happiness: config.game.startHappiness,
   },
   barryPaymentIndex: 0,
+  barryInterruptPending: false,
   totalBarryPaid: 0,
   sleepMinutesCurrentGameDay: 0,
   workPayoutMultiplier: 1,
