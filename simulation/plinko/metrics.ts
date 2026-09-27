@@ -50,7 +50,8 @@ export const summarizePhysicalDrops = (
   const pocketCounts = Array.from({ length: config.plinko.basePockets.length }, () => 0);
 
   for (const sample of resolved) {
-    pocketCounts[sample.pocketIndex!] += 1;
+    const pocketIndex = sample.pocketIndex!;
+    pocketCounts[pocketIndex] = (pocketCounts[pocketIndex] ?? 0) + 1;
   }
 
   const resolvedRuns = resolved.length;
