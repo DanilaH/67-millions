@@ -14,6 +14,7 @@ export interface RunTimeAdvanceResult {
   state: GameState;
   activeAction: ActiveAction | null;
   actionCompleted: boolean;
+  advancedMinutes: number;
   softCheckpointsCrossed: string[];
 }
 
@@ -37,6 +38,7 @@ export const advanceRunTime = (
       state,
       activeAction: null,
       actionCompleted: true,
+      advancedMinutes: 0,
       softCheckpointsCrossed: [],
     };
   }
@@ -46,6 +48,7 @@ export const advanceRunTime = (
       state,
       activeAction,
       actionCompleted: false,
+      advancedMinutes: 0,
       softCheckpointsCrossed: [],
     };
   }
@@ -80,6 +83,7 @@ export const advanceRunTime = (
       state: nextState,
       activeAction: nextAction,
       actionCompleted,
+      advancedMinutes: actualMinutes,
       softCheckpointsCrossed: actualSchedule.softCheckpointsCrossed,
     };
   }
@@ -102,6 +106,7 @@ export const advanceRunTime = (
     state: nextState,
     activeAction: nextAction,
     actionCompleted,
+    advancedMinutes: actualMinutes,
     softCheckpointsCrossed: actualSchedule.softCheckpointsCrossed,
   };
 };
