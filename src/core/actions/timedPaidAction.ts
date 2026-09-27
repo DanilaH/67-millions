@@ -21,8 +21,8 @@ export const startTimedPaidAction = (
   state: GameState,
   definition: TimedPaidActionDefinition,
 ): StartedTimedPaidAction => {
-  if (state.terminalReason !== null || state.victory) {
-    throw new Error('Cannot start action after run end');
+  if (state.terminalReason !== null || state.victory || state.barryInterruptPending) {
+    throw new Error('Cannot start action in the current run state');
   }
 
   const cash = debitCash(state.cash, definition.price);
