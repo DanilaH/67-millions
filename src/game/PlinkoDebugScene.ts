@@ -2,9 +2,12 @@ import Phaser from 'phaser';
 
 import { balance } from '../config/balance';
 import {
+  assertDropBoardCompatible,
   commitBareDrop,
+  setDropPhysicsSnapshot,
   settleBareDrop,
   type BetFraction,
+  type DropBallSnapshot,
 } from '../core/plinko-rules/drop';
 import { SeededRandom } from '../core/rng/SeededRandom';
 import { createLocalSaveRepository } from '../core/save/repository';
@@ -12,6 +15,7 @@ import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import { createInitialGameState } from '../core/state/GameState';
 import {
   createBarePlinko,
+  type BallSnapshotMetadata,
   type BarePlinkoRuntime,
 } from '../phaser/plinko/createBarePlinko';
 
@@ -26,7 +30,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
   private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
-  private readonly balls = new Set<MatterJS.BodyType>();
+  private readonly balls = new Map<MatterJS.BodyType, BallSnapshotMetadata>();
+  private saveWriteChain: Promise<void> = Promise.resolve();
+  private physicsSaveQueued = false;
+  private lastPersistedPhysicsTick = 0;
+  private visibilityHandler: (() => void) | null = null;
 
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
@@ -71,6 +79,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
     void this.initialize();
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      void this.persistPendingPhysics(true);
+      if (this.visibilityHandler) {
+        document.removeEventListener('visibilitychange', this.visibilityHandler);
+        this.visibilityHandler = null;
+      }
       this.runtime?.destroy();
       this.runtime = null;
       this.balls.clear();
@@ -84,7 +97,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.drawStaticBoard();
 
     this.graphics.fillStyle(0xf4f6f8, 1);
-    for (const ball of this.balls) {
+    for (const ball of this.balls.keys()) {
       this.graphics.fillCircle(
         ball.position.x,
         ball.position.y,
@@ -100,25 +113,70 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
     this.save = await this.repository.load();
 
+    const pendingAtLoad = this.save.pendingDrop;
     this.random = new SeededRandom(
-      this.save.pendingDrop?.rngStateAtCommit ?? this.save.game.rngState,
+      pendingAtLoad?.physics === null
+        ? pendingAtLoad.rngStateAtCommit
+        : this.save.game.rngState,
     );
     this.runtime = createBarePlinko(this, balance, this.random, {
       onPocket: (index, body) => {
         void this.resolvePocket(index, body);
       },
+      onFixedTick: (fixedTicksElapsed) => {
+        if (
+          this.save?.pendingDrop &&
+          fixedTicksElapsed - this.lastPersistedPhysicsTick >= 15
+        ) {
+          void this.persistPendingPhysics(false);
+        }
+      },
     });
+
+    this.visibilityHandler = () => {
+      if (document.visibilityState === 'hidden') {
+        void this.persistPendingPhysics(true);
+      }
+    };
+    document.addEventListener('visibilitychange', this.visibilityHandler);
 
     this.drawStaticBoard();
     this.installPocketLabels();
     this.installCasinoControls();
-    this.renderAll();
 
-    if (this.save.pendingDrop) {
-      this.showStatus(
-        'PENDING DROP FOUND. Exact active-physics restore is T029; this build will not reroll or refund it.',
-      );
+    if (pendingAtLoad) {
+      assertDropBoardCompatible(pendingAtLoad, balance);
+
+      if (pendingAtLoad.physics && pendingAtLoad.physics.balls.length > 0) {
+        this.runtime.setFixedTicksElapsed(pendingAtLoad.physics.fixedTicksElapsed);
+        this.lastPersistedPhysicsTick = pendingAtLoad.physics.fixedTicksElapsed;
+
+        for (const snapshot of pendingAtLoad.physics.balls) {
+          const body = this.runtime.restoreBall(snapshot);
+          this.balls.set(body, this.metadataFromSnapshot(snapshot));
+        }
+
+        this.showStatus(
+          `RESTORED DROP ${pendingAtLoad.dropId} at fixed tick ${pendingAtLoad.physics.fixedTicksElapsed}.`,
+        );
+      } else {
+        const body = this.runtime.spawnBall();
+        this.balls.set(body, this.createRootBallMetadata(pendingAtLoad.dropId));
+        this.save = {
+          ...this.save,
+          game: {
+            ...this.save.game,
+            rngState: this.random.snapshot().state,
+          },
+        };
+        await this.persistPendingPhysics(true);
+        this.showStatus(
+          `REPLAYED COMMITTED DROP ${pendingAtLoad.dropId} from its durable commit RNG state.`,
+        );
+      }
     }
+
+    this.renderAll();
   }
 
   private installCasinoControls(): void {
@@ -264,11 +322,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
       };
 
       // Stake + pendingDrop are durable before physical outcome generation.
-      await this.repository.write(this.save);
-      await this.repository.flush();
+      await this.enqueueSave(true);
 
       const body = this.runtime.spawnBall();
-      this.balls.add(body);
+      this.balls.set(
+        body,
+        this.createRootBallMetadata(committed.pendingDrop.dropId),
+      );
 
       this.save = {
         ...this.save,
@@ -277,7 +337,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           rngState: this.random.snapshot().state,
         },
       };
-      await this.repository.write(this.save);
+      await this.persistPendingPhysics(true);
       this.renderAll();
     } catch (error: unknown) {
       this.showStatus(error instanceof Error ? error.message : String(error));
@@ -301,13 +361,85 @@ export class PlinkoDebugScene extends Phaser.Scene {
       game: result.state,
       pendingDrop: null,
     };
-    await this.repository.write(this.save);
-    await this.repository.flush();
+    await this.enqueueSave(true);
 
     this.lastResultMessage =
       `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}`;
     this.showStatus(this.lastResultMessage);
     this.renderAll();
+  }
+
+  private createRootBallMetadata(dropId: string): BallSnapshotMetadata {
+    return {
+      ballId: `${dropId}:root`,
+      currentValue: 1,
+      lineageId: `${dropId}:root`,
+      splitDepth: 0,
+      amplifierProcIds: [],
+      returnUsed: false,
+      blockedSplitterId: null,
+    };
+  }
+
+  private metadataFromSnapshot(
+    snapshot: DropBallSnapshot,
+  ): BallSnapshotMetadata {
+    return {
+      ballId: snapshot.ballId,
+      currentValue: snapshot.currentValue,
+      lineageId: snapshot.lineageId,
+      splitDepth: snapshot.splitDepth,
+      amplifierProcIds: [...snapshot.amplifierProcIds],
+      returnUsed: snapshot.returnUsed,
+      blockedSplitterId: snapshot.blockedSplitterId,
+    };
+  }
+
+  private async enqueueSave(flush: boolean): Promise<void> {
+    if (!this.save || !this.repository) return;
+
+    const repository = this.repository;
+    const snapshot = structuredClone(this.save);
+
+    this.saveWriteChain = this.saveWriteChain.then(async () => {
+      await repository.write(snapshot);
+      if (flush) await repository.flush();
+    });
+
+    await this.saveWriteChain;
+  }
+
+  private async persistPendingPhysics(flush: boolean): Promise<void> {
+    if (
+      this.physicsSaveQueued ||
+      !this.save?.pendingDrop ||
+      !this.runtime ||
+      !this.repository
+    ) {
+      return;
+    }
+
+    this.physicsSaveQueued = true;
+
+    try {
+      const pending = this.save.pendingDrop;
+      const physics = {
+        fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
+        alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0,
+        balls: Array.from(this.balls.entries()).map(([body, metadata]) =>
+          this.runtime!.snapshotBall(body, metadata),
+        ),
+      };
+
+      this.save = {
+        ...this.save,
+        pendingDrop: setDropPhysicsSnapshot(pending, physics),
+      };
+      this.lastPersistedPhysicsTick = physics.fixedTicksElapsed;
+      await this.enqueueSave(flush);
+    } finally {
+      this.physicsSaveQueued = false;
+    }
   }
 
   private renderAll(): void {
