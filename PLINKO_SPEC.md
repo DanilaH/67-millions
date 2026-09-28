@@ -126,7 +126,11 @@ Creates two children using configured value per child. Guards:
 - direct child cannot immediately re-proc the same physical Splitter.
 
 ### Jackpot Bias
-Automatic side geometry/bumpers that alter real physics toward outer pockets. No fake hidden edge-probability injection in production.
+Automatic side geometry that alters real physics toward outer pockets. No fake hidden edge-probability injection in production.
+
+V0 uses cumulative mirrored angled deflector pairs derived from `balance.v0.json`: L1 adds one pair and each later level adds one additional outer-row pair. The geometry is visible in the board presentation and is part of the committed Drop fingerprint, so reload cannot silently change an in-flight trajectory.
+
+Final 100k physical evidence is recorded in `reports/plinko/T036_JACKPOT_BIAS.md`. In the accepted seed, edge-pocket probability rises monotonically from **1.102% at L0** to **1.982% / 2.627% / 4.867% / 5.589%** at L1–L4, with **0 stuck outcomes at every level**. The corresponding bare-board EV rises to **1.310413x at L4**. This validates the physical effect only; prices and full-game economy remain TUNABLE until E13/E21.
 
 ### Max Bet
 Independent global progression; it controls allowed stake, not board EV.
