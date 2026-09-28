@@ -97,6 +97,26 @@ export const createPocketBoardFingerprintV2 = (
     physics: config.plinko.physicsSeed,
   });
 
+export const createSpecialBoardFingerprintV3 = (
+  config: BalanceConfig,
+  pocketLevels: PocketUpgradeLevels,
+  specialLevels: Omit<SpecialUpgradeLevels, 'jackpotBiasLevel'>,
+): string =>
+  JSON.stringify({
+    version: 3,
+    rows: config.plinko.rows,
+    pockets: derivePocketMultipliers(config, pocketLevels),
+    pocketLevels,
+    specialLevels,
+    specialPinLayoutId: config.plinko.specialPinLayout.id,
+    splitterPhysics: config.plinko.splitterPhysics,
+    returnPhysics: config.plinko.returnPhysics,
+    stuckWatchdog: config.plinko.stuckWatchdog,
+    ballBallCollisions: config.plinko.ballBallCollisions,
+    geometry: config.plinko.geometry,
+    physics: config.plinko.physicsSeed,
+  });
+
 export const createBoardFingerprint = (
   config: BalanceConfig,
   pocketLevels: PocketUpgradeLevels,
@@ -211,10 +231,24 @@ export const assertDropBoardCompatible = (
     pendingDrop.boardFingerprint ===
       createPocketBoardFingerprintV2(config, pendingDrop.pocketLevelsAtCommit);
 
+  const legacyBiasV3 =
+    pendingDrop.specialLevelsAtCommit.jackpotBiasLevel === 0 &&
+    pendingDrop.boardFingerprint ===
+      createSpecialBoardFingerprintV3(
+        config,
+        pendingDrop.pocketLevelsAtCommit,
+        {
+          amplifierLevel: pendingDrop.specialLevelsAtCommit.amplifierLevel,
+          returnLevel: pendingDrop.specialLevelsAtCommit.returnLevel,
+          splitterLevel: pendingDrop.specialLevelsAtCommit.splitterLevel,
+        },
+      );
+
   if (
     pendingDrop.boardFingerprint !== expected &&
     !legacyBareV1 &&
-    !legacyPocketV2
+    !legacyPocketV2 &&
+    !legacyBiasV3
   ) {
     throw new Error(
       'Pending Drop board fingerprint does not match the current runtime board',
