@@ -24,6 +24,7 @@ export interface DropBallState {
 }
 
 export interface DropBallSnapshot extends DropBallState {
+  watchdogStationaryTicks: number;
   x: number;
   y: number;
   velocityX: number;
