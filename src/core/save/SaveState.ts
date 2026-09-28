@@ -77,6 +77,7 @@ const ballSnapshotSchema = z.object({
   amplifierProcIds: z.array(z.string()),
   returnUsed: z.boolean(),
   blockedSplitterId: z.string().nullable(),
+  watchdogStationaryTicks: z.number().int().nonnegative().default(0),
 });
 
 const dropPhysicsSnapshotSchema = z.object({
