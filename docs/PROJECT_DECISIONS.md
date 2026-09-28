@@ -51,3 +51,14 @@ None at M0 bootstrap creation.
 - The current Center/Mid/Jackpot tracks do not alter the existing outerStatic 4x pair.
 - When active Center and Mid levels both define an inner-pocket value, derivation uses the maximum active configured value (never below base), so purchase order cannot change the final board.
 - A committed Drop snapshots its pocket upgrade levels and derived board fingerprint; upgrades cannot retroactively alter an in-flight payout.
+
+
+## Plinko special-pin physical semantics
+
+- `BOARD_LAYOUT_V0` special effects are implemented as physical Matter interactions; no hidden payout/probability routing is allowed.
+- Amplifier proc guards are lineage-wide per physical Amplifier id.
+- Return V0 preserves 100% current value and re-enters at the same X coordinate in the upper board without consuming gameplay RNG.
+- Splitter descendants inherit lineage proc guards; split depth and active-ball caps are core rules, not Scene heuristics.
+- Ball-ball collisions are disabled in V0 so multiball descendants interact with the same static board without introducing order-dependent child collisions.
+- Technically stuck Matter equilibrium bodies use the config-driven deterministic anti-stall watchdog. The watchdog nudges physics only after sustained near-zero speed and never selects a pocket or settles payout.
+- Watchdog stationary ticks are part of the durable active-Drop snapshot so reload does not reset the recovery state.
