@@ -302,6 +302,84 @@ describe('save repository', () => {
     expect(restored.pendingDrop?.insuranceAtCommit).toBeNull();
   });
 
+  it('round-trips an active insured Drop without re-arming or duplicate floor', async () => {
+    const storage = new MemoryStorage();
+    const createGame = () => createInitialGameState(balance, 812);
+    const repo = createSaveRepository(storage, createGame);
+    const save = await repo.load();
+
+    const armedGame = {
+      ...save.game,
+      cash: 10_000,
+      plinkoInsuranceLevel: 1,
+      plinkoInsuranceLossStreak: 3,
+      plinkoInsuranceArmed: {
+        level: 1,
+        floor: 0.75,
+      },
+    };
+    const committed = commitBareDrop(
+      armedGame,
+      null,
+      balance,
+      'insured-reload',
+      1,
+    );
+
+    await repo.write({
+      ...save,
+      game: committed.state,
+      pendingDrop: committed.pendingDrop,
+    });
+    await repo.flush();
+
+    const restored = await createSaveRepository(
+      storage,
+      createGame,
+    ).load();
+
+    expect(restored.game.plinkoInsuranceArmed).toBeNull();
+    expect(restored.game.plinkoInsuranceLossStreak).toBe(3);
+    expect(restored.pendingDrop?.insuranceAtCommit).toEqual({
+      level: 1,
+      floor: 0.75,
+    });
+
+    const { settleAggregateDrop } = await import(
+      '../src/core/plinko-rules/drop'
+    );
+    const settled = settleAggregateDrop(
+      restored.game,
+      restored.pendingDrop!,
+      100,
+      balance,
+    );
+
+    expect(settled.naturalPayout).toBe(100);
+    expect(settled.payout).toBe(375);
+    expect(settled.insuranceTopUp).toBe(275);
+    expect(settled.state.cash).toBe(9_875);
+    expect(settled.state.plinkoInsuranceLossStreak).toBe(0);
+    expect(settled.state.plinkoInsuranceArmed).toBeNull();
+
+    await repo.write({
+      ...restored,
+      game: settled.state,
+      pendingDrop: null,
+    });
+    await repo.flush();
+
+    const resolved = await createSaveRepository(
+      storage,
+      createGame,
+    ).load();
+
+    expect(resolved.pendingDrop).toBeNull();
+    expect(resolved.game.cash).toBe(9_875);
+    expect(resolved.game.plinkoInsuranceLossStreak).toBe(0);
+    expect(resolved.game.plinkoInsuranceArmed).toBeNull();
+  });
+
   it('migrates a v4 active Drop by preserving physics and assigning zero pocket levels', async () => {
     const storage = new MemoryStorage();
     const game = createInitialGameState(balance, 444);
