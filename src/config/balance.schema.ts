@@ -243,7 +243,7 @@ export const balanceSchema = z.object({
       pocketCenterSpacing: z.number().positive(),
       fixedTimestepHz: z.number().positive(),
       spawnHorizontalJitterPx: z.number().nonnegative(),
-      pocketEntryClearancePx: z.number().nonnegative(),
+      pocketDividerPegOverlapPx: z.number().nonnegative(),
     }),
     physicsSeed: z.object({
       gravityY: z.number(),
