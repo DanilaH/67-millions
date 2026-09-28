@@ -2,6 +2,7 @@ import type { BalanceConfig } from '../../config/balance.schema';
 import { creditCash, debitCash, roundMoney } from '../economy/money';
 import type { GameState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
+import { deriveJackpotBiasGeometry } from './jackpotBias';
 import {
   derivePocketMultipliers,
   getMaxBetForLevel,
@@ -69,7 +70,8 @@ const isZeroPocketLevels = (levels: PocketUpgradeLevels): boolean =>
 const isZeroSpecialLevels = (levels: SpecialUpgradeLevels): boolean =>
   levels.amplifierLevel === 0 &&
   levels.returnLevel === 0 &&
-  levels.splitterLevel === 0;
+  levels.splitterLevel === 0 &&
+  levels.jackpotBiasLevel === 0;
 
 export const createBareBoardFingerprint = (
   config: BalanceConfig,
@@ -101,12 +103,16 @@ export const createBoardFingerprint = (
   specialLevels: SpecialUpgradeLevels,
 ): string =>
   JSON.stringify({
-    version: 3,
+    version: 4,
     rows: config.plinko.rows,
     pockets: derivePocketMultipliers(config, pocketLevels),
     pocketLevels,
     specialLevels,
     specialPinLayoutId: config.plinko.specialPinLayout.id,
+    jackpotBiasGeometry: deriveJackpotBiasGeometry(
+      config,
+      specialLevels.jackpotBiasLevel,
+    ),
     splitterPhysics: config.plinko.splitterPhysics,
     returnPhysics: config.plinko.returnPhysics,
     stuckWatchdog: config.plinko.stuckWatchdog,
@@ -225,7 +231,8 @@ export const assertDropBoardCompatible = (
       currentPocket.jackpotLevel !== pendingDrop.pocketLevelsAtCommit.jackpotLevel ||
       currentSpecial.amplifierLevel !== pendingDrop.specialLevelsAtCommit.amplifierLevel ||
       currentSpecial.returnLevel !== pendingDrop.specialLevelsAtCommit.returnLevel ||
-      currentSpecial.splitterLevel !== pendingDrop.specialLevelsAtCommit.splitterLevel
+      currentSpecial.splitterLevel !== pendingDrop.specialLevelsAtCommit.splitterLevel ||
+      currentSpecial.jackpotBiasLevel !== pendingDrop.specialLevelsAtCommit.jackpotBiasLevel
     ) {
       throw new Error(
         'Pending Drop upgrade state changed after the Drop was committed',
