@@ -211,6 +211,11 @@ export const getJackpotBiasUpgrade = (
   level: number,
 ) => getLevel(config.plinko.jackpotBias, level, 'Jackpot Bias');
 
+export const getInsuranceUpgrade = (
+  config: BalanceConfig,
+  level: number,
+) => getLevel(config.plinko.insurance, level, 'Insurance');
+
 export const purchaseSpecialUpgrade = (
   state: GameState,
   pendingDrop: PendingDrop | null,
@@ -259,5 +264,24 @@ export const purchaseSpecialUpgrade = (
   return buy(state, next.price, (paid) => ({
     ...paid,
     plinkoJackpotBiasLevel: next.level,
+  }));
+};
+
+
+export const purchaseInsuranceUpgrade = (
+  state: GameState,
+  pendingDrop: PendingDrop | null,
+  config: BalanceConfig,
+): GameState => {
+  assertPurchasable(state, pendingDrop);
+
+  const next = config.plinko.insurance.find(
+    (entry) => entry.level === state.plinkoInsuranceLevel + 1,
+  );
+  if (!next) throw new Error('Insurance track is already maxed');
+
+  return buy(state, next.price, (paid) => ({
+    ...paid,
+    plinkoInsuranceLevel: next.level,
   }));
 };
