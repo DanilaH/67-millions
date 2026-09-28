@@ -20,6 +20,7 @@ import {
 import type { SpecialUpgradeLevels } from '../../src/core/plinko-rules/progression';
 import { SeededRandom } from '../../src/core/rng/SeededRandom';
 import { getReturnTarget } from '../../src/core/plinko-rules/returnPhysics';
+import { deriveJackpotBiasGeometry } from '../../src/core/plinko-rules/jackpotBias';
 import {
   getPlinkoWatchdogVelocity,
   isPlinkoBodyTechnicallyStuck,
@@ -93,7 +94,10 @@ const seedForDrop = (baseSeed: number, dropIndex: number): number => {
   return mixed === 0 ? 0x6d2b79f5 : mixed;
 };
 
-const createStaticBoard = (config: BalanceConfig): StaticBoard => {
+const createStaticBoard = (
+  config: BalanceConfig,
+  jackpotBiasLevel: number,
+): StaticBoard => {
   const layout = deriveBarePlinkoLayout(config);
   const geometry = config.plinko.geometry;
   const physics = config.plinko.physicsSeed;
@@ -119,6 +123,26 @@ const createStaticBoard = (config: BalanceConfig): StaticBoard => {
     );
     bodies.push(body);
     pegIdByBodyId.set(body.id, peg.id);
+  }
+
+  for (const bumper of deriveJackpotBiasGeometry(config, jackpotBiasLevel)) {
+    bodies.push(
+      Matter.Bodies.circle(
+        bumper.x,
+        bumper.y,
+        bumper.radius,
+        {
+          isStatic: true,
+          label: `cascade:${bumper.id}`,
+          restitution: bumper.restitution,
+          friction: physics.friction,
+          collisionFilter: {
+            category: STATIC_CATEGORY,
+            mask: 0xffff,
+          },
+        },
+      ),
+    );
   }
 
   const wallThickness = geometry.pegRadius * 2;
@@ -313,7 +337,10 @@ export const runCascadePhysicalDrops = (
   engine.gravity.x = 0;
   engine.gravity.y = config.plinko.physicsSeed.gravityY;
 
-  const board = createStaticBoard(config);
+  const board = createStaticBoard(
+    config,
+    options.specialLevels.jackpotBiasLevel,
+  );
   Matter.Composite.add(engine.world, board.bodies);
 
   const activeSpecial = deriveActiveSpecialPins(
