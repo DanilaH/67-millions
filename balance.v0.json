@@ -4,7 +4,7 @@
     "date": "2026-09-27",
     "sourceOfTruth": true,
     "targetMedianSuccessfulRealMinutes": 30,
-    "balanceEvidence": "Bare Plinko V0 physically calibrated with Matter runner at 100,000 Drops: EV 0.870225x, combined center 52.188%, symmetry delta 0.613%, zero stuck. Reproducible report is required after any gameplay-affecting geometry/physics change. Full-game balance report pending.",
+    "balanceEvidence": "Bare Plinko V0 physically calibrated with Matter runner at 100,000 Drops: EV 0.870225x, combined center 52.188%, symmetry delta 0.613%, zero stuck. Reproducible report is required after any gameplay-affecting geometry/physics change. Full-game balance report pending. BOARD_LAYOUT_V0 special-pin seed positions are based on 100,000-drop unique peg-hit probe seed 67034000; effect-level EV remains pending T035.",
     "moneyRounding": "nearestInteger"
   },
   "time": {
@@ -785,6 +785,66 @@
       "center": [
         4,
         5
+      ]
+    },
+    "specialPinLayout": {
+      "id": "BOARD_LAYOUT_V0",
+      "calibrationSeed": 67034000,
+      "calibrationRuns": 100000,
+      "amplifierByCount": {
+        "1": [
+          "r6c3"
+        ],
+        "2": [
+          "r3c0",
+          "r3c3"
+        ],
+        "3": [
+          "r6c3",
+          "r3c0",
+          "r3c3"
+        ]
+      },
+      "returnByLevel": [
+        {
+          "level": 1,
+          "pegIds": [
+            "r7c1",
+            "r7c6"
+          ],
+          "targetFrequency": 0.07,
+          "measuredBareHitRate": 0.07391
+        },
+        {
+          "level": 2,
+          "pegIds": [
+            "r4c0",
+            "r4c4"
+          ],
+          "targetFrequency": 0.11,
+          "measuredBareHitRate": 0.11997
+        },
+        {
+          "level": 3,
+          "pegIds": [
+            "r6c1",
+            "r6c5"
+          ],
+          "targetFrequency": 0.15,
+          "measuredBareHitRate": 0.16805
+        },
+        {
+          "level": 4,
+          "pegIds": [
+            "r8c2",
+            "r8c6"
+          ],
+          "targetFrequency": 0.2,
+          "measuredBareHitRate": 0.18125
+        }
+      ],
+      "splitterPegIds": [
+        "r8c4"
       ]
     }
   },
