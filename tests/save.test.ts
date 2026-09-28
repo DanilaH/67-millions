@@ -267,6 +267,7 @@ describe('save repository', () => {
             amplifierProcIds: [],
             returnUsed: false,
             blockedSplitterId: null,
+            watchdogStationaryTicks: 19,
           },
         ],
       },
@@ -281,6 +282,9 @@ describe('save repository', () => {
     ).load();
 
     expect(restored.pendingDrop).toEqual(save.pendingDrop);
+    expect(
+      restored.pendingDrop?.physics?.balls[0]?.watchdogStationaryTicks,
+    ).toBe(19);
   });
 
   it('migrates a v4 active Drop by preserving physics and assigning zero pocket levels', async () => {
