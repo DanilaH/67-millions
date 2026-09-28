@@ -20,6 +20,10 @@ import {
 import type { SpecialUpgradeLevels } from '../../src/core/plinko-rules/progression';
 import { SeededRandom } from '../../src/core/rng/SeededRandom';
 import { getReturnTarget } from '../../src/core/plinko-rules/returnPhysics';
+import {
+  getPlinkoWatchdogVelocity,
+  isPlinkoBodyTechnicallyStuck,
+} from '../../src/core/plinko-rules/stuckWatchdog';
 
 const STATIC_CATEGORY = 0x0001;
 const BALL_CATEGORY = 0x0002;
@@ -342,6 +346,7 @@ export const runCascadePhysicalDrops = (
     );
     const bodyMeta = new Map<number, BallMeta>();
     const bodies = new Map<number, Matter.Body>();
+    const stationaryTicks = new Map<number, number>();
     const drops = new Map<number, DropMeta>();
 
     const addBall = (
@@ -351,6 +356,7 @@ export const runCascadePhysicalDrops = (
     ): void => {
       bodyMeta.set(body.id, { dropIndex, state });
       bodies.set(body.id, body);
+      stationaryTicks.set(body.id, 0);
       Matter.Composite.add(engine.world, body);
 
       const drop = drops.get(dropIndex)!;
@@ -367,6 +373,7 @@ export const runCascadePhysicalDrops = (
       }
       bodies.delete(bodyId);
       bodyMeta.delete(bodyId);
+      stationaryTicks.delete(bodyId);
     };
 
     for (
@@ -512,6 +519,7 @@ export const runCascadePhysicalDrops = (
           Matter.Body.setVelocity(body, { x: 0, y: 0 });
           Matter.Body.setAngle(body, 0);
           Matter.Body.setAngularVelocity(body, 0);
+          stationaryTicks.set(body.id, 0);
           drop.returnCount += 1;
           continue;
         }
@@ -615,6 +623,35 @@ export const runCascadePhysicalDrops = (
           drop.completedTick === null
         ) {
           drop.completedTick = tick;
+        }
+      }
+
+      for (const [bodyId, body] of bodies) {
+        const previousTicks = stationaryTicks.get(bodyId) ?? 0;
+        const speedSquared =
+          body.velocity.x * body.velocity.x +
+          body.velocity.y * body.velocity.y;
+        const epsilon = config.plinko.stuckWatchdog.speedEpsilon;
+        const nextTicks =
+          speedSquared <= epsilon * epsilon
+            ? previousTicks + 1
+            : 0;
+
+        if (
+          isPlinkoBodyTechnicallyStuck(
+            body.velocity.x,
+            body.velocity.y,
+            nextTicks,
+            config,
+          )
+        ) {
+          Matter.Body.setVelocity(
+            body,
+            getPlinkoWatchdogVelocity(body.position.x, config),
+          );
+          stationaryTicks.set(bodyId, 0);
+        } else {
+          stationaryTicks.set(bodyId, nextTicks);
         }
       }
     }
