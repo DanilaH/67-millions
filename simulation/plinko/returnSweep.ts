@@ -27,6 +27,7 @@ for (const level of levels) {
         amplifierLevel: 0,
         returnLevel: level,
         splitterLevel: 0,
+        jackpotBiasLevel: 0,
       },
     });
     const metrics = summarizeCascadeDrops(config, samples);
