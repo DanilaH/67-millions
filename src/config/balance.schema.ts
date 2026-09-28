@@ -190,6 +190,23 @@ export const balanceSchema = z.object({
     splitter: z.array(plinkoLevelSchema),
     jackpotBias: z.array(plinkoLevelSchema),
     insurance: z.array(plinkoLevelSchema),
+    specialPinLayout: z.object({
+      id: z.literal('BOARD_LAYOUT_V0'),
+      calibrationSeed: z.number().int().positive(),
+      calibrationRuns: z.number().int().min(100_000),
+      amplifierByCount: z.object({
+        '1': z.tuple([z.string().min(1)]),
+        '2': z.tuple([z.string().min(1), z.string().min(1)]),
+        '3': z.tuple([z.string().min(1), z.string().min(1), z.string().min(1)]),
+      }),
+      returnByLevel: z.array(z.object({
+        level: z.number().int().positive(),
+        pegIds: z.tuple([z.string().min(1), z.string().min(1)]),
+        targetFrequency: z.number().min(0).max(1),
+        measuredBareHitRate: z.number().min(0).max(1),
+      })).min(1),
+      splitterPegIds: z.tuple([z.string().min(1)]),
+    }),
     boardChangesLockedWhileDropActive: z.boolean(),
     maxBetPriceStatus: z.string(),
     otherUpgradePriceStatus: z.string(),
@@ -281,6 +298,124 @@ export const balanceSchema = z.object({
         message: 'Pocket family pairs must be mirror-symmetric',
       });
     }
+  }
+
+
+  const parsePegId = (id: string): { row: number; column: number } | null => {
+    const match = /^r(\\d+)c(\\d+)$/.exec(id);
+    if (!match) return null;
+    return { row: Number(match[1]), column: Number(match[2]) };
+  };
+
+  const mirrorPegId = (id: string): string | null => {
+    const parsed = parsePegId(id);
+    if (!parsed) return null;
+    return `r${parsed.row}c${parsed.row - parsed.column}`;
+  };
+
+  const allSpecialIds = [
+    ...value.plinko.specialPinLayout.amplifierByCount['3'],
+    ...value.plinko.specialPinLayout.returnByLevel.flatMap((entry) => entry.pegIds),
+    ...value.plinko.specialPinLayout.splitterPegIds,
+  ];
+
+  for (const id of allSpecialIds) {
+    const parsed = parsePegId(id);
+    if (
+      !parsed ||
+      parsed.row < 0 ||
+      parsed.row >= value.plinko.rows ||
+      parsed.column < 0 ||
+      parsed.column > parsed.row
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['plinko', 'specialPinLayout'],
+        message: `Invalid Plinko peg id: ${id}`,
+      });
+    }
+  }
+
+  for (const [count, ids] of Object.entries(value.plinko.specialPinLayout.amplifierByCount)) {
+    const set = new Set(ids);
+    if (
+      set.size !== ids.length ||
+      ids.some((id) => {
+        const mirror = mirrorPegId(id);
+        return mirror === null || !set.has(mirror);
+      })
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['plinko', 'specialPinLayout', 'amplifierByCount', count],
+        message: 'Amplifier pin set must be unique and mirror-symmetric',
+      });
+    }
+  }
+
+  const expectedReturnLevels = value.plinko.return.map((entry) => entry.level);
+  const actualReturnLevels = value.plinko.specialPinLayout.returnByLevel.map((entry) => entry.level);
+  if (
+    expectedReturnLevels.length !== actualReturnLevels.length ||
+    expectedReturnLevels.some((level, index) => actualReturnLevels[index] !== level)
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['plinko', 'specialPinLayout', 'returnByLevel'],
+      message: 'Return layout must define every Return level in config order',
+    });
+  }
+
+  for (const [index, entry] of value.plinko.specialPinLayout.returnByLevel.entries()) {
+    const set = new Set(entry.pegIds);
+    const configured = value.plinko.return[index];
+    if (
+      set.size !== entry.pegIds.length ||
+      entry.pegIds.some((id) => {
+        const mirror = mirrorPegId(id);
+        return mirror === null || !set.has(mirror);
+      })
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['plinko', 'specialPinLayout', 'returnByLevel', index, 'pegIds'],
+        message: 'Return peg pair must be unique and mirror-symmetric',
+      });
+    }
+    if (configured && configured.targetFrequency !== entry.targetFrequency) {
+      context.addIssue({
+        code: 'custom',
+        path: ['plinko', 'specialPinLayout', 'returnByLevel', index, 'targetFrequency'],
+        message: 'Return layout targetFrequency must match the configured Return level',
+      });
+    }
+  }
+
+  const splitterSet = new Set(value.plinko.specialPinLayout.splitterPegIds);
+  if (
+    value.plinko.specialPinLayout.splitterPegIds.some((id) => {
+      const mirror = mirrorPegId(id);
+      return mirror === null || !splitterSet.has(mirror);
+    })
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['plinko', 'specialPinLayout', 'splitterPegIds'],
+      message: 'Splitter seed pins must be mirror-symmetric',
+    });
+  }
+
+  const mutuallyExclusiveAtRuntime = [
+    ...value.plinko.specialPinLayout.amplifierByCount['3'],
+    ...value.plinko.specialPinLayout.returnByLevel.flatMap((entry) => entry.pegIds),
+    ...value.plinko.specialPinLayout.splitterPegIds,
+  ];
+  if (new Set(mutuallyExclusiveAtRuntime).size !== mutuallyExclusiveAtRuntime.length) {
+    context.addIssue({
+      code: 'custom',
+      path: ['plinko', 'specialPinLayout'],
+      message: 'Special-pin seed slots must not overlap across systems',
+    });
   }
 });
 
