@@ -97,6 +97,7 @@ export const startWork = (
     kind: 'WORK',
     actionId: jobId,
     level,
+    payoutMultiplierAtStart: state.workPayoutMultiplier,
     result: null,
     remainingMinutes: definition.durationMinutes,
     upfrontApplied: true,
@@ -121,7 +122,9 @@ export const settleWork = (
   if (action.result === null) throw new Error('Work result must be known before settlement');
 
   const definition = getWorkLevel(config, action.actionId as JobId, action.level);
-  const potentialPayout = roundMoney(definition.payout * state.workPayoutMultiplier);
+  const potentialPayout = roundMoney(
+    definition.payout * action.payoutMultiplierAtStart,
+  );
 
   if (action.result === 'SUCCESS') {
     return { ...state, cash: creditCash(state.cash, potentialPayout) };
