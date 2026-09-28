@@ -206,6 +206,12 @@ export const balanceSchema = z.object({
       horizontalRetention: z.number().min(0).max(1),
       resetVelocity: z.literal(true),
     }),
+    stuckWatchdog: z.object({
+      speedEpsilon: z.number().positive(),
+      stationaryTicks: z.number().int().positive(),
+      horizontalVelocity: z.number().positive(),
+      downwardVelocity: z.number().positive(),
+    }),
     ballBallCollisions: z.literal(false),
     specialPinLayout: z.object({
       id: z.literal('BOARD_LAYOUT_V0'),
