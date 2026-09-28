@@ -96,6 +96,27 @@ const v4Schema = z.object({
   pendingDrop: v4PendingDropSchema.nullable(),
 });
 
+const v5GameSchema = v3GameSchema.extend({
+  plinkoCenterLevel: z.number().int().nonnegative(),
+  plinkoMidLevel: z.number().int().nonnegative(),
+  plinkoJackpotLevel: z.number().int().nonnegative(),
+});
+
+const v5PendingDropSchema = v4PendingDropSchema.extend({
+  pocketLevelsAtCommit: z.object({
+    centerLevel: z.number().int().nonnegative(),
+    midLevel: z.number().int().nonnegative(),
+    jackpotLevel: z.number().int().nonnegative(),
+  }),
+});
+
+const v5Schema = z.object({
+  version: z.literal(5),
+  game: v5GameSchema,
+  activeAction: z.unknown().nullable(),
+  pendingDrop: v5PendingDropSchema.nullable(),
+});
+
 const ZERO_GAME_POCKET_LEVELS = {
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,
@@ -106,6 +127,18 @@ const ZERO_DROP_POCKET_LEVELS = {
   centerLevel: 0,
   midLevel: 0,
   jackpotLevel: 0,
+} as const;
+
+const ZERO_GAME_SPECIAL_LEVELS = {
+  plinkoAmplifierLevel: 0,
+  plinkoReturnLevel: 0,
+  plinkoSplitterLevel: 0,
+} as const;
+
+const ZERO_DROP_SPECIAL_LEVELS = {
+  amplifierLevel: 0,
+  returnLevel: 0,
+  splitterLevel: 0,
 } as const;
 
 export class UnsupportedSaveVersionError extends Error {
@@ -120,11 +153,18 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
   plinkoSelectedBetFraction: 1 as const,
   plinkoMaxBetLevel: 0,
   ...ZERO_GAME_POCKET_LEVELS,
+  ...ZERO_GAME_SPECIAL_LEVELS,
 });
 
 const addPocketDefaults = <T extends object>(game: T) => ({
   ...game,
   ...ZERO_GAME_POCKET_LEVELS,
+  ...ZERO_GAME_SPECIAL_LEVELS,
+});
+
+const addSpecialDefaults = <T extends object>(game: T) => ({
+  ...game,
+  ...ZERO_GAME_SPECIAL_LEVELS,
 });
 
 const migrateV1 = (value: unknown): SaveState => {
@@ -196,6 +236,24 @@ const migrateV4 = (value: unknown): SaveState => {
         : {
             ...old.pendingDrop,
             pocketLevelsAtCommit: ZERO_DROP_POCKET_LEVELS,
+            specialLevelsAtCommit: ZERO_DROP_SPECIAL_LEVELS,
+          },
+  });
+};
+
+const migrateV5 = (value: unknown): SaveState => {
+  const old = v5Schema.parse(value);
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: addSpecialDefaults(old.game),
+    activeAction: old.activeAction,
+    pendingDrop:
+      old.pendingDrop === null
+        ? null
+        : {
+            ...old.pendingDrop,
+            specialLevelsAtCommit: ZERO_DROP_SPECIAL_LEVELS,
           },
   });
 };
@@ -204,6 +262,7 @@ export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 5) return migrateV5(value);
   if (version === 4) return migrateV4(value);
   if (version === 3) return migrateV3(value);
   if (version === 2) return migrateV2(value);
