@@ -4,7 +4,7 @@ import { summarizeCascadeDrops } from './cascadeMetrics';
 
 const retentions = [0, 0.25, 0.5, 0.75, 1] as const;
 const levels = [1, 4] as const;
-const runs = Number(process.env.PLINKO_RETURN_SWEEP_RUNS ?? 3000);
+const runs = Number(process.env.PLINKO_RETURN_SWEEP_RUNS ?? 10_000);
 const seed = Number(process.env.PLINKO_RETURN_SWEEP_SEED ?? 67035111);
 
 const rows = [];
@@ -16,7 +16,10 @@ for (const level of levels) {
 
     const samples = runCascadePhysicalDrops(config, {
       runs,
-      seed: seed + level * 1000 + Math.round(horizontalRetention * 100),
+      // Paired experiment: every retention sees the exact same per-Drop RNG
+      // sequence for a given Return level. This isolates Return physics from
+      // jackpot-tail sampling noise.
+      seed: seed + level * 1000,
       stake: 100_000,
       batchSize: 64,
       pocketMultipliers: config.plinko.basePockets,
