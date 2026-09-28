@@ -183,6 +183,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     if (pendingAtLoad) {
       assertDropBoardCompatible(pendingAtLoad, balance, this.save.game);
+      this.runtime.setJackpotBiasLevel(
+        pendingAtLoad.specialLevelsAtCommit.jackpotBiasLevel,
+      );
 
       if (pendingAtLoad.physics && pendingAtLoad.physics.balls.length > 0) {
         this.runtime.setFixedTicksElapsed(pendingAtLoad.physics.fixedTicksElapsed);
@@ -407,6 +410,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         return;
       }
 
+      this.runtime.setJackpotBiasLevel(
+        committed.pendingDrop.specialLevelsAtCommit.jackpotBiasLevel,
+      );
       const body = this.runtime.spawnBall();
       this.balls.set(
         body,
@@ -589,6 +595,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
       game: result.state,
       pendingDrop: null,
     };
+    this.runtime.setJackpotBiasLevel(
+      this.save.game.plinkoJackpotBiasLevel,
+    );
     await this.enqueueSave(true);
 
     const terminalSuffix = result.state.terminalReason
