@@ -35,6 +35,17 @@ export interface CascadeRunnerOptions {
   maxTicks?: number;
 }
 
+export interface CascadeStuckBallDiagnostic {
+  ballId: string;
+  lineageId: string;
+  splitDepth: number;
+  currentValue: number;
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
+}
+
 export interface CascadeDropSample {
   aggregatePayout: number;
   aggregateMultiplier: number;
@@ -45,6 +56,7 @@ export interface CascadeDropSample {
   maxActiveBalls: number;
   ticks: number;
   stuck: boolean;
+  stuckBalls: CascadeStuckBallDiagnostic[];
   pocketCounts: number[];
 }
 
@@ -621,6 +633,24 @@ export const runCascadePhysicalDrops = (
       );
       const stuck = remaining > 0;
 
+      const stuckBalls = stuck
+        ? Array.from(bodyMeta.entries())
+            .filter(([, meta]) => meta.dropIndex === dropIndex)
+            .map(([bodyId, meta]) => {
+              const body = bodies.get(bodyId)!;
+              return {
+                ballId: meta.state.ballId,
+                lineageId: meta.state.lineageId,
+                splitDepth: meta.state.splitDepth,
+                currentValue: meta.state.currentValue,
+                x: body.position.x,
+                y: body.position.y,
+                velocityX: body.velocity.x,
+                velocityY: body.velocity.y,
+              };
+            })
+        : [];
+
       samples[dropIndex] = {
         aggregatePayout: drop.payout,
         aggregateMultiplier: drop.payout / stake,
@@ -631,6 +661,7 @@ export const runCascadePhysicalDrops = (
         maxActiveBalls: drop.maxActiveBalls,
         ticks: drop.completedTick ?? maxTicks,
         stuck,
+        stuckBalls,
         pocketCounts: drop.pocketCounts,
       };
     }
