@@ -72,3 +72,15 @@ None at M0 bootstrap creation.
 - A committed Drop snapshots the Bias level and a fingerprint containing the derived Bias geometry. Upgrade/reload cannot retroactively alter an active Drop.
 - Final acceptance evidence is `reports/plinko/T036_JACKPOT_BIAS.md`: 100k per level, monotonic edge probability, zero stuck outcomes, plus a 100k combined special-pin interaction run.
 - Bias EV and upgrade prices are not economically frozen by T036. Full-game dominance/pacing remains an E13/E21 decision.
+
+
+## Insurance snapshot and settlement semantics
+
+- Insurance is an economic post-processing system; it never alters Plinko physics, pocket routing or RNG.
+- The physical cascade result before Insurance is the natural aggregate result. Natural loss controls losing streak and the losing-Drop Happiness penalty even when Insurance later tops payout up to a non-losing floor.
+- Insurance only starts accumulating losses after at least L1 is owned.
+- When a threshold is reached, the armed state stores the exact Insurance `level + floor`. A later upgrade does not retroactively strengthen that armed benefit.
+- Buying a lower-threshold level does not arm retroactively from an existing streak; a subsequent natural Drop result drives the next streak transition.
+- On Drop commit, the arm snapshot moves atomically into `pendingDrop.insuranceAtCommit` and the persistent armed slot clears. Reload therefore cannot reuse the same arm on another Drop.
+- The committed insured Drop consumes that snapshot even when its natural payout already exceeds the floor.
+- After insured settlement, streak resets to zero. The final credited payout is the greater of natural aggregate payout and snapped stake floor.
