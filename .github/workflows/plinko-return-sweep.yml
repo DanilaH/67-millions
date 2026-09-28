@@ -24,4 +24,8 @@ jobs:
         with:
           node-version: 20.19.0
       - run: npm install --no-audit --no-fund
-      - run: npm run simulate:plinko:return-sweep
+      - name: Run paired 10k Return sweep
+        env:
+          PLINKO_RETURN_SWEEP_RUNS: 10000
+          PLINKO_RETURN_SWEEP_SEED: 67035111
+        run: npm run simulate:plinko:return-sweep
