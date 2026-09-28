@@ -155,7 +155,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.runtime = createBarePlinko(this, balance, this.random, {
       onPocket: (index, body) => {
         this.audio?.pocket(balance.plinko.basePockets[index] ?? 1);
-        void this.resolvePocket(index, body);
+        this.enqueueCascadeMutation(() => this.resolvePocket(index, body));
+      },
+      onPeg: (pegId, body) => {
+        this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
       },
       onFixedTick: (fixedTicksElapsed) => {
         if (
@@ -210,7 +213,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           const body = this.runtime.spawnBall();
           this.balls.set(
             body,
-            this.createRootBallMetadata(pendingAtLoad.dropId),
+            createRootBallState(pendingAtLoad.dropId),
           );
           this.save = {
             ...this.save,
@@ -407,7 +410,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       const body = this.runtime.spawnBall();
       this.balls.set(
         body,
-        this.createRootBallMetadata(committed.pendingDrop.dropId),
+        createRootBallState(committed.pendingDrop.dropId),
       );
 
       this.save = {
@@ -514,21 +517,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.audio?.bounce();
   };
 
-  private createRootBallMetadata(dropId: string): BallSnapshotMetadata {
-    return {
-      ballId: `${dropId}:root`,
-      currentValue: 1,
-      lineageId: `${dropId}:root`,
-      splitDepth: 0,
-      amplifierProcIds: [],
-      returnUsed: false,
-      blockedSplitterId: null,
-    };
-  }
-
   private metadataFromSnapshot(
     snapshot: DropBallSnapshot,
-  ): BallSnapshotMetadata {
+  ): DropBallState {
     return {
       ballId: snapshot.ballId,
       currentValue: snapshot.currentValue,
@@ -538,6 +529,20 @@ export class PlinkoDebugScene extends Phaser.Scene {
       returnUsed: snapshot.returnUsed,
       blockedSplitterId: snapshot.blockedSplitterId,
     };
+  }
+
+  private enqueueCascadeMutation(
+    mutation: () => Promise<void> | void,
+  ): void {
+    this.cascadeMutationChain = this.cascadeMutationChain
+      .then(async () => {
+        await mutation();
+      })
+      .catch((error: unknown) => {
+        this.showStatus(
+          error instanceof Error ? error.message : String(error),
+        );
+      });
   }
 
   private async enqueueSave(flush: boolean): Promise<void> {
