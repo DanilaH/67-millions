@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 7 as const;
+export const SAVE_VERSION = 8 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -35,12 +35,29 @@ const gameStateSchema = z.object({
   plinkoReturnLevel: z.number().int().nonnegative(),
   plinkoSplitterLevel: z.number().int().nonnegative(),
   plinkoJackpotBiasLevel: z.number().int().nonnegative(),
+  plinkoInsuranceLevel: z.number().int().nonnegative(),
+  plinkoInsuranceLossStreak: z.number().int().nonnegative(),
+  plinkoInsuranceArmed: z.object({
+    level: z.number().int().positive(),
+    floor: z.number().min(0).max(1),
+  }).nullable(),
   rngState: z.number().int().nonnegative(),
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
   victory: z.boolean(),
 }).superRefine((state, context) => {
   if (state.victory && state.mainDebt !== 0) {
     context.addIssue({ code: 'custom', path: ['mainDebt'], message: 'Victory requires paid principal' });
+  }
+  if (
+    state.plinkoInsuranceLevel === 0 &&
+    (state.plinkoInsuranceLossStreak !== 0 ||
+      state.plinkoInsuranceArmed !== null)
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['plinkoInsuranceLevel'],
+      message: 'Insurance streak/arm requires an owned Insurance level',
+    });
   }
 });
 
@@ -103,6 +120,10 @@ const pendingDropSchema = z.object({
     splitterLevel: z.number().int().nonnegative(),
     jackpotBiasLevel: z.number().int().nonnegative(),
   }),
+  insuranceAtCommit: z.object({
+    level: z.number().int().positive(),
+    floor: z.number().min(0).max(1),
+  }).nullable(),
   committedGameDayIndex: z.number().int().nonnegative(),
   committedMinuteOfDay: z.number().min(0).lt(24 * 60),
   remainingActionMinutes: z.number().nonnegative(),
