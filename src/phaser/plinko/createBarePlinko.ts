@@ -12,6 +12,10 @@ import {
 } from '../../core/plinko-rules/boardLayout';
 import type { RandomSource } from '@danilah/mini-games-kit/core';
 import { getReturnTarget } from '../../core/plinko-rules/returnPhysics';
+import {
+  getPlinkoWatchdogVelocity,
+  isPlinkoBodyTechnicallyStuck,
+} from '../../core/plinko-rules/stuckWatchdog';
 
 const BALL_CATEGORY = 0x0002;
 const STATIC_CATEGORY = 0x0001;
@@ -52,6 +56,7 @@ export const createBarePlinko = (
   const geometry = config.plinko.geometry;
   const physics = config.plinko.physicsSeed;
   const createdBodies = new Set<MatterJS.BodyType>();
+  const ballStationaryTicks = new Map<MatterJS.BodyType, number>();
   let fixedTicksElapsed = 0;
 
   matter.set60Hz();
@@ -198,11 +203,43 @@ export const createBarePlinko = (
 
   const handleAfterUpdate = (): void => {
     fixedTicksElapsed += 1;
+
+    for (const [body, previousTicks] of ballStationaryTicks) {
+      const nextTicks =
+        body.velocity.x * body.velocity.x +
+          body.velocity.y * body.velocity.y <=
+        config.plinko.stuckWatchdog.speedEpsilon *
+          config.plinko.stuckWatchdog.speedEpsilon
+          ? previousTicks + 1
+          : 0;
+
+      if (
+        isPlinkoBodyTechnicallyStuck(
+          body.velocity.x,
+          body.velocity.y,
+          nextTicks,
+          config,
+        )
+      ) {
+        matter.body.setVelocity(
+          body,
+          getPlinkoWatchdogVelocity(body.position.x, config),
+        );
+        ballStationaryTicks.set(body, 0);
+      } else {
+        ballStationaryTicks.set(body, nextTicks);
+      }
+    }
+
     callbacks.onFixedTick?.(fixedTicksElapsed);
   };
 
-  const createBallAt = (x: number, y: number): MatterJS.BodyType =>
-    addCreated(
+  const createBallAt = (
+    x: number,
+    y: number,
+    stationaryTicks = 0,
+  ): MatterJS.BodyType => {
+    const body = addCreated(
       matter.add.circle(x, y, geometry.ballRadius, {
         label: BALL_LABEL,
         restitution: physics.ballRestitution,
@@ -214,10 +251,14 @@ export const createBarePlinko = (
         },
       }),
     );
+    ballStationaryTicks.set(body, stationaryTicks);
+    return body;
+  };
 
   const removeBall = (body: MatterJS.BodyType): void => {
     matter.world.remove(body);
     createdBodies.delete(body);
+    ballStationaryTicks.delete(body);
   };
 
   matter.world.on('collisionstart', handleCollision);
@@ -231,7 +272,11 @@ export const createBarePlinko = (
         geometry.topPegY - geometry.verticalPegSpacing,
       ),
     restoreBall: (snapshot) => {
-      const body = createBallAt(snapshot.x, snapshot.y);
+      const body = createBallAt(
+        snapshot.x,
+        snapshot.y,
+        snapshot.watchdogStationaryTicks,
+      );
       matter.body.setVelocity(body, {
         x: snapshot.velocityX,
         y: snapshot.velocityY,
@@ -246,6 +291,7 @@ export const createBarePlinko = (
       matter.body.setVelocity(body, { x: 0, y: 0 });
       matter.body.setAngle(body, 0);
       matter.body.setAngularVelocity(body, 0);
+      ballStationaryTicks.set(body, 0);
     },
     splitBall: (body) => {
       const { childHorizontalOffsetPx, childHorizontalVelocityDelta, childVerticalVelocityMultiplier } =
@@ -279,6 +325,8 @@ export const createBarePlinko = (
       velocityY: body.velocity.y,
       angle: body.angle,
       angularVelocity: body.angularVelocity,
+      watchdogStationaryTicks:
+        ballStationaryTicks.get(body) ?? 0,
     }),
     getFixedTicksElapsed: () => fixedTicksElapsed,
     setFixedTicksElapsed: (ticks) => {
@@ -296,6 +344,7 @@ export const createBarePlinko = (
         matter.world.remove(body);
       }
       createdBodies.clear();
+      ballStationaryTicks.clear();
     },
   };
 };
