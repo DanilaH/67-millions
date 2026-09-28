@@ -302,7 +302,7 @@ export const balanceSchema = z.object({
 
 
   const parsePegId = (id: string): { row: number; column: number } | null => {
-    const match = /^r(\\d+)c(\\d+)$/.exec(id);
+    const match = /^r(\d+)c(\d+)$/.exec(id);
     if (!match) return null;
     return { row: Number(match[1]), column: Number(match[2]) };
   };
