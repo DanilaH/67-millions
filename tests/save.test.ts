@@ -68,7 +68,7 @@ describe('save repository', () => {
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(6);
+    expect(restored.version).toBe(7);
     expect(restored.game.cash).toBe(777);
   });
 
@@ -131,7 +131,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(6);
+    expect(migrated.version).toBe(7);
     expect(migrated.game.barryInterruptPending).toBe(false);
     expect(migrated.game.workPayoutMultiplier).toBe(1);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
@@ -142,6 +142,7 @@ describe('save repository', () => {
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
+    expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
   });
 
 
@@ -172,7 +173,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(6);
+    expect(migrated.version).toBe(7);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
@@ -181,6 +182,7 @@ describe('save repository', () => {
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
+    expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
     expect(migrated.pendingDrop).toBeNull();
   });
 
@@ -198,7 +200,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(6);
+    expect(migrated.version).toBe(7);
     expect(migrated.pendingDrop).toBeNull();
 
     await storage.setItem(
@@ -341,7 +343,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(6);
+    expect(migrated.version).toBe(7);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
     expect(migrated.game.plinkoMidLevel).toBe(0);
     expect(migrated.game.plinkoJackpotLevel).toBe(0);
@@ -354,6 +356,7 @@ describe('save repository', () => {
       amplifierLevel: 0,
       returnLevel: 0,
       splitterLevel: 0,
+      jackpotBiasLevel: 0,
     });
     expect(migrated.pendingDrop?.physics?.fixedTicksElapsed).toBe(77);
   });
@@ -417,14 +420,16 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(6);
+    expect(migrated.version).toBe(7);
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
+    expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
     expect(migrated.pendingDrop?.specialLevelsAtCommit).toEqual({
       amplifierLevel: 0,
       returnLevel: 0,
       splitterLevel: 0,
+      jackpotBiasLevel: 0,
     });
     expect(migrated.pendingDrop?.physics?.alreadySettledPayout).toBe(125);
     expect(migrated.pendingDrop?.physics?.balls[0]?.currentValue).toBe(1.25);
@@ -444,7 +449,7 @@ describe('save repository', () => {
 
   it('rejects corrupt current-version data instead of silently resetting it', async () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ version: 6, game: { cash: -999 } });
+    const raw = JSON.stringify({ version: 7, game: { cash: -999 } });
     await storage.setItem(SAVE_STORAGE_KEY, raw);
 
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 123));
