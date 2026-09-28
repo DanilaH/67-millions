@@ -3,6 +3,10 @@ import Matter from 'matter-js';
 import type { BalanceConfig } from '../../src/config/balance.schema';
 import { deriveBarePlinkoLayout, getSpawnX } from '../../src/core/plinko-rules/boardLayout';
 import { SeededRandom } from '../../src/core/rng/SeededRandom';
+import {
+  getPlinkoWatchdogVelocity,
+  isPlinkoBodyTechnicallyStuck,
+} from '../../src/core/plinko-rules/stuckWatchdog';
 
 const STATIC_CATEGORY = 0x0001;
 const BALL_CATEGORY = 0x0002;
@@ -34,6 +38,7 @@ interface ActiveBallMeta {
   collisions: number;
   ticks: number;
   settledPocket: number | null;
+  stationaryTicks: number;
   pegHitIndices: Set<number>;
 }
 
@@ -220,6 +225,7 @@ export const runBarePhysicalDrops = (
         collisions: 0,
         ticks: 0,
         settledPocket: null,
+        stationaryTicks: 0,
         pegHitIndices: new Set<number>(),
       });
       activeBodies.add(body);
@@ -277,6 +283,31 @@ export const runBarePhysicalDrops = (
           };
           Matter.Composite.remove(engine.world, body);
           activeBodies.delete(body);
+          continue;
+        }
+
+        const speedSquared =
+          body.velocity.x * body.velocity.x +
+          body.velocity.y * body.velocity.y;
+        const epsilon = config.plinko.stuckWatchdog.speedEpsilon;
+        meta.stationaryTicks =
+          speedSquared <= epsilon * epsilon
+            ? meta.stationaryTicks + 1
+            : 0;
+
+        if (
+          isPlinkoBodyTechnicallyStuck(
+            body.velocity.x,
+            body.velocity.y,
+            meta.stationaryTicks,
+            config,
+          )
+        ) {
+          Matter.Body.setVelocity(
+            body,
+            getPlinkoWatchdogVelocity(body.position.x, config),
+          );
+          meta.stationaryTicks = 0;
         }
       }
     }
