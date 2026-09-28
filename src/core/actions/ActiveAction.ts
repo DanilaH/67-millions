@@ -14,6 +14,7 @@ export interface WorkActiveAction extends ActiveActionBase {
   kind: 'WORK';
   upfrontApplied: true;
   level: number;
+  payoutMultiplierAtStart: number;
   result: 'SUCCESS' | 'FAILURE' | null;
 }
 
@@ -48,8 +49,19 @@ export const createActiveAction = (input: ActiveAction): ActiveAction => {
   ) {
     throw new RangeError('startedAtMinuteOfDay must be within one day');
   }
-  if (input.kind === 'WORK' && (!Number.isInteger(input.level) || input.level <= 0)) {
-    throw new RangeError('Work action level must be a positive integer');
+  if (input.kind === 'WORK') {
+    if (!Number.isInteger(input.level) || input.level <= 0) {
+      throw new RangeError('Work action level must be a positive integer');
+    }
+    if (
+      !Number.isFinite(input.payoutMultiplierAtStart) ||
+      input.payoutMultiplierAtStart < 0 ||
+      input.payoutMultiplierAtStart > 1
+    ) {
+      throw new RangeError(
+        'Work payoutMultiplierAtStart must be between 0 and 1',
+      );
+    }
   }
   return { ...input };
 };
