@@ -58,9 +58,8 @@ export const deriveBarePlinkoLayout = (
     geometry.topPegY + (rows - 1) * geometry.verticalPegSpacing;
   const pocketTopY =
     lastPegY +
-    geometry.pegRadius +
-    geometry.ballRadius * 2 +
-    geometry.pocketEntryClearancePx;
+    geometry.pegRadius -
+    geometry.pocketDividerPegOverlapPx;
   const pocketBottomY =
     geometry.topPegY + geometry.boardAreaHeight - geometry.ballRadius * 2;
 
