@@ -155,6 +155,13 @@ export const balanceSchema = z.object({
     casinoAlwaysOpen: z.boolean(),
     rows: z.number().int().positive(),
     basePockets: z.array(z.number().positive()).min(2),
+    pocketFamilies: z.object({
+      edge: z.tuple([z.number().int().nonnegative(), z.number().int().nonnegative()]),
+      outerStatic: z.tuple([z.number().int().nonnegative(), z.number().int().nonnegative()]),
+      mid: z.tuple([z.number().int().nonnegative(), z.number().int().nonnegative()]),
+      inner: z.tuple([z.number().int().nonnegative(), z.number().int().nonnegative()]),
+      center: z.tuple([z.number().int().nonnegative(), z.number().int().nonnegative()]),
+    }),
     targetBareEV: z.number().positive(),
     payoutMultiplierMeansTotalReturn: z.literal(true),
     spawn: z.object({
@@ -167,9 +174,17 @@ export const balanceSchema = z.object({
     maxBetLevels: z.array(plinkoLevelSchema.extend({
       maxBet: z.number().int().positive(),
     })).min(1),
-    centerUpgrades: z.array(plinkoLevelSchema),
-    midUpgrades: z.array(plinkoLevelSchema),
-    jackpotUpgrades: z.array(plinkoLevelSchema),
+    centerUpgrades: z.array(plinkoLevelSchema.extend({
+      center: z.number().positive(),
+      inner: z.number().positive().optional(),
+    })),
+    midUpgrades: z.array(plinkoLevelSchema.extend({
+      mid: z.number().positive(),
+      inner: z.number().positive().optional(),
+    })),
+    jackpotUpgrades: z.array(plinkoLevelSchema.extend({
+      edge: z.number().positive(),
+    })),
     amplifier: z.array(plinkoLevelSchema),
     return: z.array(plinkoLevelSchema),
     splitter: z.array(plinkoLevelSchema),
@@ -240,6 +255,32 @@ export const balanceSchema = z.object({
       path: ['plinko', 'basePockets'],
       message: 'Plinko must have rows + 1 pockets',
     });
+  }
+
+  const pocketCount = value.plinko.basePockets.length;
+  const familyIndices = Object.values(value.plinko.pocketFamilies).flat();
+  const uniqueIndices = new Set(familyIndices);
+
+  if (
+    familyIndices.length !== pocketCount ||
+    uniqueIndices.size !== pocketCount ||
+    familyIndices.some((index) => index < 0 || index >= pocketCount)
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['plinko', 'pocketFamilies'],
+      message: 'Pocket families must cover each valid pocket index exactly once',
+    });
+  }
+
+  for (const [family, pair] of Object.entries(value.plinko.pocketFamilies)) {
+    if (pair[0] + pair[1] !== pocketCount - 1) {
+      context.addIssue({
+        code: 'custom',
+        path: ['plinko', 'pocketFamilies', family],
+        message: 'Pocket family pairs must be mirror-symmetric',
+      });
+    }
   }
 });
 

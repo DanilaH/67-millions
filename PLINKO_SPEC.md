@@ -94,6 +94,15 @@ All numeric levels/prices are read from `balance.v0.json`.
 ### Center / Mid / Jackpot pockets
 Change pocket payout families. Derive from levels, never mutate previously mutated values.
 
+V0 pocket-family mapping is explicit runtime data in `balance.v0.json -> plinko.pocketFamilies`:
+- `edge = [0, 9]`;
+- `outerStatic = [1, 8]`;
+- `mid = [2, 7]`;
+- `inner = [3, 6]`;
+- `center = [4, 5]`.
+
+The `outerStatic` 4x pair is intentionally unchanged by the current Center/Mid/Jackpot tracks. If more than one active track defines an `inner` value, the derived board uses the highest configured active `inner` value (and never below the base value). This makes the board a pure function of final upgrade levels, independent of purchase order.
+
 ### Amplifier
 A hit multiplies current ball value. A specific Amplifier can proc a lineage at most once.
 

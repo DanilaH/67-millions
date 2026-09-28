@@ -17,6 +17,10 @@ import {
   advancePendingDropTime,
   settlePendingDropAndResumeTime,
 } from '../core/plinko-rules/dropTiming';
+import {
+  derivePocketMultipliers,
+  getMaxBetForLevel,
+} from '../core/plinko-rules/progression';
 import { SeededRandom } from '../core/rng/SeededRandom';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
@@ -162,7 +166,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.installCasinoControls();
 
     if (pendingAtLoad) {
-      assertDropBoardCompatible(pendingAtLoad, balance);
+      assertDropBoardCompatible(pendingAtLoad, balance, this.save.game);
 
       if (pendingAtLoad.physics && pendingAtLoad.physics.balls.length > 0) {
         this.runtime.setFixedTicksElapsed(pendingAtLoad.physics.fixedTicksElapsed);
@@ -578,10 +582,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderCasino(): void {
     if (!this.infoText || !this.save) return;
 
-    const maxBet =
-      balance.plinko.maxBetLevels.find(
-        (entry) => entry.level === this.save!.game.plinkoMaxBetLevel,
-      )?.maxBet ?? 0;
+    const maxBet = getMaxBetForLevel(
+      balance,
+      this.save.game.plinkoMaxBetLevel,
+    );
 
     this.infoText.setText([
       `M2 BARE PLINKO / fixed ${balance.plinko.geometry.fixedTimestepHz} Hz`,
@@ -621,12 +625,18 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private installPocketLabels(): void {
     if (!this.runtime || !this.casinoLayer) return;
 
+    const pockets = derivePocketMultipliers(balance, {
+      centerLevel: this.save?.game.plinkoCenterLevel ?? 0,
+      midLevel: this.save?.game.plinkoMidLevel ?? 0,
+      jackpotLevel: this.save?.game.plinkoJackpotLevel ?? 0,
+    });
+
     this.runtime.layout.pocketCenters.forEach((pocket, index) => {
       const label = this.add
         .text(
           pocket.x,
           this.runtime!.layout.pocketBottomY + 18,
-          `${balance.plinko.basePockets[index]}x`,
+          `${pockets[index]}x`,
           {
             color: '#c5ccd5',
             fontFamily: 'ui-monospace, monospace',

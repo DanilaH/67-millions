@@ -24,6 +24,7 @@ export interface PhysicalRunnerOptions {
   seed: number;
   batchSize?: number;
   maxTicks?: number;
+  pocketMultipliers?: readonly number[];
 }
 
 interface ActiveBallMeta {
@@ -168,11 +169,20 @@ export const runBarePhysicalDrops = (
 
   const batchSize = options.batchSize ?? 256;
   const maxTicks = options.maxTicks ?? config.plinko.geometry.fixedTimestepHz * 20;
+  const pocketMultipliers = options.pocketMultipliers ?? config.plinko.basePockets;
   if (!Number.isInteger(batchSize) || batchSize <= 0) {
     throw new RangeError('batchSize must be a positive integer');
   }
   if (!Number.isInteger(maxTicks) || maxTicks <= 0) {
     throw new RangeError('maxTicks must be a positive integer');
+  }
+  if (
+    pocketMultipliers.length !== config.plinko.basePockets.length ||
+    pocketMultipliers.some((value) => !Number.isFinite(value) || value <= 0)
+  ) {
+    throw new RangeError(
+      'pocketMultipliers must contain one positive finite value per pocket',
+    );
   }
 
   const engine = Matter.Engine.create();
@@ -235,7 +245,7 @@ export const runBarePhysicalDrops = (
         meta.ticks = tick;
 
         if (meta.settledPocket !== null) {
-          const multiplier = config.plinko.basePockets[meta.settledPocket] ?? 0;
+          const multiplier = pocketMultipliers[meta.settledPocket] ?? 0;
           samples[meta.dropIndex] = {
             pocketIndex: meta.settledPocket,
             multiplier,

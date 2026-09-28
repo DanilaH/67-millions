@@ -68,7 +68,7 @@ describe('save repository', () => {
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(4);
+    expect(restored.version).toBe(5);
     expect(restored.game.cash).toBe(777);
   });
 
@@ -109,7 +109,7 @@ describe('save repository', () => {
     expect(restored.activeAction?.upfrontApplied).toBe(true);
   });
 
-  it('migrates a valid v1 core save to v4', async () => {
+  it('migrates a valid v1 core save to v5', async () => {
     const storage = new MemoryStorage();
     const legacyGame = createInitialGameState(balance, 123);
     const raw = JSON.stringify({
@@ -131,15 +131,18 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(4);
+    expect(migrated.version).toBe(5);
     expect(migrated.game.barryInterruptPending).toBe(false);
     expect(migrated.game.workPayoutMultiplier).toBe(1);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
+    expect(migrated.game.plinkoCenterLevel).toBe(0);
+    expect(migrated.game.plinkoMidLevel).toBe(0);
+    expect(migrated.game.plinkoJackpotLevel).toBe(0);
   });
 
 
-  it('migrates a valid v2 save to v4 with Plinko defaults', async () => {
+  it('migrates a valid v2 save to v5 with Plinko defaults', async () => {
     const storage = new MemoryStorage();
     const game = createInitialGameState(balance, 321);
     const raw = JSON.stringify({
@@ -166,9 +169,12 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(4);
+    expect(migrated.version).toBe(5);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
+    expect(migrated.game.plinkoCenterLevel).toBe(0);
+    expect(migrated.game.plinkoMidLevel).toBe(0);
+    expect(migrated.game.plinkoJackpotLevel).toBe(0);
     expect(migrated.pendingDrop).toBeNull();
   });
 
@@ -186,7 +192,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(4);
+    expect(migrated.version).toBe(5);
     expect(migrated.pendingDrop).toBeNull();
 
     await storage.setItem(
@@ -209,7 +215,7 @@ describe('save repository', () => {
     );
   });
 
-  it('round-trips exact active-Drop physics in v4', async () => {
+  it('round-trips exact active-Drop physics in v5', async () => {
     const storage = new MemoryStorage();
     const repo = createSaveRepository(
       storage,
@@ -222,6 +228,11 @@ describe('save repository', () => {
       originalStake: 500,
       selectedFraction: 1,
       maxBetLevel: 0,
+      pocketLevelsAtCommit: {
+        centerLevel: 0,
+        midLevel: 0,
+        jackpotLevel: 0,
+      },
       committedGameDayIndex: 0,
       committedMinuteOfDay: 600,
       remainingActionMinutes: 15,
@@ -261,6 +272,72 @@ describe('save repository', () => {
     expect(restored.pendingDrop).toEqual(save.pendingDrop);
   });
 
+  it('migrates a v4 active Drop by preserving physics and assigning zero pocket levels', async () => {
+    const storage = new MemoryStorage();
+    const game = createInitialGameState(balance, 444);
+    const {
+      plinkoCenterLevel: _center,
+      plinkoMidLevel: _mid,
+      plinkoJackpotLevel: _jackpot,
+      ...legacyGame
+    } = game;
+
+    const raw = {
+      version: 4,
+      game: legacyGame,
+      activeAction: null,
+      pendingDrop: {
+        dropId: 'v4-active-drop',
+        originalStake: 500,
+        selectedFraction: 1,
+        maxBetLevel: 0,
+        committedGameDayIndex: 0,
+        committedMinuteOfDay: 600,
+        remainingActionMinutes: 5,
+        rngStateAtCommit: 444,
+        boardFingerprint: 'legacy-v4-fingerprint',
+        physics: {
+          fixedTicksElapsed: 77,
+          alreadySettledPayout: 0,
+          balls: [
+            {
+              ballId: 'v4-active-drop:root',
+              x: 640,
+              y: 250,
+              velocityX: 0.5,
+              velocityY: 2,
+              angle: 0,
+              angularVelocity: 0,
+              currentValue: 1,
+              lineageId: 'v4-active-drop:root',
+              splitDepth: 0,
+              amplifierProcIds: [],
+              returnUsed: false,
+              blockedSplitterId: null,
+            },
+          ],
+        },
+      },
+    };
+
+    await storage.setItem(SAVE_STORAGE_KEY, JSON.stringify(raw));
+    const migrated = await createSaveRepository(
+      storage,
+      () => createInitialGameState(balance, 999),
+    ).load();
+
+    expect(migrated.version).toBe(5);
+    expect(migrated.game.plinkoCenterLevel).toBe(0);
+    expect(migrated.game.plinkoMidLevel).toBe(0);
+    expect(migrated.game.plinkoJackpotLevel).toBe(0);
+    expect(migrated.pendingDrop?.pocketLevelsAtCommit).toEqual({
+      centerLevel: 0,
+      midLevel: 0,
+      jackpotLevel: 0,
+    });
+    expect(migrated.pendingDrop?.physics?.fixedTicksElapsed).toBe(77);
+  });
+
   it('rejects incompatible save versions without mutating stored data', async () => {
     const storage = new MemoryStorage();
     const raw = JSON.stringify({ version: 999, untouched: true });
@@ -274,7 +351,7 @@ describe('save repository', () => {
 
   it('rejects corrupt current-version data instead of silently resetting it', async () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ version: 4, game: { cash: -999 } });
+    const raw = JSON.stringify({ version: 5, game: { cash: -999 } });
     await storage.setItem(SAVE_STORAGE_KEY, raw);
 
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 123));

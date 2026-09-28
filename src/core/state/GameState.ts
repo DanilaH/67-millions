@@ -22,6 +22,9 @@ export interface GameState {
   workPayoutMultiplier: number;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
   plinkoMaxBetLevel: number;
+  plinkoCenterLevel: number;
+  plinkoMidLevel: number;
+  plinkoJackpotLevel: number;
   rngState: number;
   terminalReason: TerminalReason | null;
   victory: boolean;
@@ -47,6 +50,9 @@ export const createInitialGameState = (
   workPayoutMultiplier: 1,
   plinkoSelectedBetFraction: 1,
   plinkoMaxBetLevel: 0,
+  plinkoCenterLevel: 0,
+  plinkoMidLevel: 0,
+  plinkoJackpotLevel: 0,
   rngState: seed >>> 0,
   terminalReason: null,
   victory: false,
