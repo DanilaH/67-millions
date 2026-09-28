@@ -2,25 +2,33 @@ import { balance } from '../../src/config/balance';
 import { runCascadePhysicalDrops } from './cascadeRunner';
 import { summarizeCascadeDrops } from './cascadeMetrics';
 
-const clearances = [1, 3, 5, 7, 9] as const;
-const runs = Number(process.env.PLINKO_POCKET_CLEARANCE_SWEEP_RUNS ?? 30_000);
-const seed = Number(process.env.PLINKO_POCKET_CLEARANCE_SWEEP_SEED ?? 67_035_000);
+const overlaps = [0, 2, 3, 4, 6] as const;
+const baselineRuns = Number(
+  process.env.PLINKO_DIVIDER_OVERLAP_BASELINE_RUNS ?? 30_000,
+);
+const combinedRuns = Number(
+  process.env.PLINKO_DIVIDER_OVERLAP_COMBINED_RUNS ?? 5_000,
+);
+const seed = Number(
+  process.env.PLINKO_DIVIDER_OVERLAP_SEED ?? 67_035_000,
+);
 
-const rows = clearances.map((pocketEntryClearancePx) => {
-  const config = structuredClone(balance);
-  config.plinko.geometry.pocketEntryClearancePx = pocketEntryClearancePx;
-
+const summarize = (
+  config: typeof balance,
+  runs: number,
+  specialLevels: {
+    amplifierLevel: number;
+    returnLevel: number;
+    splitterLevel: number;
+  },
+) => {
   const samples = runCascadePhysicalDrops(config, {
     runs,
     seed,
     stake: 100_000,
     batchSize: 64,
     pocketMultipliers: config.plinko.basePockets,
-    specialLevels: {
-      amplifierLevel: 0,
-      returnLevel: 0,
-      splitterLevel: 0,
-    },
+    specialLevels,
   });
   const metrics = summarizeCascadeDrops(config, samples);
 
@@ -31,45 +39,81 @@ const rows = clearances.map((pocketEntryClearancePx) => {
   const centerPair =
     (metrics.terminalPocketCounts[4] ?? 0) +
     (metrics.terminalPocketCounts[5] ?? 0);
-  const mirrorDeltas = Array.from(
-    { length: Math.floor(metrics.terminalPocketCounts.length / 2) },
-    (_, index) => {
-      const left = metrics.terminalPocketCounts[index] ?? 0;
-      const right =
-        metrics.terminalPocketCounts[
-          metrics.terminalPocketCounts.length - 1 - index
-        ] ?? 0;
-      return totalTerminal === 0
-        ? 0
-        : Math.abs(left - right) / totalTerminal;
-    },
+  const maxMirrorDelta = Math.max(
+    0,
+    ...Array.from(
+      {
+        length: Math.floor(
+          metrics.terminalPocketCounts.length / 2,
+        ),
+      },
+      (_, index) => {
+        const left =
+          metrics.terminalPocketCounts[index] ?? 0;
+        const right =
+          metrics.terminalPocketCounts[
+            metrics.terminalPocketCounts.length - 1 - index
+          ] ?? 0;
+        return totalTerminal === 0
+          ? 0
+          : Math.abs(left - right) / totalTerminal;
+      },
+    ),
   );
 
   return {
-    pocketEntryClearancePx,
     ev: metrics.ev,
     stuckRuns: metrics.stuckRuns,
     stuckRate: metrics.stuckRate,
     centerCombined:
       totalTerminal === 0 ? 0 : centerPair / totalTerminal,
-    maxMirrorDelta: Math.max(0, ...mirrorDeltas),
+    maxMirrorDelta,
     p95CascadeSeconds: metrics.p95CascadeSeconds,
     maxCascadeSeconds: metrics.maxCascadeSeconds,
+    meanTerminalBalls: metrics.meanTerminalBalls,
+    meanChildBalls: metrics.meanChildBalls,
     stuckDiagnostics: samples.flatMap((sample, dropIndex) =>
       sample.stuck
         ? [{ dropIndex, balls: sample.stuckBalls }]
         : [],
     ),
   };
+};
+
+const rows = overlaps.map((pocketDividerPegOverlapPx) => {
+  const config = structuredClone(balance);
+  config.plinko.geometry.pocketDividerPegOverlapPx =
+    pocketDividerPegOverlapPx;
+
+  return {
+    pocketDividerPegOverlapPx,
+    dividerTopY:
+      config.plinko.geometry.topPegY +
+      (config.plinko.rows - 1) *
+        config.plinko.geometry.verticalPegSpacing +
+      config.plinko.geometry.pegRadius -
+      pocketDividerPegOverlapPx,
+    baseline: summarize(config, baselineRuns, {
+      amplifierLevel: 0,
+      returnLevel: 0,
+      splitterLevel: 0,
+    }),
+    combinedMax: summarize(config, combinedRuns, {
+      amplifierLevel: config.plinko.amplifier.at(-1)!.level,
+      returnLevel: config.plinko.return.at(-1)!.level,
+      splitterLevel: config.plinko.splitter.at(-1)!.level,
+    }),
+  };
 });
 
 process.stdout.write(
   JSON.stringify(
     {
-      runs,
+      baselineRuns,
+      combinedRuns,
       seed,
       note:
-        'Paired geometry sweep: every clearance sees identical Drop RNG seeds. 30k includes known pathological Drop index 26458.',
+        'Paired sweep. Baseline 30k includes historical trap #26458; combined-max 5k includes child traps #2031/#3191.',
       rows,
     },
     null,
