@@ -4,7 +4,7 @@
     "date": "2026-09-27",
     "sourceOfTruth": true,
     "targetMedianSuccessfulRealMinutes": 30,
-    "balanceEvidence": "Bare Plinko V0 physically calibrated with Matter runner at 100,000 Drops: EV 0.870225x, combined center 52.188%, symmetry delta 0.613%, zero stuck. Reproducible report is required after any gameplay-affecting geometry/physics change. Full-game balance report pending. BOARD_LAYOUT_V0 special-pin seed positions are based on 100,000-drop unique peg-hit probe seed 67034000; effect-level EV remains pending T035.",
+    "balanceEvidence": "Bare Plinko V0 physically calibrated with Matter runner at 100,000 Drops: EV 0.870225x, combined center 52.188%, symmetry delta 0.613%, zero stuck. Reproducible report is required after any gameplay-affecting geometry/physics change. Full-game balance report pending. BOARD_LAYOUT_V0 special-pin seed positions are based on 100,000-drop unique peg-hit probe seed 67034000; effect-level EV remains pending T035. Splitter child spawn physics is an explicit TUNABLE V0 seed pending T035 physical cascade reports.",
     "moneyRounding": "nearestInteger"
   },
   "time": {
@@ -846,7 +846,13 @@
       "splitterPegIds": [
         "r8c4"
       ]
-    }
+    },
+    "splitterPhysics": {
+      "childHorizontalOffsetPx": 4,
+      "childHorizontalVelocityDelta": 0.8,
+      "childVerticalVelocityMultiplier": 0.9
+    },
+    "ballBallCollisions": false
   },
   "ads": {
     "interstitialRequired": true,
