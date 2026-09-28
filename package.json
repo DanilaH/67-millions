@@ -21,7 +21,8 @@
     "simulate:plinko:milestone": "tsx simulation/plinko/cli.ts",
     "simulate:plinko:pin-layout": "tsx simulation/plinko/pinLayoutProbe.ts",
     "simulate:plinko:cascade": "tsx simulation/plinko/cascadeCli.ts",
-    "simulate:plinko:return-sweep": "tsx simulation/plinko/returnSweep.ts"
+    "simulate:plinko:return-sweep": "tsx simulation/plinko/returnSweep.ts",
+    "simulate:plinko:pocket-entry-sweep": "tsx simulation/plinko/pocketEntrySweep.ts"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
