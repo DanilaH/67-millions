@@ -73,12 +73,14 @@ const createStaticBoard = (
 
   for (const bumper of deriveJackpotBiasGeometry(config, jackpotBiasLevel)) {
     bodies.push(
-      Matter.Bodies.circle(
+      Matter.Bodies.rectangle(
         bumper.x,
         bumper.y,
-        bumper.radius,
+        bumper.length,
+        bumper.thickness,
         {
           isStatic: true,
+          angle: bumper.angleRadians,
           label: `sim:${bumper.id}`,
           restitution: bumper.restitution,
           friction: physics.friction,
