@@ -195,7 +195,12 @@ export const balanceSchema = z.object({
     splitter: z.array(plinkoLevelSchema.extend({
       childValue: z.number().positive(),
     })),
-    jackpotBias: z.array(plinkoLevelSchema),
+    jackpotBias: z.array(plinkoLevelSchema.extend({
+      bumperOffsetX: z.number().positive(),
+      bumperY: z.number(),
+      bumperRadius: z.number().positive(),
+      restitution: z.number().min(0).max(1),
+    })),
     insurance: z.array(plinkoLevelSchema),
     splitterPhysics: z.object({
       childHorizontalOffsetPx: z.number().positive(),
