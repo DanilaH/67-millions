@@ -19,7 +19,8 @@
     "build:perf": "tsc --noEmit && vite build --mode performance",
     "perf:plinko": "node tools/plinko-perf-smoke.mjs",
     "simulate:plinko:milestone": "tsx simulation/plinko/cli.ts",
-    "simulate:plinko:pin-layout": "tsx simulation/plinko/pinLayoutProbe.ts"
+    "simulate:plinko:pin-layout": "tsx simulation/plinko/pinLayoutProbe.ts",
+    "simulate:plinko:cascade": "tsx simulation/plinko/cascadeCli.ts"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
