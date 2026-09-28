@@ -202,6 +202,10 @@ export const balanceSchema = z.object({
       childHorizontalVelocityDelta: z.number().positive(),
       childVerticalVelocityMultiplier: z.number().positive().max(1),
     }),
+    returnPhysics: z.object({
+      horizontalRetention: z.number().min(0).max(1),
+      resetVelocity: z.literal(true),
+    }),
     ballBallCollisions: z.literal(false),
     specialPinLayout: z.object({
       id: z.literal('BOARD_LAYOUT_V0'),
