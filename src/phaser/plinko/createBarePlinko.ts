@@ -267,12 +267,14 @@ export const createBarePlinko = (
 
     for (const bumper of deriveJackpotBiasGeometry(config, level)) {
       const body = addCreated(
-        matter.add.circle(
+        matter.add.rectangle(
           bumper.x,
           bumper.y,
-          bumper.radius,
+          bumper.length,
+          bumper.thickness,
           {
             isStatic: true,
+            angle: bumper.angleRadians,
             label: `plinko:${bumper.id}`,
             restitution: bumper.restitution,
             friction: physics.friction,
