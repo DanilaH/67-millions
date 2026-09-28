@@ -2,7 +2,9 @@ import type { BalanceConfig } from '../../config/balance.schema';
 import { getJackpotBiasUpgrade } from './progression';
 
 export interface JackpotBiasDeflector {
-  id: 'bias:left' | 'bias:right';
+  id: string;
+  pairIndex: number;
+  side: 'left' | 'right';
   x: number;
   y: number;
   length: number;
@@ -19,26 +21,32 @@ export const deriveJackpotBiasGeometry = (
   if (!upgrade) return [];
 
   const { centerX } = config.plinko.geometry;
-  const angle = (upgrade.angleDegrees * Math.PI) / 180;
-  const common = {
-    y: upgrade.deflectorY,
-    length: upgrade.length,
-    thickness: upgrade.thickness,
-    restitution: upgrade.restitution,
-  };
 
-  return [
-    {
-      id: 'bias:left',
-      x: centerX - upgrade.deflectorOffsetX,
-      angleRadians: -angle,
-      ...common,
-    },
-    {
-      id: 'bias:right',
-      x: centerX + upgrade.deflectorOffsetX,
-      angleRadians: angle,
-      ...common,
-    },
-  ];
+  return upgrade.deflectorPairs.flatMap((pair, pairIndex) => {
+    const angle = (pair.angleDegrees * Math.PI) / 180;
+    const common = {
+      pairIndex,
+      y: pair.deflectorY,
+      length: pair.length,
+      thickness: pair.thickness,
+      restitution: pair.restitution,
+    };
+
+    return [
+      {
+        id: `bias:pair-${pairIndex}:left`,
+        side: 'left' as const,
+        x: centerX - pair.deflectorOffsetX,
+        angleRadians: -angle,
+        ...common,
+      },
+      {
+        id: `bias:pair-${pairIndex}:right`,
+        side: 'right' as const,
+        x: centerX + pair.deflectorOffsetX,
+        angleRadians: angle,
+        ...common,
+      },
+    ];
+  });
 };
