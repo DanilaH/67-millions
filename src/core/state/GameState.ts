@@ -25,6 +25,9 @@ export interface GameState {
   plinkoCenterLevel: number;
   plinkoMidLevel: number;
   plinkoJackpotLevel: number;
+  plinkoAmplifierLevel: number;
+  plinkoReturnLevel: number;
+  plinkoSplitterLevel: number;
   rngState: number;
   terminalReason: TerminalReason | null;
   victory: boolean;
@@ -53,6 +56,9 @@ export const createInitialGameState = (
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,
   plinkoJackpotLevel: 0,
+  plinkoAmplifierLevel: 0,
+  plinkoReturnLevel: 0,
+  plinkoSplitterLevel: 0,
   rngState: seed >>> 0,
   terminalReason: null,
   victory: false,
