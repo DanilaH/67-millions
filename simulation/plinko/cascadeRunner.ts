@@ -441,16 +441,11 @@ export const runCascadePhysicalDrops = (
       pocketEvents = [];
       Matter.Engine.update(engine, timestepMs);
 
-      const handledPegBodies = new Set<number>();
-
       for (const event of pegEvents) {
-        if (handledPegBodies.has(event.bodyId)) continue;
-
         const meta = bodyMeta.get(event.bodyId);
         const body = bodies.get(event.bodyId);
         if (!meta || !body) continue;
 
-        handledPegBodies.add(event.bodyId);
         const drop = drops.get(meta.dropIndex)!;
         let state = clearSplitterBlockAfterPeg(
           meta.state,
