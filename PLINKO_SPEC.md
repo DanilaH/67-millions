@@ -87,6 +87,16 @@ Special positions are data, never hardcoded in Scene code.
 
 Exact production special-pin positions are intentionally **TUNABLE V0**. E07 provides the physical report machinery; E10/T034 creates `BOARD_LAYOUT_V0` from symmetric seed positions and 100k+ physical runs. The agent must not treat visual preference as balance evidence.
 
+`BOARD_LAYOUT_V0` now lives in `balance.v0.json -> plinko.specialPinLayout`. Peg positions are referenced by stable physical ids `r{row}c{column}`; Scene code must resolve those ids through the board derivation rather than duplicate coordinates.
+
+The V0 seed was selected from a 100k bare-board unique-hit probe:
+- Return levels use mirrored pairs whose measured combined bare hit rates track the configured 7% / 11% / 15% / 20% frequency targets;
+- Amplifier uses symmetric 1 / 2 / 3-pin sets keyed by configured physical pin count;
+- Splitter starts from a separate symmetric seed slot;
+- the systems do not share a peg in the max-level seed state.
+
+These are **placement seeds**, not proof of final upgrade EV. T035 must rerun physical milestone reports with the actual Amplifier / Return / Splitter effects enabled before those effects are treated as balanced.
+
 ## 10. Upgrade systems
 
 All numeric levels/prices are read from `balance.v0.json`.
