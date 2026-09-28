@@ -22,6 +22,7 @@ describe('Plinko cascade physical runner', () => {
         amplifierLevel: 2,
         returnLevel: 1,
         splitterLevel: 1,
+        jackpotBiasLevel: 0,
       },
     };
 
