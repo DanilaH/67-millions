@@ -841,33 +841,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
       jackpotBiasLevel,
     );
 
-    graphics.lineStyle(5, 0xd6a94f, 1);
-    for (const deflector of biasGeometry) {
-      const halfX =
-        Math.cos(deflector.angleRadians) *
-        (deflector.length / 2);
-      const halfY =
-        Math.sin(deflector.angleRadians) *
-        (deflector.length / 2);
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          deflector.x - halfX,
-          deflector.y - halfY,
-          deflector.x + halfX,
-          deflector.y + halfY,
-        ),
-      );
-    }
-
-    const jackpotBiasLevel =
-      this.save?.pendingDrop?.specialLevelsAtCommit.jackpotBiasLevel ??
-      this.save?.game.plinkoJackpotBiasLevel ??
-      0;
-    const biasGeometry = deriveJackpotBiasGeometry(
-      balance,
-      jackpotBiasLevel,
-    );
-
     for (const deflector of biasGeometry) {
       const half = deflector.length / 2;
       const dx = Math.cos(deflector.angleRadians) * half;
