@@ -859,6 +859,35 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
     }
 
+    const jackpotBiasLevel =
+      this.save?.pendingDrop?.specialLevelsAtCommit.jackpotBiasLevel ??
+      this.save?.game.plinkoJackpotBiasLevel ??
+      0;
+    const biasGeometry = deriveJackpotBiasGeometry(
+      balance,
+      jackpotBiasLevel,
+    );
+
+    for (const deflector of biasGeometry) {
+      const half = deflector.length / 2;
+      const dx = Math.cos(deflector.angleRadians) * half;
+      const dy = Math.sin(deflector.angleRadians) * half;
+
+      graphics.lineStyle(
+        deflector.thickness,
+        0xd8a84e,
+        1,
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          deflector.x - dx,
+          deflector.y - dy,
+          deflector.x + dx,
+          deflector.y + dy,
+        ),
+      );
+    }
+
     graphics.lineStyle(2, 0x66717f, 1);
     graphics.strokeLineShape(
       new Phaser.Geom.Line(
