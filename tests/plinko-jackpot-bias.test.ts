@@ -18,7 +18,9 @@ describe('Jackpot Bias geometry', () => {
         balance.plinko.geometry.centerX * 2,
       );
       expect(left!.y).toBe(right!.y);
-      expect(left!.radius).toBe(right!.radius);
+      expect(left!.length).toBe(right!.length);
+      expect(left!.thickness).toBe(right!.thickness);
+      expect(left!.angleRadians).toBeCloseTo(-right!.angleRadians);
       expect(left!.restitution).toBe(right!.restitution);
     }
   });
