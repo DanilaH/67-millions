@@ -1,0 +1,31 @@
+name: Plinko pin layout probe
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/pinLayoutProbe.ts'
+      - 'simulation/plinko/physicalRunner.ts'
+      - 'src/core/plinko-rules/boardLayout.ts'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-pin-layout.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-pin-layout-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe-100k:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - run: npm run simulate:plinko:pin-layout
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plinko-pin-layout-probe
+          path: artifacts/plinko/pin-layout-probe
+          if-no-files-found: error
