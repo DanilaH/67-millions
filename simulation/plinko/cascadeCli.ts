@@ -22,6 +22,7 @@ interface CliOptions {
   amplifierLevel: number;
   returnLevel: number;
   splitterLevel: number;
+  jackpotBiasLevel: number;
 }
 
 const positiveInt = (
@@ -60,6 +61,7 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
     amplifierLevel: 0,
     returnLevel: 0,
     splitterLevel: 0,
+    jackpotBiasLevel: 0,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -83,6 +85,8 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
       options.returnLevel = nonNegativeInt(argv[++index], key);
     } else if (key === '--splitter-level') {
       options.splitterLevel = nonNegativeInt(argv[++index], key);
+    } else if (key === '--jackpot-bias-level') {
+      options.jackpotBiasLevel = nonNegativeInt(argv[++index], key);
     } else if (key === '--output') {
       const value = argv[++index];
       if (!value) throw new Error('Missing --output value');
@@ -106,6 +110,7 @@ const specialLevels: SpecialUpgradeLevels = {
   amplifierLevel: options.amplifierLevel,
   returnLevel: options.returnLevel,
   splitterLevel: options.splitterLevel,
+  jackpotBiasLevel: options.jackpotBiasLevel,
 };
 const pocketMultipliers = derivePocketMultipliers(
   balance,
@@ -171,7 +176,7 @@ const markdown = `# Plinko cascade physical report
 - representative stake: **${options.stake.toLocaleString('en-US')}**
 - board hash: \`${boardHash}\`
 - pocket levels: center L${options.centerLevel}, mid L${options.midLevel}, jackpot L${options.jackpotLevel}
-- special levels: amplifier L${options.amplifierLevel}, return L${options.returnLevel}, splitter L${options.splitterLevel}
+- special levels: amplifier L${options.amplifierLevel}, return L${options.returnLevel}, splitter L${options.splitterLevel}, Jackpot Bias L${options.jackpotBiasLevel}
 - ball-ball collisions: **${balance.plinko.ballBallCollisions ? 'enabled' : 'disabled'}**
 
 ## Aggregate outcome
