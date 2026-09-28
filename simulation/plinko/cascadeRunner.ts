@@ -19,6 +19,7 @@ import {
 } from '../../src/core/plinko-rules/boardLayout';
 import type { SpecialUpgradeLevels } from '../../src/core/plinko-rules/progression';
 import { SeededRandom } from '../../src/core/rng/SeededRandom';
+import { getReturnTarget } from '../../src/core/plinko-rules/returnPhysics';
 
 const STATIC_CATEGORY = 0x0001;
 const BALL_CATEGORY = 0x0002;
@@ -497,12 +498,10 @@ export const runCascadePhysicalDrops = (
               markReturnUsed(candidate),
           );
 
-          Matter.Body.setPosition(body, {
-            x: getSpawnX(config, drop.random.next()),
-            y:
-              config.plinko.geometry.topPegY -
-              config.plinko.geometry.verticalPegSpacing,
-          });
+          Matter.Body.setPosition(
+            body,
+            getReturnTarget(config, body.position.x),
+          );
           Matter.Body.setVelocity(body, { x: 0, y: 0 });
           Matter.Body.setAngle(body, 0);
           Matter.Body.setAngularVelocity(body, 0);
