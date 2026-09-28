@@ -1,0 +1,31 @@
+name: Plinko pocket entry sweep
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/pocketEntrySweep.ts'
+      - 'simulation/plinko/cascadeRunner.ts'
+      - 'simulation/plinko/cascadeMetrics.ts'
+      - 'src/core/plinko-rules/boardLayout.ts'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-pocket-entry-sweep.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-pocket-entry-sweep-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Run paired pocket-entry clearance sweep
+        env:
+          PLINKO_POCKET_CLEARANCE_SWEEP_RUNS: 30000
+          PLINKO_POCKET_CLEARANCE_SWEEP_SEED: 67035000
+        run: npm run simulate:plinko:pocket-entry-sweep
