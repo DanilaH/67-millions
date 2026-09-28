@@ -120,6 +120,14 @@ const samples = runCascadePhysicalDrops(balance, {
   specialLevels,
 });
 const metrics = summarizeCascadeDrops(balance, samples);
+const stuckDiagnostics = samples.flatMap((sample, dropIndex) =>
+  sample.stuck
+    ? [{
+        dropIndex,
+        balls: sample.stuckBalls,
+      }]
+    : [],
+);
 
 const boardHash = createHash('sha256')
   .update(
@@ -148,6 +156,7 @@ const report = {
     ballBallCollisions: balance.plinko.ballBallCollisions,
   },
   metrics,
+  stuckDiagnostics,
 };
 
 const percent = (value: number): string =>
@@ -188,6 +197,16 @@ const markdown = `# Plinko cascade physical report
 - mean duration: **${metrics.meanCascadeSeconds.toFixed(3)}s**
 - p95 duration: **${metrics.p95CascadeSeconds.toFixed(3)}s**
 - max duration: **${metrics.maxCascadeSeconds.toFixed(3)}s**
+
+## Watchdog diagnostics
+
+${stuckDiagnostics.length === 0
+  ? '- none'
+  : stuckDiagnostics.map((entry) =>
+      `- Drop ${entry.dropIndex}: ${entry.balls.map((ball) =>
+        `${ball.ballId} @ (${ball.x.toFixed(3)}, ${ball.y.toFixed(3)}) v=(${ball.velocityX.toFixed(5)}, ${ball.velocityY.toFixed(5)})`
+      ).join('; ')}
+`).join('')}
 `;
 
 const out = resolve(options.output);
