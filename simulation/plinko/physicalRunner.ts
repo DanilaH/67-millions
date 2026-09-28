@@ -17,6 +17,7 @@ export interface PhysicalDropSample {
   stuck: boolean;
   finalX: number;
   finalY: number;
+  pegHitIndices?: number[];
 }
 
 export interface PhysicalRunnerOptions {
@@ -25,6 +26,7 @@ export interface PhysicalRunnerOptions {
   batchSize?: number;
   maxTicks?: number;
   pocketMultipliers?: readonly number[];
+  trackPegHits?: boolean;
 }
 
 interface ActiveBallMeta {
@@ -32,27 +34,33 @@ interface ActiveBallMeta {
   collisions: number;
   ticks: number;
   settledPocket: number | null;
+  pegHitIndices: Set<number>;
 }
 
 const createStaticBoard = (
   config: BalanceConfig,
-): { bodies: Matter.Body[]; sensorPocketByBodyId: Map<number, number> } => {
+): {
+  bodies: Matter.Body[];
+  sensorPocketByBodyId: Map<number, number>;
+  pegIndexByBodyId: Map<number, number>;
+} => {
   const layout = deriveBarePlinkoLayout(config);
   const geometry = config.plinko.geometry;
   const physics = config.plinko.physicsSeed;
   const bodies: Matter.Body[] = [];
   const sensorPocketByBodyId = new Map<number, number>();
+  const pegIndexByBodyId = new Map<number, number>();
 
   for (const peg of layout.pegs) {
-    bodies.push(
-      Matter.Bodies.circle(peg.x, peg.y, geometry.pegRadius, {
+    const body = Matter.Bodies.circle(peg.x, peg.y, geometry.pegRadius, {
         isStatic: true,
         label: 'sim:peg',
         restitution: physics.pegRestitution,
         friction: physics.friction,
         collisionFilter: { category: STATIC_CATEGORY, mask: 0xffff },
-      }),
-    );
+      });
+    bodies.push(body);
+    pegIndexByBodyId.set(body.id, peg.index);
   }
 
   const wallThickness = geometry.pegRadius * 2;
@@ -132,7 +140,7 @@ const createStaticBoard = (
     sensorPocketByBodyId.set(sensor.id, index);
   }
 
-  return { bodies, sensorPocketByBodyId };
+  return { bodies, sensorPocketByBodyId, pegIndexByBodyId };
 };
 
 const createBall = (
@@ -189,7 +197,11 @@ export const runBarePhysicalDrops = (
   engine.gravity.x = 0;
   engine.gravity.y = config.plinko.physicsSeed.gravityY;
 
-  const { bodies: boardBodies, sensorPocketByBodyId } = createStaticBoard(config);
+  const {
+    bodies: boardBodies,
+    sensorPocketByBodyId,
+    pegIndexByBodyId,
+  } = createStaticBoard(config);
   Matter.Composite.add(engine.world, boardBodies);
 
   const random = new SeededRandom(options.seed);
@@ -208,6 +220,7 @@ export const runBarePhysicalDrops = (
         collisions: 0,
         ticks: 0,
         settledPocket: null,
+        pegHitIndices: new Set<number>(),
       });
       activeBodies.add(body);
       Matter.Composite.add(engine.world, body);
@@ -230,6 +243,10 @@ export const runBarePhysicalDrops = (
             meta.settledPocket = pocketIndex;
           } else if (!other.isSensor) {
             meta.collisions += 1;
+            if (options.trackPegHits) {
+              const pegIndex = pegIndexByBodyId.get(other.id);
+              if (pegIndex !== undefined) meta.pegHitIndices.add(pegIndex);
+            }
           }
         }
       }
@@ -254,6 +271,9 @@ export const runBarePhysicalDrops = (
             stuck: false,
             finalX: body.position.x,
             finalY: body.position.y,
+            ...(options.trackPegHits
+              ? { pegHitIndices: Array.from(meta.pegHitIndices).sort((a, b) => a - b) }
+              : {}),
           };
           Matter.Composite.remove(engine.world, body);
           activeBodies.delete(body);
@@ -273,6 +293,9 @@ export const runBarePhysicalDrops = (
         stuck: true,
         finalX: body.position.x,
         finalY: body.position.y,
+        ...(options.trackPegHits
+          ? { pegHitIndices: Array.from(meta.pegHitIndices).sort((a, b) => a - b) }
+          : {}),
       };
       Matter.Composite.remove(engine.world, body);
     }
