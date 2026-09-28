@@ -3,7 +3,8 @@ import { resolveBarryPayment } from '../barry/barry';
 import type { GameState } from '../state/GameState';
 import { advanceRunTime } from '../time/runTime';
 import {
-  settleBareDrop,
+  calculateBallPocketPayout,
+  settleAggregateDrop,
   type DropSettlement,
   type PendingDrop,
 } from './drop';
@@ -65,13 +66,18 @@ export const advancePendingDropTime = (
   };
 };
 
-export const settlePendingDropAndResumeTime = (
+export const settleAggregatePendingDropAndResumeTime = (
   state: GameState,
   pendingDrop: PendingDrop,
-  pocketIndex: number,
+  aggregatePayout: number,
   config: BalanceConfig,
 ): TimedDropSettlement => {
-  const settled = settleBareDrop(state, pendingDrop, pocketIndex, config);
+  const settled = settleAggregateDrop(
+    state,
+    pendingDrop,
+    aggregatePayout,
+    config,
+  );
 
   let nextState = settled.state;
 
@@ -99,3 +105,16 @@ export const settlePendingDropAndResumeTime = (
     softCheckpointsCrossedAfterBarry: resumed.softCheckpointsCrossed,
   };
 };
+
+export const settlePendingDropAndResumeTime = (
+  state: GameState,
+  pendingDrop: PendingDrop,
+  pocketIndex: number,
+  config: BalanceConfig,
+): TimedDropSettlement =>
+  settleAggregatePendingDropAndResumeTime(
+    state,
+    pendingDrop,
+    calculateBallPocketPayout(pendingDrop, 1, pocketIndex, config),
+    config,
+  );
