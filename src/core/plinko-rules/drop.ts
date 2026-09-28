@@ -6,25 +6,30 @@ import {
   derivePocketMultipliers,
   getMaxBetForLevel,
   getPocketUpgradeLevels,
+  getSpecialUpgradeLevels,
   type PocketUpgradeLevels,
+  type SpecialUpgradeLevels,
 } from './progression';
 
 export type BetFraction = 0.25 | 0.5 | 1;
 
-export interface DropBallSnapshot {
+export interface DropBallState {
   ballId: string;
-  x: number;
-  y: number;
-  velocityX: number;
-  velocityY: number;
-  angle: number;
-  angularVelocity: number;
   currentValue: number;
   lineageId: string;
   splitDepth: number;
   amplifierProcIds: string[];
   returnUsed: boolean;
   blockedSplitterId: string | null;
+}
+
+export interface DropBallSnapshot extends DropBallState {
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
+  angle: number;
+  angularVelocity: number;
 }
 
 export interface DropPhysicsSnapshot {
@@ -39,6 +44,7 @@ export interface PendingDrop {
   selectedFraction: BetFraction;
   maxBetLevel: number;
   pocketLevelsAtCommit: PocketUpgradeLevels;
+  specialLevelsAtCommit: SpecialUpgradeLevels;
   committedGameDayIndex: number;
   committedMinuteOfDay: number;
   remainingActionMinutes: number;
@@ -54,6 +60,16 @@ export interface DropSettlement {
   losing: boolean;
 }
 
+const isZeroPocketLevels = (levels: PocketUpgradeLevels): boolean =>
+  levels.centerLevel === 0 &&
+  levels.midLevel === 0 &&
+  levels.jackpotLevel === 0;
+
+const isZeroSpecialLevels = (levels: SpecialUpgradeLevels): boolean =>
+  levels.amplifierLevel === 0 &&
+  levels.returnLevel === 0 &&
+  levels.splitterLevel === 0;
+
 export const createBareBoardFingerprint = (
   config: BalanceConfig,
 ): string =>
@@ -65,7 +81,7 @@ export const createBareBoardFingerprint = (
     physics: config.plinko.physicsSeed,
   });
 
-export const createBoardFingerprint = (
+export const createPocketBoardFingerprintV2 = (
   config: BalanceConfig,
   pocketLevels: PocketUpgradeLevels,
 ): string =>
@@ -74,6 +90,24 @@ export const createBoardFingerprint = (
     rows: config.plinko.rows,
     pockets: derivePocketMultipliers(config, pocketLevels),
     pocketLevels,
+    geometry: config.plinko.geometry,
+    physics: config.plinko.physicsSeed,
+  });
+
+export const createBoardFingerprint = (
+  config: BalanceConfig,
+  pocketLevels: PocketUpgradeLevels,
+  specialLevels: SpecialUpgradeLevels,
+): string =>
+  JSON.stringify({
+    version: 3,
+    rows: config.plinko.rows,
+    pockets: derivePocketMultipliers(config, pocketLevels),
+    pocketLevels,
+    specialLevels,
+    specialPinLayoutId: config.plinko.specialPinLayout.id,
+    splitterPhysics: config.plinko.splitterPhysics,
+    ballBallCollisions: config.plinko.ballBallCollisions,
     geometry: config.plinko.geometry,
     physics: config.plinko.physicsSeed,
   });
@@ -104,6 +138,7 @@ export const commitBareDrop = (
   const maxBet = getMaxBetForLevel(config, state.plinkoMaxBetLevel);
   const originalStake = calculateActualBet(state.cash, maxBet, selectedFraction);
   const pocketLevelsAtCommit = getPocketUpgradeLevels(state);
+  const specialLevelsAtCommit = getSpecialUpgradeLevels(state);
 
   return {
     state: {
@@ -117,11 +152,16 @@ export const commitBareDrop = (
       selectedFraction,
       maxBetLevel: state.plinkoMaxBetLevel,
       pocketLevelsAtCommit,
+      specialLevelsAtCommit,
       committedGameDayIndex: state.clock.gameDayIndex,
       committedMinuteOfDay: state.clock.minuteOfDay,
       remainingActionMinutes: config.time.plinkoDropTimeMinutes,
       rngStateAtCommit: state.rngState,
-      boardFingerprint: createBoardFingerprint(config, pocketLevelsAtCommit),
+      boardFingerprint: createBoardFingerprint(
+        config,
+        pocketLevelsAtCommit,
+        specialLevelsAtCommit,
+      ),
       physics: null,
     },
   };
@@ -149,25 +189,40 @@ export const assertDropBoardCompatible = (
   const expected = createBoardFingerprint(
     config,
     pendingDrop.pocketLevelsAtCommit,
+    pendingDrop.specialLevelsAtCommit,
   );
-  const zeroLevelLegacy =
-    pendingDrop.pocketLevelsAtCommit.centerLevel === 0 &&
-    pendingDrop.pocketLevelsAtCommit.midLevel === 0 &&
-    pendingDrop.pocketLevelsAtCommit.jackpotLevel === 0 &&
+
+  const legacyBareV1 =
+    isZeroPocketLevels(pendingDrop.pocketLevelsAtCommit) &&
+    isZeroSpecialLevels(pendingDrop.specialLevelsAtCommit) &&
     pendingDrop.boardFingerprint === createBareBoardFingerprint(config);
 
-  if (pendingDrop.boardFingerprint !== expected && !zeroLevelLegacy) {
+  const legacyPocketV2 =
+    isZeroSpecialLevels(pendingDrop.specialLevelsAtCommit) &&
+    pendingDrop.boardFingerprint ===
+      createPocketBoardFingerprintV2(config, pendingDrop.pocketLevelsAtCommit);
+
+  if (
+    pendingDrop.boardFingerprint !== expected &&
+    !legacyBareV1 &&
+    !legacyPocketV2
+  ) {
     throw new Error(
       'Pending Drop board fingerprint does not match the current runtime board',
     );
   }
 
   if (state) {
-    const current = getPocketUpgradeLevels(state);
+    const currentPocket = getPocketUpgradeLevels(state);
+    const currentSpecial = getSpecialUpgradeLevels(state);
+
     if (
-      current.centerLevel !== pendingDrop.pocketLevelsAtCommit.centerLevel ||
-      current.midLevel !== pendingDrop.pocketLevelsAtCommit.midLevel ||
-      current.jackpotLevel !== pendingDrop.pocketLevelsAtCommit.jackpotLevel
+      currentPocket.centerLevel !== pendingDrop.pocketLevelsAtCommit.centerLevel ||
+      currentPocket.midLevel !== pendingDrop.pocketLevelsAtCommit.midLevel ||
+      currentPocket.jackpotLevel !== pendingDrop.pocketLevelsAtCommit.jackpotLevel ||
+      currentSpecial.amplifierLevel !== pendingDrop.specialLevelsAtCommit.amplifierLevel ||
+      currentSpecial.returnLevel !== pendingDrop.specialLevelsAtCommit.returnLevel ||
+      currentSpecial.splitterLevel !== pendingDrop.specialLevelsAtCommit.splitterLevel
     ) {
       throw new Error(
         'Pending Drop upgrade state changed after the Drop was committed',
@@ -176,26 +231,50 @@ export const assertDropBoardCompatible = (
   }
 };
 
-export const settleBareDrop = (
-  state: GameState,
+export const calculateBallPocketPayout = (
   pendingDrop: PendingDrop,
+  currentValue: number,
   pocketIndex: number,
   config: BalanceConfig,
-): DropSettlement => {
-  assertDropBoardCompatible(pendingDrop, config, state);
+): number => {
+  if (!Number.isFinite(currentValue) || currentValue <= 0) {
+    throw new RangeError('Ball currentValue must be positive and finite');
+  }
+
   const pockets = derivePocketMultipliers(
     config,
     pendingDrop.pocketLevelsAtCommit,
   );
-  const multiplier = pockets[pocketIndex];
-  if (multiplier === undefined) throw new RangeError('Invalid Plinko pocket index');
+  const pocketMultiplier = pockets[pocketIndex];
+  if (pocketMultiplier === undefined) {
+    throw new RangeError('Invalid Plinko pocket index');
+  }
 
-  const payout = roundMoney(pendingDrop.originalStake * multiplier);
-  const losing = payout < pendingDrop.originalStake;
+  return roundMoney(
+    pendingDrop.originalStake * currentValue * pocketMultiplier,
+  );
+};
+
+export const settleAggregateDrop = (
+  state: GameState,
+  pendingDrop: PendingDrop,
+  payout: number,
+  config: BalanceConfig,
+): DropSettlement => {
+  assertDropBoardCompatible(pendingDrop, config, state);
+
+  const roundedPayout = roundMoney(payout);
+  if (roundedPayout < 0) throw new RangeError('Drop payout cannot be negative');
+
+  const multiplier =
+    pendingDrop.originalStake === 0
+      ? 0
+      : roundedPayout / pendingDrop.originalStake;
+  const losing = roundedPayout < pendingDrop.originalStake;
 
   let nextState: GameState = {
     ...state,
-    cash: creditCash(state.cash, payout),
+    cash: creditCash(state.cash, roundedPayout),
   };
 
   if (losing) {
@@ -206,5 +285,23 @@ export const settleBareDrop = (
     ).state;
   }
 
-  return { state: nextState, payout, multiplier, losing };
+  return {
+    state: nextState,
+    payout: roundedPayout,
+    multiplier,
+    losing,
+  };
 };
+
+export const settleBareDrop = (
+  state: GameState,
+  pendingDrop: PendingDrop,
+  pocketIndex: number,
+  config: BalanceConfig,
+): DropSettlement =>
+  settleAggregateDrop(
+    state,
+    pendingDrop,
+    calculateBallPocketPayout(pendingDrop, 1, pocketIndex, config),
+    config,
+  );
