@@ -62,3 +62,13 @@ None at M0 bootstrap creation.
 - Ball-ball collisions are disabled in V0 so multiball descendants interact with the same static board without introducing order-dependent child collisions.
 - Technically stuck Matter equilibrium bodies use the config-driven deterministic anti-stall watchdog. The watchdog nudges physics only after sustained near-zero speed and never selects a pocket or settles payout.
 - Watchdog stationary ticks are part of the durable active-Drop snapshot so reload does not reset the recovery state.
+
+
+## Jackpot Bias physical progression
+
+- Jackpot Bias V0 is implemented only through visible Matter geometry; there is no hidden edge-pocket probability or payout override.
+- The V0 progression is cumulative mirrored angled deflector pairs. Each level adds one pair in an outer board row, and final geometry is a pure derivation from `balance.v0.json`.
+- The fourth-pair seed uses `deflectorOffsetX=110`; nearby 109 px was rejected because the physical system crosses a sharp threshold and produced an excessive EV jump in measurement.
+- A committed Drop snapshots the Bias level and a fingerprint containing the derived Bias geometry. Upgrade/reload cannot retroactively alter an active Drop.
+- Final acceptance evidence is `reports/plinko/T036_JACKPOT_BIAS.md`: 100k per level, monotonic edge probability, zero stuck outcomes, plus a 100k combined special-pin interaction run.
+- Bias EV and upgrade prices are not economically frozen by T036. Full-game dominance/pacing remains an E13/E21 decision.
