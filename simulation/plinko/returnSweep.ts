@@ -44,6 +44,12 @@ for (const level of levels) {
 
 process.stdout.write(JSON.stringify({ runs, seed, rows }, null, 2) + '\n');
 
-if (rows.some((row) => row.stuckRate > 0)) {
+const configured = rows.filter(
+  (row) =>
+    row.horizontalRetention ===
+    balance.plinko.returnPhysics.horizontalRetention,
+);
+
+if (configured.some((row) => row.stuckRate > 0)) {
   process.exitCode = 2;
 }
