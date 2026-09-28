@@ -440,7 +440,11 @@ describe('save repository', () => {
 
   it('migrates a v6 active Drop with exact physics and zero Jackpot Bias', async () => {
     const storage = new MemoryStorage();
-    const game = createInitialGameState(balance, 667);
+    const game = {
+      ...createInitialGameState(balance, 667),
+      plinkoCenterLevel: 1,
+      plinkoAmplifierLevel: 1,
+    };
     const {
       plinkoJackpotBiasLevel: _bias,
       ...legacyGame
