@@ -10,6 +10,11 @@ export interface NeedsState {
   happiness: number;
 }
 
+export interface InsuranceArmState {
+  level: number;
+  floor: number;
+}
+
 export interface GameState {
   cash: number;
   mainDebt: number;
@@ -29,6 +34,9 @@ export interface GameState {
   plinkoReturnLevel: number;
   plinkoSplitterLevel: number;
   plinkoJackpotBiasLevel: number;
+  plinkoInsuranceLevel: number;
+  plinkoInsuranceLossStreak: number;
+  plinkoInsuranceArmed: InsuranceArmState | null;
   rngState: number;
   terminalReason: TerminalReason | null;
   victory: boolean;
@@ -61,6 +69,9 @@ export const createInitialGameState = (
   plinkoReturnLevel: 0,
   plinkoSplitterLevel: 0,
   plinkoJackpotBiasLevel: 0,
+  plinkoInsuranceLevel: 0,
+  plinkoInsuranceLossStreak: 0,
+  plinkoInsuranceArmed: null,
   rngState: seed >>> 0,
   terminalReason: null,
   victory: false,
