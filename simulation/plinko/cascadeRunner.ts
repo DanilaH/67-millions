@@ -281,7 +281,7 @@ export const runCascadePhysicalDrops = (
   const batchSize = options.batchSize ?? 64;
   const maxTicks =
     options.maxTicks ??
-    config.plinko.geometry.fixedTimestepHz * 30;
+    config.plinko.geometry.fixedTimestepHz * 60;
 
   if (!Number.isInteger(stake) || stake <= 0) {
     throw new RangeError('stake must be a positive integer');
