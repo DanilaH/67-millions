@@ -5,8 +5,15 @@ export interface PlinkoPoint {
   y: number;
 }
 
+export interface PlinkoPeg extends PlinkoPoint {
+  index: number;
+  row: number;
+  column: number;
+  id: string;
+}
+
 export interface PlinkoBoardLayout {
-  pegs: PlinkoPoint[];
+  pegs: PlinkoPeg[];
   pocketCenters: PlinkoPoint[];
   leftWallX: number;
   rightWallX: number;
@@ -19,7 +26,7 @@ export const deriveBarePlinkoLayout = (
 ): PlinkoBoardLayout => {
   const geometry = config.plinko.geometry;
   const rows = config.plinko.rows;
-  const pegs: PlinkoPoint[] = [];
+  const pegs: PlinkoPeg[] = [];
 
   for (let row = 0; row < rows; row += 1) {
     const count = row + 1;
@@ -28,7 +35,12 @@ export const deriveBarePlinkoLayout = (
     const startX = geometry.centerX - rowWidth / 2;
 
     for (let column = 0; column < count; column += 1) {
+      const index = pegs.length;
       pegs.push({
+        index,
+        row,
+        column,
+        id: `r${row}c${column}`,
         x: startX + column * geometry.horizontalPegSpacing,
         y,
       });
