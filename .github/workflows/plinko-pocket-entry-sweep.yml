@@ -1,4 +1,4 @@
-name: Plinko pocket entry sweep
+name: Plinko divider overlap sweep
 
 on:
   pull_request:
@@ -24,8 +24,9 @@ jobs:
         with:
           node-version: 20.19.0
       - run: npm install --no-audit --no-fund
-      - name: Run paired pocket-entry clearance sweep
+      - name: Run paired divider-overlap sweep
         env:
-          PLINKO_POCKET_CLEARANCE_SWEEP_RUNS: 30000
-          PLINKO_POCKET_CLEARANCE_SWEEP_SEED: 67035000
+          PLINKO_DIVIDER_OVERLAP_BASELINE_RUNS: 30000
+          PLINKO_DIVIDER_OVERLAP_COMBINED_RUNS: 5000
+          PLINKO_DIVIDER_OVERLAP_SEED: 67035000
         run: npm run simulate:plinko:pocket-entry-sweep
