@@ -137,14 +137,19 @@ Independent global progression; it controls allowed stake, not board EV.
 
 ## 11. Insurance exact semantics
 
-- Losing streak is based on aggregate Drop result.
-- Non-losing Drop resets streak.
-- Reaching configured threshold arms Insurance for the **next Drop**.
-- Insurance applies only after aggregate cascade payout is known.
-- Floor = `original stake × configured floor`.
-- Armed Insurance is consumed by that Drop regardless of natural result.
-- After insured Drop, streak resets to 0.
-- streak/armed state persists through screen changes and reload.
+- The **natural aggregate payout** means the physical cascade payout before Insurance.
+- Losing streak and losing-Drop Happiness are based on that natural aggregate result: `natural payout < original stake`.
+- Non-losing unarmed Drop resets streak.
+- Reaching the configured threshold while Insurance is owned arms Insurance for the **next Drop**.
+- Arming snapshots the Insurance level and floor. Buying a higher Insurance level while already armed does not retroactively improve the earned arm.
+- At the next Drop commit, the armed snapshot is atomically moved into `pendingDrop.insuranceAtCommit` and removed from the persistent armed slot. This committed Drop consumes it regardless of its eventual natural result.
+- Insurance applies only after the aggregate cascade payout is known.
+- Floor = `original stake × snapped floor`; credited payout is `max(natural payout, floor payout)`.
+- Insurance never changes which pocket/trajectory occurred and never rerolls physics.
+- After an insured Drop settles, streak resets to 0 regardless of whether the floor had to add money.
+- Without an insured snapshot: a natural loss increments the owned Insurance streak and arms the next Drop once threshold is reached; a natural non-loss resets streak.
+- Losses before Insurance is owned do not accumulate toward a future purchase.
+- streak / armed snapshot / active-Drop Insurance snapshot persist through screen changes and reload.
 
 ## 12. Performance guards
 

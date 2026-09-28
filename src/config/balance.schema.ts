@@ -205,7 +205,10 @@ export const balanceSchema = z.object({
         restitution: z.number().min(0).max(1),
       })).min(1).max(4),
     })),
-    insurance: z.array(plinkoLevelSchema),
+    insurance: z.array(plinkoLevelSchema.extend({
+      lossesNeeded: z.number().int().positive(),
+      floor: z.number().min(0).max(1),
+    })),
     splitterPhysics: z.object({
       childHorizontalOffsetPx: z.number().positive(),
       childHorizontalVelocityDelta: z.number().positive(),

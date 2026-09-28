@@ -1,8 +1,9 @@
 import type { BalanceConfig } from '../../config/balance.schema';
 import { creditCash, debitCash, roundMoney } from '../economy/money';
-import type { GameState } from '../state/GameState';
+import type { GameState, InsuranceArmState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
 import { deriveJackpotBiasGeometry } from './jackpotBias';
+import { resolveInsuranceAfterDrop } from './insurance';
 import {
   derivePocketMultipliers,
   getMaxBetForLevel,
@@ -47,6 +48,7 @@ export interface PendingDrop {
   maxBetLevel: number;
   pocketLevelsAtCommit: PocketUpgradeLevels;
   specialLevelsAtCommit: SpecialUpgradeLevels;
+  insuranceAtCommit: InsuranceArmState | null;
   committedGameDayIndex: number;
   committedMinuteOfDay: number;
   remainingActionMinutes: number;
@@ -57,9 +59,13 @@ export interface PendingDrop {
 
 export interface DropSettlement {
   state: GameState;
+  naturalPayout: number;
+  naturalMultiplier: number;
   payout: number;
   multiplier: number;
   losing: boolean;
+  insuranceApplied: boolean;
+  insuranceTopUp: number;
 }
 
 const isZeroPocketLevels = (levels: PocketUpgradeLevels): boolean =>
@@ -168,12 +174,17 @@ export const commitBareDrop = (
   const originalStake = calculateActualBet(state.cash, maxBet, selectedFraction);
   const pocketLevelsAtCommit = getPocketUpgradeLevels(state);
   const specialLevelsAtCommit = getSpecialUpgradeLevels(state);
+  const insuranceAtCommit =
+    state.plinkoInsuranceArmed === null
+      ? null
+      : { ...state.plinkoInsuranceArmed };
 
   return {
     state: {
       ...state,
       cash: debitCash(state.cash, originalStake),
       plinkoSelectedBetFraction: selectedFraction,
+      plinkoInsuranceArmed: null,
     },
     pendingDrop: {
       dropId,
@@ -182,6 +193,7 @@ export const commitBareDrop = (
       maxBetLevel: state.plinkoMaxBetLevel,
       pocketLevelsAtCommit,
       specialLevelsAtCommit,
+      insuranceAtCommit,
       committedGameDayIndex: state.clock.gameDayIndex,
       committedMinuteOfDay: state.clock.minuteOfDay,
       remainingActionMinutes: config.time.plinkoDropTimeMinutes,
@@ -307,21 +319,27 @@ export const settleAggregateDrop = (
 ): DropSettlement => {
   assertDropBoardCompatible(pendingDrop, config, state);
 
-  const roundedPayout = roundMoney(payout);
-  if (roundedPayout < 0) throw new RangeError('Drop payout cannot be negative');
+  const insurance = resolveInsuranceAfterDrop(
+    state,
+    pendingDrop.insuranceAtCommit,
+    pendingDrop.originalStake,
+    payout,
+    config,
+  );
 
+  const naturalMultiplier =
+    insurance.naturalPayout / pendingDrop.originalStake;
   const multiplier =
-    pendingDrop.originalStake === 0
-      ? 0
-      : roundedPayout / pendingDrop.originalStake;
-  const losing = roundedPayout < pendingDrop.originalStake;
+    insurance.payout / pendingDrop.originalStake;
 
   let nextState: GameState = {
     ...state,
-    cash: creditCash(state.cash, roundedPayout),
+    cash: creditCash(state.cash, insurance.payout),
+    plinkoInsuranceLossStreak: insurance.nextLossStreak,
+    plinkoInsuranceArmed: insurance.nextArmed,
   };
 
-  if (losing) {
+  if (insurance.naturalLosing) {
     nextState = applyNeedsDelta(
       nextState,
       { happiness: config.needs.plinkoLosingDropHappiness },
@@ -331,9 +349,13 @@ export const settleAggregateDrop = (
 
   return {
     state: nextState,
-    payout: roundedPayout,
+    naturalPayout: insurance.naturalPayout,
+    naturalMultiplier,
+    payout: insurance.payout,
     multiplier,
-    losing,
+    losing: insurance.naturalLosing,
+    insuranceApplied: insurance.insuranceApplied,
+    insuranceTopUp: insurance.insuranceTopUp,
   };
 };
 
