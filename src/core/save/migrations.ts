@@ -158,6 +158,28 @@ const v7Schema = z.object({
   pendingDrop: v7PendingDropSchema.nullable(),
 });
 
+const insuranceArmSchema = z.object({
+  level: z.number().int().positive(),
+  floor: z.number().min(0).max(1),
+});
+
+const v8GameSchema = v7GameSchema.extend({
+  plinkoInsuranceLevel: z.number().int().nonnegative(),
+  plinkoInsuranceLossStreak: z.number().int().nonnegative(),
+  plinkoInsuranceArmed: insuranceArmSchema.nullable(),
+});
+
+const v8PendingDropSchema = v7PendingDropSchema.extend({
+  insuranceAtCommit: insuranceArmSchema.nullable(),
+});
+
+const v8Schema = z.object({
+  version: z.literal(8),
+  game: v8GameSchema,
+  activeAction: z.unknown().nullable(),
+  pendingDrop: v8PendingDropSchema.nullable(),
+});
+
 const ZERO_GAME_POCKET_LEVELS = {
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,
@@ -190,6 +212,12 @@ const ZERO_GAME_INSURANCE = {
   plinkoInsuranceArmed: null,
 } as const;
 
+const DEFAULT_WORK_LEVELS = {
+  dishes: 1,
+  trash: 1,
+  courier: 1,
+} as const;
+
 export class UnsupportedSaveVersionError extends Error {
   public constructor(public readonly version: number) {
     super(`Unsupported save version: ${version}`);
@@ -204,6 +232,7 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
   ...ZERO_GAME_POCKET_LEVELS,
   ...ZERO_GAME_SPECIAL_LEVELS,
   ...ZERO_GAME_INSURANCE,
+  workLevels: DEFAULT_WORK_LEVELS,
 });
 
 const addPocketDefaults = <T extends object>(game: T) => ({
@@ -211,24 +240,52 @@ const addPocketDefaults = <T extends object>(game: T) => ({
   ...ZERO_GAME_POCKET_LEVELS,
   ...ZERO_GAME_SPECIAL_LEVELS,
   ...ZERO_GAME_INSURANCE,
+  workLevels: DEFAULT_WORK_LEVELS,
 });
 
 const addSpecialDefaults = <T extends object>(game: T) => ({
   ...game,
   ...ZERO_GAME_SPECIAL_LEVELS,
   ...ZERO_GAME_INSURANCE,
+  workLevels: DEFAULT_WORK_LEVELS,
 });
 
 const addBiasDefaults = <T extends object>(game: T) => ({
   ...game,
   plinkoJackpotBiasLevel: 0,
   ...ZERO_GAME_INSURANCE,
+  workLevels: DEFAULT_WORK_LEVELS,
 });
 
 const addInsuranceDefaults = <T extends object>(game: T) => ({
   ...game,
   ...ZERO_GAME_INSURANCE,
+  workLevels: DEFAULT_WORK_LEVELS,
 });
+
+const addWorkDefaults = <T extends object>(game: T) => ({
+  ...game,
+  workLevels: DEFAULT_WORK_LEVELS,
+});
+
+const addWorkActionPayoutSnapshot = (
+  action: unknown,
+  payoutMultiplier: number,
+): unknown => {
+  if (
+    action !== null &&
+    typeof action === 'object' &&
+    'kind' in action &&
+    action.kind === 'WORK' &&
+    !('payoutMultiplierAtStart' in action)
+  ) {
+    return {
+      ...action,
+      payoutMultiplierAtStart: payoutMultiplier,
+    };
+  }
+  return action;
+};
 
 const migrateV1 = (value: unknown): SaveState => {
   const old = v1Schema.parse(value);
@@ -264,7 +321,10 @@ const migrateV2 = (value: unknown): SaveState => {
   return parseSaveState({
     version: SAVE_VERSION,
     game: addPlinkoDefaults(old.game),
-    activeAction: old.activeAction,
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
     pendingDrop: null,
   });
 };
@@ -281,7 +341,10 @@ const migrateV3 = (value: unknown): SaveState => {
   return parseSaveState({
     version: SAVE_VERSION,
     game: addPocketDefaults(old.game),
-    activeAction: old.activeAction,
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
     pendingDrop: null,
   });
 };
@@ -292,7 +355,10 @@ const migrateV4 = (value: unknown): SaveState => {
   return parseSaveState({
     version: SAVE_VERSION,
     game: addPocketDefaults(old.game),
-    activeAction: old.activeAction,
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
     pendingDrop:
       old.pendingDrop === null
         ? null
@@ -311,7 +377,10 @@ const migrateV5 = (value: unknown): SaveState => {
   return parseSaveState({
     version: SAVE_VERSION,
     game: addSpecialDefaults(old.game),
-    activeAction: old.activeAction,
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
     pendingDrop:
       old.pendingDrop === null
         ? null
@@ -329,7 +398,10 @@ const migrateV6 = (value: unknown): SaveState => {
   return parseSaveState({
     version: SAVE_VERSION,
     game: addBiasDefaults(old.game),
-    activeAction: old.activeAction,
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
     pendingDrop:
       old.pendingDrop === null
         ? null
@@ -350,7 +422,10 @@ const migrateV7 = (value: unknown): SaveState => {
   return parseSaveState({
     version: SAVE_VERSION,
     game: addInsuranceDefaults(old.game),
-    activeAction: old.activeAction,
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
     pendingDrop:
       old.pendingDrop === null
         ? null
@@ -361,10 +436,25 @@ const migrateV7 = (value: unknown): SaveState => {
   });
 };
 
+const migrateV8 = (value: unknown): SaveState => {
+  const old = v8Schema.parse(value);
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: addWorkDefaults(old.game),
+    activeAction: addWorkActionPayoutSnapshot(
+      old.activeAction,
+      old.game.workPayoutMultiplier,
+    ),
+    pendingDrop: old.pendingDrop,
+  });
+};
+
 export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 8) return migrateV8(value);
   if (version === 7) return migrateV7(value);
   if (version === 6) return migrateV6(value);
   if (version === 5) return migrateV5(value);
