@@ -1,0 +1,44 @@
+name: Plinko Bias combined 100k
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/cascade**'
+      - 'src/core/plinko-rules/jackpotBias.ts'
+      - 'src/core/plinko-rules/cascade.ts'
+      - 'src/core/plinko-rules/drop.ts'
+      - 'src/core/plinko-rules/progression.ts'
+      - 'src/phaser/plinko/**'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-bias-combined-100k.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-bias-combined-100k-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  combined-max-bias:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Run 100k combined-max + Bias L4
+        run: >-
+          npm run simulate:plinko:cascade --
+          --runs 100000
+          --seed 67036400
+          --amplifier-level 5
+          --return-level 4
+          --splitter-level 5
+          --jackpot-bias-level 4
+          --output artifacts/plinko/bias-combined-100k
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plinko-bias-combined-100k
+          path: artifacts/plinko/bias-combined-100k
+          if-no-files-found: error
