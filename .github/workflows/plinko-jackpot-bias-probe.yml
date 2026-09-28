@@ -1,0 +1,30 @@
+name: Plinko Jackpot Bias probe
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/jackpotBiasProbe.ts'
+      - 'simulation/plinko/physicalRunner.ts'
+      - 'src/core/plinko-rules/jackpotBias.ts'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-jackpot-bias-probe.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-jackpot-bias-probe-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Probe Bias deflector neighborhood
+        env:
+          PLINKO_BIAS_PROBE_RUNS: 3000
+          PLINKO_BIAS_PROBE_SEED: 67036100
+        run: npm run simulate:plinko:jackpot-bias-probe
