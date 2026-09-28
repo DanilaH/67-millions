@@ -108,6 +108,7 @@ export const createBoardFingerprint = (
     specialPinLayoutId: config.plinko.specialPinLayout.id,
     splitterPhysics: config.plinko.splitterPhysics,
     returnPhysics: config.plinko.returnPhysics,
+    stuckWatchdog: config.plinko.stuckWatchdog,
     ballBallCollisions: config.plinko.ballBallCollisions,
     geometry: config.plinko.geometry,
     physics: config.plinko.physicsSeed,
