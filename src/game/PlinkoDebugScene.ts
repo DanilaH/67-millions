@@ -23,6 +23,7 @@ import {
   derivePocketMultipliers,
   getMaxBetForLevel,
 } from '../core/plinko-rules/progression';
+import { deriveJackpotBiasGeometry } from '../core/plinko-rules/jackpotBias';
 import {
   canAmplifyAt,
   canReturnLineage,
@@ -169,6 +170,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
         }
       },
     });
+    this.runtime.setJackpotBiasLevel(
+      pendingAtLoad?.specialLevelsAtCommit.jackpotBiasLevel ??
+        this.save.game.plinkoJackpotBiasLevel,
+    );
 
     this.visibilityHandler = () => {
       if (document.visibilityState === 'hidden') {
@@ -825,6 +830,33 @@ export class PlinkoDebugScene extends Phaser.Scene {
     graphics.fillStyle(0x66717f, 1);
     for (const peg of layout.pegs) {
       graphics.fillCircle(peg.x, peg.y, geometry.pegRadius);
+    }
+
+    const jackpotBiasLevel =
+      this.save?.pendingDrop?.specialLevelsAtCommit.jackpotBiasLevel ??
+      this.save?.game.plinkoJackpotBiasLevel ??
+      0;
+    const biasGeometry = deriveJackpotBiasGeometry(
+      balance,
+      jackpotBiasLevel,
+    );
+
+    graphics.lineStyle(5, 0xd6a94f, 1);
+    for (const deflector of biasGeometry) {
+      const halfX =
+        Math.cos(deflector.angleRadians) *
+        (deflector.length / 2);
+      const halfY =
+        Math.sin(deflector.angleRadians) *
+        (deflector.length / 2);
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          deflector.x - halfX,
+          deflector.y - halfY,
+          deflector.x + halfX,
+          deflector.y + halfY,
+        ),
+      );
     }
 
     graphics.lineStyle(2, 0x66717f, 1);
