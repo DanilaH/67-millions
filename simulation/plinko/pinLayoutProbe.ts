@@ -115,6 +115,52 @@ const pairs: PairStat[] = Array.from(pairDefinitions, ([id, definition]) => {
 const sortedPegs = [...pegs].sort((a, b) => b.hitRate - a.hitRate);
 const sortedPairs = [...pairs].sort((a, b) => b.hitRate - a.hitRate);
 
+
+const pegIndexById = new Map(layout.pegs.map((peg) => [peg.id, peg.index] as const));
+const selectedHitRate = (ids: readonly string[]): number => {
+  const indices = ids.map((id) => {
+    const index = pegIndexById.get(id);
+    if (index === undefined) throw new Error(`Unknown selected special-pin id: ${id}`);
+    return index;
+  });
+
+  let hitDrops = 0;
+  for (const sample of samples) {
+    const hits = new Set(sample.pegHitIndices ?? []);
+    if (indices.some((index) => hits.has(index))) hitDrops += 1;
+  }
+  return hitDrops / RUNS;
+};
+
+const selectedLayout = {
+  id: balance.plinko.specialPinLayout.id,
+  amplifierByCount: Object.fromEntries(
+    Object.entries(balance.plinko.specialPinLayout.amplifierByCount).map(
+      ([count, ids]) => [
+        count,
+        {
+          pegIds: ids,
+          measuredBareHitRate: selectedHitRate(ids),
+        },
+      ],
+    ),
+  ),
+  returnByLevel: balance.plinko.specialPinLayout.returnByLevel.map((entry) => ({
+    level: entry.level,
+    pegIds: entry.pegIds,
+    targetFrequency: entry.targetFrequency,
+    configuredMeasuredBareHitRate: entry.measuredBareHitRate,
+    measuredBareHitRate: selectedHitRate(entry.pegIds),
+    absoluteTargetDelta: Math.abs(selectedHitRate(entry.pegIds) - entry.targetFrequency),
+  })),
+  splitter: {
+    pegIds: balance.plinko.specialPinLayout.splitterPegIds,
+    measuredBareHitRate: selectedHitRate(
+      balance.plinko.specialPinLayout.splitterPegIds,
+    ),
+  },
+};
+
 const report = {
   metadata: {
     runs: RUNS,
@@ -125,6 +171,7 @@ const report = {
   },
   pegs: sortedPegs,
   symmetricPairs: sortedPairs,
+  selectedLayout,
 };
 
 const percent = (value: number): string => `${(value * 100).toFixed(3)}%`;
@@ -136,6 +183,18 @@ This is placement evidence only. The run uses the accepted bare-board physics an
 - runs: **${RUNS}**
 - seed: **${SEED}**
 - peg count: **${layout.pegs.length}**
+
+## Selected BOARD_LAYOUT_V0 seed
+
+- layout id: **${selectedLayout.id}**
+- Amplifier 1-pin set: \`${selectedLayout.amplifierByCount['1'].pegIds.join(', ')}\` → **${percent(selectedLayout.amplifierByCount['1'].measuredBareHitRate)}**
+- Amplifier 2-pin set: \`${selectedLayout.amplifierByCount['2'].pegIds.join(', ')}\` → **${percent(selectedLayout.amplifierByCount['2'].measuredBareHitRate)}**
+- Amplifier 3-pin set: \`${selectedLayout.amplifierByCount['3'].pegIds.join(', ')}\` → **${percent(selectedLayout.amplifierByCount['3'].measuredBareHitRate)}**
+- Splitter seed: \`${selectedLayout.splitter.pegIds.join(', ')}\` → **${percent(selectedLayout.splitter.measuredBareHitRate)}**
+
+| Return level | Pegs | Target | Measured | Abs delta |
+| ---: | --- | ---: | ---: | ---: |
+${selectedLayout.returnByLevel.map((entry) => `| ${entry.level} | ${entry.pegIds.join(' + ')} | ${percent(entry.targetFrequency)} | ${percent(entry.measuredBareHitRate)} | ${percent(entry.absoluteTargetDelta)} |`).join('\n')}
 
 ## Individual peg hit rate
 
@@ -174,4 +233,5 @@ process.stdout.write(JSON.stringify({
   topPegs: sortedPegs.slice(0, 12),
   topPairs: sortedPairs.slice(0, 16),
   lowPairs: sortedPairs.slice(-12),
+  selectedLayout,
 }, null, 2) + '\n');
