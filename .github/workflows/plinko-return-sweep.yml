@@ -1,0 +1,31 @@
+name: Plinko Return sweep
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/returnSweep.ts'
+      - 'simulation/plinko/cascadeRunner.ts'
+      - 'simulation/plinko/cascadeMetrics.ts'
+      - 'src/core/plinko-rules/returnPhysics.ts'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-return-sweep.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-return-sweep-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Run paired 10k Return sweep
+        env:
+          PLINKO_RETURN_SWEEP_RUNS: 10000
+          PLINKO_RETURN_SWEEP_SEED: 67035111
+        run: npm run simulate:plinko:return-sweep

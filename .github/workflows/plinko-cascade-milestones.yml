@@ -1,0 +1,80 @@
+name: Plinko cascade milestones
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/cascade**'
+      - 'src/core/plinko-rules/cascade.ts'
+      - 'src/core/plinko-rules/drop.ts'
+      - 'src/core/plinko-rules/progression.ts'
+      - 'src/core/plinko-rules/returnPhysics.ts'
+      - 'src/core/plinko-rules/specialPinLayout.ts'
+      - 'src/phaser/plinko/**'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-cascade-milestones.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-cascade-milestones-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  milestone-100k:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: baseline
+            amp: 0
+            ret: 0
+            split: 0
+          - name: amplifier-l1
+            amp: 1
+            ret: 0
+            split: 0
+          - name: amplifier-max
+            amp: 5
+            ret: 0
+            split: 0
+          - name: return-l1
+            amp: 0
+            ret: 1
+            split: 0
+          - name: return-max
+            amp: 0
+            ret: 4
+            split: 0
+          - name: splitter-l1
+            amp: 0
+            ret: 0
+            split: 1
+          - name: splitter-max
+            amp: 0
+            ret: 0
+            split: 5
+          - name: combined-max
+            amp: 5
+            ret: 4
+            split: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Run 100k cascade milestone
+        run: >-
+          npm run simulate:plinko:cascade --
+          --runs 100000
+          --seed 67035000
+          --amplifier-level ${{ matrix.amp }}
+          --return-level ${{ matrix.ret }}
+          --splitter-level ${{ matrix.split }}
+          --output artifacts/plinko/cascade-milestones/${{ matrix.name }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plinko-cascade-100k-${{ matrix.name }}
+          path: artifacts/plinko/cascade-milestones/${{ matrix.name }}
+          if-no-files-found: error

@@ -8,6 +8,7 @@ import {
   getPocketUpgradeLevels,
   purchaseMaxBetUpgrade,
   purchasePocketUpgrade,
+  purchaseSpecialUpgrade,
 } from '../src/core/plinko-rules/progression';
 import { createInitialGameState } from '../src/core/state/GameState';
 
@@ -85,7 +86,43 @@ describe('Plinko derived progression', () => {
     expect(getMaxBetForLevel(balance, upgraded.plinkoMaxBetLevel)).toBe(2_500);
   });
 
-  it('locks board and max-bet purchases while a Drop is pending', () => {
+  it('buys special upgrades strictly from configured ladders', () => {
+    const initial = {
+      ...createInitialGameState(balance, 1),
+      cash: 100_000,
+    };
+
+    const amp = purchaseSpecialUpgrade(
+      initial,
+      null,
+      balance,
+      'amplifier',
+    );
+    const ret = purchaseSpecialUpgrade(
+      amp,
+      null,
+      balance,
+      'return',
+    );
+    const splitter = purchaseSpecialUpgrade(
+      ret,
+      null,
+      balance,
+      'splitter',
+    );
+
+    expect(amp.plinkoAmplifierLevel).toBe(1);
+    expect(ret.plinkoReturnLevel).toBe(1);
+    expect(splitter.plinkoSplitterLevel).toBe(1);
+    expect(splitter.cash).toBe(
+      100_000 -
+        balance.plinko.amplifier[0]!.price -
+        balance.plinko.return[0]!.price -
+        balance.plinko.splitter[0]!.price,
+    );
+  });
+
+  it('locks board, max-bet and special purchases while a Drop is pending', () => {
     const state = {
       ...createInitialGameState(balance, 1),
       cash: 20_000,
@@ -106,6 +143,15 @@ describe('Plinko derived progression', () => {
         committed.state,
         committed.pendingDrop,
         balance,
+      ),
+    ).toThrow('pending');
+
+    expect(() =>
+      purchaseSpecialUpgrade(
+        committed.state,
+        committed.pendingDrop,
+        balance,
+        'splitter',
       ),
     ).toThrow('pending');
   });

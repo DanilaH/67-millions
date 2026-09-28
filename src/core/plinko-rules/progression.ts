@@ -9,7 +9,14 @@ export interface PocketUpgradeLevels {
   jackpotLevel: number;
 }
 
+export interface SpecialUpgradeLevels {
+  amplifierLevel: number;
+  returnLevel: number;
+  splitterLevel: number;
+}
+
 export type PocketUpgradeTrack = 'center' | 'mid' | 'jackpot';
+export type SpecialUpgradeTrack = 'amplifier' | 'return' | 'splitter';
 
 const getLevel = <T extends { level: number }>(
   levels: readonly T[],
@@ -37,6 +44,14 @@ export const getPocketUpgradeLevels = (
   centerLevel: state.plinkoCenterLevel,
   midLevel: state.plinkoMidLevel,
   jackpotLevel: state.plinkoJackpotLevel,
+});
+
+export const getSpecialUpgradeLevels = (
+  state: GameState,
+): SpecialUpgradeLevels => ({
+  amplifierLevel: state.plinkoAmplifierLevel,
+  returnLevel: state.plinkoReturnLevel,
+  splitterLevel: state.plinkoSplitterLevel,
 });
 
 export const derivePocketMultipliers = (
@@ -166,5 +181,61 @@ export const purchaseMaxBetUpgrade = (
   return buy(state, next.price, (paid) => ({
     ...paid,
     plinkoMaxBetLevel: next.level,
+  }));
+};
+
+
+export const getAmplifierUpgrade = (
+  config: BalanceConfig,
+  level: number,
+) => getLevel(config.plinko.amplifier, level, 'Amplifier');
+
+export const getReturnUpgrade = (
+  config: BalanceConfig,
+  level: number,
+) => getLevel(config.plinko.return, level, 'Return');
+
+export const getSplitterUpgrade = (
+  config: BalanceConfig,
+  level: number,
+) => getLevel(config.plinko.splitter, level, 'Splitter');
+
+export const purchaseSpecialUpgrade = (
+  state: GameState,
+  pendingDrop: PendingDrop | null,
+  config: BalanceConfig,
+  track: SpecialUpgradeTrack,
+): GameState => {
+  assertPurchasable(state, pendingDrop);
+
+  if (track === 'amplifier') {
+    const next = config.plinko.amplifier.find(
+      (entry) => entry.level === state.plinkoAmplifierLevel + 1,
+    );
+    if (!next) throw new Error('Amplifier track is already maxed');
+    return buy(state, next.price, (paid) => ({
+      ...paid,
+      plinkoAmplifierLevel: next.level,
+    }));
+  }
+
+  if (track === 'return') {
+    const next = config.plinko.return.find(
+      (entry) => entry.level === state.plinkoReturnLevel + 1,
+    );
+    if (!next) throw new Error('Return track is already maxed');
+    return buy(state, next.price, (paid) => ({
+      ...paid,
+      plinkoReturnLevel: next.level,
+    }));
+  }
+
+  const next = config.plinko.splitter.find(
+    (entry) => entry.level === state.plinkoSplitterLevel + 1,
+  );
+  if (!next) throw new Error('Splitter track is already maxed');
+  return buy(state, next.price, (paid) => ({
+    ...paid,
+    plinkoSplitterLevel: next.level,
   }));
 };

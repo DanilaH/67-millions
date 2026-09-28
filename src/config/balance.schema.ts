@@ -185,11 +185,34 @@ export const balanceSchema = z.object({
     jackpotUpgrades: z.array(plinkoLevelSchema.extend({
       edge: z.number().positive(),
     })),
-    amplifier: z.array(plinkoLevelSchema),
-    return: z.array(plinkoLevelSchema),
-    splitter: z.array(plinkoLevelSchema),
+    amplifier: z.array(plinkoLevelSchema.extend({
+      count: z.number().int().min(1).max(3),
+      multiplier: z.number().positive(),
+    })),
+    return: z.array(plinkoLevelSchema.extend({
+      targetFrequency: z.number().min(0).max(1),
+    })),
+    splitter: z.array(plinkoLevelSchema.extend({
+      childValue: z.number().positive(),
+    })),
     jackpotBias: z.array(plinkoLevelSchema),
     insurance: z.array(plinkoLevelSchema),
+    splitterPhysics: z.object({
+      childHorizontalOffsetPx: z.number().positive(),
+      childHorizontalVelocityDelta: z.number().positive(),
+      childVerticalVelocityMultiplier: z.number().positive().max(1),
+    }),
+    returnPhysics: z.object({
+      horizontalRetention: z.number().min(0).max(1),
+      resetVelocity: z.literal(true),
+    }),
+    stuckWatchdog: z.object({
+      speedEpsilon: z.number().positive(),
+      stationaryTicks: z.number().int().positive(),
+      horizontalVelocity: z.number().positive(),
+      downwardVelocity: z.number().positive(),
+    }),
+    ballBallCollisions: z.literal(false),
     specialPinLayout: z.object({
       id: z.literal('BOARD_LAYOUT_V0'),
       calibrationSeed: z.number().int().positive(),
@@ -226,6 +249,7 @@ export const balanceSchema = z.object({
       pocketCenterSpacing: z.number().positive(),
       fixedTimestepHz: z.number().positive(),
       spawnHorizontalJitterPx: z.number().nonnegative(),
+      pocketDividerPegOverlapPx: z.number().nonnegative(),
     }),
     physicsSeed: z.object({
       gravityY: z.number(),

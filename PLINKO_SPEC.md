@@ -22,7 +22,7 @@ Bare pockets:
 
 `12x | 4x | 1.5x | 1x | 0.25x | 0.25x | 1x | 1.5x | 4x | 12x`
 
-Theoretical ideal-binomial EV = **0.849609375x**. Bare V0 has been physically calibrated with the Matter runner; the accepted 100k sample measured **0.870225x EV**, **52.188% combined center**, **0.613% maximum mirrored-pocket delta**, and **0 stuck/watchdog outcomes**. The ideal distribution is a target shape, not a fake probability override.
+Theoretical ideal-binomial EV = **0.849609375x**. Bare V0 has been physically calibrated with the Matter runner; the current watchdog-enabled accepted 100k sample measured **0.865400x EV**, **52.188% combined center**, **0.614% maximum mirrored-pocket delta**, and **0 stuck/watchdog outcomes**. The ideal distribution is a target shape, not a fake probability override.
 
 ## 4. Physics seed
 
@@ -95,7 +95,7 @@ The V0 seed was selected from a 100k bare-board unique-hit probe:
 - Splitter starts from a separate symmetric seed slot;
 - the systems do not share a peg in the max-level seed state.
 
-These are **placement seeds**, not proof of final upgrade EV. T035 must rerun physical milestone reports with the actual Amplifier / Return / Splitter effects enabled before those effects are treated as balanced.
+These began as **placement seeds**, not proof of final upgrade EV. T035 has now enabled the real Amplifier / Return / Splitter effects and produced 100k physical milestone reports for baseline, isolated L1/max effects and combined max. The evidence is recorded in `reports/plinko/T035_CASCADE_EFFECTS.md`. Upgrade prices remain TUNABLE until full-game simulation.
 
 ## 10. Upgrade systems
 
@@ -117,7 +117,7 @@ The `outerStatic` 4x pair is intentionally unchanged by the current Center/Mid/J
 A hit multiplies current ball value. A specific Amplifier can proc a lineage at most once.
 
 ### Return
-Returns a ball to the upper board preserving **100% current value**. Maximum one Return proc per lineage in V0.
+Returns a ball to the upper board preserving **100% current value**. Maximum one Return proc per lineage in V0. V0 re-entry preserves the current physical X coordinate, moves the ball to the configured upper-board Y, resets velocity/rotation and introduces no additional RNG.
 
 ### Splitter
 Creates two children using configured value per child. Guards:
@@ -149,7 +149,8 @@ Independent global progression; it controls allowed stake, not board EV.
 - object pooling;
 - fixed timestep;
 - x2/x4 visual speed may accelerate long cascades without changing simulation result;
-- stuck-body watchdog must not truncate legitimate payouts.
+- stuck-body watchdog must not truncate legitimate payouts;
+- V0 watchdog acts only after sustained near-zero velocity and applies a deterministic physical nudge; it never assigns a pocket or payout.
 
 ## 13. Required physical simulation output
 

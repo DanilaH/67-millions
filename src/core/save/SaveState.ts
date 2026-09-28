@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 5 as const;
+export const SAVE_VERSION = 6 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -31,6 +31,9 @@ const gameStateSchema = z.object({
   plinkoCenterLevel: z.number().int().nonnegative(),
   plinkoMidLevel: z.number().int().nonnegative(),
   plinkoJackpotLevel: z.number().int().nonnegative(),
+  plinkoAmplifierLevel: z.number().int().nonnegative(),
+  plinkoReturnLevel: z.number().int().nonnegative(),
+  plinkoSplitterLevel: z.number().int().nonnegative(),
   rngState: z.number().int().nonnegative(),
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
   victory: z.boolean(),
@@ -74,6 +77,7 @@ const ballSnapshotSchema = z.object({
   amplifierProcIds: z.array(z.string()),
   returnUsed: z.boolean(),
   blockedSplitterId: z.string().nullable(),
+  watchdogStationaryTicks: z.number().int().nonnegative().default(0),
 });
 
 const dropPhysicsSnapshotSchema = z.object({
@@ -91,6 +95,11 @@ const pendingDropSchema = z.object({
     centerLevel: z.number().int().nonnegative(),
     midLevel: z.number().int().nonnegative(),
     jackpotLevel: z.number().int().nonnegative(),
+  }),
+  specialLevelsAtCommit: z.object({
+    amplifierLevel: z.number().int().nonnegative(),
+    returnLevel: z.number().int().nonnegative(),
+    splitterLevel: z.number().int().nonnegative(),
   }),
   committedGameDayIndex: z.number().int().nonnegative(),
   committedMinuteOfDay: z.number().min(0).lt(24 * 60),

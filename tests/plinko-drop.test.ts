@@ -6,6 +6,7 @@ import {
   calculateActualBet,
   commitBareDrop,
   setDropPhysicsSnapshot,
+  settleAggregateDrop,
   settleBareDrop,
 } from '../src/core/plinko-rules/drop';
 import { createInitialGameState } from '../src/core/state/GameState';
@@ -57,6 +58,7 @@ describe('bare Plinko transaction', () => {
           amplifierProcIds: ['amp-a'],
           returnUsed: false,
           blockedSplitterId: null,
+          watchdogStationaryTicks: 17,
         },
       ],
     };
@@ -66,6 +68,7 @@ describe('bare Plinko transaction', () => {
 
     expect(pending.physics?.fixedTicksElapsed).toBe(42);
     expect(pending.physics?.balls[0]?.amplifierProcIds).toEqual(['amp-a']);
+    expect(pending.physics?.balls[0]?.watchdogStationaryTicks).toBe(17);
     expect(() => assertDropBoardCompatible(pending, balance)).not.toThrow();
 
     const incompatible = structuredClone(balance);
@@ -100,6 +103,37 @@ describe('bare Plinko transaction', () => {
     expect(centerLoss.state.cash).toBe(125);
     expect(centerLoss.losing).toBe(true);
     expect(centerLoss.state.needs.happiness).toBe(99);
+  });
+
+  it('settles a multi-ball aggregate exactly once for cash and Happiness', () => {
+    const initial = createInitialGameState(balance, 123);
+    const committed = commitBareDrop(initial, null, balance, 'drop-agg', 1);
+
+    const losingAggregate = settleAggregateDrop(
+      committed.state,
+      committed.pendingDrop,
+      450,
+      balance,
+    );
+
+    expect(losingAggregate.payout).toBe(450);
+    expect(losingAggregate.multiplier).toBe(0.9);
+    expect(losingAggregate.losing).toBe(true);
+    expect(losingAggregate.state.cash).toBe(450);
+    expect(losingAggregate.state.needs.happiness).toBe(99);
+
+    const winningAggregate = settleAggregateDrop(
+      committed.state,
+      committed.pendingDrop,
+      750,
+      balance,
+    );
+
+    expect(winningAggregate.payout).toBe(750);
+    expect(winningAggregate.multiplier).toBe(1.5);
+    expect(winningAggregate.losing).toBe(false);
+    expect(winningAggregate.state.cash).toBe(750);
+    expect(winningAggregate.state.needs.happiness).toBe(100);
   });
 
   it('does not subtract stake twice from a winning total-return pocket', () => {
