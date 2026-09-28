@@ -2,49 +2,33 @@ import { balance } from '../../src/config/balance';
 import { runBarePhysicalDrops } from './physicalRunner';
 import { summarizePhysicalDrops } from './metrics';
 
-const runs = Number(process.env.PLINKO_BIAS_PROBE_RUNS ?? 5000);
-const seed = Number(process.env.PLINKO_BIAS_PROBE_SEED ?? 67_036_300);
+const runs = Number(process.env.PLINKO_BIAS_PROBE_RUNS ?? 3000);
+const seed = Number(process.env.PLINKO_BIAS_PROBE_SEED ?? 67_036_400);
 
-const restitutions = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1];
+const rows = [];
 
-const baseline = summarizePhysicalDrops(
-  balance,
-  runBarePhysicalDrops(balance, {
-    runs,
-    seed,
-    batchSize: 256,
-    jackpotBiasLevel: 0,
-  }),
-);
-
-const candidates = [];
-
-for (const restitution of restitutions) {
-  const config = structuredClone(balance);
-  config.plinko.jackpotBias[0] = {
-    ...config.plinko.jackpotBias[0]!,
-    deflectorOffsetX: 174,
-    deflectorY: 320,
-    length: 36,
-    thickness: 5,
-    angleDegrees: 25,
-    restitution,
-  };
-
+for (
+  let jackpotBiasLevel = 0;
+  jackpotBiasLevel <= balance.plinko.jackpotBias.length;
+  jackpotBiasLevel += 1
+) {
   const metrics = summarizePhysicalDrops(
-    config,
-    runBarePhysicalDrops(config, {
+    balance,
+    runBarePhysicalDrops(balance, {
       runs,
       seed,
       batchSize: 256,
-      jackpotBiasLevel: 1,
+      jackpotBiasLevel,
     }),
   );
 
-  candidates.push({
-    restitution,
+  rows.push({
+    jackpotBiasLevel,
+    deflectorPairCount:
+      jackpotBiasLevel === 0
+        ? 0
+        : balance.plinko.jackpotBias[jackpotBiasLevel - 1]!.deflectorPairs.length,
     edgePocketProbability: metrics.edgePocketProbability,
-    edgeDelta: metrics.edgePocketProbability - baseline.edgePocketProbability,
     ev: metrics.ev,
     combinedCenterProbability: metrics.combinedCenterProbability,
     symmetryDelta: metrics.symmetryDelta,
@@ -54,14 +38,4 @@ for (const restitution of restitutions) {
   });
 }
 
-process.stdout.write(JSON.stringify({
-  runs,
-  seed,
-  baseline: {
-    edgePocketProbability: baseline.edgePocketProbability,
-    ev: baseline.ev,
-    symmetryDelta: baseline.symmetryDelta,
-    stuckRate: baseline.stuckRate,
-  },
-  candidates,
-}, null, 2) + '\n');
+process.stdout.write(JSON.stringify({ runs, seed, rows }, null, 2) + '\n');
