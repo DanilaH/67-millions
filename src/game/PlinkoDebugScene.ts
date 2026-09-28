@@ -9,25 +9,37 @@ import {
 import {
   assertDropBoardCompatible,
   commitBareDrop,
+  calculateBallPocketPayout,
   setDropPhysicsSnapshot,
   type BetFraction,
   type DropBallSnapshot,
+  type DropBallState,
 } from '../core/plinko-rules/drop';
 import {
   advancePendingDropTime,
-  settlePendingDropAndResumeTime,
+  settleAggregatePendingDropAndResumeTime,
 } from '../core/plinko-rules/dropTiming';
 import {
   derivePocketMultipliers,
   getMaxBetForLevel,
 } from '../core/plinko-rules/progression';
+import {
+  canAmplifyAt,
+  canReturnLineage,
+  canSplitAt,
+  clearSplitterBlockAfterPeg,
+  createRootBallState,
+  createSplitChildren,
+  deriveActiveSpecialPins,
+  markAmplifierProc,
+  markReturnUsed,
+} from '../core/plinko-rules/cascade';
 import { SeededRandom } from '../core/rng/SeededRandom';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import { createInitialGameState } from '../core/state/GameState';
 import {
   createBarePlinko,
-  type BallSnapshotMetadata,
   type BarePlinkoRuntime,
 } from '../phaser/plinko/createBarePlinko';
 
@@ -42,8 +54,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
   private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
-  private readonly balls = new Map<MatterJS.BodyType, BallSnapshotMetadata>();
+  private readonly balls = new Map<MatterJS.BodyType, DropBallState>();
   private saveWriteChain: Promise<void> = Promise.resolve();
+  private cascadeMutationChain: Promise<void> = Promise.resolve();
   private physicsSaveQueued = false;
   private lastPersistedPhysicsTick = 0;
   private visibilityHandler: (() => void) | null = null;
