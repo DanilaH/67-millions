@@ -12,6 +12,7 @@ import {
 } from '../../core/plinko-rules/boardLayout';
 import type { RandomSource } from '@danilah/mini-games-kit/core';
 import { getReturnTarget } from '../../core/plinko-rules/returnPhysics';
+import { deriveJackpotBiasGeometry } from '../../core/plinko-rules/jackpotBias';
 import {
   getPlinkoWatchdogVelocity,
   isPlinkoBodyTechnicallyStuck,
@@ -29,6 +30,7 @@ export interface BarePlinkoRuntime {
   restoreBall(snapshot: DropBallSnapshot): MatterJS.BodyType;
   returnBall(body: MatterJS.BodyType): void;
   splitBall(body: MatterJS.BodyType): [MatterJS.BodyType, MatterJS.BodyType];
+  setJackpotBiasLevel(level: number): void;
   removeBall(body: MatterJS.BodyType): void;
   snapshotBall(
     body: MatterJS.BodyType,
@@ -56,6 +58,7 @@ export const createBarePlinko = (
   const geometry = config.plinko.geometry;
   const physics = config.plinko.physicsSeed;
   const createdBodies = new Set<MatterJS.BodyType>();
+  const jackpotBiasBodies = new Set<MatterJS.BodyType>();
   const ballStationaryTicks = new Map<MatterJS.BodyType, number>();
   let fixedTicksElapsed = 0;
 
@@ -255,6 +258,35 @@ export const createBarePlinko = (
     return body;
   };
 
+  const setJackpotBiasLevel = (level: number): void => {
+    for (const body of jackpotBiasBodies) {
+      matter.world.remove(body);
+      createdBodies.delete(body);
+    }
+    jackpotBiasBodies.clear();
+
+    for (const bumper of deriveJackpotBiasGeometry(config, level)) {
+      const body = addCreated(
+        matter.add.circle(
+          bumper.x,
+          bumper.y,
+          bumper.radius,
+          {
+            isStatic: true,
+            label: `plinko:${bumper.id}`,
+            restitution: bumper.restitution,
+            friction: physics.friction,
+            collisionFilter: {
+              category: STATIC_CATEGORY,
+              mask: 0xffff,
+            },
+          },
+        ),
+      );
+      jackpotBiasBodies.add(body);
+    }
+  };
+
   const removeBall = (body: MatterJS.BodyType): void => {
     matter.world.remove(body);
     createdBodies.delete(body);
@@ -293,6 +325,7 @@ export const createBarePlinko = (
       matter.body.setAngularVelocity(body, 0);
       ballStationaryTicks.set(body, 0);
     },
+    setJackpotBiasLevel,
     splitBall: (body) => {
       const { childHorizontalOffsetPx, childHorizontalVelocityDelta, childVerticalVelocityMultiplier } =
         config.plinko.splitterPhysics;
@@ -344,6 +377,7 @@ export const createBarePlinko = (
         matter.world.remove(body);
       }
       createdBodies.clear();
+      jackpotBiasBodies.clear();
       ballStationaryTicks.clear();
     },
   };
