@@ -3,9 +3,9 @@ import { runBarePhysicalDrops } from './physicalRunner';
 import { summarizePhysicalDrops } from './metrics';
 
 const runs = Number(process.env.PLINKO_BIAS_PROBE_RUNS ?? 5000);
-const seed = Number(process.env.PLINKO_BIAS_PROBE_SEED ?? 67_036_200);
+const seed = Number(process.env.PLINKO_BIAS_PROBE_SEED ?? 67_036_300);
 
-const angles = [15, 25, 35, 45, 55, 65, 75];
+const restitutions = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1];
 
 const baseline = summarizePhysicalDrops(
   balance,
@@ -19,7 +19,7 @@ const baseline = summarizePhysicalDrops(
 
 const candidates = [];
 
-for (const angleDegrees of angles) {
+for (const restitution of restitutions) {
   const config = structuredClone(balance);
   config.plinko.jackpotBias[0] = {
     ...config.plinko.jackpotBias[0]!,
@@ -27,8 +27,8 @@ for (const angleDegrees of angles) {
     deflectorY: 320,
     length: 36,
     thickness: 5,
-    angleDegrees,
-    restitution: 0.75,
+    angleDegrees: 25,
+    restitution,
   };
 
   const metrics = summarizePhysicalDrops(
@@ -42,7 +42,7 @@ for (const angleDegrees of angles) {
   );
 
   candidates.push({
-    angleDegrees,
+    restitution,
     edgePocketProbability: metrics.edgePocketProbability,
     edgeDelta: metrics.edgePocketProbability - baseline.edgePocketProbability,
     ev: metrics.ev,
