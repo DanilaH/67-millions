@@ -11,6 +11,7 @@ import {
   type PlinkoBoardLayout,
 } from '../../core/plinko-rules/boardLayout';
 import type { RandomSource } from '@danilah/mini-games-kit/core';
+import { getReturnTarget } from '../../core/plinko-rules/returnPhysics';
 
 const BALL_CATEGORY = 0x0002;
 const STATIC_CATEGORY = 0x0001;
@@ -240,10 +241,8 @@ export const createBarePlinko = (
       return body;
     },
     returnBall: (body) => {
-      matter.body.setPosition(body, {
-        x: getSpawnX(config, random.next()),
-        y: geometry.topPegY - geometry.verticalPegSpacing,
-      });
+      const target = getReturnTarget(config, body.position.x);
+      matter.body.setPosition(body, target);
       matter.body.setVelocity(body, { x: 0, y: 0 });
       matter.body.setAngle(body, 0);
       matter.body.setAngularVelocity(body, 0);
