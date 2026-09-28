@@ -58,6 +58,7 @@ describe('bare Plinko transaction', () => {
           amplifierProcIds: ['amp-a'],
           returnUsed: false,
           blockedSplitterId: null,
+          watchdogStationaryTicks: 17,
         },
       ],
     };
@@ -67,6 +68,7 @@ describe('bare Plinko transaction', () => {
 
     expect(pending.physics?.fixedTicksElapsed).toBe(42);
     expect(pending.physics?.balls[0]?.amplifierProcIds).toEqual(['amp-a']);
+    expect(pending.physics?.balls[0]?.watchdogStationaryTicks).toBe(17);
     expect(() => assertDropBoardCompatible(pending, balance)).not.toThrow();
 
     const incompatible = structuredClone(balance);
