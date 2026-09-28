@@ -23,6 +23,7 @@ import {
   derivePocketMultipliers,
   getMaxBetForLevel,
 } from '../core/plinko-rules/progression';
+import { deriveJackpotBiasGeometry } from '../core/plinko-rules/jackpotBias';
 import {
   canAmplifyAt,
   canReturnLineage,
@@ -169,6 +170,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
         }
       },
     });
+    this.runtime.setJackpotBiasLevel(
+      pendingAtLoad?.specialLevelsAtCommit.jackpotBiasLevel ??
+        this.save.game.plinkoJackpotBiasLevel,
+    );
 
     this.visibilityHandler = () => {
       if (document.visibilityState === 'hidden') {
@@ -183,6 +188,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     if (pendingAtLoad) {
       assertDropBoardCompatible(pendingAtLoad, balance, this.save.game);
+      this.runtime.setJackpotBiasLevel(
+        pendingAtLoad.specialLevelsAtCommit.jackpotBiasLevel,
+      );
 
       if (pendingAtLoad.physics && pendingAtLoad.physics.balls.length > 0) {
         this.runtime.setFixedTicksElapsed(pendingAtLoad.physics.fixedTicksElapsed);
@@ -407,6 +415,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         return;
       }
 
+      this.runtime.setJackpotBiasLevel(
+        committed.pendingDrop.specialLevelsAtCommit.jackpotBiasLevel,
+      );
       const body = this.runtime.spawnBall();
       this.balls.set(
         body,
@@ -589,6 +600,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
       game: result.state,
       pendingDrop: null,
     };
+    this.runtime.setJackpotBiasLevel(
+      this.save.game.plinkoJackpotBiasLevel,
+    );
     await this.enqueueSave(true);
 
     const terminalSuffix = result.state.terminalReason
@@ -816,6 +830,35 @@ export class PlinkoDebugScene extends Phaser.Scene {
     graphics.fillStyle(0x66717f, 1);
     for (const peg of layout.pegs) {
       graphics.fillCircle(peg.x, peg.y, geometry.pegRadius);
+    }
+
+    const jackpotBiasLevel =
+      this.save?.pendingDrop?.specialLevelsAtCommit.jackpotBiasLevel ??
+      this.save?.game.plinkoJackpotBiasLevel ??
+      0;
+    const biasGeometry = deriveJackpotBiasGeometry(
+      balance,
+      jackpotBiasLevel,
+    );
+
+    for (const deflector of biasGeometry) {
+      const half = deflector.length / 2;
+      const dx = Math.cos(deflector.angleRadians) * half;
+      const dy = Math.sin(deflector.angleRadians) * half;
+
+      graphics.lineStyle(
+        deflector.thickness,
+        0xd8a84e,
+        1,
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          deflector.x - dx,
+          deflector.y - dy,
+          deflector.x + dx,
+          deflector.y + dy,
+        ),
+      );
     }
 
     graphics.lineStyle(2, 0x66717f, 1);

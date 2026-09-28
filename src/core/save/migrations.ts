@@ -117,6 +117,27 @@ const v5Schema = z.object({
   pendingDrop: v5PendingDropSchema.nullable(),
 });
 
+const v6GameSchema = v5GameSchema.extend({
+  plinkoAmplifierLevel: z.number().int().nonnegative(),
+  plinkoReturnLevel: z.number().int().nonnegative(),
+  plinkoSplitterLevel: z.number().int().nonnegative(),
+});
+
+const v6PendingDropSchema = v5PendingDropSchema.extend({
+  specialLevelsAtCommit: z.object({
+    amplifierLevel: z.number().int().nonnegative(),
+    returnLevel: z.number().int().nonnegative(),
+    splitterLevel: z.number().int().nonnegative(),
+  }),
+});
+
+const v6Schema = z.object({
+  version: z.literal(6),
+  game: v6GameSchema,
+  activeAction: z.unknown().nullable(),
+  pendingDrop: v6PendingDropSchema.nullable(),
+});
+
 const ZERO_GAME_POCKET_LEVELS = {
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,
@@ -133,12 +154,14 @@ const ZERO_GAME_SPECIAL_LEVELS = {
   plinkoAmplifierLevel: 0,
   plinkoReturnLevel: 0,
   plinkoSplitterLevel: 0,
+  plinkoJackpotBiasLevel: 0,
 } as const;
 
 const ZERO_DROP_SPECIAL_LEVELS = {
   amplifierLevel: 0,
   returnLevel: 0,
   splitterLevel: 0,
+  jackpotBiasLevel: 0,
 } as const;
 
 export class UnsupportedSaveVersionError extends Error {
@@ -165,6 +188,11 @@ const addPocketDefaults = <T extends object>(game: T) => ({
 const addSpecialDefaults = <T extends object>(game: T) => ({
   ...game,
   ...ZERO_GAME_SPECIAL_LEVELS,
+});
+
+const addBiasDefaults = <T extends object>(game: T) => ({
+  ...game,
+  plinkoJackpotBiasLevel: 0,
 });
 
 const migrateV1 = (value: unknown): SaveState => {
@@ -258,10 +286,31 @@ const migrateV5 = (value: unknown): SaveState => {
   });
 };
 
+const migrateV6 = (value: unknown): SaveState => {
+  const old = v6Schema.parse(value);
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: addBiasDefaults(old.game),
+    activeAction: old.activeAction,
+    pendingDrop:
+      old.pendingDrop === null
+        ? null
+        : {
+            ...old.pendingDrop,
+            specialLevelsAtCommit: {
+              ...old.pendingDrop.specialLevelsAtCommit,
+              jackpotBiasLevel: 0,
+            },
+          },
+  });
+};
+
 export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 6) return migrateV6(value);
   if (version === 5) return migrateV5(value);
   if (version === 4) return migrateV4(value);
   if (version === 3) return migrateV3(value);

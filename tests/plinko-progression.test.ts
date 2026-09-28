@@ -110,15 +110,23 @@ describe('Plinko derived progression', () => {
       balance,
       'splitter',
     );
+    const bias = purchaseSpecialUpgrade(
+      splitter,
+      null,
+      balance,
+      'jackpotBias',
+    );
 
     expect(amp.plinkoAmplifierLevel).toBe(1);
     expect(ret.plinkoReturnLevel).toBe(1);
     expect(splitter.plinkoSplitterLevel).toBe(1);
-    expect(splitter.cash).toBe(
+    expect(bias.plinkoJackpotBiasLevel).toBe(1);
+    expect(bias.cash).toBe(
       100_000 -
         balance.plinko.amplifier[0]!.price -
         balance.plinko.return[0]!.price -
-        balance.plinko.splitter[0]!.price,
+        balance.plinko.splitter[0]!.price -
+        balance.plinko.jackpotBias[0]!.price,
     );
   });
 
@@ -152,6 +160,15 @@ describe('Plinko derived progression', () => {
         committed.pendingDrop,
         balance,
         'splitter',
+      ),
+    ).toThrow('pending');
+
+    expect(() =>
+      purchaseSpecialUpgrade(
+        committed.state,
+        committed.pendingDrop,
+        balance,
+        'jackpotBias',
       ),
     ).toThrow('pending');
   });

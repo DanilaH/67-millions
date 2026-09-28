@@ -19,6 +19,7 @@ describe('Plinko special-pin lineage rules', () => {
       amplifierLevel: 1,
       returnLevel: 1,
       splitterLevel: 1,
+      jackpotBiasLevel: 0,
     });
 
     expect(active.amplifier?.pegIds).toEqual(['r6c3']);

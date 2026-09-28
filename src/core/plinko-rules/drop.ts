@@ -2,6 +2,7 @@ import type { BalanceConfig } from '../../config/balance.schema';
 import { creditCash, debitCash, roundMoney } from '../economy/money';
 import type { GameState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
+import { deriveJackpotBiasGeometry } from './jackpotBias';
 import {
   derivePocketMultipliers,
   getMaxBetForLevel,
@@ -69,7 +70,8 @@ const isZeroPocketLevels = (levels: PocketUpgradeLevels): boolean =>
 const isZeroSpecialLevels = (levels: SpecialUpgradeLevels): boolean =>
   levels.amplifierLevel === 0 &&
   levels.returnLevel === 0 &&
-  levels.splitterLevel === 0;
+  levels.splitterLevel === 0 &&
+  levels.jackpotBiasLevel === 0;
 
 export const createBareBoardFingerprint = (
   config: BalanceConfig,
@@ -95,10 +97,10 @@ export const createPocketBoardFingerprintV2 = (
     physics: config.plinko.physicsSeed,
   });
 
-export const createBoardFingerprint = (
+export const createSpecialBoardFingerprintV3 = (
   config: BalanceConfig,
   pocketLevels: PocketUpgradeLevels,
-  specialLevels: SpecialUpgradeLevels,
+  specialLevels: Omit<SpecialUpgradeLevels, 'jackpotBiasLevel'>,
 ): string =>
   JSON.stringify({
     version: 3,
@@ -107,6 +109,30 @@ export const createBoardFingerprint = (
     pocketLevels,
     specialLevels,
     specialPinLayoutId: config.plinko.specialPinLayout.id,
+    splitterPhysics: config.plinko.splitterPhysics,
+    returnPhysics: config.plinko.returnPhysics,
+    stuckWatchdog: config.plinko.stuckWatchdog,
+    ballBallCollisions: config.plinko.ballBallCollisions,
+    geometry: config.plinko.geometry,
+    physics: config.plinko.physicsSeed,
+  });
+
+export const createBoardFingerprint = (
+  config: BalanceConfig,
+  pocketLevels: PocketUpgradeLevels,
+  specialLevels: SpecialUpgradeLevels,
+): string =>
+  JSON.stringify({
+    version: 4,
+    rows: config.plinko.rows,
+    pockets: derivePocketMultipliers(config, pocketLevels),
+    pocketLevels,
+    specialLevels,
+    specialPinLayoutId: config.plinko.specialPinLayout.id,
+    jackpotBiasGeometry: deriveJackpotBiasGeometry(
+      config,
+      specialLevels.jackpotBiasLevel,
+    ),
     splitterPhysics: config.plinko.splitterPhysics,
     returnPhysics: config.plinko.returnPhysics,
     stuckWatchdog: config.plinko.stuckWatchdog,
@@ -205,10 +231,24 @@ export const assertDropBoardCompatible = (
     pendingDrop.boardFingerprint ===
       createPocketBoardFingerprintV2(config, pendingDrop.pocketLevelsAtCommit);
 
+  const legacyBiasV3 =
+    pendingDrop.specialLevelsAtCommit.jackpotBiasLevel === 0 &&
+    pendingDrop.boardFingerprint ===
+      createSpecialBoardFingerprintV3(
+        config,
+        pendingDrop.pocketLevelsAtCommit,
+        {
+          amplifierLevel: pendingDrop.specialLevelsAtCommit.amplifierLevel,
+          returnLevel: pendingDrop.specialLevelsAtCommit.returnLevel,
+          splitterLevel: pendingDrop.specialLevelsAtCommit.splitterLevel,
+        },
+      );
+
   if (
     pendingDrop.boardFingerprint !== expected &&
     !legacyBareV1 &&
-    !legacyPocketV2
+    !legacyPocketV2 &&
+    !legacyBiasV3
   ) {
     throw new Error(
       'Pending Drop board fingerprint does not match the current runtime board',
@@ -225,7 +265,8 @@ export const assertDropBoardCompatible = (
       currentPocket.jackpotLevel !== pendingDrop.pocketLevelsAtCommit.jackpotLevel ||
       currentSpecial.amplifierLevel !== pendingDrop.specialLevelsAtCommit.amplifierLevel ||
       currentSpecial.returnLevel !== pendingDrop.specialLevelsAtCommit.returnLevel ||
-      currentSpecial.splitterLevel !== pendingDrop.specialLevelsAtCommit.splitterLevel
+      currentSpecial.splitterLevel !== pendingDrop.specialLevelsAtCommit.splitterLevel ||
+      currentSpecial.jackpotBiasLevel !== pendingDrop.specialLevelsAtCommit.jackpotBiasLevel
     ) {
       throw new Error(
         'Pending Drop upgrade state changed after the Drop was committed',

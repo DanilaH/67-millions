@@ -1,0 +1,37 @@
+name: Plinko Jackpot Bias sweep
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/jackpotBiasSweep.ts'
+      - 'simulation/plinko/physicalRunner.ts'
+      - 'src/core/plinko-rules/jackpotBias.ts'
+      - 'src/phaser/plinko/**'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-jackpot-bias.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-jackpot-bias-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Run paired 10k Bias sweep
+        env:
+          PLINKO_BIAS_SWEEP_RUNS: 10000
+          PLINKO_BIAS_SWEEP_SEED: 67036000
+          PLINKO_BIAS_SWEEP_OUTPUT: artifacts/plinko/jackpot-bias-10k
+        run: npm run simulate:plinko:jackpot-bias
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plinko-jackpot-bias-10k
+          path: artifacts/plinko/jackpot-bias-10k
+          if-no-files-found: error

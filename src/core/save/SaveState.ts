@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 6 as const;
+export const SAVE_VERSION = 7 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -34,6 +34,7 @@ const gameStateSchema = z.object({
   plinkoAmplifierLevel: z.number().int().nonnegative(),
   plinkoReturnLevel: z.number().int().nonnegative(),
   plinkoSplitterLevel: z.number().int().nonnegative(),
+  plinkoJackpotBiasLevel: z.number().int().nonnegative(),
   rngState: z.number().int().nonnegative(),
   terminalReason: z.enum(['BARRY_PAYMENT_FAILED', 'HEALTH_ZERO']).nullable(),
   victory: z.boolean(),
@@ -100,6 +101,7 @@ const pendingDropSchema = z.object({
     amplifierLevel: z.number().int().nonnegative(),
     returnLevel: z.number().int().nonnegative(),
     splitterLevel: z.number().int().nonnegative(),
+    jackpotBiasLevel: z.number().int().nonnegative(),
   }),
   committedGameDayIndex: z.number().int().nonnegative(),
   committedMinuteOfDay: z.number().min(0).lt(24 * 60),

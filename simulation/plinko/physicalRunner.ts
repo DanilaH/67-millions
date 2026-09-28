@@ -3,6 +3,7 @@ import Matter from 'matter-js';
 import type { BalanceConfig } from '../../src/config/balance.schema';
 import { deriveBarePlinkoLayout, getSpawnX } from '../../src/core/plinko-rules/boardLayout';
 import { SeededRandom } from '../../src/core/rng/SeededRandom';
+import { deriveJackpotBiasGeometry } from '../../src/core/plinko-rules/jackpotBias';
 import {
   getPlinkoWatchdogVelocity,
   isPlinkoBodyTechnicallyStuck,
@@ -31,6 +32,7 @@ export interface PhysicalRunnerOptions {
   maxTicks?: number;
   pocketMultipliers?: readonly number[];
   trackPegHits?: boolean;
+  jackpotBiasLevel?: number;
 }
 
 interface ActiveBallMeta {
@@ -44,6 +46,7 @@ interface ActiveBallMeta {
 
 const createStaticBoard = (
   config: BalanceConfig,
+  jackpotBiasLevel: number,
 ): {
   bodies: Matter.Body[];
   sensorPocketByBodyId: Map<number, number>;
@@ -66,6 +69,25 @@ const createStaticBoard = (
       });
     bodies.push(body);
     pegIndexByBodyId.set(body.id, peg.index);
+  }
+
+  for (const bumper of deriveJackpotBiasGeometry(config, jackpotBiasLevel)) {
+    bodies.push(
+      Matter.Bodies.rectangle(
+        bumper.x,
+        bumper.y,
+        bumper.length,
+        bumper.thickness,
+        {
+          isStatic: true,
+          angle: bumper.angleRadians,
+          label: `sim:${bumper.id}`,
+          restitution: bumper.restitution,
+          friction: physics.friction,
+          collisionFilter: { category: STATIC_CATEGORY, mask: 0xffff },
+        },
+      ),
+    );
   }
 
   const wallThickness = geometry.pegRadius * 2;
@@ -206,7 +228,7 @@ export const runBarePhysicalDrops = (
     bodies: boardBodies,
     sensorPocketByBodyId,
     pegIndexByBodyId,
-  } = createStaticBoard(config);
+  } = createStaticBoard(config, options.jackpotBiasLevel ?? 0);
   Matter.Composite.add(engine.world, boardBodies);
 
   const random = new SeededRandom(options.seed);

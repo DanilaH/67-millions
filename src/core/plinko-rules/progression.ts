@@ -13,10 +13,15 @@ export interface SpecialUpgradeLevels {
   amplifierLevel: number;
   returnLevel: number;
   splitterLevel: number;
+  jackpotBiasLevel: number;
 }
 
 export type PocketUpgradeTrack = 'center' | 'mid' | 'jackpot';
-export type SpecialUpgradeTrack = 'amplifier' | 'return' | 'splitter';
+export type SpecialUpgradeTrack =
+  | 'amplifier'
+  | 'return'
+  | 'splitter'
+  | 'jackpotBias';
 
 const getLevel = <T extends { level: number }>(
   levels: readonly T[],
@@ -52,6 +57,7 @@ export const getSpecialUpgradeLevels = (
   amplifierLevel: state.plinkoAmplifierLevel,
   returnLevel: state.plinkoReturnLevel,
   splitterLevel: state.plinkoSplitterLevel,
+  jackpotBiasLevel: state.plinkoJackpotBiasLevel,
 });
 
 export const derivePocketMultipliers = (
@@ -200,6 +206,11 @@ export const getSplitterUpgrade = (
   level: number,
 ) => getLevel(config.plinko.splitter, level, 'Splitter');
 
+export const getJackpotBiasUpgrade = (
+  config: BalanceConfig,
+  level: number,
+) => getLevel(config.plinko.jackpotBias, level, 'Jackpot Bias');
+
 export const purchaseSpecialUpgrade = (
   state: GameState,
   pendingDrop: PendingDrop | null,
@@ -230,12 +241,23 @@ export const purchaseSpecialUpgrade = (
     }));
   }
 
-  const next = config.plinko.splitter.find(
-    (entry) => entry.level === state.plinkoSplitterLevel + 1,
+  if (track === 'splitter') {
+    const next = config.plinko.splitter.find(
+      (entry) => entry.level === state.plinkoSplitterLevel + 1,
+    );
+    if (!next) throw new Error('Splitter track is already maxed');
+    return buy(state, next.price, (paid) => ({
+      ...paid,
+      plinkoSplitterLevel: next.level,
+    }));
+  }
+
+  const next = config.plinko.jackpotBias.find(
+    (entry) => entry.level === state.plinkoJackpotBiasLevel + 1,
   );
-  if (!next) throw new Error('Splitter track is already maxed');
+  if (!next) throw new Error('Jackpot Bias track is already maxed');
   return buy(state, next.price, (paid) => ({
     ...paid,
-    plinkoSplitterLevel: next.level,
+    plinkoJackpotBiasLevel: next.level,
   }));
 };

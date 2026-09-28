@@ -20,6 +20,7 @@ const summarize = (
     amplifierLevel: number;
     returnLevel: number;
     splitterLevel: number;
+    jackpotBiasLevel: number;
   },
 ) => {
   const samples = runCascadePhysicalDrops(config, {
@@ -97,11 +98,13 @@ const rows = overlaps.map((pocketDividerPegOverlapPx) => {
       amplifierLevel: 0,
       returnLevel: 0,
       splitterLevel: 0,
+      jackpotBiasLevel: 0,
     }),
     combinedMax: summarize(config, combinedRuns, {
       amplifierLevel: config.plinko.amplifier.at(-1)!.level,
       returnLevel: config.plinko.return.at(-1)!.level,
       splitterLevel: config.plinko.splitter.at(-1)!.level,
+      jackpotBiasLevel: 0,
     }),
   };
 });
