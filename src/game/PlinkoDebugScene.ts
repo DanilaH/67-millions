@@ -427,27 +427,167 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
   }
 
+  private async resolvePeg(
+    pegId: string,
+    body: MatterJS.BodyType,
+  ): Promise<void> {
+    if (
+      !this.save?.pendingDrop ||
+      !this.runtime ||
+      !this.random
+    ) {
+      return;
+    }
+
+    const current = this.balls.get(body);
+    if (!current) return;
+
+    const cleared = clearSplitterBlockAfterPeg(current, pegId);
+    if (cleared !== current) {
+      this.balls.set(body, cleared);
+    }
+
+    const pending = this.save.pendingDrop;
+    const active = deriveActiveSpecialPins(
+      balance,
+      pending.specialLevelsAtCommit,
+    );
+    let ball = this.balls.get(body);
+    if (!ball) return;
+
+    if (
+      active.amplifier &&
+      active.amplifier.pegIds.includes(pegId) &&
+      canAmplifyAt(ball, pegId)
+    ) {
+      const lineageId = ball.lineageId;
+
+      for (const [candidateBody, candidate] of this.balls) {
+        if (candidate.lineageId !== lineageId) continue;
+
+        this.balls.set(
+          candidateBody,
+          markAmplifierProc(
+            candidate,
+            pegId,
+            active.amplifier.multiplier,
+            candidateBody === body,
+          ),
+        );
+      }
+
+      await this.persistPendingPhysics(true);
+      return;
+    }
+
+    ball = this.balls.get(body);
+    if (!ball) return;
+
+    if (
+      active.return &&
+      active.return.pegIds.includes(pegId) &&
+      canReturnLineage(ball)
+    ) {
+      const lineageId = ball.lineageId;
+
+      for (const [candidateBody, candidate] of this.balls) {
+        if (candidate.lineageId !== lineageId) continue;
+        this.balls.set(candidateBody, markReturnUsed(candidate));
+      }
+
+      this.runtime.returnBall(body);
+      this.save = {
+        ...this.save,
+        game: {
+          ...this.save.game,
+          rngState: this.random.snapshot().state,
+        },
+      };
+      await this.persistPendingPhysics(true);
+      return;
+    }
+
+    ball = this.balls.get(body);
+    if (!ball) return;
+
+    if (
+      active.splitter &&
+      active.splitter.pegIds.includes(pegId) &&
+      canSplitAt(ball, pegId, this.balls.size, balance)
+    ) {
+      const [leftState, rightState] = createSplitChildren(
+        ball,
+        pegId,
+        active.splitter.childValue,
+      );
+      const [leftBody, rightBody] = this.runtime.splitBall(body);
+
+      this.balls.delete(body);
+      this.balls.set(leftBody, leftState);
+      this.balls.set(rightBody, rightState);
+
+      await this.persistPendingPhysics(true);
+    }
+  }
+
   private async resolvePocket(
     index: number,
     body: MatterJS.BodyType,
   ): Promise<void> {
-    if (!this.save || !this.repository || !this.save.pendingDrop) return;
+    if (
+      !this.save ||
+      !this.repository ||
+      !this.runtime ||
+      !this.save.pendingDrop
+    ) {
+      return;
+    }
+
+    const metadata = this.balls.get(body);
+    if (!metadata) return;
 
     const pending = this.save.pendingDrop;
-    const result = settlePendingDropAndResumeTime(
-      this.save.game,
+    const priorPayout =
+      pending.physics?.alreadySettledPayout ?? 0;
+    const ballPayout = calculateBallPocketPayout(
       pending,
+      metadata.currentValue,
       index,
       balance,
     );
+    const aggregatePayout = priorPayout + ballPayout;
 
     this.balls.delete(body);
-    this.matter.world.remove(body);
+    this.runtime.removeBall(body);
+
+    if (this.balls.size > 0) {
+      this.save = {
+        ...this.save,
+        pendingDrop: setDropPhysicsSnapshot(pending, {
+          fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
+          alreadySettledPayout: aggregatePayout,
+          balls: Array.from(this.balls.entries()).map(
+            ([activeBody, activeMetadata]) =>
+              this.runtime!.snapshotBall(activeBody, activeMetadata),
+          ),
+        }),
+      };
+      await this.enqueueSave(true);
+      this.renderAll();
+      return;
+    }
+
+    const result = settleAggregatePendingDropAndResumeTime(
+      this.save.game,
+      pending,
+      aggregatePayout,
+      balance,
+    );
 
     this.save = {
       ...this.save,
       game: result.state,
-      pendingDrop: result.pendingDrop,
+      pendingDrop: null,
     };
     await this.enqueueSave(true);
 
@@ -456,7 +596,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       : '';
     this.audio?.result(result.losing);
     this.lastResultMessage =
-      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier}x)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
+      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier.toFixed(3)}x aggregate)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
     this.showStatus(this.lastResultMessage);
 
     if (window.__PLINKO_PERF__?.phase === 'running') {
