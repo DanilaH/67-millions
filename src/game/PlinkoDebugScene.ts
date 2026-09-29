@@ -106,6 +106,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
   private graphics?: Phaser.GameObjects.Graphics;
+  private ballGraphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
   private mapText?: Phaser.GameObjects.Text;
@@ -128,7 +129,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
     this.graphics = this.add.graphics();
-    this.casinoLayer.add(this.graphics);
+    this.ballGraphics = this.add.graphics();
+    this.casinoLayer.add([
+      this.graphics,
+      this.ballGraphics,
+    ]);
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
       color: visualHex('textMain'),
@@ -191,10 +196,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public update(): void {
-    if (!this.graphics || this.mapMode) return;
+    if (!this.ballGraphics || this.mapMode) return;
 
-    this.graphics.clear();
-    this.drawStaticBoard();
+    this.ballGraphics.clear();
 
     for (const [ball, metadata] of this.balls) {
       const amplified = metadata.currentValue > 1;
@@ -205,22 +209,22 @@ export class PlinkoDebugScene extends Phaser.Scene {
           ? visualColor('paperOld')
           : visualColor('textMain');
 
-      this.graphics.fillStyle(fill, 1);
-      this.graphics.fillCircle(
+      this.ballGraphics.fillStyle(fill, 1);
+      this.ballGraphics.fillCircle(
         ball.position.x,
         ball.position.y,
         balance.plinko.geometry.ballRadius,
       );
 
       if (amplified || split) {
-        this.graphics.lineStyle(
+        this.ballGraphics.lineStyle(
           2,
           amplified
             ? visualColor('rust')
             : visualColor('cold'),
           0.95,
         );
-        this.graphics.strokeCircle(
+        this.ballGraphics.strokeCircle(
           ball.position.x,
           ball.position.y,
           balance.plinko.geometry.ballRadius + 2,
@@ -500,7 +504,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
       await this.enqueueSave(true);
       recordTutorialMilestone('UPGRADE_BOUGHT');
-      this.installPocketLabels();
       this.showStatus('Апгрейд куплен.');
       this.renderAll();
     } catch (error: unknown) {
@@ -941,6 +944,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
             this.save.pendingDrop,
             balance,
           );
+
+    if (this.runtime && this.graphics) {
+      this.graphics.clear();
+      this.drawStaticBoard();
+      this.installPocketLabels();
+    }
   }
 
   private renderAll(): void {
