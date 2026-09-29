@@ -19,6 +19,7 @@ import {
   SCENE_AUDIO_TONES,
   SCENE_AUDIO_VOICE_LIMIT,
   deriveLowNeedKeys,
+  getSceneAudioMasterGain,
   resolveSceneAudioPersistentState,
   type PersistentSceneAudioState,
   type SceneAmbienceKind,
@@ -216,15 +217,48 @@ class SharedSceneAudioRuntime {
   }
 
   public setBlocked(blocked: boolean): void {
-    if (this.disposed) return;
+    if (
+      this.disposed ||
+      blocked === this.blocked
+    ) {
+      return;
+    }
+
     this.blocked = blocked;
     this.mixer?.setBlocked(blocked);
+    this.syncMasterGain();
+
+    const context = this.context;
+    if (blocked) {
+      if (context?.state === 'running') {
+        void context
+          .suspend()
+          .catch(() => undefined);
+      }
+      return;
+    }
+
+    if (
+      context?.state === 'suspended' &&
+      !this.muted
+    ) {
+      void context
+        .resume()
+        .catch(() => undefined);
+    }
   }
 
   public setMuted(muted: boolean): void {
-    if (this.disposed) return;
+    if (
+      this.disposed ||
+      muted === this.muted
+    ) {
+      return;
+    }
+
     this.muted = muted;
     this.mixer?.setMuted(muted);
+    this.syncMasterGain();
   }
 
   public prime(): void {
@@ -460,7 +494,10 @@ class SharedSceneAudioRuntime {
       const masterGain =
         context.createGain();
       masterGain.gain.value =
-        SCENE_AUDIO_MASTER_GAIN;
+        getSceneAudioMasterGain(
+          this.blocked,
+          this.muted,
+        );
 
       const compressor =
         context.createDynamicsCompressor();
@@ -560,6 +597,16 @@ class SharedSceneAudioRuntime {
       this.compressor = null;
       this.mixer = null;
     }
+  }
+
+  private syncMasterGain(): void {
+    if (!this.masterGain) return;
+
+    this.masterGain.gain.value =
+      getSceneAudioMasterGain(
+        this.blocked,
+        this.muted,
+      );
   }
 
   private syncPersistentState(): void {
