@@ -10,6 +10,7 @@ import {
   SCENE_AUDIO_VOICE_LIMIT,
   SCENE_AUDIO_WORST_CASE_POST_MASTER_GAIN,
   deriveLowNeedKeys,
+  getSceneAudioMasterGain,
   resolveSceneAudioPersistentState,
 } from '../src/audio/sceneAudioPolicy';
 
@@ -94,6 +95,21 @@ describe('T065 scene audio policy', () => {
     );
   });
 
+  it('hard-mutes the shared master while blocked or muted', () => {
+    expect(
+      getSceneAudioMasterGain(false, false),
+    ).toBe(SCENE_AUDIO_MASTER_GAIN);
+    expect(
+      getSceneAudioMasterGain(true, false),
+    ).toBe(0);
+    expect(
+      getSceneAudioMasterGain(false, true),
+    ).toBe(0);
+    expect(
+      getSceneAudioMasterGain(true, true),
+    ).toBe(0);
+  });
+
   it('only emits low-needs keys at or below the configured threshold', () => {
     expect(
       deriveLowNeedKeys(
@@ -112,15 +128,23 @@ describe('T065 scene audio policy', () => {
 
   it('keeps tactile cues rate-limited and semantically distinct', () => {
     for (const cue of [
-      'dishesScrub',
-      'trashGrab',
-      'trashBin',
-      'courierDraw',
       'barry',
       'lowNeeds',
-      'cashGain',
+      'sleep',
+      'wake',
+      'dumpster',
       'cashSpend',
+      'cashGain',
       'casinoEnter',
+      'dishesScrub',
+      'dishesSuccess',
+      'dishesFail',
+      'trashGrab',
+      'trashBin',
+      'trashFail',
+      'courierDraw',
+      'courierSuccess',
+      'courierFail',
     ] as const) {
       expect(
         SCENE_AUDIO_TONES[cue].minIntervalMs,
