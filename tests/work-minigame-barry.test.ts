@@ -129,7 +129,13 @@ describe('Barry interruption during work minigames', () => {
     expect(completed.state.clock.minuteOfDay).toBe(
       createGameClock('12:00').minuteOfDay,
     );
-    expect(completed.state.cash).toBe(11_200);
+    const courier = balance.work.jobs.courier.levels[0]!;
+    const expectedPayout = Math.round(
+      courier.payout * paid.workPayoutMultiplier,
+    );
+    expect(completed.state.cash).toBe(
+      paid.cash + expectedPayout,
+    );
   });
 
   it('ends the run before salary when Barry cannot be paid', () => {
