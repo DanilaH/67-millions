@@ -15,10 +15,20 @@ export type SceneAmbienceKind =
   | 'casino'
   | 'work';
 
-type PersistentSceneAudioState =
+export type PersistentSceneAudioState =
   | 'casino'
   | 'work'
   | 'barry';
+
+export const resolveSceneAudioPersistentState = (
+  ambience: SceneAmbienceKind,
+  barryPending: boolean,
+): PersistentSceneAudioState | null => {
+  if (barryPending) return 'barry';
+  return ambience === 'city'
+    ? null
+    : ambience;
+};
 
 export type SceneAudioCue =
   | 'barry'
@@ -222,6 +232,20 @@ export const SCENE_AUDIO_COMPRESSOR = {
   ratio: 4,
   attackSeconds: 0.004,
   releaseSeconds: 0.18,
+} as const;
+
+export const SCENE_AUDIO_BARRY_DUCK = {
+  multiplier: 0.2,
+  attackMs: 35,
+  holdMs: 120,
+  releaseMs: 260,
+} as const;
+
+export const SCENE_AUDIO_LOW_NEEDS_DUCK = {
+  multiplier: 0.55,
+  attackMs: 30,
+  holdMs: 80,
+  releaseMs: 220,
 } as const;
 
 export interface SceneNeedsSnapshot {
@@ -585,12 +609,9 @@ class SharedSceneAudioRuntime {
     this.syncPersistentState();
 
     if (pending) {
-      this.mixer?.duckBase({
-        multiplier: 0.2,
-        attackMs: 35,
-        holdMs: 120,
-        releaseMs: 260,
-      });
+      this.mixer?.duckBase(
+        SCENE_AUDIO_BARRY_DUCK,
+      );
       this.play('barry');
     }
   }
@@ -615,12 +636,9 @@ class SharedSceneAudioRuntime {
     this.lowNeeds = next;
 
     if (newlyLow) {
-      this.mixer?.duckBase({
-        multiplier: 0.55,
-        attackMs: 30,
-        holdMs: 80,
-        releaseMs: 220,
-      });
+      this.mixer?.duckBase(
+        SCENE_AUDIO_LOW_NEEDS_DUCK,
+      );
       this.play('lowNeeds');
     }
   }
@@ -777,22 +795,18 @@ class SharedSceneAudioRuntime {
     const mixer = this.mixer;
     if (!mixer) return;
 
-    if (this.barryPending) {
-      mixer.setPersistentState('barry');
-      return;
-    }
-
-    if (
-      this.ambience === 'work' ||
-      this.ambience === 'casino'
-    ) {
-      mixer.setPersistentState(
+    const state =
+      resolveSceneAudioPersistentState(
         this.ambience,
+        this.barryPending,
       );
+
+    if (state === null) {
+      mixer.clearPersistentState();
       return;
     }
 
-    mixer.clearPersistentState();
+    mixer.setPersistentState(state);
   }
 }
 
