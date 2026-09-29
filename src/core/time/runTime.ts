@@ -5,6 +5,10 @@ import {
 } from '../actions/ActiveAction';
 import { beginBarryInterrupt } from '../barry/barry';
 import { resetDumpsterSearchStreak } from '../actions/dumpster';
+import {
+  advanceEventCheckpoints,
+  resetEventGameDayCounter,
+} from '../events/eventScheduler';
 import { advanceNeeds } from '../needs/needs';
 import { finalizeSleepCycle } from '../sleep/sleep';
 import type { GameState } from '../state/GameState';
@@ -97,10 +101,18 @@ export const advanceRunTime = (
     };
   }
 
+  nextState = advanceEventCheckpoints(
+    nextState,
+    actualSchedule.softCheckpointsCrossed,
+    config,
+    { isSleeping: mode === 'SLEEP' },
+  ).state;
+
   if (scheduled.hitHardBoundary && actualMinutes === scheduled.advancedMinutes) {
     if (config.dumpster.resetStreakAtGameDayBoundary) {
       nextState = resetDumpsterSearchStreak(nextState);
     }
+    nextState = resetEventGameDayCounter(nextState);
     nextState = finalizeSleepCycle(nextState, config);
 
     if (activeAction?.kind === 'SLEEP') {
