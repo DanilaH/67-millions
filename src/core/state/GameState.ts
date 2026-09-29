@@ -10,6 +10,12 @@ export interface NeedsState {
   happiness: number;
 }
 
+export interface JobLevelsState {
+  dishes: number;
+  trash: number;
+  courier: number;
+}
+
 export interface InsuranceArmState {
   level: number;
   floor: number;
@@ -25,6 +31,7 @@ export interface GameState {
   totalBarryPaid: number;
   sleepMinutesCurrentGameDay: number;
   workPayoutMultiplier: number;
+  jobLevels: JobLevelsState;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
   plinkoMaxBetLevel: number;
   plinkoCenterLevel: number;
@@ -60,6 +67,11 @@ export const createInitialGameState = (
   totalBarryPaid: 0,
   sleepMinutesCurrentGameDay: 0,
   workPayoutMultiplier: 1,
+  jobLevels: {
+    dishes: 1,
+    trash: 1,
+    courier: 1,
+  },
   plinkoSelectedBetFraction: 1,
   plinkoMaxBetLevel: 0,
   plinkoCenterLevel: 0,
