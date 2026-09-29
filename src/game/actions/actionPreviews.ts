@@ -20,6 +20,10 @@ import {
   startWork,
   type JobId,
 } from '../../core/work/work';
+import {
+  getEntertainmentContent,
+  getFoodContent,
+} from '../content/contentCatalog';
 
 export interface ActionPreview {
   id: string;
@@ -169,10 +173,13 @@ export const buildFoodPreviews = (
         : null,
     ].filter((value): value is string => value !== null);
 
+    const content = getFoodContent(entry.id);
+
     return {
       id: `food:${entry.id}`,
-      title: entry.id,
+      title: content.title,
       summary: [
+        content.description,
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
         deltas.join(' · '),
       ],
@@ -203,10 +210,13 @@ export const buildEntertainmentPreviews = (
     const happiness =
       definition.completionNeedsDelta?.happiness ?? 0;
 
+    const content = getEntertainmentContent(entry.id);
+
     return {
       id: `entertainment:${entry.id}`,
-      title: entry.id,
+      title: content.title,
       summary: [
+        content.description,
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
         `счастье ${formatSigned(happiness)}`,
       ],
