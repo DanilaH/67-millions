@@ -276,6 +276,7 @@ const chooseEvent = (
 
 const chooseRecovery = (
   state: GameState,
+  config: BalanceConfig,
   profile: BaselinePolicyProfile,
   reserve: number,
 ): FullGameDecision | null => {
@@ -288,13 +289,26 @@ const chooseRecovery = (
   }
 
   if (state.needs.satiety < profile.satietyFloor) {
-    return state.cash > reserve
+    const food = config.food.find(
+      (entry) => entry.id === profile.preferredFoodId,
+    );
+    const multiplier =
+      state.eventModifiers.foodPriceMultiplier?.multiplier ?? 1;
+    const price =
+      food === undefined ? Number.POSITIVE_INFINITY : Math.round(food.price * multiplier);
+
+    return state.cash >= price && state.cash - price >= reserve
       ? { type: 'FOOD', id: profile.preferredFoodId }
       : { type: 'DUMPSTER' };
   }
 
   if (state.needs.happiness < profile.happinessFloor) {
-    return state.cash > reserve
+    const entertainment = config.entertainment.find(
+      (entry) => entry.id === profile.preferredEntertainmentId,
+    );
+    const price = entertainment?.price ?? Number.POSITIVE_INFINITY;
+
+    return state.cash >= price && state.cash - price >= reserve
       ? {
           type: 'ENTERTAINMENT',
           id: profile.preferredEntertainmentId,
@@ -321,7 +335,7 @@ const createDecisionFunction = (
       return { type: 'PAY_MAIN_DEBT' };
     }
 
-    const recovery = chooseRecovery(state, profile, reserve);
+    const recovery = chooseRecovery(state, config, profile, reserve);
     if (recovery !== null) return recovery;
 
     const jobUpgrade = chooseJobUpgrade(
