@@ -455,12 +455,14 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (
       this.state.terminalReason === null &&
-      this.activeAction?.remainingMinutes === 0
+      this.activeAction !== null
     ) {
-      this.advance(0);
+      this.advance(this.activeAction.remainingMinutes);
+      return;
     }
 
     void this.persist();
+    this.render();
   }
 
   private payPrincipal(): void {
