@@ -181,6 +181,7 @@ class SharedSceneAudioRuntime {
   private activeOwnerId = 0;
   private ambience: SceneAmbienceKind = 'city';
   private blocked = false;
+  private sceneSuppressed = false;
   private muted = false;
   private barryPending = false;
   private lowNeeds =
@@ -212,13 +213,32 @@ class SharedSceneAudioRuntime {
     this.activeOwnerId = 0;
     this.ambience = 'city';
     this.barryPending = false;
+    this.sceneSuppressed = false;
+    this.syncMixerBlockedState();
     this.syncPersistentState();
   }
 
   public setBlocked(blocked: boolean): void {
     if (this.disposed) return;
     this.blocked = blocked;
-    this.mixer?.setBlocked(blocked);
+    this.syncMixerBlockedState();
+  }
+
+  public setSceneSuppressed(
+    ownerId: number,
+    suppressed: boolean,
+  ): void {
+    if (
+      this.disposed ||
+      ownerId === 0 ||
+      ownerId !== this.activeOwnerId ||
+      suppressed === this.sceneSuppressed
+    ) {
+      return;
+    }
+
+    this.sceneSuppressed = suppressed;
+    this.syncMixerBlockedState();
   }
 
   public setMuted(muted: boolean): void {
@@ -551,7 +571,7 @@ class SharedSceneAudioRuntime {
       this.compressor = compressor;
       this.mixer = mixer;
 
-      mixer.setBlocked(this.blocked);
+      this.syncMixerBlockedState();
       mixer.setMuted(this.muted);
       this.syncPersistentState();
     } catch {
@@ -560,6 +580,12 @@ class SharedSceneAudioRuntime {
       this.compressor = null;
       this.mixer = null;
     }
+  }
+
+  private syncMixerBlockedState(): void {
+    this.mixer?.setBlocked(
+      this.blocked || this.sceneSuppressed,
+    );
   }
 
   private syncPersistentState(): void {
@@ -630,6 +656,16 @@ export class SceneAudio {
       this.scene.game.sound.mute,
     );
     this.runtime.prime();
+  }
+
+  public setSuppressed(
+    suppressed: boolean,
+  ): void {
+    if (this.disposed) return;
+    this.runtime.setSceneSuppressed(
+      this.ownerId,
+      suppressed,
+    );
   }
 
   public play(cue: SceneAudioCue): void {
