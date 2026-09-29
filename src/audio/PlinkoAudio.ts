@@ -550,7 +550,11 @@ export class PlinkoAudio {
   }
 
   private playSpecial(kind: SpecialPinAudioKind): void {
-    if (this.disposed || this.isMuted()) return;
+    if (
+      this.disposed ||
+      this.blocked ||
+      this.isMuted()
+    ) return;
     if (
       !this.specialPolicy.trySchedule(
         kind,
