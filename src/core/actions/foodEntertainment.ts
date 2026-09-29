@@ -47,7 +47,7 @@ const getEntertainmentEntry = (
   return entry;
 };
 
-const foodToTimedDefinition = (
+export const getFoodActionDefinition = (
   state: GameState,
   entry: FoodConfigEntry,
 ): TimedPaidActionDefinition => ({
@@ -62,7 +62,7 @@ const foodToTimedDefinition = (
   },
 });
 
-const entertainmentToTimedDefinition = (
+export const getEntertainmentActionDefinition = (
   state: GameState,
   entry: EntertainmentConfigEntry,
   config: BalanceConfig,
@@ -92,7 +92,7 @@ export const startFood = (
   assertCanStartRecoveryAction(activeAction, pendingDrop);
   return startTimedPaidAction(
     state,
-    foodToTimedDefinition(state, getFoodEntry(config, foodId)),
+    getFoodActionDefinition(state, getFoodEntry(config, foodId)),
   );
 };
 
@@ -106,7 +106,7 @@ export const startEntertainment = (
   assertCanStartRecoveryAction(activeAction, pendingDrop);
   return startTimedPaidAction(
     state,
-    entertainmentToTimedDefinition(
+    getEntertainmentActionDefinition(
       state,
       getEntertainmentEntry(config, entertainmentId),
       config,
@@ -127,9 +127,9 @@ const getCompletionDefinition = (
   if (food && entertainment) {
     throw new Error(`Ambiguous recovery action id: ${actionId}`);
   }
-  if (food) return foodToTimedDefinition(state, food);
+  if (food) return getFoodActionDefinition(state, food);
   if (entertainment) {
-    return entertainmentToTimedDefinition(state, entertainment, config);
+    return getEntertainmentActionDefinition(state, entertainment, config);
   }
 
   throw new Error(`Unknown recovery action: ${actionId}`);
