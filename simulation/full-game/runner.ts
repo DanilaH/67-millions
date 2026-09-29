@@ -430,14 +430,18 @@ export const runFullGame = (
   const maxDecisions = options.maxDecisions ?? 10_000;
   const maxGameMinutes = options.maxGameMinutes ?? 60 * 24 * 60;
   const counters = createCounters();
+  const initialGame = createInitialGameState(config, options.seed);
+  const diagnostics = createDiagnostics(initialGame.cash);
   let runner: RunnerState = {
-    game: createInitialGameState(config, options.seed),
+    game: initialGame,
     activeAction: null,
     stopped: false,
   };
   let dropIndex = 0;
 
   while (true) {
+    observeCash(diagnostics, runner.game.cash);
+
     const outcome = getOutcome(
       runner.game,
       runner.stopped,
@@ -454,6 +458,7 @@ export const runFullGame = (
         outcome,
         state: runner.game,
         counters,
+        diagnostics,
       };
     }
 
@@ -463,6 +468,7 @@ export const runFullGame = (
         runner.activeAction,
         config,
         counters,
+        diagnostics,
         maxGameMinutes,
       );
       runner = {
