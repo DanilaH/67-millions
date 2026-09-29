@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import type { ActionPreview } from '../actions/actionPreviews';
+import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
 
 export interface ActionPanel {
   show(title: string, actions: ActionPreview[]): void;
@@ -24,16 +25,16 @@ export const createActionPanel = (
     380,
     1006,
     520,
-    0x0d1217,
+    visualColor('inkDeep'),
     0.985,
   );
-  backdrop.setStrokeStyle(2, 0x46515b, 1);
+  backdrop.setStrokeStyle(2, visualColor('lineDirty'), 1);
   backdrop.setInteractive();
 
   const titleText = scene.add
     .text(300, 138, '', {
-      color: '#f4f6f8',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '24px',
       fontStyle: 'bold',
     })
@@ -41,9 +42,9 @@ export const createActionPanel = (
 
   const back = scene.add
     .text(1225, 136, '[ НАЗАД ]', {
-      color: '#f4f6f8',
-      backgroundColor: '#283039',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      backgroundColor: visualHex('inkRaised'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '15px',
       padding: { x: 9, y: 6 },
     })
@@ -82,12 +83,12 @@ export const createActionPanel = (
           y + height / 2,
           width,
           height,
-          locked ? 0x191d22 : 0x202a31,
+          locked ? visualColor('inkPanel') : visualColor('inkRaised'),
           1,
         )
         .setStrokeStyle(
           2,
-          locked ? 0x3c4248 : 0x536674,
+          locked ? visualColor('lineDirty') : visualColor('cold'),
           1,
         );
 
@@ -96,8 +97,8 @@ export const createActionPanel = (
         y + 8,
         action.title,
         {
-          color: locked ? '#8e969e' : '#f4f6f8',
-          fontFamily: 'system-ui, sans-serif',
+          color: locked ? visualHex('textMuted') : visualHex('textMain'),
+          fontFamily: VISUAL_FONT.sans,
           fontSize: '15px',
           fontStyle: 'bold',
         },
@@ -108,8 +109,8 @@ export const createActionPanel = (
         y + 30,
         action.summary.slice(0, 2).join('  ·  '),
         {
-          color: locked ? '#747c84' : '#abb5bf',
-          fontFamily: 'system-ui, sans-serif',
+          color: visualHex('textMuted'),
+          fontFamily: VISUAL_FONT.sans,
           fontSize: '11px',
           wordWrap: { width: width - 24 },
         },
@@ -123,8 +124,8 @@ export const createActionPanel = (
             ? action.lockedReason!
             : '[ ВЫБРАТЬ ]',
           {
-            color: locked ? '#c17a72' : '#d8bf82',
-            fontFamily: 'system-ui, sans-serif',
+            color: locked ? visualHex('warning') : visualHex('mustard'),
+            fontFamily: VISUAL_FONT.sans,
             fontSize: '11px',
             align: 'right',
           },
