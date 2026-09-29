@@ -20,7 +20,6 @@ import {
   settleAggregatePendingDropAndResumeTime,
 } from '../core/plinko-rules/dropTiming';
 import {
-  derivePocketMultipliers,
   getMaxBetForLevel,
   purchaseInsuranceUpgrade,
   purchaseMaxBetUpgrade,
@@ -61,6 +60,18 @@ import {
   type CasinoUpgradePanel,
 } from './casino/createCasinoUpgradePanel';
 import { publishCasinoPayoutToast } from './casino/casinoPayoutToast';
+import {
+  derivePlinkoVisualSnapshot,
+  getPegVisualRole,
+  getPocketVisualRole,
+  type PlinkoVisualSnapshot,
+} from './casino/plinkoVisualModel';
+import {
+  SPECIAL_PIN_STYLE,
+  VISUAL_FONT,
+  visualColor,
+  visualHex,
+} from './visual/visualTheme';
 import {
   acknowledgeCurrentTutorialInfo,
   deriveTutorialStep,
@@ -106,6 +117,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private resultText?: Phaser.GameObjects.Text;
   private readonly pocketLabels: Phaser.GameObjects.Text[] = [];
   private tutorialCard?: TutorialCard;
+  private visualSnapshot: PlinkoVisualSnapshot | null = null;
 
   public constructor() {
     super('plinko-debug');
@@ -119,8 +131,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.graphics);
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
-      color: '#f4f6f8',
-      fontFamily: 'ui-monospace, monospace',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.mono,
       fontSize: '16px',
       lineSpacing: 5,
     });
@@ -128,8 +140,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.statusText = this.add
       .text(680, 28, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '14px',
         wordWrap: { width: 560 },
       })
@@ -138,9 +150,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.resultText = this.add
       .text(680, 92, '', {
-        color: '#d9bf7d',
-        backgroundColor: '#171b20',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('mustard'),
+        backgroundColor: visualHex('inkPanel'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '14px',
         padding: { x: 10, y: 8 },
         wordWrap: { width: 545 },
@@ -184,13 +196,36 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.graphics.clear();
     this.drawStaticBoard();
 
-    this.graphics.fillStyle(0xf4f6f8, 1);
-    for (const ball of this.balls.keys()) {
+    for (const [ball, metadata] of this.balls) {
+      const amplified = metadata.currentValue > 1;
+      const split = metadata.splitDepth > 0;
+      const fill = amplified
+        ? visualColor('mustard')
+        : split
+          ? visualColor('paperOld')
+          : visualColor('textMain');
+
+      this.graphics.fillStyle(fill, 1);
       this.graphics.fillCircle(
         ball.position.x,
         ball.position.y,
         balance.plinko.geometry.ballRadius,
       );
+
+      if (amplified || split) {
+        this.graphics.lineStyle(
+          2,
+          amplified
+            ? visualColor('rust')
+            : visualColor('cold'),
+          0.95,
+        );
+        this.graphics.strokeCircle(
+          ball.position.x,
+          ball.position.y,
+          balance.plinko.geometry.ballRadius + 2,
+        );
+      }
     }
   }
 
@@ -200,6 +235,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       createInitialGameState(balance, initialSeed),
     );
     this.save = await this.repository.load();
+    this.refreshVisualSnapshot();
 
     const pendingAtLoad = this.save.pendingDrop;
     this.random = new SeededRandom(
@@ -457,6 +493,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         ...this.save,
         game,
       };
+      this.refreshVisualSnapshot();
       this.runtime?.setJackpotBiasLevel(
         game.plinkoJackpotBiasLevel,
       );
@@ -498,6 +535,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game: committed.state,
         pendingDrop: committed.pendingDrop,
       };
+      this.refreshVisualSnapshot();
       this.lastResultMessage = '';
       this.resultText?.setVisible(false);
 
@@ -714,6 +752,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       game: result.state,
       pendingDrop: null,
     };
+    this.refreshVisualSnapshot();
     this.runtime.setJackpotBiasLevel(
       this.save.game.plinkoJackpotBiasLevel,
     );
@@ -747,7 +786,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.showStatus(this.lastResultMessage);
     this.resultText
       ?.setText(this.lastResultMessage)
-      .setColor(result.losing ? '#d08a82' : '#d9bf7d')
+      .setColor(
+        result.losing
+          ? visualHex('warning')
+          : visualHex('mustard'),
+      )
       .setVisible(true);
 
     if (window.__PLINKO_PERF__?.phase === 'running') {
