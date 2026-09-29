@@ -2,6 +2,7 @@ import type { BalanceConfig } from '../../config/balance.schema';
 import { canPayMainDebt } from '../../core/economy/mainDebt';
 import type { GameState } from '../../core/state/GameState';
 import { formatClockTime } from '../../core/time/GameClock';
+import { BARRY_CONTENT } from '../content/contentCatalog';
 
 export type RunEndKind = 'VICTORY' | 'GAME_OVER';
 
@@ -54,7 +55,7 @@ const formatPlinkoProgress = (state: GameState): string => {
 
 const gameOverReason = (state: GameState): string => {
   if (state.terminalReason === 'BARRY_PAYMENT_FAILED') {
-    return 'В 09:00 не хватило денег на обязательный платёж Барри.';
+    return BARRY_CONTENT.failed;
   }
   if (state.terminalReason === 'HEALTH_ZERO') {
     return 'HP опустился до нуля.';
