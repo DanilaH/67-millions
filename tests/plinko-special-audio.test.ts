@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  PLINKO_AUDIO_COMPRESSOR,
+  PLINKO_AUDIO_MASTER_GAIN,
   PLINKO_AUDIO_MAX_GAINS,
   PLINKO_AUDIO_VOICE_LIMITS,
   PLINKO_AUDIO_WORST_CASE_PEAK_GAIN,
+  PLINKO_AUDIO_WORST_CASE_POST_MASTER_GAIN,
   PLINKO_PAYOUT_COUNT_TICKS,
   PLINKO_PAYOUT_TICK_INTERVAL_MS,
   classifyPlinkoPocketAudio,
@@ -37,6 +40,16 @@ describe('Plinko production audio policy', () => {
     expect(
       PLINKO_AUDIO_WORST_CASE_PEAK_GAIN,
     ).toBeLessThan(1);
+    expect(PLINKO_AUDIO_MASTER_GAIN).toBeLessThan(1);
+    expect(
+      PLINKO_AUDIO_WORST_CASE_POST_MASTER_GAIN,
+    ).toBeLessThan(0.7);
+    expect(
+      PLINKO_AUDIO_COMPRESSOR.thresholdDb,
+    ).toBeLessThan(0);
+    expect(
+      PLINKO_AUDIO_COMPRESSOR.ratio,
+    ).toBeGreaterThan(1);
   });
 
   it('keeps all three special cue families readable in a 24-body burst without exceeding the voice cap', () => {
