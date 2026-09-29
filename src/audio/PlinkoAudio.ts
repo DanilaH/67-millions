@@ -185,9 +185,16 @@ export const PLINKO_AUDIO_COMPRESSOR = {
   releaseSeconds: 0.16,
 } as const;
 
+export const PLINKO_CASINO_AMBIENCE_GAIN = 0.016;
+
 export const PLINKO_AUDIO_WORST_CASE_POST_MASTER_GAIN =
   PLINKO_AUDIO_WORST_CASE_PEAK_GAIN *
   PLINKO_AUDIO_MASTER_GAIN;
+
+export const PLINKO_AUDIO_WORST_CASE_WITH_AMBIENCE_GAIN =
+  PLINKO_AUDIO_WORST_CASE_POST_MASTER_GAIN +
+  PLINKO_CASINO_AMBIENCE_GAIN *
+    PLINKO_AUDIO_MASTER_GAIN;
 
 export const classifyPlinkoPocketAudio = (
   multiplier: number,
@@ -215,6 +222,10 @@ export class PlinkoAudio {
   private context: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private compressor: DynamicsCompressorNode | null = null;
+  private casinoAmbienceOscillator: OscillatorNode | null = null;
+  private casinoAmbienceGain: GainNode | null = null;
+  private casinoAmbienceDesired = false;
+  private blocked = false;
   private disposed = false;
   private cueCounter = 0;
   private lastBounceAtMs = -Infinity;
@@ -241,11 +252,67 @@ export class PlinkoAudio {
   ) {}
 
   public prime(): void {
-    if (this.disposed || this.isMuted()) return;
-    const context = this.getContext();
-    if (context?.state === 'suspended') {
-      void context.resume().catch(() => undefined);
+    if (
+      this.disposed ||
+      this.blocked ||
+      this.isMuted()
+    ) {
+      return;
     }
+
+    const context = this.getContext();
+    if (!context) return;
+
+    if (context.state === 'suspended') {
+      void context
+        .resume()
+        .then(() => this.syncCasinoAmbience())
+        .catch(() => undefined);
+      return;
+    }
+
+    this.syncCasinoAmbience();
+  }
+
+  public setBlocked(blocked: boolean): void {
+    if (this.disposed || blocked === this.blocked) {
+      return;
+    }
+
+    this.blocked = blocked;
+    const context = this.context;
+
+    if (blocked) {
+      this.stopCasinoAmbience();
+      if (context?.state === 'running') {
+        void context.suspend().catch(() => undefined);
+      }
+      return;
+    }
+
+    if (
+      context?.state === 'suspended' &&
+      !this.isMuted()
+    ) {
+      void context
+        .resume()
+        .then(() => this.syncCasinoAmbience())
+        .catch(() => undefined);
+    }
+  }
+
+  public setCasinoAmbienceEnabled(
+    enabled: boolean,
+  ): void {
+    if (
+      this.disposed ||
+      enabled === this.casinoAmbienceDesired
+    ) {
+      return;
+    }
+
+    this.casinoAmbienceDesired = enabled;
+    this.syncCasinoAmbience();
   }
 
   public bounce(): void {
@@ -279,7 +346,11 @@ export class PlinkoAudio {
   }
 
   public payoutCount(): void {
-    if (this.disposed || this.isMuted()) return;
+    if (
+      this.disposed ||
+      this.blocked ||
+      this.isMuted()
+    ) return;
 
     for (
       let index = 0;
@@ -342,6 +413,8 @@ export class PlinkoAudio {
     if (this.disposed) return;
     this.disposed = true;
 
+    this.stopCasinoAmbience();
+
     const context = this.context;
     this.context = null;
 
@@ -401,12 +474,78 @@ export class PlinkoAudio {
       this.masterGain = masterGain;
       this.compressor = compressor;
 
+      this.syncCasinoAmbience();
       return this.context;
     } catch {
       this.context = null;
       this.masterGain = null;
       this.compressor = null;
       return null;
+    }
+  }
+
+  private syncCasinoAmbience(): void {
+    const context = this.context;
+
+    if (
+      !this.casinoAmbienceDesired ||
+      this.blocked ||
+      this.isMuted() ||
+      !context ||
+      context.state !== 'running' ||
+      !this.masterGain
+    ) {
+      this.stopCasinoAmbience();
+      return;
+    }
+
+    if (this.casinoAmbienceOscillator) return;
+
+    const oscillator =
+      context.createOscillator();
+    oscillator.type = 'triangle';
+    oscillator.frequency.value = 58;
+
+    const gain = context.createGain();
+    gain.gain.value =
+      PLINKO_CASINO_AMBIENCE_GAIN;
+
+    oscillator.connect(gain);
+    gain.connect(this.masterGain);
+    oscillator.start();
+
+    this.casinoAmbienceOscillator =
+      oscillator;
+    this.casinoAmbienceGain = gain;
+  }
+
+  private stopCasinoAmbience(): void {
+    const oscillator =
+      this.casinoAmbienceOscillator;
+    const gain = this.casinoAmbienceGain;
+
+    this.casinoAmbienceOscillator = null;
+    this.casinoAmbienceGain = null;
+
+    if (oscillator) {
+      try {
+        oscillator.stop();
+      } catch {
+        // already stopped
+      }
+      try {
+        oscillator.disconnect();
+      } catch {
+        // already disconnected
+      }
+    }
+
+    if (gain) {
+      try {
+        gain.disconnect();
+      } catch {
+        // already disconnected
+      }
     }
   }
 
@@ -432,6 +571,7 @@ export class PlinkoAudio {
   ): void {
     if (
       this.disposed ||
+      this.blocked ||
       this.isMuted() ||
       !budget.tryAcquire()
     ) {
