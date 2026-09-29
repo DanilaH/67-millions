@@ -8,6 +8,7 @@ import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import { createInitialGameState } from '../core/state/GameState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
 import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
+import { recordTutorialMilestone } from './tutorial/tutorialProgress';
 import {
   createBarryMinigameOverlay,
   type BarryMinigameOverlay,
@@ -331,6 +332,8 @@ export class CourierScene extends Phaser.Scene {
       return;
     }
 
+    const previousPaymentIndex =
+      this.save.game.barryPaymentIndex;
     this.save = {
       ...this.save,
       game: resolveBarryPayment(
@@ -338,6 +341,15 @@ export class CourierScene extends Phaser.Scene {
         balance,
       ),
     };
+
+    if (
+      this.save.game.terminalReason === null &&
+      this.save.game.barryPaymentIndex >
+        previousPaymentIndex
+    ) {
+      recordTutorialMilestone('BARRY_PAID');
+    }
+
     await this.persistRuntime(true);
 
     if (this.save.game.terminalReason !== null) {
@@ -401,6 +413,10 @@ export class CourierScene extends Phaser.Scene {
       game: completion.state,
       activeAction: completion.activeAction,
     };
+
+    if (completion.shiftCompleted) {
+      recordTutorialMilestone('WORK_COMPLETED');
+    }
 
     await this.persistRuntime(true);
 
