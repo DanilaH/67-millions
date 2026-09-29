@@ -16,6 +16,7 @@ export type SceneAudioCue =
   | 'dumpster'
   | 'cashSpend'
   | 'cashGain'
+  | 'casinoEnter'
   | 'dishesScrub'
   | 'dishesSuccess'
   | 'dishesFail'
@@ -54,6 +55,7 @@ export const SCENE_AUDIO_TONES: Readonly<
   dumpster: { frequency:105,endFrequency:72,durationMs:130,gain:0.038,waveform:'sawtooth',variation:0.08,minIntervalMs:250 },
   cashSpend: { frequency:430,endFrequency:290,durationMs:84,gain:0.032,waveform:'square',variation:0.035,minIntervalMs:70 },
   cashGain: { frequency:520,endFrequency:900,durationMs:125,gain:0.038,waveform:'sine',variation:0.035,minIntervalMs:70 },
+  casinoEnter: { frequency:58,endFrequency:82,durationMs:520,gain:0.024,waveform:'triangle',variation:0.018,minIntervalMs:700 },
   dishesScrub: { frequency:185,durationMs:30,gain:0.018,waveform:'triangle',variation:0.2,minIntervalMs:42 },
   dishesSuccess: { frequency:560,endFrequency:820,durationMs:150,gain:0.048,waveform:'triangle',variation:0.025,minIntervalMs:300 },
   dishesFail: { frequency:170,endFrequency:105,durationMs:170,gain:0.046,waveform:'sawtooth',variation:0.02,minIntervalMs:300 },
