@@ -2,10 +2,18 @@ import Phaser from 'phaser';
 
 import type { ActiveAction } from '../core/actions/ActiveAction';
 import {
-  applyTimedPaidCompletion,
-  startTimedPaidAction,
-  type TimedPaidActionDefinition,
-} from '../core/actions/timedPaidAction';
+  startDumpsterSearch,
+  settleDumpsterSearch,
+} from '../core/actions/dumpster';
+import {
+  startEntertainment,
+  startFood,
+  settleRecoveryAction,
+} from '../core/actions/foodEntertainment';
+import {
+  startShower,
+  settleShower,
+} from '../core/actions/shower';
 import { resolveBarryPayment } from '../core/barry/barry';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
 import { createLocalSaveRepository } from '../core/save/repository';
@@ -26,6 +34,19 @@ import {
 import { balance } from '../config/balance';
 import { isPlinkoPerfMode } from '../app/perfMode';
 import {
+  buildDumpsterPreviews,
+  buildEntertainmentPreviews,
+  buildFoodPreviews,
+  buildShowerPreviews,
+  buildSleepPreviews,
+  buildWorkPreviews,
+  type ActionPreview,
+} from './actions/actionPreviews';
+import {
+  createActionPanel,
+  type ActionPanel,
+} from './map/createActionPanel';
+import {
   createMainMapView,
   type MainMapView,
 } from './map/createMainMapView';
@@ -40,23 +61,6 @@ const createRunSeed = (): number => {
   return values[0] || 1;
 };
 
-const cheapFoodDefinition = (): TimedPaidActionDefinition => {
-  const food = balance.food.find((entry) => entry.id === 'FOOD_01');
-  if (!food) throw new Error('FOOD_01 missing from balance config');
-
-  return {
-    id: food.id,
-    price: food.price,
-    durationMinutes: food.durationMinutes,
-    completionNeedsDelta: {
-      satiety: food.satiety,
-      happiness: food.happiness,
-      energy: food.energy,
-      health: food.hp,
-    },
-  };
-};
-
 export class BootstrapScene extends Phaser.Scene {
   private state: GameState | null = null;
   private activeAction: ActiveAction | null = null;
@@ -67,6 +71,8 @@ export class BootstrapScene extends Phaser.Scene {
   );
   private hud?: PersistentHud;
   private mapView?: MainMapView;
+  private actionPanel?: ActionPanel;
+  private selectedLocation: MainMapLocationId | null = null;
   private messageText?: Phaser.GameObjects.Text;
   private principalButton?: Phaser.GameObjects.Text;
   private contextControls: Phaser.GameObjects.Text[] = [];
@@ -84,6 +90,11 @@ export class BootstrapScene extends Phaser.Scene {
       this,
       balance,
       (location) => this.selectLocation(location.id),
+    );
+    this.actionPanel = createActionPanel(
+      this,
+      () => this.closeActionPanel(),
+      (action) => this.guard(() => this.executeAction(action)),
     );
 
     this.messageText = this.add.text(280, height - 67, 'Загрузка…', {
@@ -206,47 +217,124 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     if (id === 'casino') {
-      this.clearContextControls();
+      this.closeActionPanel();
       this.scene.start('plinko-debug');
       return;
     }
 
-    if (id === 'work') {
-      this.setContextControls('location:work', [
-        ['ПОСУДА', () => this.startDishes()],
-        ['МУСОР', () => this.startTrash()],
-        ['КУРЬЕР', () => this.startCourierMinigame()],
-      ]);
-      this.showMessage(
-        'Работа. Детальные карточки стоимости/времени/эффекта появятся в T056.',
-      );
+    this.selectedLocation = id;
+    this.mapView?.setSelected(id);
+    this.renderSelectedLocation();
+  }
+
+  private renderSelectedLocation(): void {
+    if (
+      !this.state ||
+      !this.actionPanel ||
+      this.selectedLocation === null
+    ) {
       return;
     }
 
-    if (id === 'food') {
-      this.setContextControls('location:food', [
-        ['FOOD_01', () => this.startCheapFood()],
-      ]);
-      this.showMessage(
-        'Еда. Полный список и pre-action preview — T056.',
+    const args = [
+      this.state,
+      this.activeAction,
+      this.pendingDrop,
+      balance,
+    ] as const;
+
+    if (this.selectedLocation === 'work') {
+      this.actionPanel.show(
+        'РАБОТА',
+        buildWorkPreviews(...args),
       );
-      return;
+    } else if (this.selectedLocation === 'food') {
+      this.actionPanel.show(
+        'ЕДА',
+        buildFoodPreviews(...args),
+      );
+    } else if (this.selectedLocation === 'home') {
+      this.actionPanel.show(
+        'ДОМ / СОН',
+        buildSleepPreviews(...args),
+      );
+    } else if (this.selectedLocation === 'entertainment') {
+      this.actionPanel.show(
+        'РАЗВЛЕЧЕНИЯ',
+        buildEntertainmentPreviews(...args),
+      );
+    } else if (this.selectedLocation === 'dumpster') {
+      this.actionPanel.show(
+        'ПОМОЙКА',
+        buildDumpsterPreviews(...args),
+      );
+    } else if (this.selectedLocation === 'shower') {
+      this.actionPanel.show(
+        'ДУШ',
+        buildShowerPreviews(...args),
+      );
     }
 
-    if (id === 'home') {
-      this.setContextControls('location:home', [
-        ['СПАТЬ 7Ч', () => this.startSleeping()],
-      ]);
-      this.showMessage(
-        'Дом. Сон использует текущий authoritative action lifecycle.',
-      );
-      return;
-    }
-
-    this.clearContextControls();
     this.showMessage(
-      'Локация доступна на карте; её action flow добавляется в T056.',
+      'Перед действием видны цена, время, эффект и причина блокировки.',
     );
+  }
+
+  private closeActionPanel(): void {
+    this.actionPanel?.hide();
+    this.selectedLocation = null;
+    this.mapView?.setSelected(null);
+  }
+
+  private executeAction(action: ActionPreview): void {
+    if (action.lockedReason !== null) {
+      throw new Error(action.lockedReason);
+    }
+
+    const [kind, id] = action.id.split(':');
+
+    if (kind === 'work' && id === 'dishes') {
+      this.closeActionPanel();
+      this.startDishes();
+      return;
+    }
+    if (kind === 'work' && id === 'trash') {
+      this.closeActionPanel();
+      this.startTrash();
+      return;
+    }
+    if (kind === 'work' && id === 'courier') {
+      this.closeActionPanel();
+      this.startCourierMinigame();
+      return;
+    }
+    if (kind === 'food' && id) {
+      this.closeActionPanel();
+      this.startFoodAction(id);
+      return;
+    }
+    if (kind === 'entertainment' && id) {
+      this.closeActionPanel();
+      this.startEntertainmentAction(id);
+      return;
+    }
+    if (action.id === 'sleep') {
+      this.closeActionPanel();
+      this.startSleeping();
+      return;
+    }
+    if (action.id === 'dumpster') {
+      this.closeActionPanel();
+      this.startDumpster();
+      return;
+    }
+    if (action.id === 'shower') {
+      this.closeActionPanel();
+      this.startShowerAction();
+      return;
+    }
+
+    throw new Error(`Unknown action preview: ${action.id}`);
   }
 
   private setContextControls(
@@ -329,11 +417,26 @@ export class BootstrapScene extends Phaser.Scene {
       return;
     }
 
-    if (action.kind === 'TIMED_PAID' && action.actionId === 'FOOD_01') {
-      this.state = applyTimedPaidCompletion(
+    if (action.kind === 'TIMED_PAID') {
+      this.state =
+        action.actionId === 'SHOWER'
+          ? settleShower(this.state, action, balance)
+          : settleRecoveryAction(this.state, action, balance);
+      return;
+    }
+
+    if (action.kind === 'DUMPSTER') {
+      const result = settleDumpsterSearch(
         this.state,
-        cheapFoodDefinition(),
         balance,
+      );
+      this.state = result.state;
+      this.showMessage(
+        result.loot === 'EMPTY'
+          ? 'Помойка: пусто.'
+          : result.cashAward > 0
+            ? `Помойка: ${result.loot} · +${result.cashAward.toLocaleString('ru-RU')} ₽`
+            : `Помойка: ${result.loot}`,
       );
     }
   }
@@ -422,16 +525,42 @@ export class BootstrapScene extends Phaser.Scene {
       });
   }
 
-  private startCheapFood(): void {
-    if (!this.state || this.activeAction || this.pendingDrop) {
-      throw new Error('Finish the current action first');
-    }
+  private startFoodAction(foodId: string): void {
+    if (!this.state) return;
 
-    const started = startTimedPaidAction(this.state, cheapFoodDefinition());
+    const started = startFood(
+      this.state,
+      this.activeAction,
+      this.pendingDrop,
+      balance,
+      foodId,
+    );
     this.state = started.state;
     this.activeAction = started.action;
-    this.showMessage('FOOD_01 paid upfront; stats apply only at completion.');
-    void this.persist();
+    this.showMessage(
+      `${foodId}: оплачено, эффект после ${started.action.remainingMinutes} мин.`,
+    );
+    this.advance(started.action.remainingMinutes);
+  }
+
+  private startEntertainmentAction(
+    entertainmentId: string,
+  ): void {
+    if (!this.state) return;
+
+    const started = startEntertainment(
+      this.state,
+      this.activeAction,
+      this.pendingDrop,
+      balance,
+      entertainmentId,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage(
+      `${entertainmentId}: действие начато.`,
+    );
+    this.advance(started.action.remainingMinutes);
   }
 
   private startSleeping(): void {
@@ -440,8 +569,42 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     this.activeAction = startSleep(this.state, balance);
-    this.showMessage('Sleep started. Barry will end it at 09:00.');
-    void this.persist();
+    this.showMessage(
+      `Сон: до ${balance.sleep.fullSleepHours} ч, Барри в 09:00 прерывает.`,
+    );
+    this.advance(this.activeAction.remainingMinutes);
+  }
+
+  private startDumpster(): void {
+    if (!this.state) return;
+
+    const started = startDumpsterSearch(
+      this.state,
+      this.activeAction,
+      this.pendingDrop,
+      balance,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage(
+      `Помойка: энергия -${started.energySpent}, счастье -${started.happinessSpent.toFixed(1)}, HP -${started.healthSpent.toFixed(1)}.`,
+    );
+    this.advance(started.action.remainingMinutes);
+  }
+
+  private startShowerAction(): void {
+    if (!this.state) return;
+
+    const started = startShower(
+      this.state,
+      this.activeAction,
+      this.pendingDrop,
+      balance,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage('Душ оплачен.');
+    this.advance(started.action.remainingMinutes);
   }
 
   private payBarry(): void {
@@ -515,6 +678,16 @@ export class BootstrapScene extends Phaser.Scene {
       !navigationLocked &&
         canPayMainDebt(this.state),
     );
+
+    if (navigationLocked && this.actionPanel?.isVisible()) {
+      this.closeActionPanel();
+    } else if (
+      !navigationLocked &&
+      this.selectedLocation !== null &&
+      this.actionPanel?.isVisible()
+    ) {
+      this.renderSelectedLocation();
+    }
 
     if (this.state.barryInterruptPending) {
       if (this.contextMode !== 'barry') {
