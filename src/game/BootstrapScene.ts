@@ -137,6 +137,16 @@ export class BootstrapScene extends Phaser.Scene {
         return;
       }
 
+      if (
+        this.activeAction?.kind === 'WORK' &&
+        this.activeAction.actionId === 'trash' &&
+        this.activeAction.result === null
+      ) {
+        this.game.events.emit(GAME_PRESENTABLE_EVENT);
+        this.scene.start('trash');
+        return;
+      }
+
       this.installControls();
       this.render();
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
@@ -154,6 +164,7 @@ export class BootstrapScene extends Phaser.Scene {
       ['+60m', () => this.advance(60)],
       ['Courier L1 (success)', () => this.startCourier()],
       ['Dishes minigame', () => this.startDishes()],
+      ['Trash minigame', () => this.startTrash()],
       ['Eat FOOD_01', () => this.startCheapFood()],
       ['Sleep 7h', () => this.startSleeping()],
       ['Finish active action', () => this.finishActiveAction()],
@@ -265,6 +276,34 @@ export class BootstrapScene extends Phaser.Scene {
     void this.persist()
       .then(() => this.repository?.flush())
       .then(() => this.scene.start('dishes'))
+      .catch((error: unknown) => {
+        this.showMessage(
+          error instanceof Error ? error.message : String(error),
+        );
+      });
+  }
+
+  private startTrash(): void {
+    if (!this.state || this.activeAction || this.pendingDrop) {
+      throw new Error('Finish the current action first');
+    }
+
+    const level = this.state.jobLevels.trash;
+    const started = startWork(
+      this.state,
+      balance,
+      'trash',
+      level,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage(
+      'Trash costs reserved. Complete the skill minigame for the work result.',
+    );
+
+    void this.persist()
+      .then(() => this.repository?.flush())
+      .then(() => this.scene.start('trash'))
       .catch((error: unknown) => {
         this.showMessage(
           error instanceof Error ? error.message : String(error),
