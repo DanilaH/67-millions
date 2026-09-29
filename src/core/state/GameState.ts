@@ -32,6 +32,7 @@ export interface GameState {
   sleepMinutesCurrentGameDay: number;
   workPayoutMultiplier: number;
   jobLevels: JobLevelsState;
+  dumpsterSearchStreak: number;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
   plinkoMaxBetLevel: number;
   plinkoCenterLevel: number;
@@ -72,6 +73,7 @@ export const createInitialGameState = (
     trash: 1,
     courier: 1,
   },
+  dumpsterSearchStreak: 0,
   plinkoSelectedBetFraction: 1,
   plinkoMaxBetLevel: 0,
   plinkoCenterLevel: 0,

@@ -4,6 +4,7 @@ import {
   type ActiveAction,
 } from '../actions/ActiveAction';
 import { beginBarryInterrupt } from '../barry/barry';
+import { resetDumpsterSearchStreak } from '../actions/dumpster';
 import { advanceNeeds } from '../needs/needs';
 import { finalizeSleepCycle } from '../sleep/sleep';
 import type { GameState } from '../state/GameState';
@@ -72,6 +73,14 @@ export const advanceRunTime = (
     : null;
   let actionCompleted = activeAction !== null && nextAction === null;
 
+  if (
+    activeAction?.kind === 'SLEEP' &&
+    actionCompleted &&
+    config.dumpster.resetStreakAfterSleep
+  ) {
+    nextState = resetDumpsterSearchStreak(nextState);
+  }
+
   const actualSchedule = advanceScheduledTime(state.clock, actualMinutes, {
     gameDayBoundary: config.time.gameDayBoundary,
     hardBoundaryTime: config.barry.time,
@@ -89,6 +98,9 @@ export const advanceRunTime = (
   }
 
   if (scheduled.hitHardBoundary && actualMinutes === scheduled.advancedMinutes) {
+    if (config.dumpster.resetStreakAtGameDayBoundary) {
+      nextState = resetDumpsterSearchStreak(nextState);
+    }
     nextState = finalizeSleepCycle(nextState, config);
 
     if (activeAction?.kind === 'SLEEP') {

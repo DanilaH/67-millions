@@ -69,17 +69,19 @@ describe('save repository', () => {
     const save = await repo.load();
     save.game.cash = 777;
     save.game.jobLevels.dishes = 2;
+    save.game.dumpsterSearchStreak = 3;
     await repo.write(save);
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(9);
+    expect(restored.version).toBe(10);
     expect(restored.game.cash).toBe(777);
     expect(restored.game.jobLevels).toEqual({
       dishes: 2,
       trash: 1,
       courier: 1,
     });
+    expect(restored.game.dumpsterSearchStreak).toBe(3);
   });
 
   it('uses the browser-local adapter without changing save semantics', async () => {
@@ -141,7 +143,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.barryInterruptPending).toBe(false);
     expect(migrated.game.workPayoutMultiplier).toBe(1);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
@@ -191,7 +193,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
@@ -226,7 +228,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.pendingDrop).toBeNull();
 
     await storage.setItem(
@@ -249,7 +251,7 @@ describe('save repository', () => {
     );
   });
 
-  it('round-trips exact active-Drop physics in v9', async () => {
+  it('round-trips exact active-Drop physics in v10', async () => {
     const storage = new MemoryStorage();
     const repo = createSaveRepository(
       storage,
@@ -450,7 +452,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
     expect(migrated.game.plinkoMidLevel).toBe(0);
     expect(migrated.game.plinkoJackpotLevel).toBe(0);
@@ -528,7 +530,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
@@ -631,7 +633,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
@@ -698,7 +700,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
     expect(migrated.game.plinkoInsuranceArmed).toBeNull();
@@ -748,7 +750,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(9);
+    expect(migrated.version).toBe(10);
     expect(migrated.game.cash).toBe(12_345);
     expect(migrated.game.plinkoInsuranceLevel).toBe(2);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(1);
@@ -757,6 +759,48 @@ describe('save repository', () => {
       trash: 1,
       courier: 1,
     });
+    expect(migrated.game.dumpsterSearchStreak).toBe(0);
+  });
+
+  it('migrates v9 saves by adding a zero dumpster search streak', async () => {
+    const storage = new MemoryStorage();
+    const currentGame = {
+      ...createInitialGameState(balance, 890),
+      cash: 54_321,
+      jobLevels: {
+        dishes: 2,
+        trash: 1,
+        courier: 3,
+      },
+    };
+    const {
+      dumpsterSearchStreak: _dumpsterSearchStreak,
+      ...legacyGame
+    } = currentGame;
+
+    await storage.setItem(
+      SAVE_STORAGE_KEY,
+      JSON.stringify({
+        version: 9,
+        game: legacyGame,
+        activeAction: null,
+        pendingDrop: null,
+      }),
+    );
+
+    const migrated = await createSaveRepository(
+      storage,
+      () => createInitialGameState(balance, 999),
+    ).load();
+
+    expect(migrated.version).toBe(10);
+    expect(migrated.game.cash).toBe(54_321);
+    expect(migrated.game.jobLevels).toEqual({
+      dishes: 2,
+      trash: 1,
+      courier: 3,
+    });
+    expect(migrated.game.dumpsterSearchStreak).toBe(0);
   });
 
   it('rejects incompatible save versions without mutating stored data', async () => {
@@ -772,7 +816,7 @@ describe('save repository', () => {
 
   it('rejects corrupt current-version data instead of silently resetting it', async () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ version: 9, game: { cash: -999 } });
+    const raw = JSON.stringify({ version: 10, game: { cash: -999 } });
     await storage.setItem(SAVE_STORAGE_KEY, raw);
 
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 123));
