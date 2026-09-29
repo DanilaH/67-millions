@@ -1,4 +1,7 @@
-import { applyBoundedPitchVariation } from '@danilah/mini-games-kit/audio';
+import {
+  applyBoundedPitchVariation,
+  getAccumulationPitchMultiplier,
+} from '@danilah/mini-games-kit/audio';
 
 import {
   SPECIAL_PIN_VOICE_LIMIT,
@@ -7,11 +10,19 @@ import {
 } from './SpecialPinAudioPolicy';
 import { VoiceBudget } from './VoiceBudget';
 
+export type PlinkoPocketAudioKind =
+  | 'pocket'
+  | 'badPocket'
+  | 'jackpotEdge';
+
 type ToneKind =
   | 'bounce'
-  | 'pocket'
+  | PlinkoPocketAudioKind
   | 'good'
   | 'bad'
+  | 'payoutTick'
+  | 'bigJackpot'
+  | 'insurance'
   | SpecialPinAudioKind;
 
 interface ToneSpec {
@@ -39,6 +50,22 @@ const TONES: Record<ToneKind, ToneSpec> = {
     waveform: 'sine',
     variation: 0.08,
   },
+  badPocket: {
+    frequency: 180,
+    endFrequency: 112,
+    durationMs: 105,
+    gain: 0.052,
+    waveform: 'sawtooth',
+    variation: 0.035,
+  },
+  jackpotEdge: {
+    frequency: 760,
+    endFrequency: 1280,
+    durationMs: 145,
+    gain: 0.068,
+    waveform: 'triangle',
+    variation: 0.025,
+  },
   good: {
     frequency: 680,
     endFrequency: 1040,
@@ -54,6 +81,29 @@ const TONES: Record<ToneKind, ToneSpec> = {
     gain: 0.065,
     waveform: 'sawtooth',
     variation: 0.025,
+  },
+  payoutTick: {
+    frequency: 620,
+    durationMs: 44,
+    gain: 0.018,
+    waveform: 'sine',
+    variation: 0.012,
+  },
+  bigJackpot: {
+    frequency: 520,
+    endFrequency: 1560,
+    durationMs: 320,
+    gain: 0.08,
+    waveform: 'triangle',
+    variation: 0.018,
+  },
+  insurance: {
+    frequency: 300,
+    endFrequency: 900,
+    durationMs: 220,
+    gain: 0.045,
+    waveform: 'sine',
+    variation: 0.018,
   },
   amplifier: {
     frequency: 920,
@@ -81,30 +131,66 @@ const TONES: Record<ToneKind, ToneSpec> = {
   },
 };
 
+export const PLINKO_PAYOUT_COUNT_TICKS = 3;
+export const PLINKO_PAYOUT_TICK_INTERVAL_MS = 52;
+export const PLINKO_PAYOUT_PITCH_PROFILE = {
+  startMultiplier: 0.92,
+  endMultiplier: 1.2,
+  jitterAmount: 0.01,
+} as const;
+
 export const PLINKO_AUDIO_VOICE_LIMITS = {
   bounce: 6,
   accent: 4,
   special: SPECIAL_PIN_VOICE_LIMIT,
+  transfer: PLINKO_PAYOUT_COUNT_TICKS,
 } as const;
 
 export const PLINKO_AUDIO_MAX_GAINS = {
   bounce: TONES.bounce.gain,
   accent: Math.max(
     TONES.pocket.gain,
+    TONES.badPocket.gain,
+    TONES.jackpotEdge.gain,
     TONES.good.gain,
     TONES.bad.gain,
+    TONES.bigJackpot.gain,
+    TONES.insurance.gain,
   ),
   special: Math.max(
     TONES.amplifier.gain,
     TONES.splitter.gain,
     TONES.return.gain,
   ),
+  transfer: TONES.payoutTick.gain,
 } as const;
 
 export const PLINKO_AUDIO_WORST_CASE_PEAK_GAIN =
-  PLINKO_AUDIO_VOICE_LIMITS.bounce * PLINKO_AUDIO_MAX_GAINS.bounce +
-  PLINKO_AUDIO_VOICE_LIMITS.accent * PLINKO_AUDIO_MAX_GAINS.accent +
-  PLINKO_AUDIO_VOICE_LIMITS.special * PLINKO_AUDIO_MAX_GAINS.special;
+  PLINKO_AUDIO_VOICE_LIMITS.bounce *
+    PLINKO_AUDIO_MAX_GAINS.bounce +
+  PLINKO_AUDIO_VOICE_LIMITS.accent *
+    PLINKO_AUDIO_MAX_GAINS.accent +
+  PLINKO_AUDIO_VOICE_LIMITS.special *
+    PLINKO_AUDIO_MAX_GAINS.special +
+  PLINKO_AUDIO_VOICE_LIMITS.transfer *
+    PLINKO_AUDIO_MAX_GAINS.transfer;
+
+export const classifyPlinkoPocketAudio = (
+  multiplier: number,
+  jackpotEdge: boolean,
+): PlinkoPocketAudioKind => {
+  if (jackpotEdge) return 'jackpotEdge';
+  return multiplier < 1 ? 'badPocket' : 'pocket';
+};
+
+export const shouldUseBigJackpotStinger = (
+  resultMultiplier: number,
+  bigResultThreshold: number,
+): boolean =>
+  Number.isFinite(resultMultiplier) &&
+  Number.isFinite(bigResultThreshold) &&
+  bigResultThreshold > 0 &&
+  resultMultiplier >= bigResultThreshold;
 
 const unitFromCounter = (counter: number): number => {
   const golden = 0.6180339887498949;
@@ -125,6 +211,9 @@ export class PlinkoAudio {
   );
   private readonly specialBudget = new VoiceBudget(
     PLINKO_AUDIO_VOICE_LIMITS.special,
+  );
+  private readonly transferBudget = new VoiceBudget(
+    PLINKO_AUDIO_VOICE_LIMITS.transfer,
   );
   private readonly specialPolicy = new SpecialPinAudioPolicy(
     PLINKO_AUDIO_VOICE_LIMITS.special,
@@ -150,13 +239,75 @@ export class PlinkoAudio {
     this.play('bounce', this.bounceBudget);
   }
 
-  public pocket(multiplier: number): void {
-    const normalizedBoost = Math.min(1.35, 1 + Math.max(0, multiplier - 1) * 0.025);
-    this.play('pocket', this.accentBudget, normalizedBoost);
+  public pocket(
+    multiplier: number,
+    jackpotEdge: boolean,
+  ): void {
+    const kind = classifyPlinkoPocketAudio(
+      multiplier,
+      jackpotEdge,
+    );
+    const normalizedBoost =
+      kind === 'pocket'
+        ? Math.min(
+            1.35,
+            1 + Math.max(0, multiplier - 1) * 0.025,
+          )
+        : 1;
+
+    this.play(
+      kind,
+      this.accentBudget,
+      normalizedBoost,
+    );
   }
 
-  public result(losing: boolean): void {
-    this.play(losing ? 'bad' : 'good', this.accentBudget);
+  public payoutCount(): void {
+    if (this.disposed || this.isMuted()) return;
+
+    for (
+      let index = 0;
+      index < PLINKO_PAYOUT_COUNT_TICKS;
+      index += 1
+    ) {
+      const progress =
+        PLINKO_PAYOUT_COUNT_TICKS <= 1
+          ? 1
+          : index /
+            (PLINKO_PAYOUT_COUNT_TICKS - 1);
+      const pitch = getAccumulationPitchMultiplier(
+        progress,
+        PLINKO_PAYOUT_PITCH_PROFILE,
+        unitFromCounter(
+          this.cueCounter + index + 1,
+        ),
+      );
+
+      this.play(
+        'payoutTick',
+        this.transferBudget,
+        pitch,
+        index * PLINKO_PAYOUT_TICK_INTERVAL_MS,
+      );
+    }
+  }
+
+  public result(
+    losing: boolean,
+    bigJackpot: boolean,
+  ): void {
+    this.play(
+      !losing && bigJackpot
+        ? 'bigJackpot'
+        : losing
+          ? 'bad'
+          : 'good',
+      this.accentBudget,
+    );
+  }
+
+  public insuranceActivation(): void {
+    this.play('insurance', this.accentBudget);
   }
 
   public amplifier(): void {
@@ -184,7 +335,12 @@ export class PlinkoAudio {
 
   private getContext(): AudioContext | null {
     if (this.context) return this.context;
-    if (this.disposed || typeof AudioContext === 'undefined') return null;
+    if (
+      this.disposed ||
+      typeof AudioContext === 'undefined'
+    ) {
+      return null;
+    }
 
     try {
       this.context = new AudioContext();
@@ -196,7 +352,14 @@ export class PlinkoAudio {
 
   private playSpecial(kind: SpecialPinAudioKind): void {
     if (this.disposed || this.isMuted()) return;
-    if (!this.specialPolicy.trySchedule(kind, this.nowMs())) return;
+    if (
+      !this.specialPolicy.trySchedule(
+        kind,
+        this.nowMs(),
+      )
+    ) {
+      return;
+    }
 
     this.play(kind, this.specialBudget);
   }
@@ -205,8 +368,15 @@ export class PlinkoAudio {
     kind: ToneKind,
     budget: VoiceBudget,
     frequencyMultiplier = 1,
+    delayMs = 0,
   ): void {
-    if (this.disposed || this.isMuted() || !budget.tryAcquire()) return;
+    if (
+      this.disposed ||
+      this.isMuted() ||
+      !budget.tryAcquire()
+    ) {
+      return;
+    }
 
     const context = this.getContext();
     if (!context || context.state !== 'running') {
@@ -215,8 +385,11 @@ export class PlinkoAudio {
     }
 
     const spec = TONES[kind];
-    const now = context.currentTime;
-    const durationSeconds = spec.durationMs / 1000;
+    const now =
+      context.currentTime +
+      Math.max(0, delayMs) / 1000;
+    const durationSeconds =
+      spec.durationMs / 1000;
     const pitch = applyBoundedPitchVariation(
       spec.variation,
       unitFromCounter(++this.cueCounter),
@@ -227,18 +400,25 @@ export class PlinkoAudio {
 
     oscillator.type = spec.waveform;
     oscillator.frequency.setValueAtTime(
-      spec.frequency * frequencyMultiplier * pitch,
+      spec.frequency *
+        frequencyMultiplier *
+        pitch,
       now,
     );
     if (spec.endFrequency !== undefined) {
       oscillator.frequency.exponentialRampToValueAtTime(
-        spec.endFrequency * frequencyMultiplier * pitch,
+        spec.endFrequency *
+          frequencyMultiplier *
+          pitch,
         now + durationSeconds,
       );
     }
 
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.linearRampToValueAtTime(spec.gain, now + 0.006);
+    gain.gain.linearRampToValueAtTime(
+      spec.gain,
+      now + 0.006,
+    );
     gain.gain.exponentialRampToValueAtTime(
       0.0001,
       now + Math.max(0.012, durationSeconds),
@@ -248,7 +428,10 @@ export class PlinkoAudio {
     gain.connect(context.destination);
 
     const cleanup = (): void => {
-      oscillator.removeEventListener('ended', cleanup);
+      oscillator.removeEventListener(
+        'ended',
+        cleanup,
+      );
       try {
         oscillator.disconnect();
       } catch {
@@ -264,6 +447,8 @@ export class PlinkoAudio {
 
     oscillator.addEventListener('ended', cleanup);
     oscillator.start(now);
-    oscillator.stop(now + durationSeconds + 0.02);
+    oscillator.stop(
+      now + durationSeconds + 0.02,
+    );
   }
 }
