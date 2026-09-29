@@ -73,7 +73,7 @@ const assertCanStartDumpster = (
   }
 };
 
-const applyDumpsterStartCost = (
+export const applyDumpsterStartCost = (
   state: GameState,
   config: BalanceConfig,
 ): {
