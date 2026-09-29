@@ -980,6 +980,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private renderAll(): void {
     if (this.save) {
+      this.worldAudio?.setSuppressed(
+        this.save.pendingDrop !== null,
+      );
       this.worldAudio?.syncBarry(
         this.save.game.barryInterruptPending,
       );
