@@ -4,6 +4,7 @@ import type { BalanceConfig } from '../../config/balance.schema';
 import { getBarryPaymentDue } from '../../core/barry/barry';
 import type { GameState } from '../../core/state/GameState';
 import { BARRY_CONTENT } from '../content/contentCatalog';
+import { VISUAL_FONT, VISUAL_METRICS, visualColor, visualHex } from '../visual/visualTheme';
 
 export interface BarryMinigameOverlay {
   show(state: GameState): void;
@@ -19,7 +20,7 @@ export const createBarryMinigameOverlay = (
   const { width, height } = scene.scale;
   const container = scene.add
     .container(0, 0)
-    .setDepth(10_000)
+    .setDepth(VISUAL_METRICS.barryDepth)
     .setVisible(false);
 
   const shade = scene.add
@@ -28,7 +29,7 @@ export const createBarryMinigameOverlay = (
       height / 2,
       width,
       height,
-      0x050607,
+      visualColor('inkDeep'),
       0.82,
     )
     .setInteractive();
@@ -39,10 +40,10 @@ export const createBarryMinigameOverlay = (
       height / 2,
       560,
       280,
-      0x171b20,
+      visualColor('inkPanel'),
       1,
     )
-    .setStrokeStyle(4, 0x7f5f4d, 1);
+    .setStrokeStyle(4, visualColor('rust'), 1);
 
   const title = scene.add
     .text(
@@ -50,8 +51,8 @@ export const createBarryMinigameOverlay = (
       height / 2 - 100,
       `${BARRY_CONTENT.dueTitle} · 09:00`,
       {
-      color: '#f4f6f8',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '30px',
       fontStyle: 'bold',
       },
@@ -60,8 +61,8 @@ export const createBarryMinigameOverlay = (
 
   const dueText = scene.add
     .text(width / 2, height / 2 - 35, '', {
-      color: '#f0c78d',
-      fontFamily: 'ui-monospace, monospace',
+      color: visualHex('paperOld'),
+      fontFamily: VISUAL_FONT.mono,
       fontSize: '22px',
     })
     .setOrigin(0.5);
@@ -72,8 +73,8 @@ export const createBarryMinigameOverlay = (
       height / 2 + 12,
       BARRY_CONTENT.dueBody,
       {
-        color: '#c7ced7',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMuted'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
       },
     )
@@ -81,9 +82,9 @@ export const createBarryMinigameOverlay = (
 
   const pay = scene.add
     .text(width / 2, height / 2 + 72, '[ ЗАПЛАТИТЬ БАРРИ ]', {
-      color: '#f4f6f8',
-      backgroundColor: '#5b3a2d',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      backgroundColor: visualHex('rust'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '20px',
       padding: { x: 14, y: 10 },
     })
