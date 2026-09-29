@@ -1,8 +1,18 @@
 import { applyBoundedPitchVariation } from '@danilah/mini-games-kit/audio';
 
+import {
+  SPECIAL_PIN_VOICE_LIMIT,
+  SpecialPinAudioPolicy,
+  type SpecialPinAudioKind,
+} from './SpecialPinAudioPolicy';
 import { VoiceBudget } from './VoiceBudget';
 
-type ToneKind = 'bounce' | 'pocket' | 'good' | 'bad';
+type ToneKind =
+  | 'bounce'
+  | 'pocket'
+  | 'good'
+  | 'bad'
+  | SpecialPinAudioKind;
 
 interface ToneSpec {
   frequency: number;
@@ -45,7 +55,56 @@ const TONES: Record<ToneKind, ToneSpec> = {
     waveform: 'sawtooth',
     variation: 0.025,
   },
+  amplifier: {
+    frequency: 920,
+    endFrequency: 1320,
+    durationMs: 130,
+    gain: 0.048,
+    waveform: 'triangle',
+    variation: 0.025,
+  },
+  splitter: {
+    frequency: 390,
+    endFrequency: 235,
+    durationMs: 115,
+    gain: 0.05,
+    waveform: 'square',
+    variation: 0.02,
+  },
+  return: {
+    frequency: 260,
+    endFrequency: 620,
+    durationMs: 185,
+    gain: 0.045,
+    waveform: 'sine',
+    variation: 0.02,
+  },
 };
+
+export const PLINKO_AUDIO_VOICE_LIMITS = {
+  bounce: 6,
+  accent: 4,
+  special: SPECIAL_PIN_VOICE_LIMIT,
+} as const;
+
+export const PLINKO_AUDIO_MAX_GAINS = {
+  bounce: TONES.bounce.gain,
+  accent: Math.max(
+    TONES.pocket.gain,
+    TONES.good.gain,
+    TONES.bad.gain,
+  ),
+  special: Math.max(
+    TONES.amplifier.gain,
+    TONES.splitter.gain,
+    TONES.return.gain,
+  ),
+} as const;
+
+export const PLINKO_AUDIO_WORST_CASE_PEAK_GAIN =
+  PLINKO_AUDIO_VOICE_LIMITS.bounce * PLINKO_AUDIO_MAX_GAINS.bounce +
+  PLINKO_AUDIO_VOICE_LIMITS.accent * PLINKO_AUDIO_MAX_GAINS.accent +
+  PLINKO_AUDIO_VOICE_LIMITS.special * PLINKO_AUDIO_MAX_GAINS.special;
 
 const unitFromCounter = (counter: number): number => {
   const golden = 0.6180339887498949;
@@ -58,8 +117,18 @@ export class PlinkoAudio {
   private cueCounter = 0;
   private lastBounceAtMs = -Infinity;
 
-  private readonly bounceBudget = new VoiceBudget(6);
-  private readonly accentBudget = new VoiceBudget(4);
+  private readonly bounceBudget = new VoiceBudget(
+    PLINKO_AUDIO_VOICE_LIMITS.bounce,
+  );
+  private readonly accentBudget = new VoiceBudget(
+    PLINKO_AUDIO_VOICE_LIMITS.accent,
+  );
+  private readonly specialBudget = new VoiceBudget(
+    PLINKO_AUDIO_VOICE_LIMITS.special,
+  );
+  private readonly specialPolicy = new SpecialPinAudioPolicy(
+    PLINKO_AUDIO_VOICE_LIMITS.special,
+  );
 
   public constructor(
     private readonly isMuted: () => boolean,
@@ -90,6 +159,18 @@ export class PlinkoAudio {
     this.play(losing ? 'bad' : 'good', this.accentBudget);
   }
 
+  public amplifier(): void {
+    this.playSpecial('amplifier');
+  }
+
+  public splitter(): void {
+    this.playSpecial('splitter');
+  }
+
+  public returnCue(): void {
+    this.playSpecial('return');
+  }
+
   public dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
@@ -111,6 +192,13 @@ export class PlinkoAudio {
     } catch {
       return null;
     }
+  }
+
+  private playSpecial(kind: SpecialPinAudioKind): void {
+    if (this.disposed || this.isMuted()) return;
+    if (!this.specialPolicy.trySchedule(kind, this.nowMs())) return;
+
+    this.play(kind, this.specialBudget);
   }
 
   private play(
