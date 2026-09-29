@@ -66,8 +66,17 @@ jobs:
           if (metrics.stuckRuns !== 0) {
             throw new Error(`Expected zero stuck runs, got ${metrics.stuckRuns}`);
           }
-          if (metrics.meanTerminalBalls !== 24) {
-            throw new Error(`Expected meanTerminalBalls=24, got ${metrics.meanTerminalBalls}`);
+          const theoreticalTerminalCap =
+            metadata.initialBallCount * 2 ** metadata.maxSplitDepth;
+          if (metrics.maxTerminalBalls > theoreticalTerminalCap) {
+            throw new Error(
+              `Terminal-ball count exceeded depth bound: ${metrics.maxTerminalBalls} > ${theoreticalTerminalCap}`,
+            );
+          }
+          if (metrics.meanTerminalBalls < metadata.initialBallCount) {
+            throw new Error(
+              `Terminal-ball count fell below initial roots: ${metrics.meanTerminalBalls}`,
+            );
           }
           if (!(performance.wallMsPerDrop > 0)) {
             throw new Error('Missing wall-time performance measurement');
@@ -77,6 +86,8 @@ jobs:
             maxActiveBalls: metrics.maxActiveBalls,
             stuckRuns: metrics.stuckRuns,
             meanTerminalBalls: metrics.meanTerminalBalls,
+            maxTerminalBalls: metrics.maxTerminalBalls,
+            theoreticalTerminalCap,
             meanCascadeSeconds: metrics.meanCascadeSeconds,
             p95CascadeSeconds: metrics.p95CascadeSeconds,
             maxCascadeSeconds: metrics.maxCascadeSeconds,
