@@ -8,6 +8,7 @@ import { creditCash, debitCash, roundMoney } from '../economy/money';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
+import { hasStatus } from '../state/statuses';
 import { parseClockTime } from '../time/GameClock';
 
 export type JobId = keyof BalanceConfig['work']['jobs'];
@@ -84,6 +85,12 @@ export const startWork = (
   }
 
   const definition = getLevel(config, jobId, level);
+  if (
+    hasStatus(state, 'SMELLY') &&
+    config.statuses.SMELLY.blocksJobs.includes(jobId)
+  ) {
+    throw new Error(`${jobId} job is blocked by SMELLY`);
+  }
   if (level > state.jobLevels[jobId]) {
     throw new Error('Job level is not owned');
   }
