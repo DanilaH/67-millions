@@ -11,7 +11,7 @@ import {
   SCENE_AUDIO_WORST_CASE_POST_MASTER_GAIN,
   deriveLowNeedKeys,
   resolveSceneAudioPersistentState,
-} from '../src/audio/SceneAudio';
+} from '../src/audio/sceneAudioPolicy';
 
 describe('T065 scene audio policy', () => {
   it('keeps worst-case transient headroom below full scale', () => {
