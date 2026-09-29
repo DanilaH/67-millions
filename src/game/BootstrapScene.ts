@@ -39,6 +39,7 @@ import {
   startWork,
 } from '../core/work/work';
 import { balance } from '../config/balance';
+import { SceneAudio } from '../audio/SceneAudio';
 import { isPlinkoPerfMode } from '../app/perfMode';
 import {
   buildDumpsterPreviews,
@@ -120,6 +121,7 @@ export class BootstrapScene extends Phaser.Scene {
   private runEndOverlay?: RunEndOverlay;
   private tutorialCard?: TutorialCard;
   private eventOverlay?: EventOverlay;
+  private audio: SceneAudio | null = null;
   private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
 
@@ -129,6 +131,12 @@ export class BootstrapScene extends Phaser.Scene {
 
   public create(): void {
     const { height } = this.scale;
+
+    this.audio = new SceneAudio(this, 'city');
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.audio?.dispose();
+      this.audio = null;
+    });
 
     this.hud = new PersistentHud(this, balance);
     this.mapView = createMainMapView(
@@ -311,6 +319,7 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (id === 'casino') {
       this.closeActionPanel();
+      this.audio?.play('casinoEnter');
       this.scene.start('plinko-debug');
       return;
     }
@@ -529,6 +538,7 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (action.kind === 'SLEEP') {
       recordTutorialMilestone('RECOVERY_USED');
+      this.audio?.play('wake');
       return;
     }
 
@@ -538,6 +548,9 @@ export class BootstrapScene extends Phaser.Scene {
         balance,
       );
       this.state = result.state;
+      if (result.cashAward > 0) {
+        this.audio?.play('cashGain');
+      }
       this.showMessage(
         result.loot === 'EMPTY'
           ? 'Помойка: пусто.'
@@ -635,6 +648,7 @@ export class BootstrapScene extends Phaser.Scene {
   private startFoodAction(foodId: string): void {
     if (!this.state) return;
 
+    const cashBefore = this.state.cash;
     const started = startFood(
       this.state,
       this.activeAction,
@@ -644,6 +658,9 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    if (this.state.cash < cashBefore) {
+      this.audio?.play('cashSpend');
+    }
     this.showMessage(
       `${getFoodContent(foodId).title}: оплачено, эффект после ${started.action.remainingMinutes} мин.`,
     );
@@ -655,6 +672,7 @@ export class BootstrapScene extends Phaser.Scene {
   ): void {
     if (!this.state) return;
 
+    const cashBefore = this.state.cash;
     const started = startEntertainment(
       this.state,
       this.activeAction,
@@ -664,6 +682,9 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    if (this.state.cash < cashBefore) {
+      this.audio?.play('cashSpend');
+    }
     this.showMessage(
       `${getEntertainmentContent(entertainmentId).title}: действие начато.`,
     );
@@ -676,6 +697,7 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     this.activeAction = startSleep(this.state, balance);
+    this.audio?.play('sleep');
     this.showMessage(
       `Сон: до ${balance.sleep.fullSleepHours} ч, Барри в 09:00 прерывает.`,
     );
@@ -685,6 +707,7 @@ export class BootstrapScene extends Phaser.Scene {
   private startDumpster(): void {
     if (!this.state) return;
 
+    this.audio?.play('dumpster');
     const started = startDumpsterSearch(
       this.state,
       this.activeAction,
@@ -702,6 +725,7 @@ export class BootstrapScene extends Phaser.Scene {
   private startShowerAction(): void {
     if (!this.state) return;
 
+    const cashBefore = this.state.cash;
     const started = startShower(
       this.state,
       this.activeAction,
@@ -710,6 +734,9 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    if (this.state.cash < cashBefore) {
+      this.audio?.play('cashSpend');
+    }
     this.showMessage('Душ оплачен.');
     this.advance(started.action.remainingMinutes);
   }
@@ -726,6 +753,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.state.barryPaymentIndex > previousPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      this.audio?.play('cashSpend');
     }
 
     this.showMessage(
@@ -764,6 +792,7 @@ export class BootstrapScene extends Phaser.Scene {
       throw new Error('Нет события, доступного для выбора.');
     }
 
+    const cashBefore = this.state.cash;
     const resolved = resolveEventChoice(
       this.state,
       balance,
@@ -772,6 +801,9 @@ export class BootstrapScene extends Phaser.Scene {
     );
 
     this.state = resolved.state;
+    if (this.state.cash < cashBefore) {
+      this.audio?.play('cashSpend');
+    }
     this.activeAction = resolved.activeAction;
     this.eventOverlay?.hide();
 
@@ -826,6 +858,7 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     this.state = payMainDebt(this.state);
+    this.audio?.play('cashSpend');
     void this.persist();
   }
 
@@ -856,6 +889,12 @@ export class BootstrapScene extends Phaser.Scene {
 
   private render(): void {
     if (!this.state || !this.hud || !this.mapView) return;
+
+    this.audio?.syncBarry(this.state.barryInterruptPending);
+    this.audio?.syncNeeds(
+      this.state.needs,
+      balance.needs.lowThreshold,
+    );
 
     this.hud.render(this.state);
     this.renderTutorial();

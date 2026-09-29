@@ -5,6 +5,8 @@ import {
   PlinkoAudio,
   shouldUseBigJackpotStinger,
 } from '../audio/PlinkoAudio';
+import { SceneAudio } from '../audio/SceneAudio';
+import { GAME_AUDIO_BLOCKED_EVENT } from '../audio/audioLifecycle';
 import {
   clearPlinkoPerfProbe,
   isPlinkoPerfMode,
@@ -105,6 +107,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private lastPersistedPhysicsTick = 0;
   private visibilityHandler: (() => void) | null = null;
   private audio: PlinkoAudio | null = null;
+  private worldAudio: SceneAudio | null = null;
 
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
@@ -165,6 +168,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.resultText);
 
     this.audio = new PlinkoAudio(() => this.game.sound.mute);
+    this.worldAudio = new SceneAudio(this, 'casino');
+    this.input.on('pointerdown', this.handleAudioPrime);
+    this.game.events.on(
+      GAME_AUDIO_BLOCKED_EVENT,
+      this.handleAudioBlocked,
+    );
     this.matter.world.on('collisionstart', this.handleAudioCollision);
 
     this.installMapLayer();
@@ -184,9 +193,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.visibilityHandler = null;
       }
       this.matter.world.off('collisionstart', this.handleAudioCollision);
+      this.input.off('pointerdown', this.handleAudioPrime);
+      this.game.events.off(
+        GAME_AUDIO_BLOCKED_EVENT,
+        this.handleAudioBlocked,
+      );
       clearPlinkoPerfProbe();
       this.audio?.dispose();
       this.audio = null;
+      this.worldAudio?.dispose();
+      this.worldAudio = null;
       this.runtime?.destroy();
       this.runtime = null;
       this.balls.clear();
@@ -552,6 +568,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
       // Stake + pendingDrop are durable before time or physical outcome generation.
       await this.enqueueSave(true);
+      this.worldAudio?.play('cashSpend');
 
       if (
         committed.pendingDrop.insuranceAtCommit !== null
@@ -789,6 +806,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       : '';
     if (result.payout > 0) {
       this.audio?.payoutCount();
+      this.worldAudio?.play('cashGain');
     }
     this.audio?.result(
       result.losing,
@@ -864,6 +882,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
       },
     };
   }
+
+  private readonly handleAudioPrime = (): void => {
+    this.audio?.prime();
+  };
+
+  private readonly handleAudioBlocked = (
+    blocked: boolean,
+  ): void => {
+    this.audio?.setBlocked(blocked);
+  };
 
   private readonly handleAudioCollision = (
     _event: unknown,
@@ -977,6 +1005,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderCasino();
     this.renderMap();
     this.renderTutorial();
+
+    if (this.save) {
+      this.worldAudio?.syncBarry(
+        this.save.game.barryInterruptPending,
+      );
+      this.worldAudio?.syncNeeds(
+        this.save.game.needs,
+        balance.needs.lowThreshold,
+      );
+    }
   }
 
   private renderCasino(): void {

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { balance } from '../config/balance';
+import { SceneAudio } from '../audio/SceneAudio';
 import type { WorkActiveAction } from '../core/actions/ActiveAction';
 import { resolveBarryPayment } from '../core/barry/barry';
 import { createLocalSaveRepository } from '../core/save/repository';
@@ -53,6 +54,7 @@ export class TrashScene extends Phaser.Scene {
   private saveWriteChain: Promise<void> = Promise.resolve();
   private readonly minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
+  private audio: SceneAudio | null = null;
 
   public constructor() {
     super('trash');
@@ -60,6 +62,8 @@ export class TrashScene extends Phaser.Scene {
 
   public create(): void {
     const { width } = this.scale;
+
+    this.audio = new SceneAudio(this, 'work');
 
     this.add
       .text(width / 2, 24, 'ВЫНЕСТИ МУСОР', {
@@ -126,6 +130,8 @@ export class TrashScene extends Phaser.Scene {
       this.input.off('pointermove', this.handlePointerMove);
       this.input.off('pointerup', this.handlePointerUp);
       this.input.off('pointerupoutside', this.handlePointerUp);
+      this.audio?.dispose();
+      this.audio = null;
     });
 
     void this.initialize();
@@ -133,6 +139,14 @@ export class TrashScene extends Phaser.Scene {
 
   public update(_time: number, deltaMs: number): void {
     if (!this.session || this.completionInFlight || !this.save) return;
+
+    this.audio?.syncBarry(
+      this.save.game.barryInterruptPending,
+    );
+    this.audio?.syncNeeds(
+      this.save.game.needs,
+      balance.needs.lowThreshold,
+    );
 
     if (this.save.game.barryInterruptPending) {
       this.heldBagId = null;
@@ -238,6 +252,7 @@ export class TrashScene extends Phaser.Scene {
     );
 
     if (this.heldBagId !== null) {
+      this.audio?.play('trashGrab');
       this.session = moveTrashBag(
         this.session,
         this.heldBagId,
@@ -282,12 +297,21 @@ export class TrashScene extends Phaser.Scene {
     }
 
     const bagId = this.heldBagId;
+    const acceptedBefore =
+      getAcceptedTrashBagCount(this.session);
     this.heldBagId = null;
     this.session = dropTrashBag(
       this.session,
       bagId,
       { x: pointer.x, y: pointer.y },
     );
+
+    if (
+      getAcceptedTrashBagCount(this.session) >
+      acceptedBefore
+    ) {
+      this.audio?.play('trashBin');
+    }
 
     this.render();
 
@@ -307,6 +331,7 @@ export class TrashScene extends Phaser.Scene {
 
     const previousPaymentIndex =
       this.save.game.barryPaymentIndex;
+    const cashBefore = this.save.game.cash;
     this.save = {
       ...this.save,
       game: resolveBarryPayment(
@@ -321,6 +346,10 @@ export class TrashScene extends Phaser.Scene {
         previousPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      if (this.save.game.cash < cashBefore) {
+        this.audio?.play('cashSpend');
+      }
+      this.audio?.syncBarry(false);
     }
 
     await this.persistRuntime(true);
@@ -369,6 +398,7 @@ export class TrashScene extends Phaser.Scene {
     this.completionInFlight = true;
     this.heldBagId = null;
 
+    const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
       this.save.activeAction,
@@ -385,6 +415,13 @@ export class TrashScene extends Phaser.Scene {
 
     if (completion.shiftCompleted) {
       recordTutorialMilestone('WORK_COMPLETED');
+    }
+
+    if (result === 'FAILURE') {
+      this.audio?.play('trashFail');
+    }
+    if (completion.state.cash > cashBefore) {
+      this.audio?.play('cashGain');
     }
 
     await this.persistRuntime(true);

@@ -215,6 +215,7 @@ export class PlinkoAudio {
   private context: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private compressor: DynamicsCompressorNode | null = null;
+  private blocked = false;
   private disposed = false;
   private cueCounter = 0;
   private lastBounceAtMs = -Infinity;
@@ -241,9 +242,41 @@ export class PlinkoAudio {
   ) {}
 
   public prime(): void {
-    if (this.disposed || this.isMuted()) return;
+    if (
+      this.disposed ||
+      this.blocked ||
+      this.isMuted()
+    ) {
+      return;
+    }
+
     const context = this.getContext();
-    if (context?.state === 'suspended') {
+    if (!context) return;
+
+    if (context.state === 'suspended') {
+      void context.resume().catch(() => undefined);
+    }
+  }
+
+  public setBlocked(blocked: boolean): void {
+    if (this.disposed || blocked === this.blocked) {
+      return;
+    }
+
+    this.blocked = blocked;
+    const context = this.context;
+
+    if (blocked) {
+      if (context?.state === 'running') {
+        void context.suspend().catch(() => undefined);
+      }
+      return;
+    }
+
+    if (
+      context?.state === 'suspended' &&
+      !this.isMuted()
+    ) {
       void context.resume().catch(() => undefined);
     }
   }
@@ -279,7 +312,11 @@ export class PlinkoAudio {
   }
 
   public payoutCount(): void {
-    if (this.disposed || this.isMuted()) return;
+    if (
+      this.disposed ||
+      this.blocked ||
+      this.isMuted()
+    ) return;
 
     for (
       let index = 0;
@@ -411,7 +448,11 @@ export class PlinkoAudio {
   }
 
   private playSpecial(kind: SpecialPinAudioKind): void {
-    if (this.disposed || this.isMuted()) return;
+    if (
+      this.disposed ||
+      this.blocked ||
+      this.isMuted()
+    ) return;
     if (
       !this.specialPolicy.trySchedule(
         kind,
@@ -432,6 +473,7 @@ export class PlinkoAudio {
   ): void {
     if (
       this.disposed ||
+      this.blocked ||
       this.isMuted() ||
       !budget.tryAcquire()
     ) {
