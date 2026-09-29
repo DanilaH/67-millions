@@ -166,7 +166,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.resultText);
 
     this.audio = new PlinkoAudio(() => this.game.sound.mute);
-    this.audio.setCasinoAmbienceEnabled(true);
     this.input.on('pointerdown', this.handleAudioPrime);
     this.game.events.on(
       GAME_AUDIO_BLOCKED_EVENT,
@@ -559,7 +558,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
         pendingDrop: committed.pendingDrop,
       };
       this.refreshVisualSnapshot();
-      this.audio?.setCasinoAmbienceEnabled(false);
       this.lastResultMessage = '';
       this.resultText?.setVisible(false);
 
@@ -611,10 +609,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
       await this.persistPendingPhysics(true);
       this.renderAll();
     } catch (error: unknown) {
-      this.audio?.setCasinoAmbienceEnabled(
-        !this.mapMode &&
-          this.save?.pendingDrop === null,
-      );
       this.showStatus(error instanceof Error ? error.message : String(error));
     }
   }
@@ -1001,10 +995,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private renderAll(): void {
-    this.audio?.setCasinoAmbienceEnabled(
-      !this.mapMode &&
-        this.save?.pendingDrop === null,
-    );
     this.renderCasino();
     this.renderMap();
     this.renderTutorial();
