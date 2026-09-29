@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 8 as const;
+export const SAVE_VERSION = 9 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -26,6 +26,11 @@ const gameStateSchema = z.object({
   totalBarryPaid: z.number().int().nonnegative(),
   sleepMinutesCurrentGameDay: z.number().int().nonnegative(),
   workPayoutMultiplier: z.number().min(0).max(1),
+  jobLevels: z.object({
+    dishes: z.number().int().positive(),
+    trash: z.number().int().positive(),
+    courier: z.number().int().positive(),
+  }),
   plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
   plinkoMaxBetLevel: z.number().int().nonnegative(),
   plinkoCenterLevel: z.number().int().nonnegative(),
