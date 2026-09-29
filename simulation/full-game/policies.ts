@@ -266,23 +266,37 @@ const chooseGrowthEvUpgrade = (
   );
 };
 
-const canBetAboveReserve = (
+const chooseBetFractionAboveReserve = (
   state: GameState,
   config: BalanceConfig,
-  fraction: BetFraction,
+  preferred: BetFraction,
   reserve: number,
-): boolean => {
-  if (state.cash <= 0) return false;
+): BetFraction | null => {
+  if (state.cash <= 0) return null;
+
+  const candidates: readonly BetFraction[] =
+    preferred === 1
+      ? [1, 0.5, 0.25]
+      : preferred === 0.5
+        ? [0.5, 0.25]
+        : [0.25];
   const maxBet = getMaxBetForLevel(
     config,
     state.plinkoMaxBetLevel,
   );
-  const stake = calculateActualBet(
-    state.cash,
-    maxBet,
-    fraction,
-  );
-  return state.cash - stake >= reserve;
+
+  for (const fraction of candidates) {
+    const stake = calculateActualBet(
+      state.cash,
+      maxBet,
+      fraction,
+    );
+    if (state.cash - stake >= reserve) {
+      return fraction;
+    }
+  }
+
+  return null;
 };
 
 const chooseMaxBetUpgrade = (
@@ -465,41 +479,35 @@ const createDecisionFunction = (
     );
 
     const excessCash = state.cash - reserve;
-    if (
+    const safeBetFraction =
       profile.allowPlinko &&
       state.eventModifiers.plinkoLockRemainingMinutes <= 0 &&
-      excessCash > 0 &&
-      canBetAboveReserve(
-        state,
-        config,
-        profile.betFraction,
-        reserve,
-      ) &&
+      excessCash > 0
+        ? chooseBetFractionAboveReserve(
+            state,
+            config,
+            profile.betFraction,
+            reserve,
+          )
+        : null;
+
+    if (
+      safeBetFraction !== null &&
       (profile.archetype === 'AGGRESSIVE' ||
         profile.archetype === 'BASELINE_GROWTH')
     ) {
       return {
         type: 'PLINKO',
-        fraction: profile.betFraction,
+        fraction: safeBetFraction,
       };
     }
 
     if (work !== null) return work;
 
-    if (
-      profile.allowPlinko &&
-      state.eventModifiers.plinkoLockRemainingMinutes <= 0 &&
-      excessCash > 0 &&
-      canBetAboveReserve(
-        state,
-        config,
-        profile.betFraction,
-        reserve,
-      )
-    ) {
+    if (safeBetFraction !== null) {
       return {
         type: 'PLINKO',
-        fraction: profile.betFraction,
+        fraction: safeBetFraction,
       };
     }
 
