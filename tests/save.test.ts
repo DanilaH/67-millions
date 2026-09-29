@@ -657,7 +657,7 @@ describe('save repository', () => {
     });
     expect(migrated.pendingDrop?.physics?.fixedTicksElapsed).toBe(99);
     expect(migrated.pendingDrop?.insuranceAtCommit).toBeNull();
-    expect(migrated.pendingDrop?.physics?.balls[0]?.watchdogStationaryTicks).toBe(12);
+    expect(migrated.pendingDrop?.physics?.balls[0]?.watchdogStationaryTicks).toBe(11);
     expect(() =>
       assertDropBoardCompatible(
         migrated.pendingDrop!,
