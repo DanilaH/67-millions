@@ -1,5 +1,6 @@
 import type { BalanceConfig } from '../../config/balance.schema';
 import { debitCash, roundMoney } from '../economy/money';
+import { consumeNextBarryModifier } from '../events/modifiers';
 import type { GameState } from '../state/GameState';
 import { markTerminal } from '../state/mutations';
 
@@ -20,6 +21,16 @@ export const getBarryPayment = (
   return roundMoney(last * config.barry.afterLastMultiplier ** extraSteps);
 };
 
+export const getBarryPaymentDue = (
+  state: GameState,
+  config: BalanceConfig,
+): number => {
+  const base = getBarryPayment(config, state.barryPaymentIndex);
+  const multiplier =
+    state.eventModifiers.nextBarryMultiplier?.multiplier ?? 1;
+  return roundMoney(base * multiplier);
+};
+
 export const beginBarryInterrupt = (state: GameState): GameState => {
   if (state.terminalReason !== null || state.victory) return state;
   return { ...state, barryInterruptPending: true };
@@ -34,7 +45,7 @@ export const resolveBarryPayment = (
   }
   if (state.terminalReason !== null || state.victory) return state;
 
-  const due = getBarryPayment(config, state.barryPaymentIndex);
+  const due = getBarryPaymentDue(state, config);
   if (state.cash < due) {
     return {
       ...markTerminal(state, 'BARRY_PAYMENT_FAILED').state,
@@ -42,11 +53,13 @@ export const resolveBarryPayment = (
     };
   }
 
-  return {
+  const paid = {
     ...state,
     cash: debitCash(state.cash, due),
     barryPaymentIndex: state.barryPaymentIndex + 1,
     totalBarryPaid: state.totalBarryPaid + due,
     barryInterruptPending: false,
   };
+
+  return consumeNextBarryModifier(paid);
 };

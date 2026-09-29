@@ -27,11 +27,17 @@ export interface SleepActiveAction extends ActiveActionBase {
   upfrontApplied: false;
 }
 
+export interface EventTimeActiveAction extends ActiveActionBase {
+  kind: 'EVENT_TIME';
+  upfrontApplied: true;
+}
+
 export type ActiveAction =
   | TimedPaidActiveAction
   | WorkActiveAction
   | DumpsterActiveAction
-  | SleepActiveAction;
+  | SleepActiveAction
+  | EventTimeActiveAction;
 
 export const createActiveAction = (input: ActiveAction): ActiveAction => {
   if (!input.actionId) throw new Error('Active action requires actionId');

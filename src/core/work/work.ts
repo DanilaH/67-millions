@@ -6,6 +6,10 @@ import {
 } from '../actions/ActiveAction';
 import { creditCash, debitCash, roundMoney } from '../economy/money';
 import type { PendingDrop } from '../plinko-rules/drop';
+import {
+  consumeWorkPayoutModifier,
+  isJobEventLocked,
+} from '../events/modifiers';
 import type { GameState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
 import { hasStatus } from '../state/statuses';
@@ -85,6 +89,9 @@ export const startWork = (
   }
 
   const definition = getLevel(config, jobId, level);
+  if (isJobEventLocked(state, jobId)) {
+    throw new Error(`${jobId} job is temporarily event-locked`);
+  }
   if (
     hasStatus(state, 'SMELLY') &&
     config.statuses.SMELLY.blocksJobs.includes(jobId)
@@ -138,17 +145,31 @@ export const settleWork = (
   if (action.result === null) throw new Error('Work result must be known before settlement');
 
   const definition = getLevel(config, action.actionId as JobId, action.level);
-  const potentialPayout = roundMoney(definition.payout * state.workPayoutMultiplier);
+  const basePotentialPayout = roundMoney(
+    definition.payout * state.workPayoutMultiplier,
+  );
+  const consumed = consumeWorkPayoutModifier(state);
+  const successPayout = roundMoney(
+    basePotentialPayout * consumed.multiplier,
+  );
 
   if (action.result === 'SUCCESS') {
-    return { ...state, cash: creditCash(state.cash, potentialPayout) };
+    return {
+      ...consumed.state,
+      cash: creditCash(consumed.state.cash, successPayout),
+    };
   }
 
   const fine = Math.min(
-    state.cash,
-    roundMoney(potentialPayout * config.work.failure.fineAsPotentialPayout),
+    consumed.state.cash,
+    roundMoney(
+      basePotentialPayout * config.work.failure.fineAsPotentialPayout,
+    ),
   );
-  const afterFine = { ...state, cash: debitCash(state.cash, fine) };
+  const afterFine = {
+    ...consumed.state,
+    cash: debitCash(consumed.state.cash, fine),
+  };
   return applyNeedsDelta(
     afterFine,
     { happiness: config.work.failure.extraHappiness },
