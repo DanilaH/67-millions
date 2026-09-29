@@ -791,6 +791,7 @@ export class BootstrapScene extends Phaser.Scene {
       throw new Error('Нет события, доступного для выбора.');
     }
 
+    const cashBefore = this.state.cash;
     const resolved = resolveEventChoice(
       this.state,
       balance,
@@ -799,6 +800,9 @@ export class BootstrapScene extends Phaser.Scene {
     );
 
     this.state = resolved.state;
+    if (this.state.cash < cashBefore) {
+      this.audio?.play('cashSpend');
+    }
     this.activeAction = resolved.activeAction;
     this.eventOverlay?.hide();
 
