@@ -20,7 +20,6 @@ import {
   settleAggregatePendingDropAndResumeTime,
 } from '../core/plinko-rules/dropTiming';
 import {
-  derivePocketMultipliers,
   getMaxBetForLevel,
   purchaseInsuranceUpgrade,
   purchaseMaxBetUpgrade,
@@ -61,6 +60,18 @@ import {
   type CasinoUpgradePanel,
 } from './casino/createCasinoUpgradePanel';
 import { publishCasinoPayoutToast } from './casino/casinoPayoutToast';
+import {
+  derivePlinkoVisualSnapshot,
+  getPegVisualRole,
+  getPocketVisualRole,
+  type PlinkoVisualSnapshot,
+} from './casino/plinkoVisualModel';
+import {
+  SPECIAL_PIN_STYLE,
+  VISUAL_FONT,
+  visualColor,
+  visualHex,
+} from './visual/visualTheme';
 import {
   acknowledgeCurrentTutorialInfo,
   deriveTutorialStep,
@@ -106,6 +117,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private resultText?: Phaser.GameObjects.Text;
   private readonly pocketLabels: Phaser.GameObjects.Text[] = [];
   private tutorialCard?: TutorialCard;
+  private visualSnapshot: PlinkoVisualSnapshot | null = null;
 
   public constructor() {
     super('plinko-debug');
@@ -119,8 +131,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.graphics);
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
-      color: '#f4f6f8',
-      fontFamily: 'ui-monospace, monospace',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.mono,
       fontSize: '16px',
       lineSpacing: 5,
     });
@@ -128,8 +140,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.statusText = this.add
       .text(680, 28, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '14px',
         wordWrap: { width: 560 },
       })
@@ -138,9 +150,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.resultText = this.add
       .text(680, 92, '', {
-        color: '#d9bf7d',
-        backgroundColor: '#171b20',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('mustard'),
+        backgroundColor: visualHex('inkPanel'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '14px',
         padding: { x: 10, y: 8 },
         wordWrap: { width: 545 },
@@ -184,13 +196,36 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.graphics.clear();
     this.drawStaticBoard();
 
-    this.graphics.fillStyle(0xf4f6f8, 1);
-    for (const ball of this.balls.keys()) {
+    for (const [ball, metadata] of this.balls) {
+      const amplified = metadata.currentValue > 1;
+      const split = metadata.splitDepth > 0;
+      const fill = amplified
+        ? visualColor('mustard')
+        : split
+          ? visualColor('paperOld')
+          : visualColor('textMain');
+
+      this.graphics.fillStyle(fill, 1);
       this.graphics.fillCircle(
         ball.position.x,
         ball.position.y,
         balance.plinko.geometry.ballRadius,
       );
+
+      if (amplified || split) {
+        this.graphics.lineStyle(
+          2,
+          amplified
+            ? visualColor('rust')
+            : visualColor('cold'),
+          0.95,
+        );
+        this.graphics.strokeCircle(
+          ball.position.x,
+          ball.position.y,
+          balance.plinko.geometry.ballRadius + 2,
+        );
+      }
     }
   }
 
@@ -200,6 +235,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       createInitialGameState(balance, initialSeed),
     );
     this.save = await this.repository.load();
+    this.refreshVisualSnapshot();
 
     const pendingAtLoad = this.save.pendingDrop;
     this.random = new SeededRandom(
@@ -329,9 +365,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const leaveButton = this.add
       .text(690, 650, '[ НА КАРТУ ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('inkRaised'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         padding: { x: 10, y: 8 },
       })
@@ -345,16 +381,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const title = this.add
       .text(40, 36, 'КАРТА · DROP РАЗРЕШАЕТСЯ', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '24px',
       })
       .setOrigin(0, 0);
 
     this.mapText = this.add
       .text(40, 100, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '18px',
         lineSpacing: 6,
       })
@@ -362,8 +398,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.mapMessageText = this.add
       .text(40, 330, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMuted'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         wordWrap: { width: 900 },
       })
@@ -371,9 +407,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const returnButton = this.add
       .text(40, 620, '[ ВЕРНУТЬСЯ В КАЗИНО ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('inkRaised'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         padding: { x: 10, y: 8 },
       })
@@ -457,13 +493,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
         ...this.save,
         game,
       };
+      this.refreshVisualSnapshot();
       this.runtime?.setJackpotBiasLevel(
         game.plinkoJackpotBiasLevel,
       );
 
       await this.enqueueSave(true);
       recordTutorialMilestone('UPGRADE_BOUGHT');
-      this.installPocketLabels();
       this.showStatus('Апгрейд куплен.');
       this.renderAll();
     } catch (error: unknown) {
@@ -498,6 +534,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game: committed.state,
         pendingDrop: committed.pendingDrop,
       };
+      this.refreshVisualSnapshot();
       this.lastResultMessage = '';
       this.resultText?.setVisible(false);
 
@@ -714,6 +751,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       game: result.state,
       pendingDrop: null,
     };
+    this.refreshVisualSnapshot();
     this.runtime.setJackpotBiasLevel(
       this.save.game.plinkoJackpotBiasLevel,
     );
@@ -747,7 +785,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.showStatus(this.lastResultMessage);
     this.resultText
       ?.setText(this.lastResultMessage)
-      .setColor(result.losing ? '#d08a82' : '#d9bf7d')
+      .setColor(
+        result.losing
+          ? visualHex('warning')
+          : visualHex('mustard'),
+      )
       .setVisible(true);
 
     if (window.__PLINKO_PERF__?.phase === 'running') {
@@ -889,6 +931,21 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
   }
 
+  private refreshVisualSnapshot(): void {
+    this.visualSnapshot =
+      this.save === null
+        ? null
+        : derivePlinkoVisualSnapshot(
+            this.save.game,
+            this.save.pendingDrop,
+            balance,
+          );
+
+    if (this.runtime) {
+      this.installPocketLabels();
+    }
+  }
+
   private renderAll(): void {
     this.renderCasino();
     this.renderMap();
@@ -898,10 +955,18 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderCasino(): void {
     if (!this.infoText || !this.save) return;
 
+    const snapshot = this.visualSnapshot;
     const maxBet = getMaxBetForLevel(
       balance,
-      this.save.game.plinkoMaxBetLevel,
+      snapshot?.maxBetLevel ??
+        this.save.game.plinkoMaxBetLevel,
     );
+
+    const special = snapshot?.specialLevels;
+    const insurance =
+      snapshot === null
+        ? `L${this.save.game.plinkoInsuranceLevel}`
+        : `L${snapshot.insuranceLevel}${snapshot.insuranceArmed ? ' · ВЗВЕДЕНА' : ''}`;
 
     this.infoText.setText([
       'КАЗИНО / PLINKO',
@@ -909,6 +974,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
       `Макс. ставка: ${maxBet.toLocaleString('ru-RU')} ₽`,
       `Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽ · ИДЁТ` : 'готов'}`,
       `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
+      special
+        ? `AMP L${special.amplifierLevel} · RETURN L${special.returnLevel} · SPLIT L${special.splitterLevel} · BIAS L${special.jackpotBiasLevel}`
+        : 'AMP L0 · RETURN L0 · SPLIT L0 · BIAS L0',
+      `INSURANCE ${insurance}`,
     ]);
 
     this.betPanel?.render(
@@ -981,68 +1050,229 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private installPocketLabels(): void {
-    if (!this.runtime || !this.casinoLayer) return;
-
-    const pockets = derivePocketMultipliers(balance, {
-      centerLevel: this.save?.game.plinkoCenterLevel ?? 0,
-      midLevel: this.save?.game.plinkoMidLevel ?? 0,
-      jackpotLevel: this.save?.game.plinkoJackpotLevel ?? 0,
-    });
-
-    if (this.pocketLabels.length === 0) {
-      this.runtime.layout.pocketCenters.forEach((pocket, index) => {
-        const label = this.add
-          .text(
-            pocket.x,
-            this.runtime!.layout.pocketBottomY + 18,
-            `${pockets[index]}x`,
-            {
-              color: '#c5ccd5',
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: '13px',
-            },
-          )
-          .setOrigin(0.5, 0);
-        this.casinoLayer!.add(label);
-        this.pocketLabels.push(label);
-      });
+    if (
+      !this.runtime ||
+      !this.casinoLayer ||
+      !this.visualSnapshot
+    ) {
       return;
     }
 
+    const snapshot = this.visualSnapshot;
+    const pockets = snapshot.pocketMultipliers;
+
+    if (this.pocketLabels.length === 0) {
+      this.runtime.layout.pocketCenters.forEach(
+        (pocket, index) => {
+          const label = this.add
+            .text(
+              pocket.x,
+              this.runtime!.layout.pocketBottomY + 18,
+              `${pockets[index]}x`,
+              {
+                color: visualHex('textMuted'),
+                fontFamily: VISUAL_FONT.mono,
+                fontSize: '13px',
+              },
+            )
+            .setOrigin(0.5, 0);
+          this.casinoLayer!.add(label);
+          this.pocketLabels.push(label);
+        },
+      );
+    }
+
     this.pocketLabels.forEach((label, index) => {
-      label.setText(`${pockets[index]}x`);
+      const role = getPocketVisualRole(index, balance);
+      const upgraded =
+        (role === 'jackpot' &&
+          snapshot.pocketLevels.jackpotLevel > 0) ||
+        (role === 'mid' &&
+          snapshot.pocketLevels.midLevel > 0) ||
+        (role === 'center' &&
+          snapshot.pocketLevels.centerLevel > 0) ||
+        (role === 'inner' &&
+          (snapshot.pocketLevels.centerLevel > 0 ||
+            snapshot.pocketLevels.midLevel > 0));
+
+      const color =
+        role === 'jackpot' && upgraded
+          ? visualHex('mustard')
+          : role === 'mid' && upgraded
+            ? visualHex('cold')
+            : role === 'center' && upgraded
+              ? visualHex('paperOld')
+              : upgraded
+                ? visualHex('textMain')
+                : visualHex('textMuted');
+
+      label
+        .setText(`${pockets[index]}x`)
+        .setColor(color)
+        .setFontStyle(upgraded ? 'bold' : 'normal')
+        .setFontSize(upgraded ? 14 : 13);
     });
   }
 
   private drawStaticBoard(): void {
-    if (!this.graphics || !this.runtime) return;
+    if (
+      !this.graphics ||
+      !this.runtime ||
+      !this.visualSnapshot
+    ) {
+      return;
+    }
 
     const graphics = this.graphics;
     const geometry = balance.plinko.geometry;
     const layout = this.runtime.layout;
+    const snapshot = this.visualSnapshot;
 
-    graphics.fillStyle(0x66717f, 1);
+    graphics.fillStyle(
+      visualColor('lineDirty'),
+      1,
+    );
     for (const peg of layout.pegs) {
-      graphics.fillCircle(peg.x, peg.y, geometry.pegRadius);
+      if (
+        getPegVisualRole(
+          peg.id,
+          snapshot.pegRoles,
+        ) === 'regular'
+      ) {
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius,
+        );
+      }
     }
 
-    const jackpotBiasLevel =
-      this.save?.pendingDrop?.specialLevelsAtCommit.jackpotBiasLevel ??
-      this.save?.game.plinkoJackpotBiasLevel ??
-      0;
+    for (const peg of layout.pegs) {
+      const role = getPegVisualRole(
+        peg.id,
+        snapshot.pegRoles,
+      );
+      if (role === 'regular') continue;
+
+      if (role === 'amplifier') {
+        graphics.fillStyle(
+          SPECIAL_PIN_STYLE.amplifier.color,
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius + 4,
+        );
+        graphics.fillStyle(
+          visualColor('inkDeep'),
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          Math.max(2, geometry.pegRadius - 1),
+        );
+        continue;
+      }
+
+      if (role === 'return') {
+        graphics.fillStyle(
+          SPECIAL_PIN_STYLE.return.color,
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius + 3,
+        );
+        graphics.lineStyle(
+          2,
+          visualColor('inkDeep'),
+          1,
+        );
+        graphics.strokeLineShape(
+          new Phaser.Geom.Line(
+            peg.x,
+            peg.y + 4,
+            peg.x,
+            peg.y - 5,
+          ),
+        );
+        graphics.strokeLineShape(
+          new Phaser.Geom.Line(
+            peg.x,
+            peg.y - 5,
+            peg.x - 4,
+            peg.y - 1,
+          ),
+        );
+        graphics.strokeLineShape(
+          new Phaser.Geom.Line(
+            peg.x,
+            peg.y - 5,
+            peg.x + 4,
+            peg.y - 1,
+          ),
+        );
+        continue;
+      }
+
+      graphics.fillStyle(
+        SPECIAL_PIN_STYLE.splitter.color,
+        1,
+      );
+      graphics.fillCircle(
+        peg.x,
+        peg.y,
+        geometry.pegRadius + 3,
+      );
+      graphics.lineStyle(
+        2,
+        visualColor('inkDeep'),
+        1,
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          peg.x,
+          peg.y + 4,
+          peg.x,
+          peg.y,
+        ),
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          peg.x,
+          peg.y,
+          peg.x - 4,
+          peg.y - 4,
+        ),
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          peg.x,
+          peg.y,
+          peg.x + 4,
+          peg.y - 4,
+        ),
+      );
+    }
+
     const biasGeometry = deriveJackpotBiasGeometry(
       balance,
-      jackpotBiasLevel,
+      snapshot.specialLevels.jackpotBiasLevel,
     );
 
     for (const deflector of biasGeometry) {
       const half = deflector.length / 2;
-      const dx = Math.cos(deflector.angleRadians) * half;
-      const dy = Math.sin(deflector.angleRadians) * half;
+      const dx =
+        Math.cos(deflector.angleRadians) * half;
+      const dy =
+        Math.sin(deflector.angleRadians) * half;
 
       graphics.lineStyle(
         deflector.thickness,
-        0xd8a84e,
+        SPECIAL_PIN_STYLE.jackpotBias.color,
         1,
       );
       graphics.strokeLineShape(
@@ -1055,7 +1285,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
     }
 
-    graphics.lineStyle(2, 0x66717f, 1);
+    graphics.lineStyle(
+      2,
+      visualColor('lineDirty'),
+      1,
+    );
     graphics.strokeLineShape(
       new Phaser.Geom.Line(
         layout.leftWallX,
@@ -1073,13 +1307,24 @@ export class PlinkoDebugScene extends Phaser.Scene {
       ),
     );
 
-    for (let index = 0; index < layout.pocketCenters.length - 1; index += 1) {
+    for (
+      let index = 0;
+      index < layout.pocketCenters.length - 1;
+      index += 1
+    ) {
       const left = layout.pocketCenters[index]!;
-      const right = layout.pocketCenters[index + 1]!;
+      const right =
+        layout.pocketCenters[index + 1]!;
       const x = (left.x + right.x) / 2;
       graphics.strokeLineShape(
-        new Phaser.Geom.Line(x, layout.pocketTopY, x, layout.pocketBottomY),
+        new Phaser.Geom.Line(
+          x,
+          layout.pocketTopY,
+          x,
+          layout.pocketBottomY,
+        ),
       );
     }
   }
+
 }
