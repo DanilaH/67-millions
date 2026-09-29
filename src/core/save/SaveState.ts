@@ -4,7 +4,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 12 as const;
+export const SAVE_VERSION = 13 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -38,6 +38,26 @@ const gameStateSchema = z.object({
   pendingEventId: z.string().min(1).nullable(),
   eventsResolvedThisGameDay: z.number().int().nonnegative(),
   lastResolvedEventId: z.string().min(1).nullable(),
+  eventModifiers: z.object({
+    nextWorksPayoutMultiplier: z.object({
+      multiplier: z.number().nonnegative(),
+      remainingCount: z.number().int().positive(),
+    }).nullable(),
+    nextBarryMultiplier: z.object({
+      multiplier: z.number().nonnegative(),
+      remainingCount: z.number().int().positive(),
+    }).nullable(),
+    plinkoLockRemainingMinutes: z.number().nonnegative(),
+    jobLockRemainingMinutes: z.object({
+      dishes: z.number().nonnegative(),
+      trash: z.number().nonnegative(),
+      courier: z.number().nonnegative(),
+    }),
+    foodPriceMultiplier: z.object({
+      multiplier: z.number().nonnegative(),
+      remainingMinutes: z.number().positive(),
+    }).nullable(),
+  }),
   plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
   plinkoMaxBetLevel: z.number().int().nonnegative(),
   plinkoCenterLevel: z.number().int().nonnegative(),
@@ -91,6 +111,7 @@ const activeActionSchema = z.discriminatedUnion('kind', [
   }),
   z.object({ kind: z.literal('DUMPSTER'), upfrontApplied: z.literal(true), ...activeBase }),
   z.object({ kind: z.literal('SLEEP'), upfrontApplied: z.literal(false), ...activeBase }),
+  z.object({ kind: z.literal('EVENT_TIME'), upfrontApplied: z.literal(true), ...activeBase }),
 ]);
 
 const ballSnapshotSchema = z.object({
