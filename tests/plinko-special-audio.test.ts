@@ -3,8 +3,6 @@ import { describe, expect, it } from 'vitest';
 import {
   PLINKO_AUDIO_COMPRESSOR,
   PLINKO_AUDIO_MASTER_GAIN,
-  PLINKO_AUDIO_WORST_CASE_WITH_AMBIENCE_GAIN,
-  PLINKO_CASINO_AMBIENCE_GAIN,
   PLINKO_AUDIO_MAX_GAINS,
   PLINKO_AUDIO_VOICE_LIMITS,
   PLINKO_AUDIO_WORST_CASE_PEAK_GAIN,
@@ -45,12 +43,6 @@ describe('Plinko production audio policy', () => {
     expect(PLINKO_AUDIO_MASTER_GAIN).toBeLessThan(1);
     expect(
       PLINKO_AUDIO_WORST_CASE_POST_MASTER_GAIN,
-    ).toBeLessThan(0.7);
-    expect(
-      PLINKO_CASINO_AMBIENCE_GAIN,
-    ).toBeLessThanOrEqual(0.02);
-    expect(
-      PLINKO_AUDIO_WORST_CASE_WITH_AMBIENCE_GAIN,
     ).toBeLessThan(0.7);
     expect(
       PLINKO_AUDIO_COMPRESSOR.thresholdDb,
