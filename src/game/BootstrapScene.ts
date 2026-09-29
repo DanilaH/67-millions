@@ -6,7 +6,7 @@ import {
   startTimedPaidAction,
   type TimedPaidActionDefinition,
 } from '../core/actions/timedPaidAction';
-import { getBarryPayment, resolveBarryPayment } from '../core/barry/barry';
+import { resolveBarryPayment } from '../core/barry/barry';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
@@ -18,7 +18,6 @@ import {
   type GameState,
 } from '../core/state/GameState';
 import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
-import { formatClockTime } from '../core/time/GameClock';
 import { advanceRunTime } from '../core/time/runTime';
 import {
   settleWork,
@@ -26,6 +25,12 @@ import {
 } from '../core/work/work';
 import { balance } from '../config/balance';
 import { isPlinkoPerfMode } from '../app/perfMode';
+import {
+  createMainMapView,
+  type MainMapView,
+} from './map/createMainMapView';
+import type { MainMapLocationId } from './map/mainMapModel';
+import { PersistentHud } from './ui/PersistentHud';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
@@ -60,36 +65,47 @@ export class BootstrapScene extends Phaser.Scene {
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
   );
-  private stateText?: Phaser.GameObjects.Text;
+  private hud?: PersistentHud;
+  private mapView?: MainMapView;
   private messageText?: Phaser.GameObjects.Text;
-  private controls: Phaser.GameObjects.Text[] = [];
+  private principalButton?: Phaser.GameObjects.Text;
+  private contextControls: Phaser.GameObjects.Text[] = [];
+  private contextMode = 'none';
 
   public constructor() {
     super('bootstrap');
   }
 
   public create(): void {
-    const { width, height } = this.scale;
-    this.add
-      .text(width / 2, 36, '67 МИЛЛИОНОВ — M1 DEBUG SLICE', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
-        fontSize: '24px',
-      })
-      .setOrigin(0.5, 0);
+    const { height } = this.scale;
 
-    this.stateText = this.add.text(36, 88, 'Loading save…', {
-      color: '#f4f6f8',
-      fontFamily: 'ui-monospace, monospace',
-      fontSize: '18px',
-      lineSpacing: 5,
-    });
+    this.hud = new PersistentHud(this, balance);
+    this.mapView = createMainMapView(
+      this,
+      balance,
+      (location) => this.selectLocation(location.id),
+    );
 
-    this.messageText = this.add.text(36, height - 50, '', {
-      color: '#f4f6f8',
+    this.messageText = this.add.text(280, height - 67, 'Загрузка…', {
+      color: '#d0d6dd',
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '16px',
+      fontSize: '15px',
+      wordWrap: { width: 720 },
     });
+
+    this.principalButton = this.add
+      .text(1240, 66, '[ ПОГАСИТЬ 67М ]', {
+        color: '#f4f6f8',
+        backgroundColor: '#5a4630',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '13px',
+        padding: { x: 8, y: 5 },
+      })
+      .setOrigin(1, 0)
+      .setDepth(600)
+      .setVisible(false)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerup', () => this.guard(() => this.payPrincipal()));
 
     void this.initialize();
   }
@@ -162,48 +178,112 @@ export class BootstrapScene extends Phaser.Scene {
         return;
       }
 
-      this.installControls();
       this.render();
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.showMessage(
         `SAVE ERROR: ${error instanceof Error ? error.message : String(error)}`,
       );
-      this.stateText?.setText('Save is corrupt/incompatible. It was not overwritten.');
+      this.showMessage('Save is corrupt/incompatible. It was not overwritten.');
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     }
   }
 
-  private installControls(): void {
-    const items: Array<[string, () => void]> = [
-      ['+60m', () => this.advance(60)],
-      ['Dishes minigame', () => this.startDishes()],
-      ['Trash minigame', () => this.startTrash()],
-      ['Courier minigame', () => this.startCourierMinigame()],
-      ['Eat FOOD_01', () => this.startCheapFood()],
-      ['Sleep 7h', () => this.startSleeping()],
-      ['Finish active action', () => this.finishActiveAction()],
-      ['PAY BARRY', () => this.payBarry()],
-      ['PAY 67M', () => this.payPrincipal()],
-      ['Restart run', () => this.restart()],
-      ['M2 Plinko probe', () => this.scene.start('plinko-debug')],
-    ];
+  private selectLocation(id: MainMapLocationId): void {
+    if (!this.state) return;
+
+    if (
+      this.state.barryInterruptPending ||
+      this.state.terminalReason !== null ||
+      this.state.victory ||
+      this.activeAction !== null ||
+      this.pendingDrop !== null
+    ) {
+      this.showMessage(
+        'Сначала заверши обязательный текущий flow.',
+      );
+      return;
+    }
+
+    if (id === 'casino') {
+      this.clearContextControls();
+      this.scene.start('plinko-debug');
+      return;
+    }
+
+    if (id === 'work') {
+      this.setContextControls('location:work', [
+        ['ПОСУДА', () => this.startDishes()],
+        ['МУСОР', () => this.startTrash()],
+        ['КУРЬЕР', () => this.startCourierMinigame()],
+      ]);
+      this.showMessage(
+        'Работа. Детальные карточки стоимости/времени/эффекта появятся в T056.',
+      );
+      return;
+    }
+
+    if (id === 'food') {
+      this.setContextControls('location:food', [
+        ['FOOD_01', () => this.startCheapFood()],
+      ]);
+      this.showMessage(
+        'Еда. Полный список и pre-action preview — T056.',
+      );
+      return;
+    }
+
+    if (id === 'home') {
+      this.setContextControls('location:home', [
+        ['СПАТЬ 7Ч', () => this.startSleeping()],
+      ]);
+      this.showMessage(
+        'Дом. Сон использует текущий authoritative action lifecycle.',
+      );
+      return;
+    }
+
+    this.clearContextControls();
+    this.showMessage(
+      'Локация доступна на карте; её action flow добавляется в T056.',
+    );
+  }
+
+  private setContextControls(
+    mode: string,
+    items: Array<[string, () => void]>,
+  ): void {
+    this.clearContextControls();
+    this.contextMode = mode;
 
     items.forEach(([label, handler], index) => {
-      const x = 36 + (index % 2) * 280;
-      const y = 360 + Math.floor(index / 2) * 54;
       const button = this.add
-        .text(x, y, `[ ${label} ]`, {
-          color: '#f4f6f8',
-          backgroundColor: '#252a31',
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '17px',
-          padding: { x: 10, y: 8 },
-        })
+        .text(
+          285 + index * 190,
+          646,
+          `[ ${label} ]`,
+          {
+            color: '#f4f6f8',
+            backgroundColor: '#252d35',
+            fontFamily: 'system-ui, sans-serif',
+            fontSize: '15px',
+            padding: { x: 10, y: 7 },
+          },
+        )
+        .setDepth(20)
         .setInteractive({ useHandCursor: true })
         .on('pointerup', () => this.guard(handler));
-      this.controls.push(button);
+
+      this.contextControls.push(button);
     });
+  }
+
+  private clearContextControls(): void {
+    for (const control of this.contextControls) {
+      control.destroy();
+    }
+    this.contextControls = [];
+    this.contextMode = 'none';
   }
 
   private guard(action: () => void): void {
@@ -364,12 +444,6 @@ export class BootstrapScene extends Phaser.Scene {
     void this.persist();
   }
 
-  private finishActiveAction(): void {
-    if (this.pendingDrop) throw new Error('Pending Plinko Drop locks other actions');
-    if (!this.activeAction) throw new Error('No active action');
-    this.advance(this.activeAction.remainingMinutes);
-  }
-
   private payBarry(): void {
     if (!this.state) return;
     this.state = resolveBarryPayment(this.state, balance);
@@ -421,25 +495,72 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private render(): void {
-    if (!this.state || !this.stateText) return;
+    if (!this.state || !this.hud || !this.mapView) return;
 
-    const nextBarry = getBarryPayment(balance, this.state.barryPaymentIndex);
-    const action = this.activeAction
-      ? `${this.activeAction.kind}:${this.activeAction.actionId} ${Math.ceil(this.activeAction.remainingMinutes)}m`
-      : 'none';
+    this.hud.render(this.state);
 
-    this.stateText.setText([
-      `Day: ${this.state.clock.gameDayIndex}   Time: ${formatClockTime(this.state.clock.minuteOfDay)}`,
-      `Cash: ${this.state.cash.toLocaleString('ru-RU')} ₽`,
-      `Next Barry: ${nextBarry.toLocaleString('ru-RU')} ₽`,
-      `Principal: ${this.state.mainDebt.toLocaleString('ru-RU')} ₽`,
-      `HP ${this.state.needs.health.toFixed(1)} | Satiety ${this.state.needs.satiety.toFixed(1)} | Energy ${this.state.needs.energy.toFixed(1)} | Happiness ${this.state.needs.happiness.toFixed(1)}`,
-      `Work payout x${this.state.workPayoutMultiplier.toFixed(2)} | Slept ${this.state.sleepMinutesCurrentGameDay}m`,
-      `Active: ${action}`,
-      `Pending Drop: ${this.pendingDrop ? `${this.pendingDrop.dropId} / stake ${this.pendingDrop.originalStake} ₽` : 'none'}`,
-      `Barry interrupt: ${this.state.barryInterruptPending ? 'YES' : 'no'}`,
-      `Terminal: ${this.state.terminalReason ?? 'no'} | Victory: ${this.state.victory ? 'YES' : 'no'}`,
-    ]);
+    const hardLocked =
+      this.state.barryInterruptPending ||
+      this.state.terminalReason !== null ||
+      this.state.victory;
+    const navigationLocked =
+      hardLocked ||
+      this.activeAction !== null ||
+      this.pendingDrop !== null;
+
+    this.mapView.setEnabled(!navigationLocked);
+    this.principalButton?.setVisible(
+      !navigationLocked &&
+        canPayMainDebt(this.state),
+    );
+
+    if (this.state.barryInterruptPending) {
+      if (this.contextMode !== 'barry') {
+        this.setContextControls('barry', [
+          ['ЗАПЛАТИТЬ БАРРИ', () => this.payBarry()],
+        ]);
+      }
+      this.showMessage(
+        '09:00. Карта заблокирована до обязательной выплаты Барри.',
+      );
+      return;
+    }
+
+    if (
+      this.state.terminalReason !== null ||
+      this.state.victory
+    ) {
+      if (this.contextMode !== 'terminal') {
+        this.setContextControls('terminal', [
+          ['НОВЫЙ ЗАБЕГ', () => this.restart()],
+        ]);
+      }
+      this.showMessage(
+        this.state.victory
+          ? 'Долг погашен.'
+          : `GAME OVER: ${this.state.terminalReason}`,
+      );
+      return;
+    }
+
+    if (this.activeAction !== null) {
+      if (this.contextMode !== 'active') {
+        this.clearContextControls();
+        this.contextMode = 'active';
+      }
+      this.showMessage(
+        `Активное действие: ${this.activeAction.actionId}. Карта временно заблокирована.`,
+      );
+      return;
+    }
+
+    if (
+      this.contextMode === 'barry' ||
+      this.contextMode === 'terminal' ||
+      this.contextMode === 'active'
+    ) {
+      this.clearContextControls();
+    }
   }
 
   private showMessage(message: string): void {
