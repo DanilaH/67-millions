@@ -136,10 +136,8 @@ export const buildWorkPreviews = (
       id: `work:${jobId}`,
       title: `${JOB_TITLES[jobId]} · L${level}`,
       summary: [
-        `Успех: +${effectivePayout.toLocaleString('ru-RU')} ₽`,
-        `Смена: ${definition.durationMinutes} мин · окно ${definition.window}`,
-        `Старт: энергия -${definition.energyCost} · счастье -${definition.happinessCost}`,
-        `Провал: 0 ₽ + штраф 25% + счастье ${config.work.failure.extraHappiness}`,
+        `Успех +${effectivePayout.toLocaleString('ru-RU')} ₽ · провал 0 ₽ / штраф 25%`,
+        `${definition.durationMinutes} мин · ${definition.window} · энергия -${definition.energyCost} · счастье -${definition.happinessCost}`,
       ],
       lockedReason: lock,
     };
