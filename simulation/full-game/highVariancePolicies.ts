@@ -1,4 +1,6 @@
 import type { BalanceConfig } from '../../src/config/balance.schema';
+import { calculateActualBet } from '../../src/core/plinko-rules/drop';
+import { getMaxBetForLevel } from '../../src/core/plinko-rules/progression';
 import { getBarryPaymentDue } from '../../src/core/barry/barry';
 import {
   getEventChoiceAvailability,
@@ -338,9 +340,18 @@ const createDecisionFunction = (
     if (upgrade !== null) return upgrade;
 
     const excessCash = state.cash - reserve;
+    const maxBet = getMaxBetForLevel(
+      config,
+      state.plinkoMaxBetLevel,
+    );
+    const stake =
+      state.cash > 0
+        ? calculateActualBet(state.cash, maxBet, 1)
+        : 0;
     if (
       excessCash > 0 &&
-      state.eventModifiers.plinkoLockRemainingMinutes <= 0
+      state.eventModifiers.plinkoLockRemainingMinutes <= 0 &&
+      state.cash - stake >= reserve
     ) {
       return { type: 'PLINKO', fraction: 1 };
     }
