@@ -181,6 +181,32 @@ describe('dumpster recovery', () => {
     expect(resolved.state.needs.happiness).toBe(48);
   });
 
+  it.each([
+    ['CASH', 25 / 45, 37 / 45, 200, 800],
+    ['SELLABLE_OBJECT', 37 / 45, 43 / 45, 1000, 3000],
+    ['RARE_FIND', 43 / 45, 1, 3000, 7000],
+  ] as const)(
+    'resolves %s immediately to configured cash',
+    (loot, minRoll, maxRoll, minCash, maxCash) => {
+      const seed = findSeed(
+        (first, second) =>
+          first >= 0.55 && second >= minRoll && second < maxRoll,
+      );
+      const state = {
+        ...createInitialGameState(balance, seed),
+        cash: 0,
+        rngState: seed,
+      };
+
+      const resolved = settleDumpsterSearch(state, balance);
+
+      expect(resolved.loot).toBe(loot);
+      expect(resolved.cashAward).toBeGreaterThanOrEqual(minCash);
+      expect(resolved.cashAward).toBeLessThanOrEqual(maxCash);
+      expect(resolved.state.cash).toBe(resolved.cashAward);
+    },
+  );
+
   it('is deterministic from serialized RNG state', () => {
     const state = {
       ...createInitialGameState(balance, 424242),
