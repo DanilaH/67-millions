@@ -194,6 +194,8 @@ const report = {
     ballBallCollisions: balance.plinko.ballBallCollisions,
     batchSize: options.batchSize,
     initialBallCount: options.initialBallCount,
+    maxActiveBallsCap: balance.plinko.maxActiveBalls,
+    maxSplitDepth: balance.plinko.maxSplitDepth,
   },
   metrics,
   performance: performanceMetrics,
@@ -232,6 +234,7 @@ const markdown = `# Plinko cascade physical report
 ## Cascade load
 
 - mean terminal balls: **${metrics.meanTerminalBalls.toFixed(4)}**
+- max terminal balls: **${metrics.maxTerminalBalls}**
 - mean child balls created: **${metrics.meanChildBalls.toFixed(4)}**
 - mean Returns: **${metrics.meanReturns.toFixed(4)}**
 - mean Amplifier procs: **${metrics.meanAmplifierProcs.toFixed(4)}**
