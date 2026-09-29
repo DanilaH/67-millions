@@ -8,6 +8,7 @@ import { createInitialGameState } from '../core/state/GameState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
 import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
 import { recordTutorialMilestone } from './tutorial/tutorialProgress';
+import { VISUAL_FONT, visualColor, visualHex } from './visual/visualTheme';
 import {
   createBarryMinigameOverlay,
   type BarryMinigameOverlay,
@@ -62,8 +63,8 @@ export class DishesScene extends Phaser.Scene {
 
     this.add
       .text(width / 2, 24, 'МОЙКА ПОСУДЫ', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '30px',
         fontStyle: 'bold',
       })
@@ -75,8 +76,8 @@ export class DishesScene extends Phaser.Scene {
         66,
         'Зажми и води губкой по грязным точкам. Нужно очистить минимум 90%.',
         {
-          color: '#aeb7c3',
-          fontFamily: 'system-ui, sans-serif',
+          color: visualHex('textMuted'),
+          fontFamily: VISUAL_FONT.sans,
           fontSize: '17px',
         },
       )
@@ -84,8 +85,8 @@ export class DishesScene extends Phaser.Scene {
 
     this.timerText = this.add
       .text(36, 32, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '24px',
       })
       .setOrigin(0, 0);
@@ -100,8 +101,8 @@ export class DishesScene extends Phaser.Scene {
 
     this.messageText = this.add
       .text(width / 2, 662, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '20px',
       })
       .setOrigin(0.5, 0);
@@ -404,27 +405,27 @@ export class DishesScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(0x131920, 1);
+    graphics.fillStyle(visualColor('inkPanel'), 1);
     graphics.fillRoundedRect(150, 112, 980, 500, 36);
 
-    graphics.lineStyle(5, 0x66717f, 1);
+    graphics.lineStyle(5, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(150, 112, 980, 500, 36);
 
     for (const plate of this.session.plates) {
-      graphics.fillStyle(0xdce3ea, 1);
+      graphics.fillStyle(visualColor('paperOld'), 0.95);
       graphics.fillCircle(
         plate.x,
         plate.y,
         plate.radius,
       );
 
-      graphics.lineStyle(5, 0x8a98a8, 1);
+      graphics.lineStyle(5, visualColor('cold'), 0.95);
       graphics.strokeCircle(
         plate.x,
         plate.y,
         plate.radius - 9,
       );
-      graphics.lineStyle(2, 0xa8b4c0, 1);
+      graphics.lineStyle(2, visualColor('lineDirty'), 0.9);
       graphics.strokeCircle(
         plate.x,
         plate.y,
@@ -434,14 +435,14 @@ export class DishesScene extends Phaser.Scene {
 
     for (const spot of this.session.spots) {
       if (spot.cleaned) continue;
-      graphics.fillStyle(0x6b3e22, 0.95);
+      graphics.fillStyle(visualColor('rust'), 0.95);
       graphics.fillCircle(spot.x, spot.y, 9);
-      graphics.fillStyle(0x382418, 0.75);
+      graphics.fillStyle(visualColor('inkDeep'), 0.72);
       graphics.fillCircle(spot.x + 2, spot.y - 2, 4);
     }
 
     if (this.pointerDown && this.lastPointer) {
-      graphics.lineStyle(3, 0x69d6ff, 0.7);
+      graphics.lineStyle(3, visualColor('cold'), 0.85);
       graphics.strokeCircle(
         this.lastPointer.x,
         this.lastPointer.y,
