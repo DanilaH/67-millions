@@ -321,6 +321,13 @@ const completeActiveAction = (
     activeAction = advanced.activeAction;
     counters.gameMinutesAdvanced += advanced.advancedMinutes;
 
+    if (
+      currentAction.kind === 'DUMPSTER' &&
+      state.terminalReason === 'HEALTH_ZERO'
+    ) {
+      diagnostics.dumpsterHpDeaths += 1;
+    }
+
     if (state.barryInterruptPending) {
       state = resolveBarryPayment(state, config);
       if (state.terminalReason !== null) break;
@@ -605,6 +612,9 @@ export const runFullGame = (
         config,
       );
       counters.dumpsterSearches += 1;
+      if (started.state.terminalReason === 'HEALTH_ZERO') {
+        diagnostics.dumpsterHpDeaths += 1;
+      }
       runner = {
         ...runner,
         game: started.state,
@@ -646,6 +656,8 @@ export const runFullGame = (
         `full-game:${options.seed}:${dropIndex}`,
         decision.fraction,
       );
+      observeCash(diagnostics, committed.state.cash);
+
       const outcome = plinkoOutcomeModel.resolve({
         state: committed.state,
         pendingDrop: committed.pendingDrop,
@@ -687,6 +699,16 @@ export const runFullGame = (
       );
       counters.gameMinutesAdvanced +=
         settled.remainingMinutesAdvancedAfterBarry;
+      recordIncome(
+        diagnostics,
+        'plinko',
+        settled.payout,
+        timed.state.cash,
+      );
+      diagnostics.largestPlinkoPayout = Math.max(
+        diagnostics.largestPlinkoPayout,
+        settled.payout,
+      );
 
       runner = {
         ...runner,
