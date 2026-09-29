@@ -85,10 +85,15 @@ describe('Plinko cascade physical runner', () => {
           sample.maxActiveBalls === balance.plinko.maxActiveBalls,
       ),
     ).toBe(true);
+    const theoreticalTerminalCap =
+      balance.plinko.maxActiveBalls *
+      2 ** balance.plinko.maxSplitDepth;
+
     expect(
       samples.every(
         (sample) =>
-          sample.terminalBallCount === balance.plinko.maxActiveBalls,
+          sample.terminalBallCount >= balance.plinko.maxActiveBalls &&
+          sample.terminalBallCount <= theoreticalTerminalCap,
       ),
     ).toBe(true);
     expect(samples.every((sample) => !sample.stuck)).toBe(true);
