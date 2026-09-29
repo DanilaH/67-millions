@@ -106,6 +106,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
   private graphics?: Phaser.GameObjects.Graphics;
+  private staticBoardTexture?: Phaser.GameObjects.RenderTexture;
   private ballGraphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
@@ -128,10 +129,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer = this.add.container(0, 0);
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
-    this.graphics = this.add.graphics();
+    this.graphics = this.add.graphics().setVisible(false);
+    this.staticBoardTexture = this.add
+      .renderTexture(
+        0,
+        0,
+        this.scale.width,
+        this.scale.height,
+      )
+      .setOrigin(0, 0)
+      .setRenderMode('render');
     this.ballGraphics = this.add.graphics();
     this.casinoLayer.add([
-      this.graphics,
+      this.staticBoardTexture,
       this.ballGraphics,
     ]);
 
@@ -276,7 +286,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     };
     document.addEventListener('visibilitychange', this.visibilityHandler);
 
-    this.drawStaticBoard();
+    this.rebuildStaticBoardCache();
     this.installPocketLabels();
     this.installCasinoControls();
 
@@ -945,9 +955,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
             balance,
           );
 
-    if (this.runtime && this.graphics) {
-      this.graphics.clear();
-      this.drawStaticBoard();
+    if (
+      this.runtime &&
+      this.graphics &&
+      this.staticBoardTexture
+    ) {
+      this.rebuildStaticBoardCache();
       this.installPocketLabels();
     }
   }
@@ -1118,6 +1131,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
         .setFontStyle(upgraded ? 'bold' : 'normal')
         .setFontSize(upgraded ? 14 : 13);
     });
+  }
+
+  private rebuildStaticBoardCache(): void {
+    if (
+      !this.graphics ||
+      !this.staticBoardTexture ||
+      !this.runtime ||
+      !this.visualSnapshot
+    ) {
+      return;
+    }
+
+    this.graphics.setVisible(true);
+    this.graphics.clear();
+    this.drawStaticBoard();
+
+    this.staticBoardTexture
+      .clear()
+      .draw(this.graphics)
+      .render();
+
+    this.graphics.setVisible(false);
   }
 
   private drawStaticBoard(): void {
