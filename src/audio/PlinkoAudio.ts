@@ -107,6 +107,27 @@ export const PLINKO_AUDIO_MAX_THEORETICAL_MIX_GAIN =
       TONES.return.gain,
     );
 
+export const PLINKO_SPECIAL_CUE_SIGNATURES = {
+  amplifier: {
+    startFrequency: TONES.amplifier.frequency,
+    endFrequency: TONES.amplifier.endFrequency,
+    waveform: TONES.amplifier.waveform,
+    durationMs: TONES.amplifier.durationMs,
+  },
+  splitter: {
+    startFrequency: TONES.splitter.frequency,
+    endFrequency: TONES.splitter.endFrequency,
+    waveform: TONES.splitter.waveform,
+    durationMs: TONES.splitter.durationMs,
+  },
+  return: {
+    startFrequency: TONES.return.frequency,
+    endFrequency: TONES.return.endFrequency,
+    waveform: TONES.return.waveform,
+    durationMs: TONES.return.durationMs,
+  },
+} as const;
+
 export class SpecialCueGate {
   private readonly lastAt = new Map<SpecialCueKind, number>();
 
