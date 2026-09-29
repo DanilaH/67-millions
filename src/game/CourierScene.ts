@@ -9,6 +9,7 @@ import { createInitialGameState } from '../core/state/GameState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
 import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
 import { recordTutorialMilestone } from './tutorial/tutorialProgress';
+import { VISUAL_FONT, visualColor, visualHex } from './visual/visualTheme';
 import {
   createBarryMinigameOverlay,
   type BarryMinigameOverlay,
@@ -81,8 +82,8 @@ export class CourierScene extends Phaser.Scene {
 
     this.add
       .text(width / 2, 24, 'КУРЬЕРСКИЙ МАРШРУТ', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '30px',
         fontStyle: 'bold',
       })
@@ -94,8 +95,8 @@ export class CourierScene extends Phaser.Scene {
         66,
         'Нарисуй путь от зелёной точки к синей, не задевая препятствия.',
         {
-          color: '#aeb7c3',
-          fontFamily: 'system-ui, sans-serif',
+          color: visualHex('textMuted'),
+          fontFamily: VISUAL_FONT.sans,
           fontSize: '17px',
         },
       )
@@ -112,17 +113,17 @@ export class CourierScene extends Phaser.Scene {
 
     this.statusText = this.add
       .text(width / 2, 660, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '19px',
       })
       .setOrigin(0.5, 0);
 
     this.redrawText = this.add
       .text(36, 650, '[ ПЕРЕРИСОВАТЬ ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('inkRaised'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         padding: { x: 10, y: 8 },
       })
@@ -131,9 +132,9 @@ export class CourierScene extends Phaser.Scene {
 
     this.add
       .text(width - 36, 650, '[ СТАРТ ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#2b4a36',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('mold'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         padding: { x: 10, y: 8 },
       })
@@ -445,13 +446,13 @@ export class CourierScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(0x101820, 1);
+    graphics.fillStyle(visualColor('inkPanel'), 1);
     graphics.fillRoundedRect(100, 105, 1080, 525, 28);
-    graphics.lineStyle(4, 0x52606c, 1);
+    graphics.lineStyle(4, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(100, 105, 1080, 525, 28);
 
     for (const obstacle of this.session.obstacles) {
-      graphics.fillStyle(0x6a3535, 1);
+      graphics.fillStyle(visualColor('rust'), 0.78);
       graphics.fillRoundedRect(
         obstacle.x - obstacle.width / 2,
         obstacle.y - obstacle.height / 2,
@@ -459,7 +460,7 @@ export class CourierScene extends Phaser.Scene {
         obstacle.height,
         14,
       );
-      graphics.lineStyle(4, 0x9c5757, 1);
+      graphics.lineStyle(4, visualColor('warning'), 0.92);
       graphics.strokeRoundedRect(
         obstacle.x - obstacle.width / 2,
         obstacle.y - obstacle.height / 2,
@@ -469,26 +470,26 @@ export class CourierScene extends Phaser.Scene {
       );
     }
 
-    graphics.fillStyle(0x4fad67, 1);
+    graphics.fillStyle(visualColor('good'), 1);
     graphics.fillCircle(
       this.session.start.x,
       this.session.start.y,
       this.session.startRadius,
     );
-    graphics.fillStyle(0x17251b, 1);
+    graphics.fillStyle(visualColor('inkDeep'), 1);
     graphics.fillCircle(
       this.session.start.x,
       this.session.start.y,
       22,
     );
 
-    graphics.fillStyle(0x5598d9, 1);
+    graphics.fillStyle(visualColor('cold'), 1);
     graphics.fillCircle(
       this.session.finish.x,
       this.session.finish.y,
       this.session.finishRadius,
     );
-    graphics.fillStyle(0x172331, 1);
+    graphics.fillStyle(visualColor('inkDeep'), 1);
     graphics.fillCircle(
       this.session.finish.x,
       this.session.finish.y,
@@ -499,8 +500,8 @@ export class CourierScene extends Phaser.Scene {
       graphics.lineStyle(
         this.session.routeThickness,
         this.session.result === 'FAILURE'
-          ? 0xd66a6a
-          : 0xf2d36b,
+          ? visualColor('warning')
+          : visualColor('mustard'),
         0.9,
       );
 
