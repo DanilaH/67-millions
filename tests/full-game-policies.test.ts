@@ -108,7 +108,34 @@ describe('baseline full-game policies', () => {
         trash: 3,
         courier: 3,
       },
-      plinkoMaxBetLevel: balance.plinko.maxBetLevels[balance.plinko.maxBetLevels.length - 1]!.level,
+      plinkoMaxBetLevel:
+        balance.plinko.maxBetLevels[
+          balance.plinko.maxBetLevels.length - 1
+        ]!.level,
+      plinkoCenterLevel:
+        balance.plinko.centerUpgrades[
+          balance.plinko.centerUpgrades.length - 1
+        ]!.level,
+      plinkoMidLevel:
+        balance.plinko.midUpgrades[
+          balance.plinko.midUpgrades.length - 1
+        ]!.level,
+      plinkoJackpotLevel:
+        balance.plinko.jackpotUpgrades[
+          balance.plinko.jackpotUpgrades.length - 1
+        ]!.level,
+      plinkoAmplifierLevel:
+        balance.plinko.amplifier[
+          balance.plinko.amplifier.length - 1
+        ]!.level,
+      plinkoReturnLevel:
+        balance.plinko.return[
+          balance.plinko.return.length - 1
+        ]!.level,
+      plinkoJackpotBiasLevel:
+        balance.plinko.jackpotBias[
+          balance.plinko.jackpotBias.length - 1
+        ]!.level,
     };
     const context = {
       state,
@@ -142,6 +169,62 @@ describe('baseline full-game policies', () => {
     expect(growth).toEqual({ type: 'PLINKO', fraction: 0.5 });
     expect(aggressive).toEqual({ type: 'PLINKO', fraction: 1 });
     expect(worker.type).toBe('WORK');
+  });
+
+  it('BASELINE_GROWTH buys EV-oriented pocket progression before routine earning', () => {
+    const policy = createBaselinePolicy(
+      balance,
+      'BASELINE_GROWTH',
+      22,
+    );
+
+    const decision = policy.decide({
+      state: {
+        ...createInitialGameState(balance, 22),
+        cash: 20_000,
+      },
+      activeAction: null,
+      counters: zeroCounters(),
+      decisionIndex: 0,
+    });
+
+    expect(decision).toEqual({
+      type: 'BUY_PLINKO_POCKET',
+      track: 'center',
+    });
+  });
+
+  it('does not place a Drop that would consume the configured policy reserve', () => {
+    const maxed = {
+      ...createInitialGameState(balance, 23),
+      cash: 20_000,
+      jobLevels: {
+        dishes: 3,
+        trash: 3,
+        courier: 3,
+      },
+      plinkoMaxBetLevel: 6,
+      plinkoCenterLevel: 2,
+      plinkoMidLevel: 3,
+      plinkoJackpotLevel: 3,
+      plinkoAmplifierLevel: 5,
+      plinkoReturnLevel: 4,
+      plinkoJackpotBiasLevel: 4,
+    };
+    const policy = createBaselinePolicy(
+      balance,
+      'BASELINE_GROWTH',
+      23,
+    );
+
+    const decision = policy.decide({
+      state: maxed,
+      activeAction: null,
+      counters: zeroCounters(),
+      decisionIndex: 0,
+    });
+
+    expect(decision.type).toBe('WORK');
   });
 
   it('prioritizes explicit recovery actions before earning decisions', () => {
