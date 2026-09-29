@@ -106,7 +106,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private lastPersistedPhysicsTick = 0;
   private visibilityHandler: (() => void) | null = null;
   private audio: PlinkoAudio | null = null;
-  private worldAudio?: SceneAudio;
+  private worldAudio: SceneAudio | null = null;
 
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
@@ -191,7 +191,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.audio?.dispose();
       this.audio = null;
       this.worldAudio?.dispose();
-      this.worldAudio = undefined;
+      this.worldAudio = null;
       this.runtime?.destroy();
       this.runtime = null;
       this.balls.clear();
