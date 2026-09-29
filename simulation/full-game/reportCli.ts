@@ -279,20 +279,27 @@ for (const archetype of allArchetypes) {
         ? createHighVariancePolicy(config, archetype, runSeed)
         : createBaselinePolicy(config, archetype, runSeed);
 
-    taggedRuns.push({
-      archetype,
-      result: runFullGame(
-        config,
-        policy,
-        model,
-        {
-          seed: runSeed,
-          configHash,
-          maxDecisions: 20_000,
-          maxGameMinutes: 35 * 24 * 60,
-        },
-      ),
-    });
+    try {
+      taggedRuns.push({
+        archetype,
+        result: runFullGame(
+          config,
+          policy,
+          model,
+          {
+            seed: runSeed,
+            configHash,
+            maxDecisions: 20_000,
+            maxGameMinutes: 35 * 24 * 60,
+          },
+        ),
+      });
+    } catch (error) {
+      throw new Error(
+        `Full-game batch failed for ${archetype} seed ${runSeed}: ${String(error)}`,
+        { cause: error },
+      );
+    }
   }
 }
 
