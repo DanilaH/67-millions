@@ -369,9 +369,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const leaveButton = this.add
       .text(690, 650, '[ НА КАРТУ ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('inkRaised'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         padding: { x: 10, y: 8 },
       })
@@ -385,16 +385,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const title = this.add
       .text(40, 36, 'КАРТА · DROP РАЗРЕШАЕТСЯ', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '24px',
       })
       .setOrigin(0, 0);
 
     this.mapText = this.add
       .text(40, 100, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '18px',
         lineSpacing: 6,
       })
@@ -402,8 +402,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.mapMessageText = this.add
       .text(40, 330, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMuted'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         wordWrap: { width: 900 },
       })
@@ -411,9 +411,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const returnButton = this.add
       .text(40, 620, '[ ВЕРНУТЬСЯ В КАЗИНО ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('inkRaised'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
         padding: { x: 10, y: 8 },
       })
