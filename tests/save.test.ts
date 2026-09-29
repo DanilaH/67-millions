@@ -71,11 +71,14 @@ describe('save repository', () => {
     save.game.jobLevels.dishes = 2;
     save.game.dumpsterSearchStreak = 3;
     save.game.statuses.SMELLY = true;
+    save.game.pendingEventId = 'EVENT_03';
+    save.game.eventsResolvedThisGameDay = 1;
+    save.game.lastResolvedEventId = 'EVENT_02';
     await repo.write(save);
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(11);
+    expect(restored.version).toBe(12);
     expect(restored.game.cash).toBe(777);
     expect(restored.game.jobLevels).toEqual({
       dishes: 2,
@@ -84,6 +87,9 @@ describe('save repository', () => {
     });
     expect(restored.game.dumpsterSearchStreak).toBe(3);
     expect(restored.game.statuses.SMELLY).toBe(true);
+    expect(restored.game.pendingEventId).toBe('EVENT_03');
+    expect(restored.game.eventsResolvedThisGameDay).toBe(1);
+    expect(restored.game.lastResolvedEventId).toBe('EVENT_02');
   });
 
   it('uses the browser-local adapter without changing save semantics', async () => {
@@ -145,7 +151,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.barryInterruptPending).toBe(false);
     expect(migrated.game.workPayoutMultiplier).toBe(1);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
@@ -195,7 +201,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
@@ -230,7 +236,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.pendingDrop).toBeNull();
 
     await storage.setItem(
@@ -253,7 +259,7 @@ describe('save repository', () => {
     );
   });
 
-  it('round-trips exact active-Drop physics in v11', async () => {
+  it('round-trips exact active-Drop physics in v12', async () => {
     const storage = new MemoryStorage();
     const repo = createSaveRepository(
       storage,
@@ -454,7 +460,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
     expect(migrated.game.plinkoMidLevel).toBe(0);
     expect(migrated.game.plinkoJackpotLevel).toBe(0);
@@ -532,7 +538,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
@@ -635,7 +641,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
@@ -651,7 +657,7 @@ describe('save repository', () => {
     });
     expect(migrated.pendingDrop?.physics?.fixedTicksElapsed).toBe(99);
     expect(migrated.pendingDrop?.insuranceAtCommit).toBeNull();
-    expect(migrated.pendingDrop?.physics?.balls[0]?.watchdogStationaryTicks).toBe(11);
+    expect(migrated.pendingDrop?.physics?.balls[0]?.watchdogStationaryTicks).toBe(12);
     expect(() =>
       assertDropBoardCompatible(
         migrated.pendingDrop!,
@@ -702,7 +708,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
     expect(migrated.game.plinkoInsuranceArmed).toBeNull();
@@ -752,7 +758,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.cash).toBe(12_345);
     expect(migrated.game.plinkoInsuranceLevel).toBe(2);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(1);
@@ -795,7 +801,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.cash).toBe(54_321);
     expect(migrated.game.jobLevels).toEqual({
       dishes: 2,
@@ -833,10 +839,50 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(11);
+    expect(migrated.version).toBe(12);
     expect(migrated.game.cash).toBe(7_654);
     expect(migrated.game.dumpsterSearchStreak).toBe(2);
     expect(migrated.game.statuses.SMELLY).toBe(false);
+    expect(migrated.game.pendingEventId).toBeNull();
+    expect(migrated.game.eventsResolvedThisGameDay).toBe(0);
+    expect(migrated.game.lastResolvedEventId).toBeNull();
+  });
+
+  it('migrates v11 saves by adding empty event scheduler state', async () => {
+    const storage = new MemoryStorage();
+    const currentGame = {
+      ...createInitialGameState(balance, 892),
+      cash: 8_765,
+      statuses: { SMELLY: true },
+    };
+    const {
+      pendingEventId: _pendingEventId,
+      eventsResolvedThisGameDay: _eventsResolvedThisGameDay,
+      lastResolvedEventId: _lastResolvedEventId,
+      ...legacyGame
+    } = currentGame;
+
+    await storage.setItem(
+      SAVE_STORAGE_KEY,
+      JSON.stringify({
+        version: 11,
+        game: legacyGame,
+        activeAction: null,
+        pendingDrop: null,
+      }),
+    );
+
+    const migrated = await createSaveRepository(
+      storage,
+      () => createInitialGameState(balance, 999),
+    ).load();
+
+    expect(migrated.version).toBe(12);
+    expect(migrated.game.cash).toBe(8_765);
+    expect(migrated.game.statuses.SMELLY).toBe(true);
+    expect(migrated.game.pendingEventId).toBeNull();
+    expect(migrated.game.eventsResolvedThisGameDay).toBe(0);
+    expect(migrated.game.lastResolvedEventId).toBeNull();
   });
 
   it('rejects incompatible save versions without mutating stored data', async () => {
@@ -852,7 +898,7 @@ describe('save repository', () => {
 
   it('rejects corrupt current-version data instead of silently resetting it', async () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ version: 11, game: { cash: -999 } });
+    const raw = JSON.stringify({ version: 12, game: { cash: -999 } });
     await storage.setItem(SAVE_STORAGE_KEY, raw);
 
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 123));
