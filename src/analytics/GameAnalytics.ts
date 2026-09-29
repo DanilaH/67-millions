@@ -138,9 +138,6 @@ export interface GameAnalyticsEvents {
     loot: string;
     cash_award: number;
     streak_after: number;
-    energy_spent: number;
-    happiness_spent: number;
-    health_spent: number;
   }>;
   near_bankruptcy: Payload<{
     cash: number;
@@ -160,6 +157,31 @@ export interface GameAnalyticsEvents {
 
 export type GameAnalyticsEventName =
   keyof GameAnalyticsEvents;
+
+export const GAME_ANALYTICS_EVENT_NAMES =
+  [
+    'game_start',
+    'game_over',
+    'victory',
+    'barry_due',
+    'barry_paid',
+    'work_started',
+    'work_completed',
+    'work_failed',
+    'plinko_drop',
+    'plinko_resolved',
+    'upgrade_bought',
+    'food_used',
+    'sleep_started',
+    'sleep_completed',
+    'entertainment_used',
+    'event_shown',
+    'event_choice',
+    'dumpster_search',
+    'near_bankruptcy',
+    'main_debt_ready',
+    'main_debt_paid',
+  ] as const satisfies readonly GameAnalyticsEventName[];
 
 interface ObservedState {
   barryPending: boolean;
