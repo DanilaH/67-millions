@@ -123,3 +123,10 @@ export const deriveLowNeedKeys = (
   )
     .filter(([, value]) => value <= lowThreshold)
     .map(([key]) => key);
+
+
+export const shouldBlockSceneAudio = (
+  platformBlocked: boolean,
+  sceneSuppressed: boolean,
+): boolean =>
+  platformBlocked || sceneSuppressed;
