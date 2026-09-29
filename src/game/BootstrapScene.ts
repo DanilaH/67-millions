@@ -55,6 +55,14 @@ import {
   consumeCasinoPayoutToast,
   type CasinoPayoutToast,
 } from './casino/casinoPayoutToast';
+import {
+  createRunEndOverlay,
+  type RunEndOverlay,
+} from './end/createRunEndOverlay';
+import {
+  derivePrincipalConfirmation,
+  deriveRunEndSummary,
+} from './end/runEndModel';
 import { PersistentHud } from './ui/PersistentHud';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
@@ -80,6 +88,7 @@ export class BootstrapScene extends Phaser.Scene {
   private messageText?: Phaser.GameObjects.Text;
   private payoutToastText?: Phaser.GameObjects.Text;
   private principalButton?: Phaser.GameObjects.Text;
+  private runEndOverlay?: RunEndOverlay;
   private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
 
@@ -134,7 +143,19 @@ export class BootstrapScene extends Phaser.Scene {
       .setDepth(600)
       .setVisible(false)
       .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => this.guard(() => this.payPrincipal()));
+      .on('pointerup', () =>
+        this.guard(() => this.openPrincipalConfirmation()),
+      );
+
+    this.runEndOverlay = createRunEndOverlay(this, {
+      onRestart: () => this.guard(() => this.restart()),
+      onConfirmPrincipal: () =>
+        this.guard(() => this.payPrincipal()),
+      onCancelPrincipal: () => {
+        this.runEndOverlay?.hide();
+        this.render();
+      },
+    });
 
     void this.initialize();
   }
@@ -652,23 +673,52 @@ export class BootstrapScene extends Phaser.Scene {
     this.render();
   }
 
+  private openPrincipalConfirmation(): void {
+    if (!this.state) return;
+    if (this.pendingDrop) {
+      throw new Error(
+        'Pending Plinko Drop locks cash mutations',
+      );
+    }
+
+    const confirmation = derivePrincipalConfirmation(
+      this.state,
+      balance,
+    );
+    this.runEndOverlay?.showPrincipalConfirmation(
+      confirmation,
+    );
+  }
+
   private payPrincipal(): void {
     if (!this.state) return;
-    if (this.pendingDrop) throw new Error('Pending Plinko Drop locks cash mutations');
-    if (!canPayMainDebt(this.state)) {
-      throw new Error('Need 67,000,000 ₽ cash and no pending Barry flow');
+    if (this.pendingDrop) {
+      throw new Error(
+        'Pending Plinko Drop locks cash mutations',
+      );
     }
+    if (!canPayMainDebt(this.state)) {
+      this.runEndOverlay?.hide();
+      throw new Error(
+        'Need 67,000,000 ₽ cash and no pending Barry flow',
+      );
+    }
+
     this.state = payMainDebt(this.state);
-    this.showMessage('VICTORY: principal paid manually.');
     void this.persist();
   }
 
   private restart(): void {
     if (!this.state) return;
+
     this.state = restartGame(balance, createRunSeed());
     this.activeAction = null;
     this.pendingDrop = null;
-    this.showMessage('Fresh run created with a new seed.');
+    this.runEndOverlay?.hide();
+    this.payoutToastText?.setVisible(false);
+    this.closeActionPanel();
+    this.clearContextControls();
+    this.showMessage('Новый забег начат.');
     void this.persist();
   }
 
@@ -714,6 +764,12 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     if (this.state.barryInterruptPending) {
+      if (
+        this.runEndOverlay?.getMode() ===
+        'principal-confirm'
+      ) {
+        this.runEndOverlay.hide();
+      }
       if (this.contextMode !== 'barry') {
         this.setContextControls('barry', [
           ['ЗАПЛАТИТЬ БАРРИ', () => this.payBarry()],
@@ -730,16 +786,22 @@ export class BootstrapScene extends Phaser.Scene {
       this.state.victory
     ) {
       if (this.contextMode !== 'terminal') {
-        this.setContextControls('terminal', [
-          ['НОВЫЙ ЗАБЕГ', () => this.restart()],
-        ]);
+        this.clearContextControls();
+        this.contextMode = 'terminal';
       }
+      this.runEndOverlay?.showSummary(
+        deriveRunEndSummary(this.state, balance),
+      );
       this.showMessage(
         this.state.victory
-          ? 'Долг погашен.'
-          : `GAME OVER: ${this.state.terminalReason}`,
+          ? 'Победа: основной долг погашен.'
+          : 'Забег завершён.',
       );
       return;
+    }
+
+    if (this.runEndOverlay?.getMode() === 'summary') {
+      this.runEndOverlay.hide();
     }
 
     if (this.activeAction !== null) {
