@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
 import type { TutorialCardModel } from './tutorialUiModel';
 
 export interface TutorialCard {
@@ -21,15 +22,15 @@ export const createTutorialCard = (
       545,
       650,
       118,
-      0x171d23,
+      visualColor('inkPanel'),
       0.97,
     )
-    .setStrokeStyle(2, 0xb08a52, 1);
+    .setStrokeStyle(2, visualColor('paperOld'), 1);
 
   const title = scene.add
     .text(315, 500, '', {
-      color: '#e0c476',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('mustard'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '16px',
       fontStyle: 'bold',
     })
@@ -37,8 +38,8 @@ export const createTutorialCard = (
 
   const body = scene.add
     .text(315, 526, '', {
-      color: '#d1d7dd',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '14px',
       wordWrap: { width: 500 },
       lineSpacing: 3,
@@ -47,9 +48,9 @@ export const createTutorialCard = (
 
   const acknowledge = scene.add
     .text(925, 564, '[ ПОНЯТНО ]', {
-      color: '#17130b',
-      backgroundColor: '#d9bf7d',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('inkDeep'),
+      backgroundColor: visualHex('mustard'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '13px',
       fontStyle: 'bold',
       padding: { x: 9, y: 6 },
