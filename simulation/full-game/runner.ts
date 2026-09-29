@@ -254,15 +254,32 @@ const settleCompletedAction = (
   state: GameState,
   action: ActiveAction,
   config: BalanceConfig,
+  diagnostics: FullGameDiagnostics,
 ): GameState => {
   if (state.terminalReason !== null || state.victory) return state;
 
   if (action.kind === 'WORK') {
-    return settleWork(state, action, config);
+    const beforeCash = state.cash;
+    const settled = settleWork(state, action, config);
+    recordIncome(
+      diagnostics,
+      'work',
+      Math.max(0, settled.cash - beforeCash),
+      beforeCash,
+    );
+    return settled;
   }
 
   if (action.kind === 'DUMPSTER') {
-    return settleDumpsterSearch(state, config).state;
+    const beforeCash = state.cash;
+    const settled = settleDumpsterSearch(state, config);
+    recordIncome(
+      diagnostics,
+      'dumpster',
+      settled.cashAward,
+      beforeCash,
+    );
+    return settled.state;
   }
 
   if (action.kind === 'TIMED_PAID') {
@@ -280,6 +297,7 @@ const completeActiveAction = (
   initialAction: ActiveAction,
   config: BalanceConfig,
   counters: FullGameCounters,
+  diagnostics: FullGameDiagnostics,
   maxGameMinutes: number,
 ): { state: GameState; activeAction: ActiveAction | null } => {
   let state = initialState;
@@ -310,7 +328,12 @@ const completeActiveAction = (
     }
 
     if (advanced.actionCompleted) {
-      state = settleCompletedAction(state, currentAction, config);
+      state = settleCompletedAction(
+        state,
+        currentAction,
+        config,
+        diagnostics,
+      );
       activeAction = null;
       break;
     }
