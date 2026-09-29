@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { VISUAL_FONT, VISUAL_METRICS, visualColor, visualHex } from '../visual/visualTheme';
+
 import type {
   PrincipalConfirmation,
   RunEndSummary,
@@ -34,7 +36,7 @@ export const createRunEndOverlay = (
 
   const container = scene.add
     .container(0, 0)
-    .setDepth(2_000)
+    .setDepth(VISUAL_METRICS.terminalDepth)
     .setVisible(false);
 
   const shade = scene.add
@@ -43,7 +45,7 @@ export const createRunEndOverlay = (
       height / 2,
       width,
       height,
-      0x050607,
+      visualColor('inkDeep'),
       0.86,
     )
     .setInteractive();
@@ -54,15 +56,15 @@ export const createRunEndOverlay = (
       height / 2,
       760,
       560,
-      0x151a20,
+      visualColor('inkPanel'),
       1,
     )
-    .setStrokeStyle(4, 0x4e5965, 1);
+    .setStrokeStyle(4, visualColor('lineDirty'), 1);
 
   const title = scene.add
     .text(width / 2, 112, '', {
-      color: '#f4f6f8',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '34px',
       fontStyle: 'bold',
       align: 'center',
@@ -71,8 +73,8 @@ export const createRunEndOverlay = (
 
   const reason = scene.add
     .text(width / 2, 166, '', {
-      color: '#c8d0d8',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMuted'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '18px',
       align: 'center',
       wordWrap: { width: 650 },
@@ -81,8 +83,8 @@ export const createRunEndOverlay = (
 
   const stats = scene.add
     .text(330, 244, '', {
-      color: '#e1e5e9',
-      fontFamily: 'ui-monospace, monospace',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.mono,
       fontSize: '16px',
       lineSpacing: 9,
       wordWrap: { width: 620 },
@@ -91,9 +93,9 @@ export const createRunEndOverlay = (
 
   const primary = scene.add
     .text(width / 2, 586, '', {
-      color: '#f4f6f8',
-      backgroundColor: '#3d5f45',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      backgroundColor: visualHex('mold'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '20px',
       fontStyle: 'bold',
       padding: { x: 16, y: 11 },
@@ -110,9 +112,9 @@ export const createRunEndOverlay = (
 
   const secondary = scene.add
     .text(width / 2, 642, '[ ОТМЕНА ]', {
-      color: '#d5dbe1',
-      backgroundColor: '#303840',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      backgroundColor: visualHex('inkRaised'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '16px',
       padding: { x: 12, y: 8 },
     })
@@ -141,8 +143,8 @@ export const createRunEndOverlay = (
         .setText(summary.title)
         .setColor(
           summary.kind === 'VICTORY'
-            ? '#e0c476'
-            : '#d98a82',
+            ? visualHex('mustard')
+            : visualHex('warning'),
         );
       reason.setText(summary.reason);
       stats.setText(
@@ -155,7 +157,7 @@ export const createRunEndOverlay = (
       );
       primary
         .setText('[ НОВЫЙ ЗАБЕГ ]')
-        .setBackgroundColor('#3d5f45');
+        .setBackgroundColor(visualHex('mold'));
       secondary.setVisible(false);
       container.setVisible(true);
     },
@@ -164,7 +166,7 @@ export const createRunEndOverlay = (
       mode = 'principal-confirm';
       title
         .setText(confirmation.title)
-        .setColor('#e0c476');
+        .setColor(visualHex('mustard'));
       reason.setText(confirmation.warning);
       stats.setText(
         [
@@ -175,7 +177,7 @@ export const createRunEndOverlay = (
       );
       primary
         .setText('[ ПОДТВЕРДИТЬ ]')
-        .setBackgroundColor('#6a5534');
+        .setBackgroundColor(visualHex('rust'));
       secondary.setVisible(true);
       container.setVisible(true);
     },
