@@ -28,7 +28,11 @@ const isInWindow = (minuteOfDay: number, window: string): boolean => {
     : minuteOfDay >= start || minuteOfDay < end;
 };
 
-const getLevel = (config: BalanceConfig, jobId: JobId, level: number) => {
+export const getWorkLevelDefinition = (
+  config: BalanceConfig,
+  jobId: JobId,
+  level: number,
+) => {
   const value = config.work.jobs[jobId].levels.find((entry) => entry.level === level);
   if (!value) throw new Error(`Unknown ${jobId} level ${level}`);
   return value;
@@ -88,7 +92,7 @@ export const startWork = (
     throw new Error('Cannot start work in the current run state');
   }
 
-  const definition = getLevel(config, jobId, level);
+  const definition = getWorkLevelDefinition(config, jobId, level);
   if (isJobEventLocked(state, jobId)) {
     throw new Error(`${jobId} job is temporarily event-locked`);
   }
@@ -144,7 +148,7 @@ export const settleWork = (
   if (state.terminalReason !== null) return state;
   if (action.result === null) throw new Error('Work result must be known before settlement');
 
-  const definition = getLevel(config, action.actionId as JobId, action.level);
+  const definition = getWorkLevelDefinition(config, action.actionId as JobId, action.level);
   const basePotentialPayout = roundMoney(
     definition.payout * state.workPayoutMultiplier,
   );
