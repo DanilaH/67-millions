@@ -1,0 +1,43 @@
+name: Plinko Splitter 24-ball stress
+
+on:
+  pull_request:
+    paths:
+      - 'src/game/PlinkoDebugScene.ts'
+      - 'src/app/perfMode.ts'
+      - 'src/phaser/plinko/**'
+      - 'src/core/plinko-rules/cascade.ts'
+      - 'balance.v0.json'
+      - 'package.json'
+      - '.env.performance'
+      - 'tools/plinko-splitter-stress.mjs'
+      - 'tests/plinko-splitter-stress.test.ts'
+      - '.github/workflows/plinko-splitter-stress.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-splitter-stress-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromium-mobile-24-ball:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build:perf
+      - name: Run 24-ball Splitter stress
+        run: npm run perf:plinko:splitter-stress
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plinko-splitter-24-ball-stress
+          path: artifacts/perf
+          if-no-files-found: error
