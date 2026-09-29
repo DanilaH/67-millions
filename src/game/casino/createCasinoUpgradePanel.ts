@@ -12,10 +12,12 @@ export interface CasinoUpgradePanel {
 export const createCasinoUpgradePanel = (
   scene: Phaser.Scene,
   onPurchase: (id: CasinoUpgradeId) => void,
+  parent?: Phaser.GameObjects.Container,
 ): CasinoUpgradePanel => {
   const container = scene.add
     .container(0, 0)
     .setDepth(20);
+  parent?.add(container);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
 
   const background = scene.add
