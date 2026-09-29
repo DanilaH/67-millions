@@ -22,6 +22,10 @@ import {
 import {
   derivePocketMultipliers,
   getMaxBetForLevel,
+  purchaseInsuranceUpgrade,
+  purchaseMaxBetUpgrade,
+  purchasePocketUpgrade,
+  purchaseSpecialUpgrade,
 } from '../core/plinko-rules/progression';
 import { deriveJackpotBiasGeometry } from '../core/plinko-rules/jackpotBias';
 import {
@@ -43,6 +47,20 @@ import {
   createBarePlinko,
   type BarePlinkoRuntime,
 } from '../phaser/plinko/createBarePlinko';
+import {
+  buildCasinoQuickBets,
+  buildCasinoUpgradePreviews,
+  type CasinoUpgradeId,
+} from './casino/casinoUiModel';
+import {
+  createCasinoBetPanel,
+  type CasinoBetPanel,
+} from './casino/createCasinoBetPanel';
+import {
+  createCasinoUpgradePanel,
+  type CasinoUpgradePanel,
+} from './casino/createCasinoUpgradePanel';
+import { publishCasinoPayoutToast } from './casino/casinoPayoutToast';
 
 const createRunSeed = (): number => {
   const values = new Uint32Array(1);
@@ -72,6 +90,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private mapMessageText?: Phaser.GameObjects.Text;
   private mapMode = false;
   private lastResultMessage = '';
+  private betPanel?: CasinoBetPanel;
+  private upgradePanel?: CasinoUpgradePanel;
+  private resultText?: Phaser.GameObjects.Text;
+  private readonly pocketLabels: Phaser.GameObjects.Text[] = [];
 
   public constructor() {
     super('plinko-debug');
@@ -101,6 +123,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
       })
       .setOrigin(0, 0);
     this.casinoLayer.add(this.statusText);
+
+    this.resultText = this.add
+      .text(680, 92, '', {
+        color: '#d9bf7d',
+        backgroundColor: '#171b20',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '14px',
+        padding: { x: 10, y: 8 },
+        wordWrap: { width: 545 },
+      })
+      .setOrigin(0, 0)
+      .setVisible(false);
+    this.casinoLayer.add(this.resultText);
 
     this.audio = new PlinkoAudio(() => this.game.sound.mute);
     this.matter.world.on('collisionstart', this.handleAudioCollision);
@@ -252,26 +287,29 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private installCasinoControls(): void {
     if (!this.casinoLayer) return;
 
-    const fractions: BetFraction[] = [0.25, 0.5, 1];
-    fractions.forEach((fraction, index) => {
-      const button = this.add
-        .text(28 + index * 155, 650, `[ DROP ${fraction * 100}% ]`, {
-          color: '#f4f6f8',
-          backgroundColor: '#252a31',
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '17px',
-          padding: { x: 10, y: 8 },
-        })
-        .setInteractive({ useHandCursor: true })
-        .on('pointerup', () => {
-          this.audio?.prime();
-          void this.commitAndSpawn(fraction);
-        });
-      this.casinoLayer!.add(button);
-    });
+    this.betPanel = createCasinoBetPanel(
+      this,
+      (preview) => {
+        if (preview.lockedReason !== null) {
+          this.showStatus(preview.lockedReason);
+          return;
+        }
+        this.audio?.prime();
+        void this.commitAndSpawn(preview.fraction);
+      },
+      this.casinoLayer,
+    );
+
+    this.upgradePanel = createCasinoUpgradePanel(
+      this,
+      (id) => {
+        void this.purchaseUpgrade(id);
+      },
+      this.casinoLayer,
+    );
 
     const leaveButton = this.add
-      .text(500, 650, '[ MAP / LEAVE CASINO ]', {
+      .text(690, 650, '[ НА КАРТУ ]', {
         color: '#f4f6f8',
         backgroundColor: '#252a31',
         fontFamily: 'system-ui, sans-serif',
@@ -281,31 +319,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true })
       .on('pointerup', () => this.leaveCasino());
     this.casinoLayer.add(leaveButton);
-
-    const backButton = this.add
-      .text(790, 650, '[ BACK TO M1 ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
-        fontSize: '17px',
-        padding: { x: 10, y: 8 },
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => {
-        if (this.save?.pendingDrop) {
-          this.showStatus('Resolve the pending Drop before leaving the Plinko runtime.');
-          return;
-        }
-        this.scene.start('bootstrap');
-      });
-    this.casinoLayer.add(backButton);
   }
 
   private installMapLayer(): void {
     if (!this.mapLayer) return;
 
     const title = this.add
-      .text(40, 36, 'MAP / READ-ONLY WHILE PLINKO RESOLVES', {
+      .text(40, 36, 'КАРТА · DROP РАЗРЕШАЕТСЯ', {
         color: '#f4f6f8',
         fontFamily: 'system-ui, sans-serif',
         fontSize: '24px',
@@ -331,7 +351,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setOrigin(0, 0);
 
     const returnButton = this.add
-      .text(40, 620, '[ RETURN TO CASINO ]', {
+      .text(40, 620, '[ ВЕРНУТЬСЯ В КАЗИНО ]', {
         color: '#f4f6f8',
         backgroundColor: '#252a31',
         fontFamily: 'system-ui, sans-serif',
