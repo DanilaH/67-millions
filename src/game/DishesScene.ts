@@ -54,7 +54,7 @@ export class DishesScene extends Phaser.Scene {
   private saveWriteChain: Promise<void> = Promise.resolve();
   private readonly minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
-  private audio?: SceneAudio;
+  private audio: SceneAudio | null = null;
 
   public constructor() {
     super('dishes');
@@ -131,7 +131,7 @@ export class DishesScene extends Phaser.Scene {
       this.input.off('pointerup', this.handlePointerUp);
       this.input.off('pointerupoutside', this.handlePointerUp);
       this.audio?.dispose();
-      this.audio = undefined;
+      this.audio = null;
     });
 
     void this.initialize();
