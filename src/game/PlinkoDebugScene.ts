@@ -387,6 +387,71 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderCasino();
   }
 
+  private async purchaseUpgrade(
+    id: CasinoUpgradeId,
+  ): Promise<void> {
+    if (!this.save || !this.repository) return;
+
+    try {
+      let game = this.save.game;
+
+      if (id === 'maxBet') {
+        game = purchaseMaxBetUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+        );
+      } else if (
+        id === 'center' ||
+        id === 'mid' ||
+        id === 'jackpot'
+      ) {
+        game = purchasePocketUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+          id,
+        );
+      } else if (
+        id === 'amplifier' ||
+        id === 'return' ||
+        id === 'splitter' ||
+        id === 'jackpotBias'
+      ) {
+        game = purchaseSpecialUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+          id,
+        );
+      } else {
+        game = purchaseInsuranceUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+        );
+      }
+
+      this.save = {
+        ...this.save,
+        game,
+      };
+      this.runtime?.setJackpotBiasLevel(
+        game.plinkoJackpotBiasLevel,
+      );
+
+      await this.enqueueSave(true);
+      this.installPocketLabels();
+      this.showStatus('Апгрейд куплен.');
+      this.renderAll();
+    } catch (error: unknown) {
+      this.showStatus(
+        error instanceof Error ? error.message : String(error),
+      );
+      this.renderCasino();
+    }
+  }
+
   private async commitAndSpawn(fraction: BetFraction): Promise<void> {
     if (!this.save || !this.repository || !this.runtime || !this.random) return;
     if (this.save.activeAction) {
@@ -633,8 +698,22 @@ export class PlinkoDebugScene extends Phaser.Scene {
       : '';
     this.audio?.result(result.losing);
     this.lastResultMessage =
-      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier.toFixed(3)}x aggregate)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
+      `PLINKO: ставка ${pending.originalStake.toLocaleString('ru-RU')} ₽ → выплата ${result.payout.toLocaleString('ru-RU')} ₽ · ${result.multiplier.toFixed(2)}x${result.insuranceApplied ? ` · страховка +${result.insuranceTopUp.toLocaleString('ru-RU')} ₽` : ''}${result.losing ? ' · Счастье -1' : ''}${terminalSuffix}`;
+
+    publishCasinoPayoutToast({
+      stake: pending.originalStake,
+      payout: result.payout,
+      multiplier: result.multiplier,
+      losing: result.losing,
+      insuranceApplied: result.insuranceApplied,
+      insuranceTopUp: result.insuranceTopUp,
+    });
+
     this.showStatus(this.lastResultMessage);
+    this.resultText
+      ?.setText(this.lastResultMessage)
+      .setColor(result.losing ? '#d08a82' : '#d9bf7d')
+      .setVisible(true);
 
     if (window.__PLINKO_PERF__?.phase === 'running') {
       window.__PLINKO_PERF__.phase = 'resolved';
@@ -643,6 +722,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+
+    if (this.mapMode) {
+      this.time.delayedCall(250, () => {
+        this.scene.start('bootstrap');
+      });
+    }
   }
 
   private installPerfProbe(): void {
@@ -783,13 +868,33 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
 
     this.infoText.setText([
-      `M2 BARE PLINKO / fixed ${balance.plinko.geometry.fixedTimestepHz} Hz`,
-      `Cash: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
-      `Max bet: ${maxBet.toLocaleString('ru-RU')} ₽`,
-      `Selected: ${this.save.game.plinkoSelectedBetFraction * 100}%`,
-      `Pending: ${this.save.pendingDrop ? `${this.save.pendingDrop.dropId} / ${this.save.pendingDrop.originalStake} ₽` : 'none'}`,
-      `Happiness: ${this.save.game.needs.happiness.toFixed(1)}`,
+      'КАЗИНО / PLINKO',
+      `Деньги: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
+      `Макс. ставка: ${maxBet.toLocaleString('ru-RU')} ₽`,
+      `Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽ · ИДЁТ` : 'готов'}`,
+      `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
     ]);
+
+    this.betPanel?.render(
+      buildCasinoQuickBets(
+        this.save.game,
+        this.save.pendingDrop,
+        balance,
+      ),
+    );
+    this.upgradePanel?.render(
+      buildCasinoUpgradePreviews(
+        this.save.game,
+        this.save.pendingDrop,
+        balance,
+      ),
+    );
+
+    if (this.lastResultMessage) {
+      this.resultText
+        ?.setText(this.lastResultMessage)
+        .setVisible(true);
+    }
   }
 
   private renderMap(): void {
@@ -826,20 +931,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
       jackpotLevel: this.save?.game.plinkoJackpotLevel ?? 0,
     });
 
-    this.runtime.layout.pocketCenters.forEach((pocket, index) => {
-      const label = this.add
-        .text(
-          pocket.x,
-          this.runtime!.layout.pocketBottomY + 18,
-          `${pockets[index]}x`,
-          {
-            color: '#c5ccd5',
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: '13px',
-          },
-        )
-        .setOrigin(0.5, 0);
-      this.casinoLayer!.add(label);
+    if (this.pocketLabels.length === 0) {
+      this.runtime.layout.pocketCenters.forEach((pocket, index) => {
+        const label = this.add
+          .text(
+            pocket.x,
+            this.runtime!.layout.pocketBottomY + 18,
+            `${pockets[index]}x`,
+            {
+              color: '#c5ccd5',
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: '13px',
+            },
+          )
+          .setOrigin(0.5, 0);
+        this.casinoLayer!.add(label);
+        this.pocketLabels.push(label);
+      });
+      return;
+    }
+
+    this.pocketLabels.forEach((label, index) => {
+      label.setText(`${pockets[index]}x`);
     });
   }
 
