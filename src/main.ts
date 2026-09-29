@@ -13,6 +13,7 @@ import {
 } from './app/startup';
 import { getInitialGameSize, installViewportRuntime } from './app/viewport';
 import { BootstrapScene, GAME_PRESENTABLE_EVENT } from './game/BootstrapScene';
+import { DishesScene } from './game/DishesScene';
 import { PlinkoDebugScene } from './game/PlinkoDebugScene';
 import { balance } from './config/balance';
 
@@ -47,7 +48,7 @@ try {
         runner: { fps: balance.plinko.geometry.fixedTimestepHz },
       },
     },
-    scene: [BootstrapScene, PlinkoDebugScene],
+    scene: [BootstrapScene, DishesScene, PlinkoDebugScene],
     scale: { mode: Phaser.Scale.NONE },
     callbacks: {
       preBoot: (bootingGame) => {
