@@ -414,8 +414,6 @@ export class SceneAudio {
       GAME_AUDIO_BLOCKED_EVENT,
       this.handleBlocked,
     );
-
-    this.mixer?.prime();
   }
 
   public prime(): void {
