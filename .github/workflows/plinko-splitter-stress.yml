@@ -1,0 +1,99 @@
+name: T049 Splitter stress
+
+on:
+  pull_request:
+    paths:
+      - 'simulation/plinko/cascade**'
+      - 'src/core/plinko-rules/cascade.ts'
+      - 'src/core/plinko-rules/drop.ts'
+      - 'src/core/plinko-rules/progression.ts'
+      - 'src/core/plinko-rules/returnPhysics.ts'
+      - 'src/core/plinko-rules/specialPinLayout.ts'
+      - 'src/phaser/plinko/**'
+      - 'balance.v0.json'
+      - '.github/workflows/plinko-splitter-stress.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: plinko-splitter-stress-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  stress-24-ball:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - name: Run synthetic 24-ball Splitter stress
+        run: >-
+          npm run simulate:plinko:cascade --
+          --runs 1000
+          --seed 67049000
+          --batch-size 1
+          --initial-ball-count 24
+          --center-level 2
+          --mid-level 3
+          --jackpot-level 3
+          --amplifier-level 5
+          --return-level 4
+          --splitter-level 5
+          --jackpot-bias-level 4
+          --output artifacts/plinko/t049-splitter-stress
+      - name: Assert T049 stress gates
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const report = JSON.parse(
+            fs.readFileSync(
+              'artifacts/plinko/t049-splitter-stress/summary.json',
+              'utf8',
+            ),
+          );
+
+          const { metadata, metrics, performance } = report;
+
+          if (metadata.initialBallCount !== 24) {
+            throw new Error(`Expected 24 initial balls, got ${metadata.initialBallCount}`);
+          }
+          if (metrics.maxActiveBalls !== 24) {
+            throw new Error(`Expected maxActiveBalls=24, got ${metrics.maxActiveBalls}`);
+          }
+          if (metrics.stuckRuns !== 0) {
+            throw new Error(`Expected zero stuck runs, got ${metrics.stuckRuns}`);
+          }
+          if (metrics.meanTerminalBalls !== 24) {
+            throw new Error(`Expected meanTerminalBalls=24, got ${metrics.meanTerminalBalls}`);
+          }
+          if (!(performance.wallMsPerDrop > 0)) {
+            throw new Error('Missing wall-time performance measurement');
+          }
+
+          console.log(JSON.stringify({
+            maxActiveBalls: metrics.maxActiveBalls,
+            stuckRuns: metrics.stuckRuns,
+            meanTerminalBalls: metrics.meanTerminalBalls,
+            meanCascadeSeconds: metrics.meanCascadeSeconds,
+            p95CascadeSeconds: metrics.p95CascadeSeconds,
+            maxCascadeSeconds: metrics.maxCascadeSeconds,
+            wallElapsedMs: performance.wallElapsedMs,
+            wallMsPerDrop: performance.wallMsPerDrop,
+            terminalBallsPerSecond: performance.terminalBallsPerSecond,
+          }, null, 2));
+          NODE
+      - name: Print stress report
+        if: always()
+        run: |
+          if [ -f artifacts/plinko/t049-splitter-stress/REPORT.md ]; then
+            cat artifacts/plinko/t049-splitter-stress/REPORT.md
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: t049-splitter-stress
+          path: artifacts/plinko/t049-splitter-stress
+          if-no-files-found: error
