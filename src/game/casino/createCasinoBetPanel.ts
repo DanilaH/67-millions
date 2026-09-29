@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { VISUAL_FONT, visualHex } from '../visual/visualTheme';
+
 import type {
   CasinoQuickBetPreview,
 } from './casinoUiModel';
@@ -22,16 +24,16 @@ export const createCasinoBetPanel = (
 
   const title = scene.add
     .text(28, 610, 'БЫСТРАЯ СТАВКА', {
-      color: '#b8c1cc',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMuted'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '13px',
       fontStyle: 'bold',
     });
 
   const lockText = scene.add
     .text(510, 615, '', {
-      color: '#c2766d',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('warning'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '12px',
       wordWrap: { width: 380 },
     });
@@ -67,16 +69,16 @@ export const createCasinoBetPanel = (
               : `[ ${preview.label} · ${preview.amount.toLocaleString('ru-RU')} ₽ ]`,
             {
               color: locked
-                ? '#7f8790'
+                ? visualHex('textMuted')
                 : selected
-                  ? '#17130b'
-                  : '#f4f6f8',
+                  ? visualHex('inkDeep')
+                  : visualHex('textMain'),
               backgroundColor: locked
-                ? '#20252a'
+                ? visualHex('inkPanel')
                 : selected
-                  ? '#d9bf7d'
-                  : '#303840',
-              fontFamily: 'system-ui, sans-serif',
+                  ? visualHex('mustard')
+                  : visualHex('inkRaised'),
+              fontFamily: VISUAL_FONT.sans,
               fontSize: '14px',
               fontStyle: selected ? 'bold' : 'normal',
               padding: { x: 10, y: 8 },
