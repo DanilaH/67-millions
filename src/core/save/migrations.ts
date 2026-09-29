@@ -221,6 +221,19 @@ const v11Schema = z.object({
   pendingDrop: v8PendingDropSchema.nullable(),
 });
 
+const v12GameSchema = v11GameSchema.extend({
+  pendingEventId: z.string().min(1).nullable(),
+  eventsResolvedThisGameDay: z.number().int().nonnegative(),
+  lastResolvedEventId: z.string().min(1).nullable(),
+});
+
+const v12Schema = z.object({
+  version: z.literal(12),
+  game: v12GameSchema,
+  activeAction: z.unknown().nullable(),
+  pendingDrop: v8PendingDropSchema.nullable(),
+});
+
 const ZERO_GAME_POCKET_LEVELS = {
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,
@@ -275,6 +288,20 @@ const ZERO_EVENT_SCHEDULER = {
   lastResolvedEventId: null,
 } as const;
 
+const ZERO_EVENT_MODIFIERS = {
+  eventModifiers: {
+    nextWorksPayoutMultiplier: null,
+    nextBarryMultiplier: null,
+    plinkoLockRemainingMinutes: 0,
+    jobLockRemainingMinutes: {
+      dishes: 0,
+      trash: 0,
+      courier: 0,
+    },
+    foodPriceMultiplier: null,
+  },
+} as const;
+
 export class UnsupportedSaveVersionError extends Error {
   public constructor(public readonly version: number) {
     super(`Unsupported save version: ${version}`);
@@ -284,6 +311,7 @@ export class UnsupportedSaveVersionError extends Error {
 
 const addPlinkoDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -297,6 +325,7 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
 
 const addPocketDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -308,6 +337,7 @@ const addPocketDefaults = <T extends object>(game: T) => ({
 
 const addSpecialDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -318,6 +348,7 @@ const addSpecialDefaults = <T extends object>(game: T) => ({
 
 const addBiasDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -328,6 +359,7 @@ const addBiasDefaults = <T extends object>(game: T) => ({
 
 const addInsuranceDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -337,6 +369,7 @@ const addInsuranceDefaults = <T extends object>(game: T) => ({
 
 const addJobDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -345,6 +378,7 @@ const addJobDefaults = <T extends object>(game: T) => ({
 
 const addDumpsterDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
@@ -352,13 +386,20 @@ const addDumpsterDefaults = <T extends object>(game: T) => ({
 
 const addStatusDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
 });
 
 const addEventDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_MODIFIERS,
   ...ZERO_EVENT_SCHEDULER,
+});
+
+const addEventModifierDefaults = <T extends object>(game: T) => ({
+  ...game,
+  ...ZERO_EVENT_MODIFIERS,
 });
 
 const migrateV1 = (value: unknown): SaveState => {
@@ -536,10 +577,22 @@ const migrateV11 = (value: unknown): SaveState => {
   });
 };
 
+const migrateV12 = (value: unknown): SaveState => {
+  const old = v12Schema.parse(value);
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: addEventModifierDefaults(old.game),
+    activeAction: old.activeAction,
+    pendingDrop: old.pendingDrop,
+  });
+};
+
 export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 12) return migrateV12(value);
   if (version === 11) return migrateV11(value);
   if (version === 10) return migrateV10(value);
   if (version === 9) return migrateV9(value);
