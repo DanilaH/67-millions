@@ -74,11 +74,21 @@ describe('save repository', () => {
     save.game.pendingEventId = 'EVENT_03';
     save.game.eventsResolvedThisGameDay = 1;
     save.game.lastResolvedEventId = 'EVENT_02';
+    save.game.eventModifiers.nextWorksPayoutMultiplier = {
+      multiplier: 0.7,
+      remainingCount: 2,
+    };
+    save.game.eventModifiers.plinkoLockRemainingMinutes = 90;
+    save.game.eventModifiers.jobLockRemainingMinutes.courier = 120;
+    save.game.eventModifiers.foodPriceMultiplier = {
+      multiplier: 1.3,
+      remainingMinutes: 600,
+    };
     await repo.write(save);
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(12);
+    expect(restored.version).toBe(13);
     expect(restored.game.cash).toBe(777);
     expect(restored.game.jobLevels).toEqual({
       dishes: 2,
@@ -90,6 +100,16 @@ describe('save repository', () => {
     expect(restored.game.pendingEventId).toBe('EVENT_03');
     expect(restored.game.eventsResolvedThisGameDay).toBe(1);
     expect(restored.game.lastResolvedEventId).toBe('EVENT_02');
+    expect(restored.game.eventModifiers.nextWorksPayoutMultiplier).toEqual({
+      multiplier: 0.7,
+      remainingCount: 2,
+    });
+    expect(restored.game.eventModifiers.plinkoLockRemainingMinutes).toBe(90);
+    expect(restored.game.eventModifiers.jobLockRemainingMinutes.courier).toBe(120);
+    expect(restored.game.eventModifiers.foodPriceMultiplier).toEqual({
+      multiplier: 1.3,
+      remainingMinutes: 600,
+    });
   });
 
   it('uses the browser-local adapter without changing save semantics', async () => {
@@ -151,7 +171,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.barryInterruptPending).toBe(false);
     expect(migrated.game.workPayoutMultiplier).toBe(1);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
@@ -201,7 +221,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
@@ -236,7 +256,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.pendingDrop).toBeNull();
 
     await storage.setItem(
@@ -259,7 +279,7 @@ describe('save repository', () => {
     );
   });
 
-  it('round-trips exact active-Drop physics in v12', async () => {
+  it('round-trips exact active-Drop physics in v13', async () => {
     const storage = new MemoryStorage();
     const repo = createSaveRepository(
       storage,
@@ -460,7 +480,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
     expect(migrated.game.plinkoMidLevel).toBe(0);
     expect(migrated.game.plinkoJackpotLevel).toBe(0);
@@ -538,7 +558,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
@@ -641,7 +661,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
@@ -708,7 +728,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
     expect(migrated.game.plinkoInsuranceArmed).toBeNull();
@@ -758,7 +778,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.cash).toBe(12_345);
     expect(migrated.game.plinkoInsuranceLevel).toBe(2);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(1);
@@ -801,7 +821,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.cash).toBe(54_321);
     expect(migrated.game.jobLevels).toEqual({
       dishes: 2,
@@ -839,7 +859,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.cash).toBe(7_654);
     expect(migrated.game.dumpsterSearchStreak).toBe(2);
     expect(migrated.game.statuses.SMELLY).toBe(false);
@@ -877,12 +897,93 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(12);
+    expect(migrated.version).toBe(13);
     expect(migrated.game.cash).toBe(8_765);
     expect(migrated.game.statuses.SMELLY).toBe(true);
     expect(migrated.game.pendingEventId).toBeNull();
     expect(migrated.game.eventsResolvedThisGameDay).toBe(0);
     expect(migrated.game.lastResolvedEventId).toBeNull();
+    expect(migrated.game.eventModifiers).toEqual({
+      nextWorksPayoutMultiplier: null,
+      nextBarryMultiplier: null,
+      plinkoLockRemainingMinutes: 0,
+      jobLockRemainingMinutes: {
+        dishes: 0,
+        trash: 0,
+        courier: 0,
+      },
+      foodPriceMultiplier: null,
+    });
+  });
+
+  it('migrates v12 saves by adding empty event modifiers', async () => {
+    const storage = new MemoryStorage();
+    const currentGame = {
+      ...createInitialGameState(balance, 893),
+      cash: 9_876,
+      pendingEventId: 'EVENT_04',
+      eventsResolvedThisGameDay: 1,
+      lastResolvedEventId: 'EVENT_03',
+    };
+    const {
+      eventModifiers: _eventModifiers,
+      ...legacyGame
+    } = currentGame;
+
+    await storage.setItem(
+      SAVE_STORAGE_KEY,
+      JSON.stringify({
+        version: 12,
+        game: legacyGame,
+        activeAction: null,
+        pendingDrop: null,
+      }),
+    );
+
+    const migrated = await createSaveRepository(
+      storage,
+      () => createInitialGameState(balance, 999),
+    ).load();
+
+    expect(migrated.version).toBe(13);
+    expect(migrated.game.cash).toBe(9_876);
+    expect(migrated.game.pendingEventId).toBe('EVENT_04');
+    expect(migrated.game.eventsResolvedThisGameDay).toBe(1);
+    expect(migrated.game.lastResolvedEventId).toBe('EVENT_03');
+    expect(migrated.game.eventModifiers).toEqual({
+      nextWorksPayoutMultiplier: null,
+      nextBarryMultiplier: null,
+      plinkoLockRemainingMinutes: 0,
+      jobLockRemainingMinutes: {
+        dishes: 0,
+        trash: 0,
+        courier: 0,
+      },
+      foodPriceMultiplier: null,
+    });
+  });
+
+  it('round-trips an EVENT_TIME action without losing remaining time', async () => {
+    const storage = new MemoryStorage();
+    const repo = createSaveRepository(
+      storage,
+      () => createInitialGameState(balance, 894),
+    );
+    const save = await repo.load();
+    save.activeAction = {
+      kind: 'EVENT_TIME',
+      actionId: 'EVENT_TIME:EVENT_05',
+      remainingMinutes: 125,
+      upfrontApplied: true,
+      startedAtGameDayIndex: 0,
+      startedAtMinuteOfDay: 480,
+    };
+
+    await repo.write(save);
+    await repo.flush();
+
+    const restored = await repo.load();
+    expect(restored.activeAction).toEqual(save.activeAction);
   });
 
   it('rejects incompatible save versions without mutating stored data', async () => {
@@ -898,7 +999,7 @@ describe('save repository', () => {
 
   it('rejects corrupt current-version data instead of silently resetting it', async () => {
     const storage = new MemoryStorage();
-    const raw = JSON.stringify({ version: 12, game: { cash: -999 } });
+    const raw = JSON.stringify({ version: 13, game: { cash: -999 } });
     await storage.setItem(SAVE_STORAGE_KEY, raw);
 
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 123));
