@@ -51,6 +51,10 @@ import {
   type MainMapView,
 } from './map/createMainMapView';
 import type { MainMapLocationId } from './map/mainMapModel';
+import {
+  consumeCasinoPayoutToast,
+  type CasinoPayoutToast,
+} from './casino/casinoPayoutToast';
 import { PersistentHud } from './ui/PersistentHud';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
@@ -74,6 +78,7 @@ export class BootstrapScene extends Phaser.Scene {
   private actionPanel?: ActionPanel;
   private selectedLocation: MainMapLocationId | null = null;
   private messageText?: Phaser.GameObjects.Text;
+  private payoutToastText?: Phaser.GameObjects.Text;
   private principalButton?: Phaser.GameObjects.Text;
   private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
@@ -103,6 +108,19 @@ export class BootstrapScene extends Phaser.Scene {
       fontSize: '15px',
       wordWrap: { width: 720 },
     });
+
+    this.payoutToastText = this.add
+      .text(760, 116, '', {
+        color: '#f4f6f8',
+        backgroundColor: '#2f4937',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '15px',
+        padding: { x: 14, y: 10 },
+        wordWrap: { width: 440 },
+      })
+      .setOrigin(0.5, 0)
+      .setDepth(800)
+      .setVisible(false);
 
     this.principalButton = this.add
       .text(1240, 66, '[ ПОГАСИТЬ 67М ]', {
@@ -190,6 +208,12 @@ export class BootstrapScene extends Phaser.Scene {
       }
 
       this.render();
+
+      const payoutToast = consumeCasinoPayoutToast();
+      if (payoutToast !== null) {
+        this.showCasinoPayoutToast(payoutToast);
+      }
+
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.showMessage(
@@ -736,6 +760,27 @@ export class BootstrapScene extends Phaser.Scene {
     ) {
       this.clearContextControls();
     }
+  }
+
+  private showCasinoPayoutToast(
+    toast: CasinoPayoutToast,
+  ): void {
+    const insurance = toast.insuranceApplied
+      ? ` · страховка +${toast.insuranceTopUp.toLocaleString('ru-RU')} ₽`
+      : '';
+
+    this.payoutToastText
+      ?.setText(
+        `PLINKO · ${toast.stake.toLocaleString('ru-RU')} ₽ → ${toast.payout.toLocaleString('ru-RU')} ₽ · ${toast.multiplier.toFixed(2)}x${insurance}`,
+      )
+      .setBackgroundColor(
+        toast.losing ? '#583836' : '#2f4937',
+      )
+      .setVisible(true);
+
+    this.time.delayedCall(3_500, () => {
+      this.payoutToastText?.setVisible(false);
+    });
   }
 
   private showMessage(message: string): void {

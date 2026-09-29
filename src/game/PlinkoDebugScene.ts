@@ -22,6 +22,10 @@ import {
 import {
   derivePocketMultipliers,
   getMaxBetForLevel,
+  purchaseInsuranceUpgrade,
+  purchaseMaxBetUpgrade,
+  purchasePocketUpgrade,
+  purchaseSpecialUpgrade,
 } from '../core/plinko-rules/progression';
 import { deriveJackpotBiasGeometry } from '../core/plinko-rules/jackpotBias';
 import {
@@ -43,6 +47,20 @@ import {
   createBarePlinko,
   type BarePlinkoRuntime,
 } from '../phaser/plinko/createBarePlinko';
+import {
+  buildCasinoQuickBets,
+  buildCasinoUpgradePreviews,
+  type CasinoUpgradeId,
+} from './casino/casinoUiModel';
+import {
+  createCasinoBetPanel,
+  type CasinoBetPanel,
+} from './casino/createCasinoBetPanel';
+import {
+  createCasinoUpgradePanel,
+  type CasinoUpgradePanel,
+} from './casino/createCasinoUpgradePanel';
+import { publishCasinoPayoutToast } from './casino/casinoPayoutToast';
 
 const createRunSeed = (): number => {
   const values = new Uint32Array(1);
@@ -72,6 +90,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private mapMessageText?: Phaser.GameObjects.Text;
   private mapMode = false;
   private lastResultMessage = '';
+  private betPanel?: CasinoBetPanel;
+  private upgradePanel?: CasinoUpgradePanel;
+  private resultText?: Phaser.GameObjects.Text;
+  private readonly pocketLabels: Phaser.GameObjects.Text[] = [];
 
   public constructor() {
     super('plinko-debug');
@@ -101,6 +123,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
       })
       .setOrigin(0, 0);
     this.casinoLayer.add(this.statusText);
+
+    this.resultText = this.add
+      .text(680, 92, '', {
+        color: '#d9bf7d',
+        backgroundColor: '#171b20',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '14px',
+        padding: { x: 10, y: 8 },
+        wordWrap: { width: 545 },
+      })
+      .setOrigin(0, 0)
+      .setVisible(false);
+    this.casinoLayer.add(this.resultText);
 
     this.audio = new PlinkoAudio(() => this.game.sound.mute);
     this.matter.world.on('collisionstart', this.handleAudioCollision);
@@ -252,26 +287,29 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private installCasinoControls(): void {
     if (!this.casinoLayer) return;
 
-    const fractions: BetFraction[] = [0.25, 0.5, 1];
-    fractions.forEach((fraction, index) => {
-      const button = this.add
-        .text(28 + index * 155, 650, `[ DROP ${fraction * 100}% ]`, {
-          color: '#f4f6f8',
-          backgroundColor: '#252a31',
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '17px',
-          padding: { x: 10, y: 8 },
-        })
-        .setInteractive({ useHandCursor: true })
-        .on('pointerup', () => {
-          this.audio?.prime();
-          void this.commitAndSpawn(fraction);
-        });
-      this.casinoLayer!.add(button);
-    });
+    this.betPanel = createCasinoBetPanel(
+      this,
+      (preview) => {
+        if (preview.lockedReason !== null) {
+          this.showStatus(preview.lockedReason);
+          return;
+        }
+        this.audio?.prime();
+        void this.commitAndSpawn(preview.fraction);
+      },
+      this.casinoLayer,
+    );
+
+    this.upgradePanel = createCasinoUpgradePanel(
+      this,
+      (id) => {
+        void this.purchaseUpgrade(id);
+      },
+      this.casinoLayer,
+    );
 
     const leaveButton = this.add
-      .text(500, 650, '[ MAP / LEAVE CASINO ]', {
+      .text(690, 650, '[ НА КАРТУ ]', {
         color: '#f4f6f8',
         backgroundColor: '#252a31',
         fontFamily: 'system-ui, sans-serif',
@@ -281,31 +319,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true })
       .on('pointerup', () => this.leaveCasino());
     this.casinoLayer.add(leaveButton);
-
-    const backButton = this.add
-      .text(790, 650, '[ BACK TO M1 ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#252a31',
-        fontFamily: 'system-ui, sans-serif',
-        fontSize: '17px',
-        padding: { x: 10, y: 8 },
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => {
-        if (this.save?.pendingDrop) {
-          this.showStatus('Resolve the pending Drop before leaving the Plinko runtime.');
-          return;
-        }
-        this.scene.start('bootstrap');
-      });
-    this.casinoLayer.add(backButton);
   }
 
   private installMapLayer(): void {
     if (!this.mapLayer) return;
 
     const title = this.add
-      .text(40, 36, 'MAP / READ-ONLY WHILE PLINKO RESOLVES', {
+      .text(40, 36, 'КАРТА · DROP РАЗРЕШАЕТСЯ', {
         color: '#f4f6f8',
         fontFamily: 'system-ui, sans-serif',
         fontSize: '24px',
@@ -331,7 +351,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setOrigin(0, 0);
 
     const returnButton = this.add
-      .text(40, 620, '[ RETURN TO CASINO ]', {
+      .text(40, 620, '[ ВЕРНУТЬСЯ В КАЗИНО ]', {
         color: '#f4f6f8',
         backgroundColor: '#252a31',
         fontFamily: 'system-ui, sans-serif',
@@ -367,6 +387,71 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderCasino();
   }
 
+  private async purchaseUpgrade(
+    id: CasinoUpgradeId,
+  ): Promise<void> {
+    if (!this.save || !this.repository) return;
+
+    try {
+      let game = this.save.game;
+
+      if (id === 'maxBet') {
+        game = purchaseMaxBetUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+        );
+      } else if (
+        id === 'center' ||
+        id === 'mid' ||
+        id === 'jackpot'
+      ) {
+        game = purchasePocketUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+          id,
+        );
+      } else if (
+        id === 'amplifier' ||
+        id === 'return' ||
+        id === 'splitter' ||
+        id === 'jackpotBias'
+      ) {
+        game = purchaseSpecialUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+          id,
+        );
+      } else {
+        game = purchaseInsuranceUpgrade(
+          game,
+          this.save.pendingDrop,
+          balance,
+        );
+      }
+
+      this.save = {
+        ...this.save,
+        game,
+      };
+      this.runtime?.setJackpotBiasLevel(
+        game.plinkoJackpotBiasLevel,
+      );
+
+      await this.enqueueSave(true);
+      this.installPocketLabels();
+      this.showStatus('Апгрейд куплен.');
+      this.renderAll();
+    } catch (error: unknown) {
+      this.showStatus(
+        error instanceof Error ? error.message : String(error),
+      );
+      this.renderCasino();
+    }
+  }
+
   private async commitAndSpawn(fraction: BetFraction): Promise<void> {
     if (!this.save || !this.repository || !this.runtime || !this.random) return;
     if (this.save.activeAction) {
@@ -391,6 +476,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game: committed.state,
         pendingDrop: committed.pendingDrop,
       };
+      this.lastResultMessage = '';
+      this.resultText?.setVisible(false);
 
       // Stake + pendingDrop are durable before time or physical outcome generation.
       await this.enqueueSave(true);
@@ -613,8 +700,22 @@ export class PlinkoDebugScene extends Phaser.Scene {
       : '';
     this.audio?.result(result.losing);
     this.lastResultMessage =
-      `PAYOUT: stake ${pending.originalStake} ₽ → ${result.payout} ₽ (${result.multiplier.toFixed(3)}x aggregate)${result.losing ? ' / Happiness -1' : ''}${terminalSuffix}`;
+      `PLINKO: ставка ${pending.originalStake.toLocaleString('ru-RU')} ₽ → выплата ${result.payout.toLocaleString('ru-RU')} ₽ · ${result.multiplier.toFixed(2)}x${result.insuranceApplied ? ` · страховка +${result.insuranceTopUp.toLocaleString('ru-RU')} ₽` : ''}${result.losing ? ' · Счастье -1' : ''}${terminalSuffix}`;
+
+    publishCasinoPayoutToast({
+      stake: pending.originalStake,
+      payout: result.payout,
+      multiplier: result.multiplier,
+      losing: result.losing,
+      insuranceApplied: result.insuranceApplied,
+      insuranceTopUp: result.insuranceTopUp,
+    });
+
     this.showStatus(this.lastResultMessage);
+    this.resultText
+      ?.setText(this.lastResultMessage)
+      .setColor(result.losing ? '#d08a82' : '#d9bf7d')
+      .setVisible(true);
 
     if (window.__PLINKO_PERF__?.phase === 'running') {
       window.__PLINKO_PERF__.phase = 'resolved';
@@ -623,6 +724,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+
+    if (this.mapMode) {
+      this.time.delayedCall(250, () => {
+        this.scene.start('bootstrap');
+      });
+    }
   }
 
   private installPerfProbe(): void {
@@ -763,13 +870,33 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
 
     this.infoText.setText([
-      `M2 BARE PLINKO / fixed ${balance.plinko.geometry.fixedTimestepHz} Hz`,
-      `Cash: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
-      `Max bet: ${maxBet.toLocaleString('ru-RU')} ₽`,
-      `Selected: ${this.save.game.plinkoSelectedBetFraction * 100}%`,
-      `Pending: ${this.save.pendingDrop ? `${this.save.pendingDrop.dropId} / ${this.save.pendingDrop.originalStake} ₽` : 'none'}`,
-      `Happiness: ${this.save.game.needs.happiness.toFixed(1)}`,
+      'КАЗИНО / PLINKO',
+      `Деньги: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
+      `Макс. ставка: ${maxBet.toLocaleString('ru-RU')} ₽`,
+      `Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽ · ИДЁТ` : 'готов'}`,
+      `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
     ]);
+
+    this.betPanel?.render(
+      buildCasinoQuickBets(
+        this.save.game,
+        this.save.pendingDrop,
+        balance,
+      ),
+    );
+    this.upgradePanel?.render(
+      buildCasinoUpgradePreviews(
+        this.save.game,
+        this.save.pendingDrop,
+        balance,
+      ),
+    );
+
+    if (this.lastResultMessage) {
+      this.resultText
+        ?.setText(this.lastResultMessage)
+        .setVisible(true);
+    }
   }
 
   private renderMap(): void {
@@ -806,20 +933,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
       jackpotLevel: this.save?.game.plinkoJackpotLevel ?? 0,
     });
 
-    this.runtime.layout.pocketCenters.forEach((pocket, index) => {
-      const label = this.add
-        .text(
-          pocket.x,
-          this.runtime!.layout.pocketBottomY + 18,
-          `${pockets[index]}x`,
-          {
-            color: '#c5ccd5',
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: '13px',
-          },
-        )
-        .setOrigin(0.5, 0);
-      this.casinoLayer!.add(label);
+    if (this.pocketLabels.length === 0) {
+      this.runtime.layout.pocketCenters.forEach((pocket, index) => {
+        const label = this.add
+          .text(
+            pocket.x,
+            this.runtime!.layout.pocketBottomY + 18,
+            `${pockets[index]}x`,
+            {
+              color: '#c5ccd5',
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: '13px',
+            },
+          )
+          .setOrigin(0.5, 0);
+        this.casinoLayer!.add(label);
+        this.pocketLabels.push(label);
+      });
+      return;
+    }
+
+    this.pocketLabels.forEach((label, index) => {
+      label.setText(`${pockets[index]}x`);
     });
   }
 
