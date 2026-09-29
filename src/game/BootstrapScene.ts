@@ -252,6 +252,90 @@ export class BootstrapScene extends Phaser.Scene {
     }
   }
 
+  private startDishes(): void {
+    if (!this.state || this.activeAction || this.pendingDrop) {
+      throw new Error('Finish the current action first');
+    }
+
+    const level = this.state.jobLevels.dishes;
+    const started = startWork(
+      this.state,
+      balance,
+      'dishes',
+      level,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage(
+      'Dishes costs reserved. Complete the skill minigame for the work result.',
+    );
+
+    void this.persist()
+      .then(() => this.repository?.flush())
+      .then(() => this.scene.start('dishes'))
+      .catch((error: unknown) => {
+        this.showMessage(
+          error instanceof Error ? error.message : String(error),
+        );
+      });
+  }
+
+  private startTrash(): void {
+    if (!this.state || this.activeAction || this.pendingDrop) {
+      throw new Error('Finish the current action first');
+    }
+
+    const level = this.state.jobLevels.trash;
+    const started = startWork(
+      this.state,
+      balance,
+      'trash',
+      level,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage(
+      'Trash costs reserved. Complete the skill minigame for the work result.',
+    );
+
+    void this.persist()
+      .then(() => this.repository?.flush())
+      .then(() => this.scene.start('trash'))
+      .catch((error: unknown) => {
+        this.showMessage(
+          error instanceof Error ? error.message : String(error),
+        );
+      });
+  }
+
+  private startCourierMinigame(): void {
+    if (!this.state || this.activeAction || this.pendingDrop) {
+      throw new Error('Finish the current action first');
+    }
+
+    const level = this.state.jobLevels.courier;
+    const started = startWork(
+      this.state,
+      balance,
+      'courier',
+      level,
+    );
+    this.state = started.state;
+    this.activeAction = started.action;
+    this.showMessage(
+      'Courier costs reserved. Draw and validate the route for the work result.',
+    );
+
+    void this.persist()
+      .then(() => this.repository?.flush())
+      .then(() => this.scene.start('courier'))
+      .catch((error: unknown) => {
+        this.showMessage(
+          error instanceof Error ? error.message : String(error),
+        );
+      });
+  }
+
   private startCheapFood(): void {
     if (!this.state || this.activeAction || this.pendingDrop) {
       throw new Error('Finish the current action first');
