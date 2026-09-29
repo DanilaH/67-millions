@@ -20,6 +20,28 @@ export interface StatusState {
   SMELLY: boolean;
 }
 
+export interface EventCountModifierState {
+  multiplier: number;
+  remainingCount: number;
+}
+
+export interface EventTimedMultiplierState {
+  multiplier: number;
+  remainingMinutes: number;
+}
+
+export interface EventModifiersState {
+  nextWorksPayoutMultiplier: EventCountModifierState | null;
+  nextBarryMultiplier: EventCountModifierState | null;
+  plinkoLockRemainingMinutes: number;
+  jobLockRemainingMinutes: {
+    dishes: number;
+    trash: number;
+    courier: number;
+  };
+  foodPriceMultiplier: EventTimedMultiplierState | null;
+}
+
 export interface InsuranceArmState {
   level: number;
   floor: number;
@@ -41,6 +63,7 @@ export interface GameState {
   pendingEventId: string | null;
   eventsResolvedThisGameDay: number;
   lastResolvedEventId: string | null;
+  eventModifiers: EventModifiersState;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
   plinkoMaxBetLevel: number;
   plinkoCenterLevel: number;
@@ -86,6 +109,17 @@ export const createInitialGameState = (
   pendingEventId: null,
   eventsResolvedThisGameDay: 0,
   lastResolvedEventId: null,
+  eventModifiers: {
+    nextWorksPayoutMultiplier: null,
+    nextBarryMultiplier: null,
+    plinkoLockRemainingMinutes: 0,
+    jobLockRemainingMinutes: {
+      dishes: 0,
+      trash: 0,
+      courier: 0,
+    },
+    foodPriceMultiplier: null,
+  },
   plinkoSelectedBetFraction: 1,
   plinkoMaxBetLevel: 0,
   plinkoCenterLevel: 0,
