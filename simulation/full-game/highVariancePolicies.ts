@@ -103,6 +103,10 @@ const chooseDegenerateUpgrade = (
   config: BalanceConfig,
   reserve: number,
 ): FullGameDecision | null => {
+  if (state.eventModifiers.plinkoLockRemainingMinutes > 0) {
+    return null;
+  }
+
   const biasPrice = nextPrice(
     config.plinko.jackpotBias,
     state.plinkoJackpotBiasLevel,
@@ -164,6 +168,10 @@ const chooseRecklessUpgrade = (
   config: BalanceConfig,
   reserve: number,
 ): FullGameDecision | null => {
+  if (state.eventModifiers.plinkoLockRemainingMinutes > 0) {
+    return null;
+  }
+
   const maxBetPrice = nextPrice(
     config.plinko.maxBetLevels,
     state.plinkoMaxBetLevel,
