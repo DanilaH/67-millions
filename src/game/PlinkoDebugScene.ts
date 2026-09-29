@@ -932,6 +932,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
   }
 
+  private refreshVisualSnapshot(): void {
+    this.visualSnapshot =
+      this.save === null
+        ? null
+        : derivePlinkoVisualSnapshot(
+            this.save.game,
+            this.save.pendingDrop,
+            balance,
+          );
+  }
+
   private renderAll(): void {
     this.renderCasino();
     this.renderMap();
@@ -941,10 +952,18 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderCasino(): void {
     if (!this.infoText || !this.save) return;
 
+    const snapshot = this.visualSnapshot;
     const maxBet = getMaxBetForLevel(
       balance,
-      this.save.game.plinkoMaxBetLevel,
+      snapshot?.maxBetLevel ??
+        this.save.game.plinkoMaxBetLevel,
     );
+
+    const special = snapshot?.specialLevels;
+    const insurance =
+      snapshot === null
+        ? `L${this.save.game.plinkoInsuranceLevel}`
+        : `L${snapshot.insuranceLevel}${snapshot.insuranceArmed ? ' · ВЗВЕДЕНА' : ''}`;
 
     this.infoText.setText([
       'КАЗИНО / PLINKO',
@@ -952,6 +971,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
       `Макс. ставка: ${maxBet.toLocaleString('ru-RU')} ₽`,
       `Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽ · ИДЁТ` : 'готов'}`,
       `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
+      special
+        ? `AMP L${special.amplifierLevel} · RETURN L${special.returnLevel} · SPLIT L${special.splitterLevel} · BIAS L${special.jackpotBiasLevel}`
+        : 'AMP L0 · RETURN L0 · SPLIT L0 · BIAS L0',
+      `INSURANCE ${insurance}`,
     ]);
 
     this.betPanel?.render(
@@ -1024,68 +1047,354 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private installPocketLabels(): void {
-    if (!this.runtime || !this.casinoLayer) return;
-
-    const pockets = derivePocketMultipliers(balance, {
-      centerLevel: this.save?.game.plinkoCenterLevel ?? 0,
-      midLevel: this.save?.game.plinkoMidLevel ?? 0,
-      jackpotLevel: this.save?.game.plinkoJackpotLevel ?? 0,
-    });
-
-    if (this.pocketLabels.length === 0) {
-      this.runtime.layout.pocketCenters.forEach((pocket, index) => {
-        const label = this.add
-          .text(
-            pocket.x,
-            this.runtime!.layout.pocketBottomY + 18,
-            `${pockets[index]}x`,
-            {
-              color: '#c5ccd5',
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: '13px',
-            },
-          )
-          .setOrigin(0.5, 0);
-        this.casinoLayer!.add(label);
-        this.pocketLabels.push(label);
-      });
+    if (
+      !this.runtime ||
+      !this.casinoLayer ||
+      !this.visualSnapshot
+    ) {
       return;
     }
 
+    const snapshot = this.visualSnapshot;
+    const pockets = snapshot.pocketMultipliers;
+
+    if (this.pocketLabels.length === 0) {
+      this.runtime.layout.pocketCenters.forEach(
+        (pocket, index) => {
+          const label = this.add
+            .text(
+              pocket.x,
+              this.runtime!.layout.pocketBottomY + 18,
+              `${pockets[index]}x`,
+              {
+                color: visualHex('textMuted'),
+                fontFamily: VISUAL_FONT.mono,
+                fontSize: '13px',
+              },
+            )
+            .setOrigin(0.5, 0);
+          this.casinoLayer!.add(label);
+          this.pocketLabels.push(label);
+        },
+      );
+    }
+
     this.pocketLabels.forEach((label, index) => {
-      label.setText(`${pockets[index]}x`);
+      const role = getPocketVisualRole(index, balance);
+      const upgraded =
+        (role === 'jackpot' &&
+          snapshot.pocketLevels.jackpotLevel > 0) ||
+        (role === 'mid' &&
+          snapshot.pocketLevels.midLevel > 0) ||
+        (role === 'center' &&
+          snapshot.pocketLevels.centerLevel > 0) ||
+        (role === 'inner' &&
+          (snapshot.pocketLevels.centerLevel > 0 ||
+            snapshot.pocketLevels.midLevel > 0));
+
+      const color =
+        role === 'jackpot' && upgraded
+          ? visualHex('mustard')
+          : role === 'mid' && upgraded
+            ? visualHex('cold')
+            : role === 'center' && upgraded
+              ? visualHex('paperOld')
+              : upgraded
+                ? visualHex('textMain')
+                : visualHex('textMuted');
+
+      label
+        .setText(`${pockets[index]}x`)
+        .setColor(color)
+        .setFontStyle(upgraded ? 'bold' : 'normal')
+        .setFontSize(upgraded ? 14 : 13);
     });
   }
 
   private drawStaticBoard(): void {
-    if (!this.graphics || !this.runtime) return;
+    if (
+      !this.graphics ||
+      !this.runtime ||
+      !this.visualSnapshot
+    ) {
+      return;
+    }
 
     const graphics = this.graphics;
     const geometry = balance.plinko.geometry;
     const layout = this.runtime.layout;
+    const snapshot = this.visualSnapshot;
 
-    graphics.fillStyle(0x66717f, 1);
-    for (const peg of layout.pegs) {
-      graphics.fillCircle(peg.x, peg.y, geometry.pegRadius);
+    const boardLeft = layout.leftWallX - 26;
+    const boardTop = geometry.topPegY - 34;
+    const boardWidth =
+      layout.rightWallX - layout.leftWallX + 52;
+    const boardBottom = layout.pocketBottomY + 46;
+    const boardHeight = boardBottom - boardTop;
+
+    graphics.fillStyle(visualColor('inkPanel'), 0.94);
+    graphics.fillRoundedRect(
+      boardLeft,
+      boardTop,
+      boardWidth,
+      boardHeight,
+      24,
+    );
+    graphics.lineStyle(
+      2,
+      visualColor('cold'),
+      0.55,
+    );
+    graphics.strokeRoundedRect(
+      boardLeft,
+      boardTop,
+      boardWidth,
+      boardHeight,
+      24,
+    );
+
+    const modificationMarks = Math.min(
+      8,
+      Math.ceil(snapshot.progressionUnits / 3),
+    );
+    for (
+      let index = 0;
+      index < modificationMarks;
+      index += 1
+    ) {
+      const y = boardTop + 34 + index * 46;
+      graphics.fillStyle(
+        index % 2 === 0
+          ? visualColor('mustard')
+          : visualColor('rust'),
+        0.5,
+      );
+      graphics.fillRoundedRect(
+        boardLeft + 7,
+        y,
+        7,
+        26,
+        3,
+      );
     }
 
-    const jackpotBiasLevel =
-      this.save?.pendingDrop?.specialLevelsAtCommit.jackpotBiasLevel ??
-      this.save?.game.plinkoJackpotBiasLevel ??
-      0;
+    const pocketHeight =
+      layout.pocketBottomY - layout.pocketTopY;
+    const pocketWidth =
+      geometry.pocketCenterSpacing - 4;
+
+    layout.pocketCenters.forEach((pocket, index) => {
+      const role = getPocketVisualRole(index, balance);
+      const upgraded =
+        (role === 'jackpot' &&
+          snapshot.pocketLevels.jackpotLevel > 0) ||
+        (role === 'mid' &&
+          snapshot.pocketLevels.midLevel > 0) ||
+        (role === 'center' &&
+          snapshot.pocketLevels.centerLevel > 0) ||
+        (role === 'inner' &&
+          (snapshot.pocketLevels.centerLevel > 0 ||
+            snapshot.pocketLevels.midLevel > 0));
+
+      const accent =
+        role === 'jackpot'
+          ? visualColor('mustard')
+          : role === 'mid'
+            ? visualColor('cold')
+            : role === 'center'
+              ? visualColor('paperOld')
+              : visualColor('lineDirty');
+
+      graphics.fillStyle(
+        accent,
+        upgraded ? 0.18 : 0.035,
+      );
+      graphics.fillRect(
+        pocket.x - pocketWidth / 2,
+        layout.pocketTopY,
+        pocketWidth,
+        pocketHeight,
+      );
+    });
+
+    for (const peg of layout.pegs) {
+      const role = getPegVisualRole(
+        peg.id,
+        snapshot.pegRoles,
+      );
+
+      if (role === 'regular') {
+        graphics.fillStyle(
+          visualColor('lineDirty'),
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius,
+        );
+        continue;
+      }
+
+      if (role === 'amplifier') {
+        graphics.fillStyle(
+          SPECIAL_PIN_STYLE.amplifier.color,
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius + 5,
+        );
+        graphics.fillStyle(
+          visualColor('inkDeep'),
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius + 1,
+        );
+        graphics.fillStyle(
+          SPECIAL_PIN_STYLE.amplifier.color,
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          Math.max(2, geometry.pegRadius - 2),
+        );
+        continue;
+      }
+
+      if (role === 'return') {
+        graphics.fillStyle(
+          SPECIAL_PIN_STYLE.return.color,
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius + 4,
+        );
+        graphics.fillStyle(
+          visualColor('inkDeep'),
+          1,
+        );
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius,
+        );
+        graphics.lineStyle(
+          2,
+          SPECIAL_PIN_STYLE.return.color,
+          1,
+        );
+        graphics.strokeLineShape(
+          new Phaser.Geom.Line(
+            peg.x,
+            peg.y + 4,
+            peg.x,
+            peg.y - 6,
+          ),
+        );
+        graphics.strokeLineShape(
+          new Phaser.Geom.Line(
+            peg.x,
+            peg.y - 6,
+            peg.x - 4,
+            peg.y - 2,
+          ),
+        );
+        graphics.strokeLineShape(
+          new Phaser.Geom.Line(
+            peg.x,
+            peg.y - 6,
+            peg.x + 4,
+            peg.y - 2,
+          ),
+        );
+        continue;
+      }
+
+      graphics.fillStyle(
+        SPECIAL_PIN_STYLE.splitter.color,
+        1,
+      );
+      graphics.fillCircle(
+        peg.x,
+        peg.y,
+        geometry.pegRadius + 4,
+      );
+      graphics.fillStyle(
+        visualColor('inkDeep'),
+        1,
+      );
+      graphics.fillCircle(
+        peg.x,
+        peg.y,
+        geometry.pegRadius,
+      );
+      graphics.lineStyle(
+        2,
+        SPECIAL_PIN_STYLE.splitter.color,
+        1,
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          peg.x,
+          peg.y + 5,
+          peg.x,
+          peg.y,
+        ),
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          peg.x,
+          peg.y,
+          peg.x - 5,
+          peg.y - 5,
+        ),
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          peg.x,
+          peg.y,
+          peg.x + 5,
+          peg.y - 5,
+        ),
+      );
+    }
+
     const biasGeometry = deriveJackpotBiasGeometry(
       balance,
-      jackpotBiasLevel,
+      snapshot.specialLevels.jackpotBiasLevel,
     );
 
     for (const deflector of biasGeometry) {
       const half = deflector.length / 2;
-      const dx = Math.cos(deflector.angleRadians) * half;
-      const dy = Math.sin(deflector.angleRadians) * half;
+      const dx =
+        Math.cos(deflector.angleRadians) * half;
+      const dy =
+        Math.sin(deflector.angleRadians) * half;
 
       graphics.lineStyle(
+        deflector.thickness + 2,
+        visualColor('inkDeep'),
+        0.9,
+      );
+      graphics.strokeLineShape(
+        new Phaser.Geom.Line(
+          deflector.x - dx,
+          deflector.y - dy,
+          deflector.x + dx,
+          deflector.y + dy,
+        ),
+      );
+      graphics.lineStyle(
         deflector.thickness,
-        0xd8a84e,
+        SPECIAL_PIN_STYLE.jackpotBias.color,
         1,
       );
       graphics.strokeLineShape(
@@ -1098,7 +1407,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
     }
 
-    graphics.lineStyle(2, 0x66717f, 1);
+    graphics.lineStyle(
+      3,
+      visualColor('lineDirty'),
+      1,
+    );
     graphics.strokeLineShape(
       new Phaser.Geom.Line(
         layout.leftWallX,
@@ -1116,13 +1429,24 @@ export class PlinkoDebugScene extends Phaser.Scene {
       ),
     );
 
-    for (let index = 0; index < layout.pocketCenters.length - 1; index += 1) {
+    for (
+      let index = 0;
+      index < layout.pocketCenters.length - 1;
+      index += 1
+    ) {
       const left = layout.pocketCenters[index]!;
-      const right = layout.pocketCenters[index + 1]!;
+      const right =
+        layout.pocketCenters[index + 1]!;
       const x = (left.x + right.x) / 2;
       graphics.strokeLineShape(
-        new Phaser.Geom.Line(x, layout.pocketTopY, x, layout.pocketBottomY),
+        new Phaser.Geom.Line(
+          x,
+          layout.pocketTopY,
+          x,
+          layout.pocketBottomY,
+        ),
       );
     }
   }
+
 }
