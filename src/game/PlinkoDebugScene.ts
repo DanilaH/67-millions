@@ -61,6 +61,17 @@ import {
   type CasinoUpgradePanel,
 } from './casino/createCasinoUpgradePanel';
 import { publishCasinoPayoutToast } from './casino/casinoPayoutToast';
+import {
+  acknowledgeCurrentTutorialInfo,
+  deriveTutorialStep,
+  loadTutorialProgress,
+  recordTutorialMilestone,
+} from './tutorial/tutorialProgress';
+import { buildTutorialCard } from './tutorial/tutorialUiModel';
+import {
+  createTutorialCard,
+  type TutorialCard,
+} from './tutorial/createTutorialCard';
 
 const createRunSeed = (): number => {
   const values = new Uint32Array(1);
@@ -94,6 +105,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private upgradePanel?: CasinoUpgradePanel;
   private resultText?: Phaser.GameObjects.Text;
   private readonly pocketLabels: Phaser.GameObjects.Text[] = [];
+  private tutorialCard?: TutorialCard;
 
   public constructor() {
     super('plinko-debug');
@@ -141,6 +153,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.matter.world.on('collisionstart', this.handleAudioCollision);
 
     this.installMapLayer();
+    this.tutorialCard = createTutorialCard(
+      this,
+      (step) => {
+        acknowledgeCurrentTutorialInfo(step);
+        this.renderTutorial();
+      },
+    );
     void this.initialize();
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -378,6 +397,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.lastResultMessage =
       'Drop is still physically resolving off-screen. All gameplay/cash actions are intentionally unavailable.';
     this.renderMap();
+    this.renderTutorial();
   }
 
   private returnToCasino(): void {
@@ -385,6 +405,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.mapLayer?.setVisible(false);
     this.casinoLayer?.setVisible(true);
     this.renderCasino();
+    this.renderTutorial();
   }
 
   private async purchaseUpgrade(
@@ -441,6 +462,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
 
       await this.enqueueSave(true);
+      recordTutorialMilestone('UPGRADE_BOUGHT');
       this.installPocketLabels();
       this.showStatus('Апгрейд куплен.');
       this.renderAll();
@@ -678,6 +700,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
       return;
     }
 
+    const previousBarryPaymentIndex =
+      this.save.game.barryPaymentIndex;
     const result = settleAggregatePendingDropAndResumeTime(
       this.save.game,
       pending,
@@ -694,6 +718,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.save.game.plinkoJackpotBiasLevel,
     );
     await this.enqueueSave(true);
+
+    recordTutorialMilestone('DROP_RESOLVED');
+    if (
+      result.state.terminalReason === null &&
+      result.state.barryPaymentIndex >
+        previousBarryPaymentIndex
+    ) {
+      recordTutorialMilestone('BARRY_PAID');
+    }
 
     const terminalSuffix = result.state.terminalReason
       ? ` / GAME OVER: ${result.state.terminalReason}`
@@ -859,6 +892,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderAll(): void {
     this.renderCasino();
     this.renderMap();
+    this.renderTutorial();
   }
 
   private renderCasino(): void {
@@ -917,6 +951,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
         (this.save.pendingDrop
           ? 'Drop is resolving. Read-only inspection only.'
           : 'No active Drop.'),
+    );
+  }
+
+  private renderTutorial(): void {
+    if (!this.tutorialCard || !this.save) return;
+
+    if (
+      this.save.game.terminalReason !== null ||
+      this.save.game.victory
+    ) {
+      this.tutorialCard.render(null);
+      return;
+    }
+
+    const step = deriveTutorialStep(
+      loadTutorialProgress(),
+    );
+    this.tutorialCard.render(
+      buildTutorialCard(
+        step,
+        this.mapMode ? 'map' : 'casino',
+      ),
     );
   }
 

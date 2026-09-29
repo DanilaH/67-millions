@@ -64,6 +64,17 @@ import {
   deriveRunEndSummary,
 } from './end/runEndModel';
 import { PersistentHud } from './ui/PersistentHud';
+import {
+  acknowledgeCurrentTutorialInfo,
+  deriveTutorialStep,
+  loadTutorialProgress,
+  recordTutorialMilestone,
+} from './tutorial/tutorialProgress';
+import { buildTutorialCard } from './tutorial/tutorialUiModel';
+import {
+  createTutorialCard,
+  type TutorialCard,
+} from './tutorial/createTutorialCard';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
@@ -89,6 +100,7 @@ export class BootstrapScene extends Phaser.Scene {
   private payoutToastText?: Phaser.GameObjects.Text;
   private principalButton?: Phaser.GameObjects.Text;
   private runEndOverlay?: RunEndOverlay;
+  private tutorialCard?: TutorialCard;
   private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
 
@@ -156,6 +168,14 @@ export class BootstrapScene extends Phaser.Scene {
         this.render();
       },
     });
+
+    this.tutorialCard = createTutorialCard(
+      this,
+      (step) => {
+        acknowledgeCurrentTutorialInfo(step);
+        this.renderTutorial();
+      },
+    );
 
     void this.initialize();
   }
@@ -459,6 +479,7 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (action.kind === 'WORK') {
       this.state = settleWork(this.state, action, balance);
+      recordTutorialMilestone('WORK_COMPLETED');
       return;
     }
 
@@ -467,6 +488,19 @@ export class BootstrapScene extends Phaser.Scene {
         action.actionId === 'SHOWER'
           ? settleShower(this.state, action, balance)
           : settleRecoveryAction(this.state, action, balance);
+
+      if (
+        balance.food.some(
+          (entry) => entry.id === action.actionId,
+        )
+      ) {
+        recordTutorialMilestone('RECOVERY_USED');
+      }
+      return;
+    }
+
+    if (action.kind === 'SLEEP') {
+      recordTutorialMilestone('RECOVERY_USED');
       return;
     }
 
@@ -654,7 +688,18 @@ export class BootstrapScene extends Phaser.Scene {
 
   private payBarry(): void {
     if (!this.state) return;
+
+    const previousPaymentIndex =
+      this.state.barryPaymentIndex;
     this.state = resolveBarryPayment(this.state, balance);
+
+    if (
+      this.state.terminalReason === null &&
+      this.state.barryPaymentIndex > previousPaymentIndex
+    ) {
+      recordTutorialMilestone('BARRY_PAID');
+    }
+
     this.showMessage(
       this.state.terminalReason === 'BARRY_PAYMENT_FAILED'
         ? 'GAME OVER: Barry payment failed.'
@@ -737,6 +782,7 @@ export class BootstrapScene extends Phaser.Scene {
     if (!this.state || !this.hud || !this.mapView) return;
 
     this.hud.render(this.state);
+    this.renderTutorial();
 
     const hardLocked =
       this.state.barryInterruptPending ||
@@ -822,6 +868,25 @@ export class BootstrapScene extends Phaser.Scene {
     ) {
       this.clearContextControls();
     }
+  }
+
+  private renderTutorial(): void {
+    if (!this.state || !this.tutorialCard) return;
+
+    if (
+      this.state.terminalReason !== null ||
+      this.state.victory
+    ) {
+      this.tutorialCard.render(null);
+      return;
+    }
+
+    const step = deriveTutorialStep(
+      loadTutorialProgress(),
+    );
+    this.tutorialCard.render(
+      buildTutorialCard(step, 'map'),
+    );
   }
 
   private showCasinoPayoutToast(
