@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import type { BalanceConfig } from '../../config/balance.schema';
 import { getBarryPaymentDue } from '../../core/barry/barry';
 import type { GameState } from '../../core/state/GameState';
+import { BARRY_CONTENT } from '../content/contentCatalog';
 
 export interface BarryMinigameOverlay {
   show(state: GameState): void;
@@ -44,12 +45,17 @@ export const createBarryMinigameOverlay = (
     .setStrokeStyle(4, 0x7f5f4d, 1);
 
   const title = scene.add
-    .text(width / 2, height / 2 - 100, 'БАРРИ — 09:00', {
+    .text(
+      width / 2,
+      height / 2 - 100,
+      `${BARRY_CONTENT.dueTitle} · 09:00`,
+      {
       color: '#f4f6f8',
       fontFamily: 'system-ui, sans-serif',
       fontSize: '30px',
       fontStyle: 'bold',
-    })
+      },
+    )
     .setOrigin(0.5);
 
   const dueText = scene.add
@@ -64,7 +70,7 @@ export const createBarryMinigameOverlay = (
     .text(
       width / 2,
       height / 2 + 12,
-      'Мини-игра поставлена на паузу.',
+      BARRY_CONTENT.dueBody,
       {
         color: '#c7ced7',
         fontFamily: 'system-ui, sans-serif',
@@ -95,7 +101,7 @@ export const createBarryMinigameOverlay = (
           config,
         ).toLocaleString('ru-RU')} ₽   /   Есть: ${state.cash.toLocaleString('ru-RU')} ₽`,
       );
-      message.setText('Мини-игра поставлена на паузу.');
+      message.setText(BARRY_CONTENT.dueBody);
       container.setVisible(true);
     },
     hide: () => {
