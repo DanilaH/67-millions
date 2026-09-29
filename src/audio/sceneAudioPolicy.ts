@@ -85,6 +85,14 @@ export const SCENE_AUDIO_AMBIENCE_GAIN: Readonly<
   work: 0.032,
 };
 
+export const getSceneAudioMasterGain = (
+  blocked: boolean,
+  muted: boolean,
+): number =>
+  blocked || muted
+    ? 0
+    : SCENE_AUDIO_MASTER_GAIN;
+
 export const SCENE_AUDIO_COMPRESSOR = {
   thresholdDb: -8,
   kneeDb: 10,
