@@ -99,6 +99,25 @@ export interface FullGameCounters {
   purchases: number;
 }
 
+export interface FullGameIncomeDiagnostics {
+  work: number;
+  plinko: number;
+  dumpster: number;
+}
+
+export interface FullGameDiagnostics {
+  nearZeroCashThreshold: number;
+  peakCash: number;
+  minCash: number;
+  maxBankrollDrawdown: number;
+  income: FullGameIncomeDiagnostics;
+  largestPlinkoPayout: number;
+  dumpsterComebacks: number;
+  dumpsterHpDeaths: number;
+  nearZeroCashRecoveries: number;
+  upgradeOrder: string[];
+}
+
 export interface FullGamePolicyContext {
   state: GameState;
   activeAction: ActiveAction | null;
@@ -144,6 +163,7 @@ export interface FullGameRunResult {
   outcome: FullGameOutcome;
   state: GameState;
   counters: FullGameCounters;
+  diagnostics: FullGameDiagnostics;
 }
 
 interface RunnerState {
@@ -165,6 +185,57 @@ const createCounters = (): FullGameCounters => ({
   eventsResolved: 0,
   purchases: 0,
 });
+
+const createDiagnostics = (
+  initialCash: number,
+): FullGameDiagnostics => ({
+  nearZeroCashThreshold: initialCash * 2,
+  peakCash: initialCash,
+  minCash: initialCash,
+  maxBankrollDrawdown: 0,
+  income: {
+    work: 0,
+    plinko: 0,
+    dumpster: 0,
+  },
+  largestPlinkoPayout: 0,
+  dumpsterComebacks: 0,
+  dumpsterHpDeaths: 0,
+  nearZeroCashRecoveries: 0,
+  upgradeOrder: [],
+});
+
+const observeCash = (
+  diagnostics: FullGameDiagnostics,
+  cash: number,
+): void => {
+  diagnostics.peakCash = Math.max(diagnostics.peakCash, cash);
+  diagnostics.minCash = Math.min(diagnostics.minCash, cash);
+  diagnostics.maxBankrollDrawdown = Math.max(
+    diagnostics.maxBankrollDrawdown,
+    diagnostics.peakCash - cash,
+  );
+};
+
+const recordIncome = (
+  diagnostics: FullGameDiagnostics,
+  source: keyof FullGameIncomeDiagnostics,
+  amount: number,
+  cashBeforeCredit: number,
+): void => {
+  if (!Number.isFinite(amount) || amount <= 0) return;
+  diagnostics.income[source] += amount;
+
+  if (
+    cashBeforeCredit <= diagnostics.nearZeroCashThreshold &&
+    cashBeforeCredit + amount > diagnostics.nearZeroCashThreshold
+  ) {
+    diagnostics.nearZeroCashRecoveries += 1;
+    if (source === 'dumpster') {
+      diagnostics.dumpsterComebacks += 1;
+    }
+  }
+};
 
 const getOutcome = (
   state: GameState,
