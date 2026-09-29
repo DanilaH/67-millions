@@ -7,6 +7,8 @@ import {
   type TimedPaidActionDefinition,
 } from './timedPaidAction';
 import type { PendingDrop } from '../plinko-rules/drop';
+import { roundMoney } from '../economy/money';
+import { getFoodEventPriceMultiplier } from '../events/modifiers';
 import type { GameState } from '../state/GameState';
 import { hasStatus } from '../state/statuses';
 
@@ -46,10 +48,11 @@ const getEntertainmentEntry = (
 };
 
 const foodToTimedDefinition = (
+  state: GameState,
   entry: FoodConfigEntry,
 ): TimedPaidActionDefinition => ({
   id: entry.id,
-  price: entry.price,
+  price: roundMoney(entry.price * getFoodEventPriceMultiplier(state)),
   durationMinutes: entry.durationMinutes,
   completionNeedsDelta: {
     satiety: entry.satiety,
@@ -89,7 +92,7 @@ export const startFood = (
   assertCanStartRecoveryAction(activeAction, pendingDrop);
   return startTimedPaidAction(
     state,
-    foodToTimedDefinition(getFoodEntry(config, foodId)),
+    foodToTimedDefinition(state, getFoodEntry(config, foodId)),
   );
 };
 
@@ -124,7 +127,7 @@ const getCompletionDefinition = (
   if (food && entertainment) {
     throw new Error(`Ambiguous recovery action id: ${actionId}`);
   }
-  if (food) return foodToTimedDefinition(food);
+  if (food) return foodToTimedDefinition(state, food);
   if (entertainment) {
     return entertainmentToTimedDefinition(state, entertainment, config);
   }
