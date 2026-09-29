@@ -18,6 +18,7 @@
     "simulate:plinko:sweep": "tsx simulation/plinko/sweep.ts",
     "build:perf": "tsc --noEmit && vite build --mode performance",
     "perf:plinko": "node tools/plinko-perf-smoke.mjs",
+    "perf:plinko:splitter-stress": "node tools/plinko-splitter-stress.mjs",
     "simulate:plinko:milestone": "tsx simulation/plinko/cli.ts",
     "simulate:plinko:pin-layout": "tsx simulation/plinko/pinLayoutProbe.ts",
     "simulate:plinko:cascade": "tsx simulation/plinko/cascadeCli.ts",
