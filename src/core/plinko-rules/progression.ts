@@ -1,5 +1,6 @@
 import type { BalanceConfig } from '../../config/balance.schema';
 import { debitCash } from '../economy/money';
+import { isPlinkoEventLocked } from '../events/modifiers';
 import type { GameState } from '../state/GameState';
 import type { PendingDrop } from './drop';
 
@@ -118,6 +119,9 @@ const assertPurchasable = (
 ): void => {
   if (pendingDrop !== null) {
     throw new Error('Cannot buy Plinko upgrades while a Drop is pending');
+  }
+  if (isPlinkoEventLocked(state)) {
+    throw new Error('Cannot buy Plinko upgrades while Plinko is event-locked');
   }
   if (state.barryInterruptPending) {
     throw new Error('Cannot buy Plinko upgrades while Barry is pending');
