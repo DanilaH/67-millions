@@ -121,7 +121,7 @@ export class BootstrapScene extends Phaser.Scene {
   private runEndOverlay?: RunEndOverlay;
   private tutorialCard?: TutorialCard;
   private eventOverlay?: EventOverlay;
-  private audio?: SceneAudio;
+  private audio: SceneAudio | null = null;
   private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
 
@@ -135,7 +135,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.audio = new SceneAudio(this, 'city');
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.audio?.dispose();
-      this.audio = undefined;
+      this.audio = null;
     });
 
     this.hud = new PersistentHud(this, balance);
