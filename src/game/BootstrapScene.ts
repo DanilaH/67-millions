@@ -21,7 +21,6 @@ import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
 import { formatClockTime } from '../core/time/GameClock';
 import { advanceRunTime } from '../core/time/runTime';
 import {
-  setWorkResult,
   settleWork,
   startWork,
 } from '../core/work/work';
@@ -172,7 +171,6 @@ export class BootstrapScene extends Phaser.Scene {
   private installControls(): void {
     const items: Array<[string, () => void]> = [
       ['+60m', () => this.advance(60)],
-      ['Courier L1 (success)', () => this.startCourier()],
       ['Dishes minigame', () => this.startDishes()],
       ['Trash minigame', () => this.startTrash()],
       ['Courier minigame', () => this.startCourierMinigame()],
@@ -252,102 +250,6 @@ export class BootstrapScene extends Phaser.Scene {
         balance,
       );
     }
-  }
-
-  private startCourier(): void {
-    if (!this.state || this.activeAction || this.pendingDrop) {
-      throw new Error('Finish the current action first');
-    }
-
-    const started = startWork(this.state, balance, 'courier', 1);
-    this.state = started.state;
-    this.activeAction = setWorkResult(started.action, 'SUCCESS');
-    this.showMessage('Courier result stored as SUCCESS; salary waits for completion.');
-    void this.persist();
-  }
-
-  private startDishes(): void {
-    if (!this.state || this.activeAction || this.pendingDrop) {
-      throw new Error('Finish the current action first');
-    }
-
-    const level = this.state.jobLevels.dishes;
-    const started = startWork(
-      this.state,
-      balance,
-      'dishes',
-      level,
-    );
-    this.state = started.state;
-    this.activeAction = started.action;
-    this.showMessage(
-      'Dishes costs reserved. Complete the skill minigame for the work result.',
-    );
-
-    void this.persist()
-      .then(() => this.repository?.flush())
-      .then(() => this.scene.start('dishes'))
-      .catch((error: unknown) => {
-        this.showMessage(
-          error instanceof Error ? error.message : String(error),
-        );
-      });
-  }
-
-  private startTrash(): void {
-    if (!this.state || this.activeAction || this.pendingDrop) {
-      throw new Error('Finish the current action first');
-    }
-
-    const level = this.state.jobLevels.trash;
-    const started = startWork(
-      this.state,
-      balance,
-      'trash',
-      level,
-    );
-    this.state = started.state;
-    this.activeAction = started.action;
-    this.showMessage(
-      'Trash costs reserved. Complete the skill minigame for the work result.',
-    );
-
-    void this.persist()
-      .then(() => this.repository?.flush())
-      .then(() => this.scene.start('trash'))
-      .catch((error: unknown) => {
-        this.showMessage(
-          error instanceof Error ? error.message : String(error),
-        );
-      });
-  }
-
-  private startCourierMinigame(): void {
-    if (!this.state || this.activeAction || this.pendingDrop) {
-      throw new Error('Finish the current action first');
-    }
-
-    const level = this.state.jobLevels.courier;
-    const started = startWork(
-      this.state,
-      balance,
-      'courier',
-      level,
-    );
-    this.state = started.state;
-    this.activeAction = started.action;
-    this.showMessage(
-      'Courier costs reserved. Draw and validate the route for the work result.',
-    );
-
-    void this.persist()
-      .then(() => this.repository?.flush())
-      .then(() => this.scene.start('courier'))
-      .catch((error: unknown) => {
-        this.showMessage(
-          error instanceof Error ? error.message : String(error),
-        );
-      });
   }
 
   private startCheapFood(): void {
