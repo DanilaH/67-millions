@@ -143,6 +143,10 @@ export class DishesScene extends Phaser.Scene {
     this.audio?.syncBarry(
       this.save.game.barryInterruptPending,
     );
+    this.audio?.syncNeeds(
+      this.save.game.needs,
+      balance.needs.lowThreshold,
+    );
 
     if (this.save.game.barryInterruptPending) {
       this.pointerDown = false;
