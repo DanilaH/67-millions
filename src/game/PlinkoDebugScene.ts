@@ -476,6 +476,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game: committed.state,
         pendingDrop: committed.pendingDrop,
       };
+      this.lastResultMessage = '';
+      this.resultText?.setVisible(false);
 
       // Stake + pendingDrop are durable before time or physical outcome generation.
       await this.enqueueSave(true);
