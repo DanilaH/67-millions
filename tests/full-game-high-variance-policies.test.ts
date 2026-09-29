@@ -99,55 +99,54 @@ describe('high-variance full-game policies', () => {
     expect(decision.type).toBe('BUY_PLINKO_MAX_BET');
   });
 
-  it('both policies use full-stake Plinko once their preferred upgrades are maxed', () => {
-    const maxBetLevel =
-      balance.plinko.maxBetLevels[
-        balance.plinko.maxBetLevels.length - 1
-      ]!.level;
-    const maxBiasLevel =
-      balance.plinko.jackpotBias[
-        balance.plinko.jackpotBias.length - 1
-      ]!.level;
-    const maxSplitterLevel =
-      balance.plinko.splitter[
-        balance.plinko.splitter.length - 1
-      ]!.level;
-    const maxJackpotLevel =
-      balance.plinko.jackpotUpgrades[
-        balance.plinko.jackpotUpgrades.length - 1
-      ]!.level;
-    const maxAmplifierLevel =
-      balance.plinko.amplifier[
-        balance.plinko.amplifier.length - 1
-      ]!.level;
-
+  it('high-variance policies choose the largest quick bet that still preserves their smaller reserve', () => {
     const state = {
       ...createInitialGameState(balance, 13),
-      cash: 100_000,
-      plinkoMaxBetLevel: maxBetLevel,
-      plinkoJackpotBiasLevel: maxBiasLevel,
-      plinkoSplitterLevel: maxSplitterLevel,
-      plinkoJackpotLevel: maxJackpotLevel,
-      plinkoAmplifierLevel: maxAmplifierLevel,
+      cash: 9_000,
+      plinkoMaxBetLevel: 2,
+      plinkoJackpotBiasLevel:
+        balance.plinko.jackpotBias[
+          balance.plinko.jackpotBias.length - 1
+        ]!.level,
+      plinkoSplitterLevel:
+        balance.plinko.splitter[
+          balance.plinko.splitter.length - 1
+        ]!.level,
+      plinkoJackpotLevel:
+        balance.plinko.jackpotUpgrades[
+          balance.plinko.jackpotUpgrades.length - 1
+        ]!.level,
+      plinkoAmplifierLevel:
+        balance.plinko.amplifier[
+          balance.plinko.amplifier.length - 1
+        ]!.level,
     };
 
-    for (const archetype of HIGH_VARIANCE_ARCHETYPES) {
-      const policy = createHighVariancePolicy(
+    expect(
+      createHighVariancePolicy(
         balance,
-        archetype,
+        'DEGENERATE',
         13,
-      );
-      const decision = policy.decide({
+      ).decide({
         state,
         activeAction: null,
         counters: zeroCounters(),
         decisionIndex: 0,
-      });
-      expect(decision).toEqual({
-        type: 'PLINKO',
-        fraction: 1,
-      });
-    }
+      }),
+    ).toEqual({ type: 'PLINKO', fraction: 0.25 });
+
+    expect(
+      createHighVariancePolicy(
+        balance,
+        'RECKLESS_NEEDS',
+        13,
+      ).decide({
+        state,
+        activeAction: null,
+        counters: zeroCounters(),
+        decisionIndex: 0,
+      }),
+    ).toEqual({ type: 'PLINKO', fraction: 0.5 });
   });
 
   it('RECKLESS_NEEDS delays satiety recovery until critical and then uses dumpster', () => {
