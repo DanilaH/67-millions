@@ -11,7 +11,7 @@ describe('Courier work transaction integration', () => {
     const initial = {
       ...createInitialGameState(balance, 951),
       cash: 1_000,
-      clock: createGameClock('08:00'),
+      clock: createGameClock('10:00'),
       needs: {
         health: 100,
         satiety: 100,
@@ -41,7 +41,7 @@ describe('Courier work transaction integration', () => {
     expect(completed.activeAction).toBeNull();
     expect(completed.advancedMinutes).toBe(180);
     expect(completed.state.clock.minuteOfDay).toBe(
-      createGameClock('11:00').minuteOfDay,
+      createGameClock('13:00').minuteOfDay,
     );
     expect(completed.state.cash).toBe(5_200);
   });
@@ -49,7 +49,7 @@ describe('Courier work transaction integration', () => {
   it('restored unresolved Courier work keeps its already-reserved start costs', () => {
     const initial = {
       ...createInitialGameState(balance, 952),
-      clock: createGameClock('08:00'),
+      clock: createGameClock('10:00'),
       needs: {
         health: 100,
         satiety: 100,
