@@ -106,8 +106,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
   private graphics?: Phaser.GameObjects.Graphics;
-  private staticBoardTexture?: Phaser.GameObjects.RenderTexture;
-  private ballGraphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
   private mapText?: Phaser.GameObjects.Text;
@@ -129,21 +127,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer = this.add.container(0, 0);
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
-    this.graphics = this.add.graphics().setVisible(false);
-    this.staticBoardTexture = this.add
-      .renderTexture(
-        0,
-        0,
-        this.scale.width,
-        this.scale.height,
-      )
-      .setOrigin(0, 0)
-      .setRenderMode('render');
-    this.ballGraphics = this.add.graphics();
-    this.casinoLayer.add([
-      this.staticBoardTexture,
-      this.ballGraphics,
-    ]);
+    this.graphics = this.add.graphics();
+    this.casinoLayer.add(this.graphics);
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
       color: visualHex('textMain'),
@@ -206,9 +191,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public update(): void {
-    if (!this.ballGraphics || this.mapMode) return;
+    if (!this.graphics || this.mapMode) return;
 
-    this.ballGraphics.clear();
+    this.graphics.clear();
+    this.drawStaticBoard();
 
     for (const [ball, metadata] of this.balls) {
       const amplified = metadata.currentValue > 1;
@@ -219,22 +205,22 @@ export class PlinkoDebugScene extends Phaser.Scene {
           ? visualColor('paperOld')
           : visualColor('textMain');
 
-      this.ballGraphics.fillStyle(fill, 1);
-      this.ballGraphics.fillCircle(
+      this.graphics.fillStyle(fill, 1);
+      this.graphics.fillCircle(
         ball.position.x,
         ball.position.y,
         balance.plinko.geometry.ballRadius,
       );
 
       if (amplified || split) {
-        this.ballGraphics.lineStyle(
+        this.graphics.lineStyle(
           2,
           amplified
             ? visualColor('rust')
             : visualColor('cold'),
           0.95,
         );
-        this.ballGraphics.strokeCircle(
+        this.graphics.strokeCircle(
           ball.position.x,
           ball.position.y,
           balance.plinko.geometry.ballRadius + 2,
@@ -286,7 +272,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     };
     document.addEventListener('visibilitychange', this.visibilityHandler);
 
-    this.rebuildStaticBoardCache();
+    this.drawStaticBoard();
     this.installPocketLabels();
     this.installCasinoControls();
 
@@ -955,12 +941,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
             balance,
           );
 
-    if (
-      this.runtime &&
-      this.graphics &&
-      this.staticBoardTexture
-    ) {
-      this.rebuildStaticBoardCache();
+    if (this.runtime) {
       this.installPocketLabels();
     }
   }
@@ -1133,28 +1114,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
     });
   }
 
-  private rebuildStaticBoardCache(): void {
-    if (
-      !this.graphics ||
-      !this.staticBoardTexture ||
-      !this.runtime ||
-      !this.visualSnapshot
-    ) {
-      return;
-    }
-
-    this.graphics.setVisible(true);
-    this.graphics.clear();
-    this.drawStaticBoard();
-
-    this.staticBoardTexture
-      .clear()
-      .draw(this.graphics)
-      .render();
-
-    this.graphics.setVisible(false);
-  }
-
   private drawStaticBoard(): void {
     if (
       !this.graphics ||
@@ -1168,97 +1127,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const geometry = balance.plinko.geometry;
     const layout = this.runtime.layout;
     const snapshot = this.visualSnapshot;
-
-    const boardLeft = layout.leftWallX - 26;
-    const boardTop = geometry.topPegY - 34;
-    const boardWidth =
-      layout.rightWallX - layout.leftWallX + 52;
-    const boardBottom = layout.pocketBottomY + 46;
-    const boardHeight = boardBottom - boardTop;
-
-    graphics.fillStyle(visualColor('inkPanel'), 0.94);
-    graphics.fillRoundedRect(
-      boardLeft,
-      boardTop,
-      boardWidth,
-      boardHeight,
-      24,
-    );
-    graphics.lineStyle(
-      2,
-      visualColor('cold'),
-      0.55,
-    );
-    graphics.strokeRoundedRect(
-      boardLeft,
-      boardTop,
-      boardWidth,
-      boardHeight,
-      24,
-    );
-
-    const modificationMarks = Math.min(
-      8,
-      Math.ceil(snapshot.progressionUnits / 3),
-    );
-    for (
-      let index = 0;
-      index < modificationMarks;
-      index += 1
-    ) {
-      const y = boardTop + 34 + index * 46;
-      graphics.fillStyle(
-        index % 2 === 0
-          ? visualColor('mustard')
-          : visualColor('rust'),
-        0.5,
-      );
-      graphics.fillRoundedRect(
-        boardLeft + 7,
-        y,
-        7,
-        26,
-        3,
-      );
-    }
-
-    const pocketHeight =
-      layout.pocketBottomY - layout.pocketTopY;
-    const pocketWidth =
-      geometry.pocketCenterSpacing - 4;
-
-    layout.pocketCenters.forEach((pocket, index) => {
-      const role = getPocketVisualRole(index, balance);
-      const upgraded =
-        (role === 'jackpot' &&
-          snapshot.pocketLevels.jackpotLevel > 0) ||
-        (role === 'mid' &&
-          snapshot.pocketLevels.midLevel > 0) ||
-        (role === 'center' &&
-          snapshot.pocketLevels.centerLevel > 0) ||
-        (role === 'inner' &&
-          (snapshot.pocketLevels.centerLevel > 0 ||
-            snapshot.pocketLevels.midLevel > 0));
-
-      const accent =
-        role === 'jackpot'
-          ? visualColor('mustard')
-          : role === 'mid'
-            ? visualColor('cold')
-            : role === 'center'
-              ? visualColor('paperOld')
-              : visualColor('lineDirty');
-
-      if (upgraded) {
-        graphics.fillStyle(accent, 0.18);
-        graphics.fillRect(
-          pocket.x - pocketWidth / 2,
-          layout.pocketTopY,
-          pocketWidth,
-          pocketHeight,
-        );
-      }
-    });
 
     graphics.fillStyle(
       visualColor('lineDirty'),
@@ -1294,7 +1162,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         graphics.fillCircle(
           peg.x,
           peg.y,
-          geometry.pegRadius + 5,
+          geometry.pegRadius + 4,
         );
         graphics.fillStyle(
           visualColor('inkDeep'),
@@ -1303,16 +1171,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         graphics.fillCircle(
           peg.x,
           peg.y,
-          geometry.pegRadius + 1,
-        );
-        graphics.fillStyle(
-          SPECIAL_PIN_STYLE.amplifier.color,
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          Math.max(2, geometry.pegRadius - 2),
+          Math.max(2, geometry.pegRadius - 1),
         );
         continue;
       }
@@ -1325,20 +1184,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
         graphics.fillCircle(
           peg.x,
           peg.y,
-          geometry.pegRadius + 4,
-        );
-        graphics.fillStyle(
-          visualColor('inkDeep'),
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius,
+          geometry.pegRadius + 3,
         );
         graphics.lineStyle(
           2,
-          SPECIAL_PIN_STYLE.return.color,
+          visualColor('inkDeep'),
           1,
         );
         graphics.strokeLineShape(
@@ -1346,23 +1196,23 @@ export class PlinkoDebugScene extends Phaser.Scene {
             peg.x,
             peg.y + 4,
             peg.x,
-            peg.y - 6,
+            peg.y - 5,
           ),
         );
         graphics.strokeLineShape(
           new Phaser.Geom.Line(
             peg.x,
-            peg.y - 6,
+            peg.y - 5,
             peg.x - 4,
-            peg.y - 2,
+            peg.y - 1,
           ),
         );
         graphics.strokeLineShape(
           new Phaser.Geom.Line(
             peg.x,
-            peg.y - 6,
+            peg.y - 5,
             peg.x + 4,
-            peg.y - 2,
+            peg.y - 1,
           ),
         );
         continue;
@@ -1375,26 +1225,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
       graphics.fillCircle(
         peg.x,
         peg.y,
-        geometry.pegRadius + 4,
-      );
-      graphics.fillStyle(
-        visualColor('inkDeep'),
-        1,
-      );
-      graphics.fillCircle(
-        peg.x,
-        peg.y,
-        geometry.pegRadius,
+        geometry.pegRadius + 3,
       );
       graphics.lineStyle(
         2,
-        SPECIAL_PIN_STYLE.splitter.color,
+        visualColor('inkDeep'),
         1,
       );
       graphics.strokeLineShape(
         new Phaser.Geom.Line(
           peg.x,
-          peg.y + 5,
+          peg.y + 4,
           peg.x,
           peg.y,
         ),
@@ -1403,16 +1244,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
         new Phaser.Geom.Line(
           peg.x,
           peg.y,
-          peg.x - 5,
-          peg.y - 5,
+          peg.x - 4,
+          peg.y - 4,
         ),
       );
       graphics.strokeLineShape(
         new Phaser.Geom.Line(
           peg.x,
           peg.y,
-          peg.x + 5,
-          peg.y - 5,
+          peg.x + 4,
+          peg.y - 4,
         ),
       );
     }
@@ -1430,19 +1271,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
         Math.sin(deflector.angleRadians) * half;
 
       graphics.lineStyle(
-        deflector.thickness + 2,
-        visualColor('inkDeep'),
-        0.9,
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          deflector.x - dx,
-          deflector.y - dy,
-          deflector.x + dx,
-          deflector.y + dy,
-        ),
-      );
-      graphics.lineStyle(
         deflector.thickness,
         SPECIAL_PIN_STYLE.jackpotBias.color,
         1,
@@ -1458,7 +1286,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     graphics.lineStyle(
-      3,
+      2,
       visualColor('lineDirty'),
       1,
     );
