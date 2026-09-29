@@ -1,0 +1,340 @@
+import Phaser from 'phaser';
+
+import { balance } from '../config/balance';
+import { createLocalSaveRepository } from '../core/save/repository';
+import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
+import { createInitialGameState } from '../core/state/GameState';
+import { completeWorkSkill } from '../core/work/skillCompletion';
+import type { WorkActiveAction } from '../core/actions/ActiveAction';
+import {
+  advanceDishesSession,
+  createDishesSession,
+  getDishesCleanPercent,
+  getDishesRemainingMs,
+  scrubDishes,
+  type DishesPoint,
+  type DishesSession,
+} from '../minigames/dishes/dishesModel';
+
+const createRunSeed = (): number => {
+  const values = new Uint32Array(1);
+  crypto.getRandomValues(values);
+  return values[0] || 1;
+};
+
+const isDishesAction = (
+  action: SaveState['activeAction'],
+): action is WorkActiveAction =>
+  action?.kind === 'WORK' &&
+  action.actionId === 'dishes' &&
+  action.result === null;
+
+export class DishesScene extends Phaser.Scene {
+  private repository:
+    | ReturnType<typeof createLocalSaveRepository>
+    | null = null;
+  private save: SaveState | null = null;
+  private session: DishesSession | null = null;
+  private graphics?: Phaser.GameObjects.Graphics;
+  private timerText?: Phaser.GameObjects.Text;
+  private progressText?: Phaser.GameObjects.Text;
+  private messageText?: Phaser.GameObjects.Text;
+  private lastPointer: DishesPoint | null = null;
+  private pointerDown = false;
+  private completionInFlight = false;
+
+  public constructor() {
+    super('dishes');
+  }
+
+  public create(): void {
+    const { width } = this.scale;
+
+    this.add
+      .text(width / 2, 24, 'МОЙКА ПОСУДЫ', {
+        color: '#f4f6f8',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '30px',
+        fontStyle: 'bold',
+      })
+      .setOrigin(0.5, 0);
+
+    this.add
+      .text(
+        width / 2,
+        66,
+        'Зажми и води губкой по грязным точкам. Нужно очистить минимум 90%.',
+        {
+          color: '#aeb7c3',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '17px',
+        },
+      )
+      .setOrigin(0.5, 0);
+
+    this.timerText = this.add
+      .text(36, 32, '', {
+        color: '#f4f6f8',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '24px',
+      })
+      .setOrigin(0, 0);
+
+    this.progressText = this.add
+      .text(width - 36, 32, '', {
+        color: '#f4f6f8',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '24px',
+      })
+      .setOrigin(1, 0);
+
+    this.messageText = this.add
+      .text(width / 2, 662, '', {
+        color: '#f4f6f8',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '20px',
+      })
+      .setOrigin(0.5, 0);
+
+    this.graphics = this.add.graphics();
+
+    this.input.on('pointerdown', this.handlePointerDown);
+    this.input.on('pointermove', this.handlePointerMove);
+    this.input.on('pointerup', this.handlePointerUp);
+    this.input.on('pointerupoutside', this.handlePointerUp);
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.input.off('pointerdown', this.handlePointerDown);
+      this.input.off('pointermove', this.handlePointerMove);
+      this.input.off('pointerup', this.handlePointerUp);
+      this.input.off('pointerupoutside', this.handlePointerUp);
+    });
+
+    void this.initialize();
+  }
+
+  public update(_time: number, deltaMs: number): void {
+    if (!this.session || this.completionInFlight) return;
+
+    this.session = advanceDishesSession(
+      this.session,
+      deltaMs,
+    );
+
+    if (this.session.result !== null) {
+      void this.complete(this.session.result);
+      return;
+    }
+
+    this.render();
+  }
+
+  private async initialize(): Promise<void> {
+    this.repository = createLocalSaveRepository(() =>
+      createInitialGameState(balance, createRunSeed()),
+    );
+
+    try {
+      const save = await this.repository.load();
+      if (!isDishesAction(save.activeAction)) {
+        throw new Error(
+          'Dishes scene requires an unresolved dishes WORK action',
+        );
+      }
+      if (save.pendingDrop !== null) {
+        throw new Error('Dishes cannot run while a Drop is pending');
+      }
+
+      this.save = save;
+      this.session = createDishesSession(balance);
+      this.render();
+    } catch (error: unknown) {
+      this.completionInFlight = true;
+      this.messageText?.setText(
+        error instanceof Error ? error.message : String(error),
+      );
+      this.time.delayedCall(900, () => {
+        this.scene.start('bootstrap');
+      });
+    }
+  }
+
+  private readonly handlePointerDown = (
+    pointer: Phaser.Input.Pointer,
+  ): void => {
+    if (!this.session || this.session.result !== null) return;
+
+    this.pointerDown = true;
+    const point = { x: pointer.x, y: pointer.y };
+    this.lastPointer = point;
+    this.session = scrubDishes(
+      this.session,
+      point,
+      point,
+    );
+    this.afterScrub();
+  };
+
+  private readonly handlePointerMove = (
+    pointer: Phaser.Input.Pointer,
+  ): void => {
+    if (
+      !this.session ||
+      this.session.result !== null ||
+      !this.pointerDown ||
+      !pointer.isDown
+    ) {
+      return;
+    }
+
+    const point = { x: pointer.x, y: pointer.y };
+    const previous = this.lastPointer ?? point;
+    this.lastPointer = point;
+    this.session = scrubDishes(
+      this.session,
+      previous,
+      point,
+    );
+    this.afterScrub();
+  };
+
+  private readonly handlePointerUp = (): void => {
+    this.pointerDown = false;
+    this.lastPointer = null;
+  };
+
+  private afterScrub(): void {
+    if (!this.session) return;
+
+    this.render();
+    if (this.session.result !== null && !this.completionInFlight) {
+      void this.complete(this.session.result);
+    }
+  }
+
+  private async complete(
+    result: 'SUCCESS' | 'FAILURE',
+  ): Promise<void> {
+    if (
+      this.completionInFlight ||
+      !this.repository ||
+      !this.save ||
+      !isDishesAction(this.save.activeAction)
+    ) {
+      return;
+    }
+
+    this.completionInFlight = true;
+    this.pointerDown = false;
+
+    const completion = completeWorkSkill(
+      this.save.game,
+      this.save.activeAction,
+      result,
+      balance,
+    );
+
+    this.save = {
+      ...this.save,
+      version: SAVE_VERSION,
+      game: completion.state,
+      activeAction: completion.activeAction,
+    };
+
+    await this.repository.write(this.save);
+    await this.repository.flush();
+
+    const cleanPercent = this.session
+      ? Math.round(getDishesCleanPercent(this.session) * 100)
+      : 0;
+    const outcome =
+      result === 'SUCCESS'
+        ? `УСПЕХ — ${cleanPercent}% чисто`
+        : `ПРОВАЛ — ${cleanPercent}% чисто`;
+    const shift =
+      completion.shiftCompleted
+        ? 'Смена завершена.'
+        : completion.state.barryInterruptPending
+          ? 'Смена остановлена Барри.'
+          : 'Смена сохранена с остатком времени.';
+
+    this.messageText?.setText(`${outcome}. ${shift}`);
+    this.render();
+
+    this.time.delayedCall(700, () => {
+      this.scene.start('bootstrap');
+    });
+  }
+
+  private render(): void {
+    if (!this.session || !this.graphics) return;
+
+    const graphics = this.graphics;
+    graphics.clear();
+
+    graphics.fillStyle(0x131920, 1);
+    graphics.fillRoundedRect(150, 112, 980, 500, 36);
+
+    graphics.lineStyle(5, 0x66717f, 1);
+    graphics.strokeRoundedRect(150, 112, 980, 500, 36);
+
+    for (const plate of this.session.plates) {
+      graphics.fillStyle(0xdce3ea, 1);
+      graphics.fillCircle(
+        plate.x,
+        plate.y,
+        plate.radius,
+      );
+
+      graphics.lineStyle(5, 0x8a98a8, 1);
+      graphics.strokeCircle(
+        plate.x,
+        plate.y,
+        plate.radius - 9,
+      );
+      graphics.lineStyle(2, 0xa8b4c0, 1);
+      graphics.strokeCircle(
+        plate.x,
+        plate.y,
+        plate.radius * 0.45,
+      );
+    }
+
+    for (const spot of this.session.spots) {
+      if (spot.cleaned) continue;
+      graphics.fillStyle(0x6b3e22, 0.95);
+      graphics.fillCircle(spot.x, spot.y, 9);
+      graphics.fillStyle(0x382418, 0.75);
+      graphics.fillCircle(spot.x + 2, spot.y - 2, 4);
+    }
+
+    if (this.pointerDown && this.lastPointer) {
+      graphics.lineStyle(3, 0x69d6ff, 0.7);
+      graphics.strokeCircle(
+        this.lastPointer.x,
+        this.lastPointer.y,
+        this.session.scrubRadius,
+      );
+    }
+
+    const remainingSeconds =
+      getDishesRemainingMs(this.session) / 1000;
+    const cleanPercent =
+      getDishesCleanPercent(this.session) * 100;
+
+    this.timerText?.setText(
+      `${remainingSeconds.toFixed(1)}s`,
+    );
+    this.progressText?.setText(
+      `ЧИСТО: ${Math.floor(cleanPercent)}%`,
+    );
+
+    if (!this.completionInFlight) {
+      this.messageText?.setText(
+        cleanPercent >= this.session.successCleanPercent * 100
+          ? 'Готово!'
+          : 'Веди пальцем или мышью по грязи.',
+      );
+    }
+  }
+}
