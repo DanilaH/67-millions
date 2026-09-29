@@ -23,12 +23,12 @@ import {
   getPresentablePendingEventId,
 } from '../core/events/eventScheduler';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
-import { createLocalSaveRepository } from '../core/save/repository';
+import type { SaveRepository } from '../core/save/repository';
+import { createRunSeed } from '../core/random/runSeed';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import type { PendingDrop } from '../core/plinko-rules/drop';
 import { startSleep } from '../core/sleep/sleep';
 import {
-  createInitialGameState,
   restartGame,
   type GameState,
 } from '../core/state/GameState';
@@ -94,20 +94,15 @@ import {
 } from './events/createEventOverlay';
 import { buildEventPresentation } from './events/eventUiModel';
 import { VISUAL_FONT, visualHex } from './visual/visualTheme';
+import { getSceneSaveRepository } from './save/sceneSaveRepository';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
-
-const createRunSeed = (): number => {
-  const values = new Uint32Array(1);
-  crypto.getRandomValues(values);
-  return values[0] || 1;
-};
 
 export class BootstrapScene extends Phaser.Scene {
   private state: GameState | null = null;
   private activeAction: ActiveAction | null = null;
   private pendingDrop: PendingDrop | null = null;
-  private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
+  private repository: SaveRepository | null = null;
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
   );
@@ -230,10 +225,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private async initialize(): Promise<void> {
-    const initialSeed = createRunSeed();
-    this.repository = createLocalSaveRepository(() =>
-      createInitialGameState(balance, initialSeed),
-    );
+    this.repository = getSceneSaveRepository(this);
 
     try {
       const save = await this.repository.load();

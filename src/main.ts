@@ -20,6 +20,10 @@ import { DishesScene } from './game/DishesScene';
 import { PlinkoDebugScene } from './game/PlinkoDebugScene';
 import { TrashScene } from './game/TrashScene';
 import { balance } from './config/balance';
+import { createRunSeed } from './core/random/runSeed';
+import { createSaveRepository } from './core/save/repository';
+import { createInitialGameState } from './core/state/GameState';
+import { GAME_SAVE_REPOSITORY_REGISTRY_KEY } from './game/save/sceneSaveRepository';
 
 const preload = new StartupPreloadController(createStartupPreloadDomView());
 preload.begin();
@@ -33,6 +37,14 @@ const artFormatTask = detectRuntimeImageFormat();
 try {
   const [platform, runtimeImageFormat] = await Promise.all([platformTask, artFormatTask]);
   const initialSize = getInitialGameSize();
+  const saveRepository = createSaveRepository(
+    platform.storage,
+    () =>
+      createInitialGameState(
+        balance,
+        createRunSeed(),
+      ),
+  );
   let resolvePresentable!: () => void;
   const presentable = new Promise<void>((resolve) => {
     resolvePresentable = resolve;
@@ -62,7 +74,14 @@ try {
     scale: { mode: Phaser.Scale.NONE },
     callbacks: {
       preBoot: (bootingGame) => {
-        bootingGame.events.once(GAME_PRESENTABLE_EVENT, resolvePresentable);
+        bootingGame.registry.set(
+          GAME_SAVE_REPOSITORY_REGISTRY_KEY,
+          saveRepository,
+        );
+        bootingGame.events.once(
+          GAME_PRESENTABLE_EVENT,
+          resolvePresentable,
+        );
       },
     },
   });

@@ -44,9 +44,8 @@ import {
   markReturnUsed,
 } from '../core/plinko-rules/cascade';
 import { SeededRandom } from '../core/rng/SeededRandom';
-import { createLocalSaveRepository } from '../core/save/repository';
+import type { SaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
-import { createInitialGameState } from '../core/state/GameState';
 import {
   createBarePlinko,
   type BarePlinkoRuntime,
@@ -88,18 +87,13 @@ import {
   createTutorialCard,
   type TutorialCard,
 } from './tutorial/createTutorialCard';
-
-const createRunSeed = (): number => {
-  const values = new Uint32Array(1);
-  crypto.getRandomValues(values);
-  return values[0] || 1;
-};
+import { getSceneSaveRepository } from './save/sceneSaveRepository';
 
 export class PlinkoDebugScene extends Phaser.Scene {
   private runtime: BarePlinkoRuntime | null = null;
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
-  private repository: ReturnType<typeof createLocalSaveRepository> | null = null;
+  private repository: SaveRepository | null = null;
   private readonly balls = new Map<MatterJS.BodyType, DropBallState>();
   private saveWriteChain: Promise<void> = Promise.resolve();
   private cascadeMutationChain: Promise<void> = Promise.resolve();
@@ -249,10 +243,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private async initialize(): Promise<void> {
-    const initialSeed = createRunSeed();
-    this.repository = createLocalSaveRepository(() =>
-      createInitialGameState(balance, initialSeed),
-    );
+    this.repository = getSceneSaveRepository(this);
     this.save = await this.repository.load();
     this.refreshVisualSnapshot();
 
