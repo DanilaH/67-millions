@@ -319,6 +319,7 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (id === 'casino') {
       this.closeActionPanel();
+      this.audio?.play('casinoEnter');
       this.scene.start('plinko-debug');
       return;
     }
