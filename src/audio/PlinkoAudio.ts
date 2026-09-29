@@ -2,7 +2,14 @@ import { applyBoundedPitchVariation } from '@danilah/mini-games-kit/audio';
 
 import { VoiceBudget } from './VoiceBudget';
 
-type ToneKind = 'bounce' | 'pocket' | 'good' | 'bad';
+type ToneKind =
+  | 'bounce'
+  | 'pocket'
+  | 'good'
+  | 'bad'
+  | 'amplifier'
+  | 'splitter'
+  | 'return';
 
 interface ToneSpec {
   frequency: number;
@@ -45,6 +52,30 @@ const TONES: Record<ToneKind, ToneSpec> = {
     waveform: 'sawtooth',
     variation: 0.025,
   },
+  amplifier: {
+    frequency: 420,
+    endFrequency: 880,
+    durationMs: 105,
+    gain: 0.045,
+    waveform: 'triangle',
+    variation: 0.04,
+  },
+  splitter: {
+    frequency: 260,
+    endFrequency: 520,
+    durationMs: 95,
+    gain: 0.05,
+    waveform: 'square',
+    variation: 0.055,
+  },
+  return: {
+    frequency: 920,
+    endFrequency: 460,
+    durationMs: 125,
+    gain: 0.045,
+    waveform: 'sine',
+    variation: 0.03,
+  },
 };
 
 const unitFromCounter = (counter: number): number => {
@@ -52,14 +83,63 @@ const unitFromCounter = (counter: number): number => {
   return (counter * golden) % 1;
 };
 
+export type SpecialCueKind = 'amplifier' | 'splitter' | 'return';
+
+export const PLINKO_AUDIO_LIMITS = {
+  bounceVoices: 6,
+  accentVoices: 4,
+  specialVoices: 3,
+  specialRepeatMs: {
+    amplifier: 26,
+    splitter: 32,
+    return: 40,
+  } satisfies Record<SpecialCueKind, number>,
+} as const;
+
+export const PLINKO_AUDIO_MAX_THEORETICAL_MIX_GAIN =
+  PLINKO_AUDIO_LIMITS.bounceVoices * TONES.bounce.gain +
+  PLINKO_AUDIO_LIMITS.accentVoices *
+    Math.max(TONES.pocket.gain, TONES.good.gain, TONES.bad.gain) +
+  PLINKO_AUDIO_LIMITS.specialVoices *
+    Math.max(
+      TONES.amplifier.gain,
+      TONES.splitter.gain,
+      TONES.return.gain,
+    );
+
+export class SpecialCueGate {
+  private readonly lastAt = new Map<SpecialCueKind, number>();
+
+  public tryTrigger(kind: SpecialCueKind, nowMs: number): boolean {
+    const previous = this.lastAt.get(kind) ?? -Infinity;
+    if (
+      nowMs - previous <
+      PLINKO_AUDIO_LIMITS.specialRepeatMs[kind]
+    ) {
+      return false;
+    }
+
+    this.lastAt.set(kind, nowMs);
+    return true;
+  }
+}
+
 export class PlinkoAudio {
   private context: AudioContext | null = null;
   private disposed = false;
   private cueCounter = 0;
   private lastBounceAtMs = -Infinity;
 
-  private readonly bounceBudget = new VoiceBudget(6);
-  private readonly accentBudget = new VoiceBudget(4);
+  private readonly bounceBudget = new VoiceBudget(
+    PLINKO_AUDIO_LIMITS.bounceVoices,
+  );
+  private readonly accentBudget = new VoiceBudget(
+    PLINKO_AUDIO_LIMITS.accentVoices,
+  );
+  private readonly specialBudget = new VoiceBudget(
+    PLINKO_AUDIO_LIMITS.specialVoices,
+  );
+  private readonly specialCueGate = new SpecialCueGate();
 
   public constructor(
     private readonly isMuted: () => boolean,
@@ -90,6 +170,18 @@ export class PlinkoAudio {
     this.play(losing ? 'bad' : 'good', this.accentBudget);
   }
 
+  public amplifier(): void {
+    this.special('amplifier');
+  }
+
+  public splitter(): void {
+    this.special('splitter');
+  }
+
+  public returnCue(): void {
+    this.special('return');
+  }
+
   public dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
@@ -111,6 +203,12 @@ export class PlinkoAudio {
     } catch {
       return null;
     }
+  }
+
+  private special(kind: SpecialCueKind): void {
+    const now = this.nowMs();
+    if (!this.specialCueGate.tryTrigger(kind, now)) return;
+    this.play(kind, this.specialBudget);
   }
 
   private play(
