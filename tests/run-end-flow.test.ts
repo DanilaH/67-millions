@@ -13,6 +13,7 @@ import {
   derivePrincipalConfirmation,
   deriveRunEndSummary,
 } from '../src/game/end/runEndModel';
+import { BARRY_CONTENT } from '../src/game/content/contentCatalog';
 
 describe('T058 Game Over / Victory flow model', () => {
   it('requires explicit confirmation data without mutating a payable run', () => {
@@ -109,9 +110,7 @@ describe('T058 Game Over / Victory flow model', () => {
 
     expect(summary.kind).toBe('GAME_OVER');
     expect(summary.title).toBe('ЗАБЕГ ОКОНЧЕН');
-    expect(summary.reason).toBe(
-      'В 09:00 не хватило денег на обязательный платёж Барри.',
-    );
+    expect(summary.reason).toBe(BARRY_CONTENT.failed);
   });
 
   it('explains HP death separately from Barry failure', () => {
