@@ -5,6 +5,7 @@ import {
   PlinkoAudio,
   shouldUseBigJackpotStinger,
 } from '../audio/PlinkoAudio';
+import { GAME_AUDIO_BLOCKED_EVENT } from '../audio/audioLifecycle';
 import {
   clearPlinkoPerfProbe,
   isPlinkoPerfMode,
@@ -165,6 +166,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.resultText);
 
     this.audio = new PlinkoAudio(() => this.game.sound.mute);
+    this.audio.setCasinoAmbienceEnabled(true);
+    this.input.on('pointerdown', this.handleAudioPrime);
+    this.game.events.on(
+      GAME_AUDIO_BLOCKED_EVENT,
+      this.handleAudioBlocked,
+    );
     this.matter.world.on('collisionstart', this.handleAudioCollision);
 
     this.installMapLayer();
@@ -184,6 +191,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.visibilityHandler = null;
       }
       this.matter.world.off('collisionstart', this.handleAudioCollision);
+      this.input.off('pointerdown', this.handleAudioPrime);
+      this.game.events.off(
+        GAME_AUDIO_BLOCKED_EVENT,
+        this.handleAudioBlocked,
+      );
       clearPlinkoPerfProbe();
       this.audio?.dispose();
       this.audio = null;
@@ -547,6 +559,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         pendingDrop: committed.pendingDrop,
       };
       this.refreshVisualSnapshot();
+      this.audio?.setCasinoAmbienceEnabled(false);
       this.lastResultMessage = '';
       this.resultText?.setVisible(false);
 
@@ -598,6 +611,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
       await this.persistPendingPhysics(true);
       this.renderAll();
     } catch (error: unknown) {
+      this.audio?.setCasinoAmbienceEnabled(
+        !this.mapMode &&
+          this.save?.pendingDrop === null,
+      );
       this.showStatus(error instanceof Error ? error.message : String(error));
     }
   }
@@ -865,6 +882,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     };
   }
 
+  private readonly handleAudioPrime = (): void => {
+    this.audio?.prime();
+  };
+
+  private readonly handleAudioBlocked = (
+    blocked: boolean,
+  ): void => {
+    this.audio?.setBlocked(blocked);
+  };
+
   private readonly handleAudioCollision = (
     _event: unknown,
     bodyA: MatterJS.BodyType,
@@ -974,6 +1001,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private renderAll(): void {
+    this.audio?.setCasinoAmbienceEnabled(
+      !this.mapMode &&
+        this.save?.pendingDrop === null,
+    );
     this.renderCasino();
     this.renderMap();
     this.renderTutorial();
