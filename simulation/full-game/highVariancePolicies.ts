@@ -344,16 +344,22 @@ const createDecisionFunction = (
       config,
       state.plinkoMaxBetLevel,
     );
-    const stake =
-      state.cash > 0
-        ? calculateActualBet(state.cash, maxBet, 1)
-        : 0;
-    if (
+    const safeFraction =
+      state.cash > 0 &&
       excessCash > 0 &&
-      state.eventModifiers.plinkoLockRemainingMinutes <= 0 &&
-      state.cash - stake >= reserve
-    ) {
-      return { type: 'PLINKO', fraction: 1 };
+      state.eventModifiers.plinkoLockRemainingMinutes <= 0
+        ? ([1, 0.5, 0.25] as const).find((fraction) => {
+            const stake = calculateActualBet(
+              state.cash,
+              maxBet,
+              fraction,
+            );
+            return state.cash - stake >= reserve;
+          }) ?? null
+        : null;
+
+    if (safeFraction !== null) {
+      return { type: 'PLINKO', fraction: safeFraction };
     }
 
     const work = chooseAvailableWork(
