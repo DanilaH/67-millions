@@ -15,6 +15,13 @@ import {
   settleShower,
 } from '../core/actions/shower';
 import { resolveBarryPayment } from '../core/barry/barry';
+import {
+  resolveEventChoice,
+  type EventChoiceId,
+} from '../core/events/eventEffects';
+import {
+  getPresentablePendingEventId,
+} from '../core/events/eventScheduler';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
@@ -75,6 +82,16 @@ import {
   createTutorialCard,
   type TutorialCard,
 } from './tutorial/createTutorialCard';
+import {
+  BARRY_CONTENT,
+  getEntertainmentContent,
+  getFoodContent,
+} from './content/contentCatalog';
+import {
+  createEventOverlay,
+  type EventOverlay,
+} from './events/createEventOverlay';
+import { buildEventPresentation } from './events/eventUiModel';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
@@ -101,6 +118,7 @@ export class BootstrapScene extends Phaser.Scene {
   private principalButton?: Phaser.GameObjects.Text;
   private runEndOverlay?: RunEndOverlay;
   private tutorialCard?: TutorialCard;
+  private eventOverlay?: EventOverlay;
   private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
 
@@ -175,6 +193,14 @@ export class BootstrapScene extends Phaser.Scene {
         acknowledgeCurrentTutorialInfo(step);
         this.renderTutorial();
       },
+    );
+
+    this.eventOverlay = createEventOverlay(
+      this,
+      (choice) =>
+        this.guard(() =>
+          this.resolvePendingEventChoice(choice.id),
+        ),
     );
 
     void this.initialize();
@@ -273,7 +299,8 @@ export class BootstrapScene extends Phaser.Scene {
       this.state.terminalReason !== null ||
       this.state.victory ||
       this.activeAction !== null ||
-      this.pendingDrop !== null
+      this.pendingDrop !== null ||
+      this.state.pendingEventId !== null
     ) {
       this.showMessage(
         'Сначала заверши обязательный текущий flow.',
@@ -617,7 +644,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.state = started.state;
     this.activeAction = started.action;
     this.showMessage(
-      `${foodId}: оплачено, эффект после ${started.action.remainingMinutes} мин.`,
+      `${getFoodContent(foodId).title}: оплачено, эффект после ${started.action.remainingMinutes} мин.`,
     );
     this.advance(started.action.remainingMinutes);
   }
@@ -637,7 +664,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.state = started.state;
     this.activeAction = started.action;
     this.showMessage(
-      `${entertainmentId}: действие начато.`,
+      `${getEntertainmentContent(entertainmentId).title}: действие начато.`,
     );
     this.advance(started.action.remainingMinutes);
   }
@@ -702,8 +729,8 @@ export class BootstrapScene extends Phaser.Scene {
 
     this.showMessage(
       this.state.terminalReason === 'BARRY_PAYMENT_FAILED'
-        ? 'GAME OVER: Barry payment failed.'
-        : 'Barry paid.',
+        ? BARRY_CONTENT.failed
+        : BARRY_CONTENT.paid,
     );
 
     if (
@@ -711,6 +738,54 @@ export class BootstrapScene extends Phaser.Scene {
       this.activeAction !== null
     ) {
       this.advance(this.activeAction.remainingMinutes);
+      return;
+    }
+
+    void this.persist();
+    this.render();
+  }
+
+  private resolvePendingEventChoice(
+    choiceId: EventChoiceId,
+  ): void {
+    if (!this.state) return;
+
+    const eventId = getPresentablePendingEventId(
+      this.state,
+      {
+        skillInputActive: false,
+        pendingDropActive: this.pendingDrop !== null,
+        activeActionBlocking: this.activeAction !== null,
+      },
+    );
+
+    if (eventId === null) {
+      throw new Error('Нет события, доступного для выбора.');
+    }
+
+    const resolved = resolveEventChoice(
+      this.state,
+      balance,
+      eventId,
+      choiceId,
+    );
+
+    this.state = resolved.state;
+    this.activeAction = resolved.activeAction;
+    this.eventOverlay?.hide();
+
+    const lockedSuffix =
+      resolved.lockedJobId === null
+        ? ''
+        : ` · временно закрыта работа: ${resolved.lockedJobId}`;
+    this.showMessage(
+      `Событие разрешено: вариант ${choiceId.toUpperCase()}${lockedSuffix}`,
+    );
+
+    if (resolved.activeAction !== null) {
+      this.advance(
+        resolved.activeAction.remainingMinutes,
+      );
       return;
     }
 
@@ -788,10 +863,20 @@ export class BootstrapScene extends Phaser.Scene {
       this.state.barryInterruptPending ||
       this.state.terminalReason !== null ||
       this.state.victory;
+    const presentableEventId =
+      getPresentablePendingEventId(
+        this.state,
+        {
+          skillInputActive: false,
+          pendingDropActive: this.pendingDrop !== null,
+          activeActionBlocking: this.activeAction !== null,
+        },
+      );
     const navigationLocked =
       hardLocked ||
       this.activeAction !== null ||
-      this.pendingDrop !== null;
+      this.pendingDrop !== null ||
+      presentableEventId !== null;
 
     this.mapView.setEnabled(!navigationLocked);
     this.principalButton?.setVisible(
@@ -810,6 +895,7 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     if (this.state.barryInterruptPending) {
+      this.eventOverlay?.hide();
       if (
         this.runEndOverlay?.getMode() ===
         'principal-confirm'
@@ -831,6 +917,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.state.terminalReason !== null ||
       this.state.victory
     ) {
+      this.eventOverlay?.hide();
       if (this.contextMode !== 'terminal') {
         this.clearContextControls();
         this.contextMode = 'terminal';
@@ -851,6 +938,7 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     if (this.activeAction !== null) {
+      this.eventOverlay?.hide();
       if (this.contextMode !== 'active') {
         this.clearContextControls();
         this.contextMode = 'active';
@@ -860,6 +948,30 @@ export class BootstrapScene extends Phaser.Scene {
       );
       return;
     }
+
+    if (presentableEventId !== null) {
+      if (
+        this.runEndOverlay?.getMode() ===
+        'principal-confirm'
+      ) {
+        this.runEndOverlay.hide();
+      }
+      this.clearContextControls();
+      this.closeActionPanel();
+      this.eventOverlay?.show(
+        buildEventPresentation(
+          this.state,
+          balance,
+          presentableEventId,
+        ),
+      );
+      this.showMessage(
+        'Событие требует решения перед следующим действием.',
+      );
+      return;
+    }
+
+    this.eventOverlay?.hide();
 
     if (
       this.contextMode === 'barry' ||
