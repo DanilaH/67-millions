@@ -9,6 +9,7 @@ import type { PendingDrop } from '../plinko-rules/drop';
 import { SeededRandom } from '../rng/SeededRandom';
 import type { GameState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
+import { applyStatus } from '../state/statuses';
 
 export type DumpsterLootKind =
   | 'EMPTY'
@@ -130,6 +131,7 @@ export const startDumpsterSearch = (
 
   return {
     ...charged,
+    state: applyStatus(charged.state, config.dumpster.appliesStatus),
     action,
   };
 };
