@@ -45,7 +45,10 @@ describe('T058 Game Over / Victory flow model', () => {
       cash: balance.game.mainDebt + 5_000,
       totalBarryPaid: 18_000,
       barryPaymentIndex: 4,
-      clock: createGameClock('18:42', 3),
+      clock: {
+        ...createGameClock('18:42'),
+        gameDayIndex: 3,
+      },
       jobLevels: {
         dishes: 3,
         trash: 2,
@@ -89,7 +92,10 @@ describe('T058 Game Over / Victory flow model', () => {
       ...createInitialGameState(balance, 1_203),
       cash: 900,
       terminalReason: 'BARRY_PAYMENT_FAILED' as const,
-      clock: createGameClock('09:00', 2),
+      clock: {
+        ...createGameClock('09:00'),
+        gameDayIndex: 2,
+      },
     };
 
     const summary = deriveRunEndSummary(
