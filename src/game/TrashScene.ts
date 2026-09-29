@@ -3,13 +3,21 @@ import Phaser from 'phaser';
 import { balance } from '../config/balance';
 import { SceneAudio } from '../audio/SceneAudio';
 import type { WorkActiveAction } from '../core/actions/ActiveAction';
-import { resolveBarryPayment } from '../core/barry/barry';
+import {
+  getBarryPaymentDue,
+  resolveBarryPayment,
+} from '../core/barry/barry';
 import type { SaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
+import { getWorkLevelDefinition } from '../core/work/work';
 import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
 import { recordTutorialMilestone } from './tutorial/tutorialProgress';
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
+import {
+  getSceneGameAnalytics,
+} from './analytics/sceneGameAnalytics';
+import type { GameAnalytics } from '../analytics/GameAnalytics';
 import { VISUAL_FONT, visualColor, visualHex } from './visual/visualTheme';
 import {
   createBarryMinigameOverlay,
@@ -35,6 +43,7 @@ const isTrashAction = (
 
 export class TrashScene extends Phaser.Scene {
   private repository: SaveRepository | null = null;
+  private analytics: GameAnalytics | null = null;
   private save: SaveState | null = null;
   private session: TrashSession | null = null;
   private graphics?: Phaser.GameObjects.Graphics;
@@ -56,6 +65,7 @@ export class TrashScene extends Phaser.Scene {
     const { width } = this.scale;
 
     this.audio = new SceneAudio(this, 'work');
+    this.analytics = getSceneGameAnalytics(this);
 
     this.add
       .text(width / 2, 24, 'ВЫНЕСТИ МУСОР', {
@@ -319,13 +329,18 @@ export class TrashScene extends Phaser.Scene {
       return;
     }
 
+    const before = this.save.game;
     const previousPaymentIndex =
-      this.save.game.barryPaymentIndex;
-    const cashBefore = this.save.game.cash;
+      before.barryPaymentIndex;
+    const cashBefore = before.cash;
+    const due = getBarryPaymentDue(
+      before,
+      balance,
+    );
     this.save = {
       ...this.save,
       game: resolveBarryPayment(
-        this.save.game,
+        before,
         balance,
       ),
     };
@@ -336,6 +351,19 @@ export class TrashScene extends Phaser.Scene {
         previousPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      this.analytics?.track(
+        'barry_paid',
+        {
+          payment_index:
+            this.save.game.barryPaymentIndex,
+          amount: Math.max(
+            due,
+            this.save.game.totalBarryPaid -
+              before.totalBarryPaid,
+          ),
+          cash_after: this.save.game.cash,
+        },
+      );
       if (this.save.game.cash < cashBefore) {
         this.audio?.play('cashSpend');
       }
@@ -364,6 +392,9 @@ export class TrashScene extends Phaser.Scene {
 
     const repository = this.repository;
     const snapshot = structuredClone(this.save);
+    this.analytics?.observeState(
+      snapshot.game,
+    );
 
     this.saveWriteChain = this.saveWriteChain.then(async () => {
       await repository.write(snapshot);
@@ -388,10 +419,11 @@ export class TrashScene extends Phaser.Scene {
     this.completionInFlight = true;
     this.heldBagId = null;
 
+    const action = this.save.activeAction;
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
-      this.save.activeAction,
+      action,
       result,
       balance,
     );
@@ -405,6 +437,48 @@ export class TrashScene extends Phaser.Scene {
 
     if (completion.shiftCompleted) {
       recordTutorialMilestone('WORK_COMPLETED');
+
+      const definition =
+        getWorkLevelDefinition(
+          balance,
+          action.actionId as keyof typeof balance.work.jobs,
+          action.level,
+        );
+      if (result === 'SUCCESS') {
+        this.analytics?.track(
+          'work_completed',
+          {
+            job: action.actionId,
+            level: action.level,
+            payout: Math.max(
+              0,
+              completion.state.cash -
+                cashBefore,
+            ),
+            cash_after:
+              completion.state.cash,
+            duration_minutes:
+              definition.durationMinutes,
+          },
+        );
+      } else {
+        this.analytics?.track(
+          'work_failed',
+          {
+            job: action.actionId,
+            level: action.level,
+            fine: Math.max(
+              0,
+              cashBefore -
+                completion.state.cash,
+            ),
+            cash_after:
+              completion.state.cash,
+            duration_minutes:
+              definition.durationMinutes,
+          },
+        );
+      }
     }
 
     if (result === 'FAILURE') {
