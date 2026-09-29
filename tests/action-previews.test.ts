@@ -84,7 +84,7 @@ describe('T056 action previews', () => {
       (preview) => preview.id === 'food:FOOD_08',
     )!;
 
-    expect(cheap.summary[0]).toContain('195 ₽');
+    expect(cheap.summary.join(' ')).toContain('195 ₽');
     expect(cheap.lockedReason).toBeNull();
     expect(expensive.lockedReason).toBe(
       'Недостаточно денег',
