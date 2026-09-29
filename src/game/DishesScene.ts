@@ -1,10 +1,16 @@
 import Phaser from 'phaser';
 
 import { balance } from '../config/balance';
+import { resolveBarryPayment } from '../core/barry/barry';
 import { createLocalSaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import { createInitialGameState } from '../core/state/GameState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
+import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
+import {
+  createBarryMinigameOverlay,
+  type BarryMinigameOverlay,
+} from './work/createBarryMinigameOverlay';
 import type { WorkActiveAction } from '../core/actions/ActiveAction';
 import {
   advanceDishesSession,
@@ -42,6 +48,8 @@ export class DishesScene extends Phaser.Scene {
   private lastPointer: DishesPoint | null = null;
   private pointerDown = false;
   private completionInFlight = false;
+  private readonly minigameClock = new WorkMinigameClock(balance);
+  private barryOverlay?: BarryMinigameOverlay;
 
   public constructor() {
     super('dishes');
@@ -97,6 +105,13 @@ export class DishesScene extends Phaser.Scene {
       .setOrigin(0.5, 0);
 
     this.graphics = this.add.graphics();
+    this.barryOverlay = createBarryMinigameOverlay(
+      this,
+      balance,
+      () => {
+        void this.payBarry();
+      },
+    );
 
     this.input.on('pointerdown', this.handlePointerDown);
     this.input.on('pointermove', this.handlePointerMove);
@@ -114,8 +129,55 @@ export class DishesScene extends Phaser.Scene {
   }
 
   public update(_time: number, deltaMs: number): void {
-    if (!this.session || this.completionInFlight) return;
+    if (!this.session || this.completionInFlight || !this.save) return;
 
+    if (this.save.game.barryInterruptPending) {
+      this.pointerDown = false;
+      this.lastPointer = null;
+      this.barryOverlay?.show(this.save.game);
+      return;
+    }
+
+    const clock = this.minigameClock.advance(
+      this.save.game,
+      deltaMs,
+      balance,
+    );
+
+    if (clock.state !== this.save.game) {
+      this.save = {
+        ...this.save,
+        game: clock.state,
+      };
+      if (clock.advancedMinutes > 0) {
+        void this.persistRuntime(
+          clock.interruptedByBarry || clock.terminal,
+        );
+      }
+    }
+
+    if (clock.terminal) {
+      this.pointerDown = false;
+      this.lastPointer = null;
+      this.completionInFlight = true;
+      this.messageText?.setText(
+        `GAME OVER: ${this.save.game.terminalReason ?? 'terminal'}`,
+      );
+      this.time.delayedCall(700, () => {
+        this.scene.start('bootstrap');
+      });
+      return;
+    }
+
+    if (clock.interruptedByBarry) {
+      this.pointerDown = false;
+      this.lastPointer = null;
+      this.barryOverlay?.show(this.save.game);
+      this.render();
+      return;
+    }
+
+    this.barryOverlay?.hide();
     this.session = advanceDishesSession(
       this.session,
       deltaMs,
@@ -162,7 +224,13 @@ export class DishesScene extends Phaser.Scene {
   private readonly handlePointerDown = (
     pointer: Phaser.Input.Pointer,
   ): void => {
-    if (!this.session || this.session.result !== null) return;
+    if (
+      !this.session ||
+      this.session.result !== null ||
+      this.save?.game.barryInterruptPending
+    ) {
+      return;
+    }
 
     this.pointerDown = true;
     const point = { x: pointer.x, y: pointer.y };
@@ -182,7 +250,8 @@ export class DishesScene extends Phaser.Scene {
       !this.session ||
       this.session.result !== null ||
       !this.pointerDown ||
-      !pointer.isDown
+      !pointer.isDown ||
+      this.save?.game.barryInterruptPending
     ) {
       return;
     }
@@ -210,6 +279,45 @@ export class DishesScene extends Phaser.Scene {
     if (this.session.result !== null && !this.completionInFlight) {
       void this.complete(this.session.result);
     }
+  }
+
+  private async payBarry(): Promise<void> {
+    if (
+      !this.save ||
+      !this.repository ||
+      !this.save.game.barryInterruptPending
+    ) {
+      return;
+    }
+
+    this.save = {
+      ...this.save,
+      game: resolveBarryPayment(
+        this.save.game,
+        balance,
+      ),
+    };
+    await this.persistRuntime(true);
+
+    if (this.save.game.terminalReason !== null) {
+      this.completionInFlight = true;
+      this.barryOverlay?.setMessage(
+        'Не хватает денег. Забег завершён.',
+      );
+      this.time.delayedCall(850, () => {
+        this.scene.start('bootstrap');
+      });
+      return;
+    }
+
+    this.barryOverlay?.hide();
+    this.render();
+  }
+
+  private async persistRuntime(flush: boolean): Promise<void> {
+    if (!this.repository || !this.save) return;
+    await this.repository.write(this.save);
+    if (flush) await this.repository.flush();
   }
 
   private async complete(
