@@ -3,7 +3,11 @@ import { getBarryPaymentDue } from '../../src/core/barry/barry';
 import {
   getEventChoiceAvailability,
 } from '../../src/core/events/eventEffects';
-import type { BetFraction } from '../../src/core/plinko-rules/drop';
+import {
+  calculateActualBet,
+  type BetFraction,
+} from '../../src/core/plinko-rules/drop';
+import { getMaxBetForLevel } from '../../src/core/plinko-rules/progression';
 import type { GameState } from '../../src/core/state/GameState';
 import { startWork, type JobId } from '../../src/core/work/work';
 import type {
@@ -195,6 +199,92 @@ const chooseJobUpgrade = (
   return null;
 };
 
+const chooseGrowthEvUpgrade = (
+  state: GameState,
+  config: BalanceConfig,
+  reserve: number,
+): FullGameDecision | null => {
+  if (state.eventModifiers.plinkoLockRemainingMinutes > 0) {
+    return null;
+  }
+
+  const pocketCandidate = (
+    track: 'center' | 'mid' | 'jackpot',
+    currentLevel: number,
+    levels: readonly { level: number; price: number }[],
+  ): FullGameDecision | null => {
+    const next = levels.find((entry) => entry.level === currentLevel + 1);
+    return next !== undefined &&
+      canAffordAboveReserve(state, next.price, reserve)
+      ? { type: 'BUY_PLINKO_POCKET', track }
+      : null;
+  };
+
+  const specialCandidate = (
+    track: 'amplifier' | 'return' | 'splitter' | 'jackpotBias',
+    currentLevel: number,
+    levels: readonly { level: number; price: number }[],
+  ): FullGameDecision | null => {
+    const next = levels.find((entry) => entry.level === currentLevel + 1);
+    return next !== undefined &&
+      canAffordAboveReserve(state, next.price, reserve)
+      ? { type: 'BUY_PLINKO_SPECIAL', track }
+      : null;
+  };
+
+  return (
+    pocketCandidate(
+      'center',
+      state.plinkoCenterLevel,
+      config.plinko.centerUpgrades,
+    ) ??
+    pocketCandidate(
+      'mid',
+      state.plinkoMidLevel,
+      config.plinko.midUpgrades,
+    ) ??
+    specialCandidate(
+      'jackpotBias',
+      state.plinkoJackpotBiasLevel,
+      config.plinko.jackpotBias,
+    ) ??
+    specialCandidate(
+      'amplifier',
+      state.plinkoAmplifierLevel,
+      config.plinko.amplifier,
+    ) ??
+    specialCandidate(
+      'return',
+      state.plinkoReturnLevel,
+      config.plinko.return,
+    ) ??
+    pocketCandidate(
+      'jackpot',
+      state.plinkoJackpotLevel,
+      config.plinko.jackpotUpgrades,
+    )
+  );
+};
+
+const canBetAboveReserve = (
+  state: GameState,
+  config: BalanceConfig,
+  fraction: BetFraction,
+  reserve: number,
+): boolean => {
+  if (state.cash <= 0) return false;
+  const maxBet = getMaxBetForLevel(
+    config,
+    state.plinkoMaxBetLevel,
+  );
+  const stake = calculateActualBet(
+    state.cash,
+    maxBet,
+    fraction,
+  );
+  return state.cash - stake >= reserve;
+};
+
 const chooseMaxBetUpgrade = (
   state: GameState,
   config: BalanceConfig,
@@ -341,6 +431,15 @@ const createDecisionFunction = (
     const recovery = chooseRecovery(state, config, profile, reserve);
     if (recovery !== null) return recovery;
 
+    if (profile.archetype === 'BASELINE_GROWTH') {
+      const evUpgrade = chooseGrowthEvUpgrade(
+        state,
+        config,
+        reserve,
+      );
+      if (evUpgrade !== null) return evUpgrade;
+    }
+
     const jobUpgrade = chooseJobUpgrade(
       state,
       config,
@@ -370,6 +469,12 @@ const createDecisionFunction = (
       profile.allowPlinko &&
       state.eventModifiers.plinkoLockRemainingMinutes <= 0 &&
       excessCash > 0 &&
+      canBetAboveReserve(
+        state,
+        config,
+        profile.betFraction,
+        reserve,
+      ) &&
       (profile.archetype === 'AGGRESSIVE' ||
         profile.archetype === 'BASELINE_GROWTH')
     ) {
@@ -384,7 +489,13 @@ const createDecisionFunction = (
     if (
       profile.allowPlinko &&
       state.eventModifiers.plinkoLockRemainingMinutes <= 0 &&
-      excessCash > 0
+      excessCash > 0 &&
+      canBetAboveReserve(
+        state,
+        config,
+        profile.betFraction,
+        reserve,
+      )
     ) {
       return {
         type: 'PLINKO',
