@@ -1214,36 +1214,42 @@ export class PlinkoDebugScene extends Phaser.Scene {
               ? visualColor('paperOld')
               : visualColor('lineDirty');
 
-      graphics.fillStyle(
-        accent,
-        upgraded ? 0.18 : 0.035,
-      );
-      graphics.fillRect(
-        pocket.x - pocketWidth / 2,
-        layout.pocketTopY,
-        pocketWidth,
-        pocketHeight,
-      );
+      if (upgraded) {
+        graphics.fillStyle(accent, 0.18);
+        graphics.fillRect(
+          pocket.x - pocketWidth / 2,
+          layout.pocketTopY,
+          pocketWidth,
+          pocketHeight,
+        );
+      }
     });
+
+    graphics.fillStyle(
+      visualColor('lineDirty'),
+      1,
+    );
+    for (const peg of layout.pegs) {
+      if (
+        getPegVisualRole(
+          peg.id,
+          snapshot.pegRoles,
+        ) === 'regular'
+      ) {
+        graphics.fillCircle(
+          peg.x,
+          peg.y,
+          geometry.pegRadius,
+        );
+      }
+    }
 
     for (const peg of layout.pegs) {
       const role = getPegVisualRole(
         peg.id,
         snapshot.pegRoles,
       );
-
-      if (role === 'regular') {
-        graphics.fillStyle(
-          visualColor('lineDirty'),
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius,
-        );
-        continue;
-      }
+      if (role === 'regular') continue;
 
       if (role === 'amplifier') {
         graphics.fillStyle(
