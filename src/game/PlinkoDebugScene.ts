@@ -88,12 +88,17 @@ import {
   type TutorialCard,
 } from './tutorial/createTutorialCard';
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
+import {
+  getSceneGameAnalytics,
+} from './analytics/sceneGameAnalytics';
+import type { GameAnalytics } from '../analytics/GameAnalytics';
 
 export class PlinkoDebugScene extends Phaser.Scene {
   private runtime: BarePlinkoRuntime | null = null;
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
   private repository: SaveRepository | null = null;
+  private analytics: GameAnalytics | null = null;
   private readonly balls = new Map<MatterJS.BodyType, DropBallState>();
   private saveWriteChain: Promise<void> = Promise.resolve();
   private cascadeMutationChain: Promise<void> = Promise.resolve();
@@ -118,6 +123,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private readonly pocketLabels: Phaser.GameObjects.Text[] = [];
   private tutorialCard?: TutorialCard;
   private visualSnapshot: PlinkoVisualSnapshot | null = null;
+  private dropResumed = false;
+  private sessionSplitEvents = 0;
+  private sessionAmplifierEvents = 0;
+  private sessionReturnEvents = 0;
+  private sessionPeakActiveBalls = 0;
 
   public constructor() {
     super('plinko-debug');
@@ -244,10 +254,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private async initialize(): Promise<void> {
     this.repository = getSceneSaveRepository(this);
+    this.analytics = getSceneGameAnalytics(this);
     this.save = await this.repository.load();
     this.refreshVisualSnapshot();
 
     const pendingAtLoad = this.save.pendingDrop;
+    this.dropResumed = pendingAtLoad !== null;
     this.random = new SeededRandom(
       pendingAtLoad?.physics === null
         ? pendingAtLoad.rngStateAtCommit
@@ -309,6 +321,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
           const body = this.runtime.restoreBall(snapshot);
           this.balls.set(body, this.metadataFromSnapshot(snapshot));
         }
+        this.sessionPeakActiveBalls =
+          this.balls.size;
 
         this.showStatus(
           `RESTORED DROP ${pendingAtLoad.dropId} at fixed tick ${pendingAtLoad.physics.fixedTicksElapsed}.`,
@@ -332,6 +346,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
             body,
             createRootBallState(pendingAtLoad.dropId),
           );
+          this.sessionPeakActiveBalls =
+            Math.max(
+              this.sessionPeakActiveBalls,
+              this.balls.size,
+            );
           this.save = {
             ...this.save,
             game: {
@@ -469,7 +488,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.save || !this.repository) return;
 
     try {
-      let game = this.save.game;
+      const beforeGame = this.save.game;
+      const beforePreview =
+        buildCasinoUpgradePreviews(
+          beforeGame,
+          this.save.pendingDrop,
+          balance,
+        ).find(
+          (preview) => preview.id === id,
+        );
+      let game = beforeGame;
 
       if (id === 'maxBet') {
         game = purchaseMaxBetUpgrade(
@@ -518,6 +546,33 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
 
       await this.enqueueSave(true);
+
+      const afterPreview =
+        buildCasinoUpgradePreviews(
+          game,
+          this.save.pendingDrop,
+          balance,
+        ).find(
+          (preview) => preview.id === id,
+        );
+      if (beforePreview && afterPreview) {
+        this.analytics?.track(
+          'upgrade_bought',
+          {
+            upgrade: id,
+            from_level:
+              beforePreview.currentLevel,
+            to_level:
+              afterPreview.currentLevel,
+            price: Math.max(
+              0,
+              beforeGame.cash - game.cash,
+            ),
+            cash_after: game.cash,
+          },
+        );
+      }
+
       recordTutorialMilestone('UPGRADE_BOUGHT');
       this.showStatus('Апгрейд куплен.');
       this.renderAll();
@@ -537,6 +592,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     try {
+      const cashBefore =
+        this.save.game.cash;
       const dropId =
         `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
       const committed = commitBareDrop(
@@ -559,6 +616,31 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
       // Stake + pendingDrop are durable before time or physical outcome generation.
       await this.enqueueSave(true);
+
+      this.dropResumed = false;
+      this.sessionSplitEvents = 0;
+      this.sessionAmplifierEvents = 0;
+      this.sessionReturnEvents = 0;
+      this.sessionPeakActiveBalls = 0;
+      this.analytics?.track(
+        'plinko_drop',
+        {
+          drop_id:
+            committed.pendingDrop.dropId,
+          bet:
+            committed.pendingDrop.originalStake,
+          board_hash:
+            committed.pendingDrop.boardFingerprint,
+          cash_before: cashBefore,
+          cash_after:
+            committed.state.cash,
+          rng_state_at_commit:
+            committed.pendingDrop.rngStateAtCommit,
+          max_bet_level:
+            committed.pendingDrop.maxBetLevel,
+        },
+      );
+
       this.worldAudio?.play('cashSpend');
 
       if (
@@ -595,6 +677,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
         body,
         createRootBallState(committed.pendingDrop.dropId),
       );
+      this.sessionPeakActiveBalls =
+        Math.max(
+          this.sessionPeakActiveBalls,
+          this.balls.size,
+        );
 
       this.save = {
         ...this.save,
@@ -659,6 +746,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         );
       }
 
+      this.sessionAmplifierEvents += 1;
       this.audio?.amplifier();
       await this.persistPendingPhysics(true);
       return;
@@ -687,6 +775,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           rngState: this.random.snapshot().state,
         },
       };
+      this.sessionReturnEvents += 1;
       this.audio?.returnCue();
       await this.persistPendingPhysics(true);
       return;
@@ -710,6 +799,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.balls.delete(body);
       this.balls.set(leftBody, leftState);
       this.balls.set(rightBody, rightState);
+      this.sessionSplitEvents += 1;
+      this.sessionPeakActiveBalls =
+        Math.max(
+          this.sessionPeakActiveBalls,
+          this.balls.size,
+        );
 
       this.audio?.splitter();
       await this.persistPendingPhysics(true);
@@ -763,10 +858,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
       return;
     }
 
+    const beforeSettlement =
+      this.save.game;
     const previousBarryPaymentIndex =
-      this.save.game.barryPaymentIndex;
+      beforeSettlement.barryPaymentIndex;
+    const physicsTicks =
+      this.runtime.getFixedTicksElapsed();
+    const cashBeforeDrop =
+      beforeSettlement.cash +
+      pending.originalStake;
     const result = settleAggregatePendingDropAndResumeTime(
-      this.save.game,
+      beforeSettlement,
       pending,
       aggregatePayout,
       balance,
@@ -783,6 +885,34 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
     await this.enqueueSave(true);
 
+    this.analytics?.track(
+      'plinko_resolved',
+      {
+        drop_id: pending.dropId,
+        bet: pending.originalStake,
+        payout: result.payout,
+        multiplier: result.multiplier,
+        board_hash:
+          pending.boardFingerprint,
+        cash_before: cashBeforeDrop,
+        cash_after: result.state.cash,
+        rng_state_at_commit:
+          pending.rngStateAtCommit,
+        physics_ticks: physicsTicks,
+        resumed: this.dropResumed,
+        session_split_events:
+          this.sessionSplitEvents,
+        session_amplifier_events:
+          this.sessionAmplifierEvents,
+        session_return_events:
+          this.sessionReturnEvents,
+        session_peak_active_balls:
+          this.sessionPeakActiveBalls,
+        insurance_applied:
+          result.insuranceApplied,
+      },
+    );
+
     recordTutorialMilestone('DROP_RESOLVED');
     if (
       result.state.terminalReason === null &&
@@ -790,6 +920,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
         previousBarryPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      this.analytics?.track(
+        'barry_paid',
+        {
+          payment_index:
+            result.state.barryPaymentIndex,
+          amount: Math.max(
+            0,
+            result.state.totalBarryPaid -
+              beforeSettlement.totalBarryPaid,
+          ),
+          cash_after: result.state.cash,
+        },
+      );
     }
 
     const terminalSuffix = result.state.terminalReason
@@ -998,6 +1141,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderTutorial();
 
     if (this.save) {
+      this.analytics?.observeState(
+        this.save.game,
+      );
       this.worldAudio?.syncBarry(
         this.save.game.barryInterruptPending,
       );
