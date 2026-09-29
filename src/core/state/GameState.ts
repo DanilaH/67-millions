@@ -16,6 +16,10 @@ export interface JobLevelsState {
   courier: number;
 }
 
+export interface StatusState {
+  SMELLY: boolean;
+}
+
 export interface InsuranceArmState {
   level: number;
   floor: number;
@@ -33,6 +37,7 @@ export interface GameState {
   workPayoutMultiplier: number;
   jobLevels: JobLevelsState;
   dumpsterSearchStreak: number;
+  statuses: StatusState;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
   plinkoMaxBetLevel: number;
   plinkoCenterLevel: number;
@@ -74,6 +79,7 @@ export const createInitialGameState = (
     courier: 1,
   },
   dumpsterSearchStreak: 0,
+  statuses: { SMELLY: false },
   plinkoSelectedBetFraction: 1,
   plinkoMaxBetLevel: 0,
   plinkoCenterLevel: 0,
