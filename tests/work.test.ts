@@ -140,6 +140,43 @@ describe('work transaction', () => {
     ).toThrow('action is active');
   });
 
+  it('locks job upgrades while Barry is pending or the run has ended', () => {
+    const base = {
+      ...createInitialGameState(balance, 1),
+      cash: 20_000,
+    };
+
+    expect(() =>
+      purchaseJobUpgrade(
+        { ...base, barryInterruptPending: true },
+        null,
+        null,
+        balance,
+        'dishes',
+      ),
+    ).toThrow('Barry is pending');
+
+    expect(() =>
+      purchaseJobUpgrade(
+        { ...base, terminalReason: 'HEALTH_ZERO' },
+        null,
+        null,
+        balance,
+        'dishes',
+      ),
+    ).toThrow('run has ended');
+
+    expect(() =>
+      purchaseJobUpgrade(
+        { ...base, victory: true, mainDebt: 0 },
+        null,
+        null,
+        balance,
+        'dishes',
+      ),
+    ).toThrow('run has ended');
+  });
+
   it('keeps overnight windows half-open at both boundaries', () => {
     const state = {
       ...createInitialGameState(balance, 1),
