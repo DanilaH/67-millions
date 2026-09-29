@@ -177,6 +177,7 @@ class SharedSceneAudioRuntime {
     performance.now();
 
   private cueCounter = 0;
+  private primed = false;
   private nextOwnerId = 1;
   private activeOwnerId = 0;
   private ambience: SceneAmbienceKind = 'city';
@@ -269,6 +270,7 @@ class SharedSceneAudioRuntime {
       return;
     }
 
+    this.primed = true;
     this.ensureGraph();
     this.mixer?.setBlocked(this.blocked);
     this.mixer?.setMuted(this.muted);
@@ -287,6 +289,7 @@ class SharedSceneAudioRuntime {
   public play(cue: SceneAudioCue): void {
     if (
       this.disposed ||
+      !this.primed ||
       this.blocked ||
       this.muted
     ) {
