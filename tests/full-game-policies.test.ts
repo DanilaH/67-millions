@@ -99,46 +99,25 @@ describe('baseline full-game policies', () => {
     },
   );
 
-  it('differentiates cautious, growth, aggressive, and worker bankroll behavior', () => {
-    const state = {
+  it('keeps cautious/worker work-first while growth uses a reserve-safe Plinko fraction', () => {
+    const base = {
       ...createInitialGameState(balance, 2),
-      cash: 20_000,
+      cash: 14_000,
       jobLevels: {
         dishes: 3,
         trash: 3,
         courier: 3,
       },
-      plinkoMaxBetLevel:
-        balance.plinko.maxBetLevels[
-          balance.plinko.maxBetLevels.length - 1
-        ]!.level,
-      plinkoCenterLevel:
-        balance.plinko.centerUpgrades[
-          balance.plinko.centerUpgrades.length - 1
-        ]!.level,
-      plinkoMidLevel:
-        balance.plinko.midUpgrades[
-          balance.plinko.midUpgrades.length - 1
-        ]!.level,
-      plinkoJackpotLevel:
-        balance.plinko.jackpotUpgrades[
-          balance.plinko.jackpotUpgrades.length - 1
-        ]!.level,
-      plinkoAmplifierLevel:
-        balance.plinko.amplifier[
-          balance.plinko.amplifier.length - 1
-        ]!.level,
-      plinkoReturnLevel:
-        balance.plinko.return[
-          balance.plinko.return.length - 1
-        ]!.level,
-      plinkoJackpotBiasLevel:
-        balance.plinko.jackpotBias[
-          balance.plinko.jackpotBias.length - 1
-        ]!.level,
+      plinkoMaxBetLevel: 2,
+      plinkoCenterLevel: 2,
+      plinkoMidLevel: 3,
+      plinkoJackpotLevel: 3,
+      plinkoAmplifierLevel: 5,
+      plinkoReturnLevel: 4,
+      plinkoJackpotBiasLevel: 4,
     };
     const context = {
-      state,
+      state: base,
       activeAction: null,
       counters: zeroCounters(),
       decisionIndex: 0,
@@ -154,11 +133,6 @@ describe('baseline full-game policies', () => {
       'BASELINE_GROWTH',
       2,
     ).decide(context);
-    const aggressive = createBaselinePolicy(
-      balance,
-      'AGGRESSIVE',
-      2,
-    ).decide(context);
     const worker = createBaselinePolicy(
       balance,
       'WORKER',
@@ -167,8 +141,34 @@ describe('baseline full-game policies', () => {
 
     expect(cautious.type).toBe('WORK');
     expect(growth).toEqual({ type: 'PLINKO', fraction: 0.5 });
-    expect(aggressive).toEqual({ type: 'PLINKO', fraction: 1 });
     expect(worker.type).toBe('WORK');
+  });
+
+  it('AGGRESSIVE falls back from 100% to the largest reserve-safe quick bet', () => {
+    const state = {
+      ...createInitialGameState(balance, 24),
+      cash: 30_000,
+      jobLevels: {
+        dishes: 3,
+        trash: 3,
+        courier: 3,
+      },
+      plinkoMaxBetLevel: 3,
+    };
+    const policy = createBaselinePolicy(
+      balance,
+      'AGGRESSIVE',
+      24,
+    );
+
+    expect(
+      policy.decide({
+        state,
+        activeAction: null,
+        counters: zeroCounters(),
+        decisionIndex: 0,
+      }),
+    ).toEqual({ type: 'PLINKO', fraction: 0.25 });
   });
 
   it('BASELINE_GROWTH buys EV-oriented pocket progression before routine earning', () => {
