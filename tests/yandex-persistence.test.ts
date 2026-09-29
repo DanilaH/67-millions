@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  WebStorageAdapter,
-  type StorageAdapter,
-} from '@danilah/mini-games-kit/platform';
+import type { StorageAdapter } from '@danilah/mini-games-kit/platform';
 import {
   YandexMirroredStorageAdapter,
   type YandexPlayerDataLike,
