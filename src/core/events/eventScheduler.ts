@@ -1,6 +1,7 @@
 import type { BalanceConfig } from '../../config/balance.schema';
 import { SeededRandom } from '../rng/SeededRandom';
 import type { GameState } from '../state/GameState';
+import { getEligibleEventIds } from './eligibility';
 
 export interface EventCheckpointAdvanceOptions {
   isSleeping: boolean;
@@ -16,6 +17,7 @@ export interface EventCheckpointAdvanceResult {
 export interface PendingEventPresentationContext {
   skillInputActive: boolean;
   pendingDropActive: boolean;
+  activeActionBlocking?: boolean;
 }
 
 const configuredEventIds = (config: BalanceConfig): string[] =>
@@ -27,8 +29,11 @@ const eligiblePool = (
   requestedIds?: readonly string[],
 ): string[] => {
   const configured = new Set(configuredEventIds(config));
+  const naturallyEligible = new Set(getEligibleEventIds(state, config));
   const source = requestedIds ?? configuredEventIds(config);
-  const unique = [...new Set(source)].filter((id) => configured.has(id));
+  const unique = [...new Set(source)].filter(
+    (id) => configured.has(id) && naturallyEligible.has(id),
+  );
 
   return config.events.noImmediateRepeat && state.lastResolvedEventId !== null
     ? unique.filter((id) => id !== state.lastResolvedEventId)
@@ -120,7 +125,8 @@ export const getPresentablePendingEventId = (
     state.victory ||
     state.barryInterruptPending ||
     context.skillInputActive ||
-    context.pendingDropActive
+    context.pendingDropActive ||
+    context.activeActionBlocking === true
   ) {
     return null;
   }
