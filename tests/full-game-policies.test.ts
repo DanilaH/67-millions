@@ -103,6 +103,12 @@ describe('baseline full-game policies', () => {
     const state = {
       ...createInitialGameState(balance, 2),
       cash: 20_000,
+      jobLevels: {
+        dishes: 3,
+        trash: 3,
+        courier: 3,
+      },
+      plinkoMaxBetLevel: balance.plinko.maxBetLevels[balance.plinko.maxBetLevels.length - 1]!.level,
     };
     const context = {
       state,
