@@ -4,12 +4,12 @@ import { balance } from '../config/balance';
 import { SceneAudio } from '../audio/SceneAudio';
 import type { WorkActiveAction } from '../core/actions/ActiveAction';
 import { resolveBarryPayment } from '../core/barry/barry';
-import { createLocalSaveRepository } from '../core/save/repository';
+import type { SaveRepository } from '../core/save/repository';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
-import { createInitialGameState } from '../core/state/GameState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
 import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
 import { recordTutorialMilestone } from './tutorial/tutorialProgress';
+import { getSceneSaveRepository } from './save/sceneSaveRepository';
 import { VISUAL_FONT, visualColor, visualHex } from './visual/visualTheme';
 import {
   createBarryMinigameOverlay,
@@ -26,12 +26,6 @@ import {
   type TrashSession,
 } from '../minigames/trash/trashModel';
 
-const createRunSeed = (): number => {
-  const values = new Uint32Array(1);
-  crypto.getRandomValues(values);
-  return values[0] || 1;
-};
-
 const isTrashAction = (
   action: SaveState['activeAction'],
 ): action is WorkActiveAction =>
@@ -40,9 +34,7 @@ const isTrashAction = (
   action.result === null;
 
 export class TrashScene extends Phaser.Scene {
-  private repository:
-    | ReturnType<typeof createLocalSaveRepository>
-    | null = null;
+  private repository: SaveRepository | null = null;
   private save: SaveState | null = null;
   private session: TrashSession | null = null;
   private graphics?: Phaser.GameObjects.Graphics;
@@ -206,9 +198,7 @@ export class TrashScene extends Phaser.Scene {
   }
 
   private async initialize(): Promise<void> {
-    this.repository = createLocalSaveRepository(() =>
-      createInitialGameState(balance, createRunSeed()),
-    );
+    this.repository = getSceneSaveRepository(this);
 
     try {
       const save = await this.repository.load();
