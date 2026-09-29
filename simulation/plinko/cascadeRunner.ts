@@ -38,6 +38,7 @@ export interface CascadeRunnerOptions {
   stake?: number;
   batchSize?: number;
   maxTicks?: number;
+  initialBallCount?: number;
 }
 
 export interface CascadeStuckBallDiagnostic {
@@ -321,9 +322,20 @@ export const runCascadePhysicalDrops = (
 
   const stake = options.stake ?? 100_000;
   const batchSize = options.batchSize ?? 64;
+  const initialBallCount = options.initialBallCount ?? 1;
   const maxTicks =
     options.maxTicks ??
     config.plinko.geometry.fixedTimestepHz * 60;
+
+  if (
+    !Number.isInteger(initialBallCount) ||
+    initialBallCount <= 0 ||
+    initialBallCount > config.plinko.maxActiveBalls
+  ) {
+    throw new RangeError(
+      `initialBallCount must be within 1..${config.plinko.maxActiveBalls}`,
+    );
+  }
 
   if (!Number.isInteger(stake) || stake <= 0) {
     throw new RangeError('stake must be a positive integer');
@@ -420,7 +432,7 @@ export const runCascadePhysicalDrops = (
         childBallCount: 0,
         returnCount: 0,
         amplifierProcCount: 0,
-        maxActiveBalls: 1,
+        maxActiveBalls: initialBallCount,
         pocketCounts: Array.from(
           { length: options.pocketMultipliers.length },
           () => 0,
@@ -428,14 +440,22 @@ export const runCascadePhysicalDrops = (
         completedTick: null,
       });
 
-      const root = createRootBallState(`sim:${dropIndex}`);
-      const body = createBall(
-        config,
-        getSpawnX(config, random.next()),
-        config.plinko.geometry.topPegY -
-          config.plinko.geometry.verticalPegSpacing,
-      );
-      addBall(dropIndex, root, body);
+      for (
+        let rootIndex = 0;
+        rootIndex < initialBallCount;
+        rootIndex += 1
+      ) {
+        const root = createRootBallState(
+          `sim:${dropIndex}:root:${rootIndex}`,
+        );
+        const body = createBall(
+          config,
+          getSpawnX(config, random.next()),
+          config.plinko.geometry.topPegY -
+            config.plinko.geometry.verticalPegSpacing,
+        );
+        addBall(dropIndex, root, body);
+      }
     }
 
     type PegEvent = { bodyId: number; pegId: string };
