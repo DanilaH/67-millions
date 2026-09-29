@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { balance } from '../config/balance';
+import { SceneAudio } from '../audio/SceneAudio';
 import type { WorkActiveAction } from '../core/actions/ActiveAction';
 import { resolveBarryPayment } from '../core/barry/barry';
 import { createLocalSaveRepository } from '../core/save/repository';
@@ -72,6 +73,7 @@ export class CourierScene extends Phaser.Scene {
   private saveWriteChain: Promise<void> = Promise.resolve();
   private readonly minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
+  private audio?: SceneAudio;
 
   public constructor() {
     super('courier');
@@ -79,6 +81,8 @@ export class CourierScene extends Phaser.Scene {
 
   public create(): void {
     const { width } = this.scale;
+
+    this.audio = new SceneAudio(this, 'work');
 
     this.add
       .text(width / 2, 24, 'КУРЬЕРСКИЙ МАРШРУТ', {
@@ -154,6 +158,8 @@ export class CourierScene extends Phaser.Scene {
       this.input.off('pointermove', this.handlePointerMove);
       this.input.off('pointerup', this.handlePointerUp);
       this.input.off('pointerupoutside', this.handlePointerUp);
+      this.audio?.dispose();
+      this.audio = undefined;
     });
 
     void this.initialize();
@@ -161,6 +167,10 @@ export class CourierScene extends Phaser.Scene {
 
   public update(_time: number, deltaMs: number): void {
     if (!this.session || this.completionInFlight || !this.save) return;
+
+    this.audio?.syncBarry(
+      this.save.game.barryInterruptPending,
+    );
 
     if (this.save.game.barryInterruptPending) {
       this.drawing = false;
@@ -276,6 +286,7 @@ export class CourierScene extends Phaser.Scene {
       this.session,
       point,
     );
+    this.audio?.play('courierDraw');
     this.render();
   };
 
@@ -296,6 +307,7 @@ export class CourierScene extends Phaser.Scene {
       this.session,
       { x: pointer.x, y: pointer.y },
     );
+    this.audio?.play('courierDraw');
     this.render();
   };
 
@@ -335,6 +347,7 @@ export class CourierScene extends Phaser.Scene {
 
     const previousPaymentIndex =
       this.save.game.barryPaymentIndex;
+    const cashBefore = this.save.game.cash;
     this.save = {
       ...this.save,
       game: resolveBarryPayment(
@@ -349,6 +362,10 @@ export class CourierScene extends Phaser.Scene {
         previousPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      if (this.save.game.cash < cashBefore) {
+        this.audio?.play('cashSpend');
+      }
+      this.audio?.syncBarry(false);
     }
 
     await this.persistRuntime(true);
@@ -401,6 +418,7 @@ export class CourierScene extends Phaser.Scene {
 
     this.completionInFlight = true;
     const skillResult = this.session.result;
+    const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
       this.save.activeAction,
@@ -417,6 +435,15 @@ export class CourierScene extends Phaser.Scene {
 
     if (completion.shiftCompleted) {
       recordTutorialMilestone('WORK_COMPLETED');
+    }
+
+    this.audio?.play(
+      skillResult === 'SUCCESS'
+        ? 'courierSuccess'
+        : 'courierFail',
+    );
+    if (completion.state.cash > cashBefore) {
+      this.audio?.play('cashGain');
     }
 
     await this.persistRuntime(true);
