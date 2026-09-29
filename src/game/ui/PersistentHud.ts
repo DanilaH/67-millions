@@ -3,6 +3,12 @@ import Phaser from 'phaser';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { GameState } from '../../core/state/GameState';
 import {
+  VISUAL_FONT,
+  VISUAL_METRICS,
+  visualColor,
+  visualHex,
+} from '../visual/visualTheme';
+import {
   deriveHudSnapshot,
   formatBarryCountdown,
 } from './hudModel';
@@ -20,60 +26,61 @@ export class PersistentHud {
     scene: Phaser.Scene,
     private readonly config: BalanceConfig,
   ) {
-    this.graphics = scene.add.graphics().setDepth(500);
+    this.graphics = scene.add.graphics().setDepth(VISUAL_METRICS.hudDepth);
 
     this.timeText = scene.add
       .text(28, 21, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '18px',
         fontStyle: 'bold',
       })
-      .setDepth(501);
+      .setDepth(VISUAL_METRICS.hudDepth + 1);
 
     this.cashText = scene.add
-      .text(245, 21, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+      .text(250, 21, '', {
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '18px',
         fontStyle: 'bold',
       })
-      .setDepth(501);
+      .setDepth(VISUAL_METRICS.hudDepth + 1);
 
     this.barryText = scene.add
-      .text(510, 21, '', {
-        color: '#f0c78d',
-        fontFamily: 'ui-monospace, monospace',
+      .text(545, 21, '', {
+        color: visualHex('paperOld'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '16px',
+        fontStyle: 'bold',
       })
-      .setDepth(501);
+      .setDepth(VISUAL_METRICS.hudDepth + 1);
 
     this.debtText = scene.add
-      .text(985, 21, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+      .text(1000, 21, '', {
+        color: visualHex('mustard'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '17px',
         fontStyle: 'bold',
       })
-      .setDepth(501);
+      .setDepth(VISUAL_METRICS.hudDepth + 1);
 
     this.statusText = scene.add
       .text(28, 67, '', {
-        color: '#b8c1cc',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMuted'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '14px',
       })
-      .setDepth(501);
+      .setDepth(VISUAL_METRICS.hudDepth + 1);
 
     this.needTexts = Array.from({ length: 4 }, (_, index) =>
       scene.add
         .text(28, 150 + index * 82, '', {
-          color: '#f4f6f8',
-          fontFamily: 'ui-monospace, monospace',
+          color: visualHex('textMain'),
+          fontFamily: VISUAL_FONT.mono,
           fontSize: '15px',
           fontStyle: 'bold',
         })
-        .setDepth(501),
+        .setDepth(VISUAL_METRICS.hudDepth + 1),
     );
   }
 
@@ -82,15 +89,33 @@ export class PersistentHud {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(0x11151a, 0.98);
+    graphics.fillStyle(visualColor('inkPanel'), 0.99);
     graphics.fillRoundedRect(14, 10, 1252, 92, 16);
-    graphics.lineStyle(2, 0x303943, 1);
+    graphics.lineStyle(2, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(14, 10, 1252, 92, 16);
 
-    graphics.fillStyle(0x11151a, 0.96);
+    graphics.fillStyle(visualColor('inkRaised'), 1);
+    graphics.fillRoundedRect(232, 15, 285, 40, 11);
+    graphics.lineStyle(1, visualColor('lineDirty'), 1);
+    graphics.strokeRoundedRect(232, 15, 285, 40, 11);
+
+    graphics.fillStyle(visualColor('inkRaised'), 1);
+    graphics.fillRoundedRect(528, 15, 430, 40, 11);
+    graphics.lineStyle(2, visualColor('rust'), 0.78);
+    graphics.strokeRoundedRect(528, 15, 430, 40, 11);
+
+    graphics.fillStyle(visualColor('inkRaised'), 1);
+    graphics.fillRoundedRect(974, 15, 278, 40, 11);
+    graphics.lineStyle(2, visualColor('mustard'), 0.68);
+    graphics.strokeRoundedRect(974, 15, 278, 40, 11);
+
+    graphics.fillStyle(visualColor('inkPanel'), 0.97);
     graphics.fillRoundedRect(14, 120, 230, 380, 18);
-    graphics.lineStyle(2, 0x303943, 1);
+    graphics.lineStyle(2, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(14, 120, 230, 380, 18);
+
+    graphics.fillStyle(visualColor('paperOld'), 0.13);
+    graphics.fillRect(24, 130, 210, 5);
 
     this.timeText.setText(
       `ДЕНЬ ${hud.day}   ${hud.time}`,
@@ -106,7 +131,7 @@ export class PersistentHud {
           )} · ${hud.nextBarry.toLocaleString('ru-RU')} ₽`,
     );
     this.debtText.setText(
-      `ДОЛГ  ${hud.mainDebt.toLocaleString('ru-RU')} ₽`,
+      `67М  ${hud.mainDebt.toLocaleString('ru-RU')} ₽`,
     );
     this.statusText.setText(
       hud.statuses.length > 0
@@ -121,16 +146,28 @@ export class PersistentHud {
         Math.min(1, need.value / this.config.needs.max),
       );
       const width = 178;
+      const low =
+        need.value <= this.config.needs.lowThreshold;
 
       this.needTexts[index]?.setText(
         `${need.label}  ${Math.round(need.value)}`,
       );
-      graphics.fillStyle(0x252c34, 1);
+
+      graphics.fillStyle(visualColor('inkRaised'), 1);
       graphics.fillRoundedRect(28, y, width, 14, 7);
+      graphics.lineStyle(
+        1,
+        low
+          ? visualColor('warning')
+          : visualColor('lineDirty'),
+        0.85,
+      );
+      graphics.strokeRoundedRect(28, y, width, 14, 7);
+
       graphics.fillStyle(
-        need.value <= this.config.needs.lowThreshold
-          ? 0xb65b52
-          : 0x708b73,
+        low
+          ? visualColor('warning')
+          : visualColor('good'),
         1,
       );
       graphics.fillRoundedRect(
@@ -140,6 +177,11 @@ export class PersistentHud {
         14,
         7,
       );
+
+      if (low) {
+        graphics.fillStyle(visualColor('warning'), 0.18);
+        graphics.fillRoundedRect(24, y - 12, 186, 42, 10);
+      }
     });
   }
 }
