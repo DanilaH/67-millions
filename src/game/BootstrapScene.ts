@@ -14,7 +14,10 @@ import {
   startShower,
   settleShower,
 } from '../core/actions/shower';
-import { resolveBarryPayment } from '../core/barry/barry';
+import {
+  getBarryPaymentDue,
+  resolveBarryPayment,
+} from '../core/barry/barry';
 import {
   resolveEventChoice,
   type EventChoiceId,
@@ -35,6 +38,7 @@ import {
 import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
 import { advanceRunTime } from '../core/time/runTime';
 import {
+  getWorkLevelDefinition,
   settleWork,
   startWork,
 } from '../core/work/work';
@@ -95,6 +99,10 @@ import {
 import { buildEventPresentation } from './events/eventUiModel';
 import { VISUAL_FONT, visualHex } from './visual/visualTheme';
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
+import {
+  getSceneGameAnalytics,
+} from './analytics/sceneGameAnalytics';
+import type { GameAnalytics } from '../analytics/GameAnalytics';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
@@ -103,6 +111,7 @@ export class BootstrapScene extends Phaser.Scene {
   private activeAction: ActiveAction | null = null;
   private pendingDrop: PendingDrop | null = null;
   private repository: SaveRepository | null = null;
+  private analytics: GameAnalytics | null = null;
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
   );
@@ -226,12 +235,14 @@ export class BootstrapScene extends Phaser.Scene {
 
   private async initialize(): Promise<void> {
     this.repository = getSceneSaveRepository(this);
+    this.analytics = getSceneGameAnalytics(this);
 
     try {
       const save = await this.repository.load();
       this.state = save.game;
       this.activeAction = save.activeAction;
       this.pendingDrop = save.pendingDrop;
+      this.analytics.beginRun(this.state);
 
       if (isPlinkoPerfMode()) {
         this.game.events.emit(GAME_PRESENTABLE_EVENT);
@@ -507,8 +518,50 @@ export class BootstrapScene extends Phaser.Scene {
     if (!this.state) return;
 
     if (action.kind === 'WORK') {
-      this.state = settleWork(this.state, action, balance);
+      const cashBefore = this.state.cash;
+      const definition = getWorkLevelDefinition(
+        balance,
+        action.actionId as keyof typeof balance.work.jobs,
+        action.level,
+      );
+      this.state = settleWork(
+        this.state,
+        action,
+        balance,
+      );
       recordTutorialMilestone('WORK_COMPLETED');
+
+      if (action.result === 'SUCCESS') {
+        this.analytics?.track(
+          'work_completed',
+          {
+            job: action.actionId,
+            level: action.level,
+            payout: Math.max(
+              0,
+              this.state.cash - cashBefore,
+            ),
+            cash_after: this.state.cash,
+            duration_minutes:
+              definition.durationMinutes,
+          },
+        );
+      } else if (action.result === 'FAILURE') {
+        this.analytics?.track(
+          'work_failed',
+          {
+            job: action.actionId,
+            level: action.level,
+            fine: Math.max(
+              0,
+              cashBefore - this.state.cash,
+            ),
+            cash_after: this.state.cash,
+            duration_minutes:
+              definition.durationMinutes,
+          },
+        );
+      }
       return;
     }
 
@@ -531,6 +584,17 @@ export class BootstrapScene extends Phaser.Scene {
     if (action.kind === 'SLEEP') {
       recordTutorialMilestone('RECOVERY_USED');
       this.audio?.play('wake');
+      this.analytics?.track(
+        'sleep_completed',
+        {
+          duration_minutes:
+            balance.sleep.fullSleepHours * 60,
+          game_day:
+            this.state.clock.gameDayIndex + 1,
+          minute_of_day:
+            this.state.clock.minuteOfDay,
+        },
+      );
       return;
     }
 
@@ -540,6 +604,15 @@ export class BootstrapScene extends Phaser.Scene {
         balance,
       );
       this.state = result.state;
+      this.analytics?.track(
+        'dumpster_search',
+        {
+          loot: result.loot,
+          cash_award: result.cashAward,
+          streak_after:
+            this.state.dumpsterSearchStreak,
+        },
+      );
       if (result.cashAward > 0) {
         this.audio?.play('cashGain');
       }
@@ -567,6 +640,17 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    this.analytics?.track(
+      'work_started',
+      {
+        job: 'dishes',
+        level,
+        game_day:
+          started.action.startedAtGameDayIndex + 1,
+        minute_of_day:
+          started.action.startedAtMinuteOfDay,
+      },
+    );
     this.showMessage(
       'Dishes costs reserved. Complete the skill minigame for the work result.',
     );
@@ -595,6 +679,17 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    this.analytics?.track(
+      'work_started',
+      {
+        job: 'trash',
+        level,
+        game_day:
+          started.action.startedAtGameDayIndex + 1,
+        minute_of_day:
+          started.action.startedAtMinuteOfDay,
+      },
+    );
     this.showMessage(
       'Trash costs reserved. Complete the skill minigame for the work result.',
     );
@@ -623,6 +718,17 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    this.analytics?.track(
+      'work_started',
+      {
+        job: 'courier',
+        level,
+        game_day:
+          started.action.startedAtGameDayIndex + 1,
+        minute_of_day:
+          started.action.startedAtMinuteOfDay,
+      },
+    );
     this.showMessage(
       'Courier costs reserved. Draw and validate the route for the work result.',
     );
@@ -650,6 +756,17 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    const price = Math.max(
+      0,
+      cashBefore - this.state.cash,
+    );
+    this.analytics?.track('food_used', {
+      food_id: foodId,
+      price,
+      duration_minutes:
+        started.action.remainingMinutes,
+      cash_after: this.state.cash,
+    });
     if (this.state.cash < cashBefore) {
       this.audio?.play('cashSpend');
     }
@@ -674,6 +791,20 @@ export class BootstrapScene extends Phaser.Scene {
     );
     this.state = started.state;
     this.activeAction = started.action;
+    const price = Math.max(
+      0,
+      cashBefore - this.state.cash,
+    );
+    this.analytics?.track(
+      'entertainment_used',
+      {
+        entertainment_id: entertainmentId,
+        price,
+        duration_minutes:
+          started.action.remainingMinutes,
+        cash_after: this.state.cash,
+      },
+    );
     if (this.state.cash < cashBefore) {
       this.audio?.play('cashSpend');
     }
@@ -689,6 +820,17 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     this.activeAction = startSleep(this.state, balance);
+    this.analytics?.track(
+      'sleep_started',
+      {
+        duration_minutes:
+          this.activeAction.remainingMinutes,
+        game_day:
+          this.activeAction.startedAtGameDayIndex + 1,
+        minute_of_day:
+          this.activeAction.startedAtMinuteOfDay,
+      },
+    );
     this.audio?.play('sleep');
     this.showMessage(
       `Сон: до ${balance.sleep.fullSleepHours} ч, Барри в 09:00 прерывает.`,
@@ -736,15 +878,36 @@ export class BootstrapScene extends Phaser.Scene {
   private payBarry(): void {
     if (!this.state) return;
 
+    const before = this.state;
     const previousPaymentIndex =
-      this.state.barryPaymentIndex;
-    this.state = resolveBarryPayment(this.state, balance);
+      before.barryPaymentIndex;
+    const due = getBarryPaymentDue(
+      before,
+      balance,
+    );
+    this.state = resolveBarryPayment(
+      before,
+      balance,
+    );
 
     if (
       this.state.terminalReason === null &&
       this.state.barryPaymentIndex > previousPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      this.analytics?.track(
+        'barry_paid',
+        {
+          payment_index:
+            this.state.barryPaymentIndex,
+          amount: Math.max(
+            due,
+            this.state.totalBarryPaid -
+              before.totalBarryPaid,
+          ),
+          cash_after: this.state.cash,
+        },
+      );
       this.audio?.play('cashSpend');
     }
 
@@ -791,8 +954,24 @@ export class BootstrapScene extends Phaser.Scene {
       eventId,
       choiceId,
     );
+    const timeCostMinutes =
+      resolved.activeAction?.remainingMinutes ?? 0;
 
     this.state = resolved.state;
+    this.analytics?.track(
+      'event_choice',
+      {
+        event_id: eventId,
+        choice: choiceId,
+        cash_cost: Math.max(
+          0,
+          cashBefore - this.state.cash,
+        ),
+        cash_after: this.state.cash,
+        time_cost_minutes: timeCostMinutes,
+      },
+    );
+    this.analytics?.clearShownEvent();
     if (this.state.cash < cashBefore) {
       this.audio?.play('cashSpend');
     }
@@ -849,15 +1028,31 @@ export class BootstrapScene extends Phaser.Scene {
       );
     }
 
-    this.state = payMainDebt(this.state);
+    const before = this.state;
+    const amount = before.mainDebt;
+    this.state = payMainDebt(before);
+    this.analytics?.track(
+      'main_debt_paid',
+      {
+        amount,
+        cash_after: this.state.cash,
+        total_barry_paid:
+          this.state.totalBarryPaid,
+      },
+    );
     this.audio?.play('cashSpend');
     void this.persist();
+    this.render();
   }
 
   private restart(): void {
     if (!this.state) return;
 
     this.state = restartGame(balance, createRunSeed());
+    this.analytics?.beginRun(
+      this.state,
+      true,
+    );
     this.activeAction = null;
     this.pendingDrop = null;
     this.runEndOverlay?.hide();
@@ -881,6 +1076,8 @@ export class BootstrapScene extends Phaser.Scene {
 
   private render(): void {
     if (!this.state || !this.hud || !this.mapView) return;
+
+    this.analytics?.observeState(this.state);
 
     this.audio?.syncBarry(this.state.barryInterruptPending);
     this.audio?.syncNeeds(
@@ -982,6 +1179,10 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     if (presentableEventId !== null) {
+      this.analytics?.eventShown(
+        this.state,
+        presentableEventId,
+      );
       if (
         this.runEndOverlay?.getMode() ===
         'principal-confirm'
