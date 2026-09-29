@@ -1,5 +1,7 @@
 # ART & AUDIO DIRECTION
 
+> Production visual details are locked in `docs/VISUAL_BIBLE.md`. This file remains the high-level art/audio direction.
+
 ## Visual direction
 
 **Hand-painted dirty cartoon + black comedy.**
