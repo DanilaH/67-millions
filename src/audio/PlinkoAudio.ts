@@ -175,6 +175,20 @@ export const PLINKO_AUDIO_WORST_CASE_PEAK_GAIN =
   PLINKO_AUDIO_VOICE_LIMITS.transfer *
     PLINKO_AUDIO_MAX_GAINS.transfer;
 
+export const PLINKO_AUDIO_MASTER_GAIN = 0.82;
+
+export const PLINKO_AUDIO_COMPRESSOR = {
+  thresholdDb: -6,
+  kneeDb: 8,
+  ratio: 4,
+  attackSeconds: 0.003,
+  releaseSeconds: 0.16,
+} as const;
+
+export const PLINKO_AUDIO_WORST_CASE_POST_MASTER_GAIN =
+  PLINKO_AUDIO_WORST_CASE_PEAK_GAIN *
+  PLINKO_AUDIO_MASTER_GAIN;
+
 export const classifyPlinkoPocketAudio = (
   multiplier: number,
   jackpotEdge: boolean,
@@ -199,6 +213,8 @@ const unitFromCounter = (counter: number): number => {
 
 export class PlinkoAudio {
   private context: AudioContext | null = null;
+  private masterGain: GainNode | null = null;
+  private compressor: DynamicsCompressorNode | null = null;
   private disposed = false;
   private cueCounter = 0;
   private lastBounceAtMs = -Infinity;
@@ -328,6 +344,20 @@ export class PlinkoAudio {
 
     const context = this.context;
     this.context = null;
+
+    try {
+      this.masterGain?.disconnect();
+    } catch {
+      // already disconnected
+    }
+    try {
+      this.compressor?.disconnect();
+    } catch {
+      // already disconnected
+    }
+    this.masterGain = null;
+    this.compressor = null;
+
     if (context && context.state !== 'closed') {
       void context.close().catch(() => undefined);
     }
@@ -344,8 +374,38 @@ export class PlinkoAudio {
 
     try {
       this.context = new AudioContext();
+
+      const masterGain =
+        this.context.createGain();
+      masterGain.gain.value =
+        PLINKO_AUDIO_MASTER_GAIN;
+
+      const compressor =
+        this.context.createDynamicsCompressor();
+      compressor.threshold.value =
+        PLINKO_AUDIO_COMPRESSOR.thresholdDb;
+      compressor.knee.value =
+        PLINKO_AUDIO_COMPRESSOR.kneeDb;
+      compressor.ratio.value =
+        PLINKO_AUDIO_COMPRESSOR.ratio;
+      compressor.attack.value =
+        PLINKO_AUDIO_COMPRESSOR.attackSeconds;
+      compressor.release.value =
+        PLINKO_AUDIO_COMPRESSOR.releaseSeconds;
+
+      masterGain.connect(compressor);
+      compressor.connect(
+        this.context.destination,
+      );
+
+      this.masterGain = masterGain;
+      this.compressor = compressor;
+
       return this.context;
     } catch {
+      this.context = null;
+      this.masterGain = null;
+      this.compressor = null;
       return null;
     }
   }
@@ -425,7 +485,9 @@ export class PlinkoAudio {
     );
 
     oscillator.connect(gain);
-    gain.connect(context.destination);
+    gain.connect(
+      this.masterGain ?? context.destination,
+    );
 
     const cleanup = (): void => {
       oscillator.removeEventListener(
