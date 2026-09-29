@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { createStartupPreloadDomView, StartupPreloadController } from '@danilah/mini-games-kit/startup';
 
 import './style.css';
+import { GameAnalytics } from './analytics/GameAnalytics';
 import { installDebugPanel } from './app/debug';
 import { GAME_AUDIO_BLOCKED_EVENT } from './audio/audioLifecycle';
 import { disposeSceneAudioRuntime } from './audio/SceneAudio';
@@ -23,6 +24,7 @@ import { balance } from './config/balance';
 import { createRunSeed } from './core/random/runSeed';
 import { createSaveRepository } from './core/save/repository';
 import { createInitialGameState } from './core/state/GameState';
+import { GAME_ANALYTICS_REGISTRY_KEY } from './game/analytics/sceneGameAnalytics';
 import { GAME_SAVE_REPOSITORY_REGISTRY_KEY } from './game/save/sceneSaveRepository';
 
 const preload = new StartupPreloadController(createStartupPreloadDomView());
@@ -37,6 +39,10 @@ const artFormatTask = detectRuntimeImageFormat();
 try {
   const [platform, runtimeImageFormat] = await Promise.all([platformTask, artFormatTask]);
   const initialSize = getInitialGameSize();
+  const gameAnalytics = new GameAnalytics(
+    platform.analytics,
+    balance,
+  );
   const saveRepository = createSaveRepository(
     platform.storage,
     () =>
@@ -77,6 +83,10 @@ try {
         bootingGame.registry.set(
           GAME_SAVE_REPOSITORY_REGISTRY_KEY,
           saveRepository,
+        );
+        bootingGame.registry.set(
+          GAME_ANALYTICS_REGISTRY_KEY,
+          gameAnalytics,
         );
         bootingGame.events.once(
           GAME_PRESENTABLE_EVENT,
