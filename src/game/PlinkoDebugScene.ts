@@ -5,6 +5,7 @@ import {
   PlinkoAudio,
   shouldUseBigJackpotStinger,
 } from '../audio/PlinkoAudio';
+import { SceneAudio } from '../audio/SceneAudio';
 import {
   clearPlinkoPerfProbe,
   isPlinkoPerfMode,
@@ -105,6 +106,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private lastPersistedPhysicsTick = 0;
   private visibilityHandler: (() => void) | null = null;
   private audio: PlinkoAudio | null = null;
+  private sceneAudio?: SceneAudio;
 
   private casinoLayer?: Phaser.GameObjects.Container;
   private mapLayer?: Phaser.GameObjects.Container;
@@ -165,6 +167,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.resultText);
 
     this.audio = new PlinkoAudio(() => this.game.sound.mute);
+    this.sceneAudio = new SceneAudio(this, 'casino');
     this.matter.world.on('collisionstart', this.handleAudioCollision);
 
     this.installMapLayer();
@@ -187,6 +190,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
       clearPlinkoPerfProbe();
       this.audio?.dispose();
       this.audio = null;
+      this.sceneAudio?.dispose();
+      this.sceneAudio = undefined;
       this.runtime?.destroy();
       this.runtime = null;
       this.balls.clear();
@@ -974,6 +979,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private renderAll(): void {
+    if (this.save) {
+      this.sceneAudio?.syncBarry(
+        this.save.game.barryInterruptPending,
+      );
+      this.sceneAudio?.syncNeeds(
+        this.save.game.needs,
+        balance.needs.lowThreshold,
+      );
+    }
+
     this.renderCasino();
     this.renderMap();
     this.renderTutorial();
