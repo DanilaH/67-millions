@@ -74,12 +74,16 @@ describe('T058 Game Over / Victory flow model', () => {
       summary.stats.find(
         (stat) => stat.label === 'Основной долг погашен',
       )?.value,
-    ).toBe('67 000 000 ₽');
+    ).toBe(
+      `${balance.game.mainDebt.toLocaleString('ru-RU')} ₽`,
+    );
     expect(
       summary.stats.find(
         (stat) => stat.label === 'Барри выплачено',
       )?.value,
-    ).toBe('18 000 ₽');
+    ).toBe(
+      `${(18_000).toLocaleString('ru-RU')} ₽`,
+    );
     expect(
       summary.stats.find(
         (stat) => stat.label === 'Финиш',
