@@ -26,16 +26,48 @@ export type PlinkoPocketVisualRole =
   | 'inner'
   | 'center';
 
+export type PlinkoPegVisualRoles = Readonly<
+  Record<string, PlinkoPegVisualRole>
+>;
+
 export interface PlinkoVisualSnapshot {
   pocketLevels: PocketUpgradeLevels;
   specialLevels: SpecialUpgradeLevels;
   activePins: ActiveSpecialPins;
+  pegRoles: PlinkoPegVisualRoles;
   pocketMultipliers: number[];
   maxBetLevel: number;
   insuranceLevel: number;
   insuranceArmed: boolean;
   progressionUnits: number;
 }
+
+export const derivePegVisualRoles = (
+  activePins: ActiveSpecialPins,
+): PlinkoPegVisualRoles => {
+  const roles: Record<string, PlinkoPegVisualRole> = {};
+
+  const assign = (
+    pegIds: readonly string[] | undefined,
+    role: Exclude<PlinkoPegVisualRole, 'regular'>,
+  ): void => {
+    for (const pegId of pegIds ?? []) {
+      const previous = roles[pegId];
+      if (previous !== undefined) {
+        throw new Error(
+          `Special pin ${pegId} has overlapping visual roles: ${previous}, ${role}`,
+        );
+      }
+      roles[pegId] = role;
+    }
+  };
+
+  assign(activePins.amplifier?.pegIds, 'amplifier');
+  assign(activePins.return?.pegIds, 'return');
+  assign(activePins.splitter?.pegIds, 'splitter');
+
+  return roles;
+};
 
 export const derivePlinkoVisualSnapshot = (
   state: GameState,
@@ -70,13 +102,16 @@ export const derivePlinkoVisualSnapshot = (
     specialLevels.jackpotBiasLevel +
     insuranceLevel;
 
+  const activePins = deriveActiveSpecialPins(
+    config,
+    specialLevels,
+  );
+
   return {
     pocketLevels,
     specialLevels,
-    activePins: deriveActiveSpecialPins(
-      config,
-      specialLevels,
-    ),
+    activePins,
+    pegRoles: derivePegVisualRoles(activePins),
     pocketMultipliers: derivePocketMultipliers(
       config,
       pocketLevels,
@@ -90,34 +125,9 @@ export const derivePlinkoVisualSnapshot = (
 
 export const getPegVisualRole = (
   pegId: string,
-  activePins: ActiveSpecialPins,
-): PlinkoPegVisualRole => {
-  const roles: PlinkoPegVisualRole[] = [];
-
-  if (
-    activePins.amplifier?.pegIds.includes(pegId)
-  ) {
-    roles.push('amplifier');
-  }
-  if (
-    activePins.return?.pegIds.includes(pegId)
-  ) {
-    roles.push('return');
-  }
-  if (
-    activePins.splitter?.pegIds.includes(pegId)
-  ) {
-    roles.push('splitter');
-  }
-
-  if (roles.length > 1) {
-    throw new Error(
-      `Special pin ${pegId} has overlapping visual roles: ${roles.join(', ')}`,
-    );
-  }
-
-  return roles[0] ?? 'regular';
-};
+  roles: PlinkoPegVisualRoles,
+): PlinkoPegVisualRole =>
+  roles[pegId] ?? 'regular';
 
 export const getPocketVisualRole = (
   index: number,
