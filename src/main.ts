@@ -15,6 +15,7 @@ import { getInitialGameSize, installViewportRuntime } from './app/viewport';
 import { BootstrapScene, GAME_PRESENTABLE_EVENT } from './game/BootstrapScene';
 import { DishesScene } from './game/DishesScene';
 import { PlinkoDebugScene } from './game/PlinkoDebugScene';
+import { TrashScene } from './game/TrashScene';
 import { balance } from './config/balance';
 
 const preload = new StartupPreloadController(createStartupPreloadDomView());
@@ -48,7 +49,7 @@ try {
         runner: { fps: balance.plinko.geometry.fixedTimestepHz },
       },
     },
-    scene: [BootstrapScene, DishesScene, PlinkoDebugScene],
+    scene: [BootstrapScene, DishesScene, TrashScene, PlinkoDebugScene],
     scale: { mode: Phaser.Scale.NONE },
     callbacks: {
       preBoot: (bootingGame) => {
