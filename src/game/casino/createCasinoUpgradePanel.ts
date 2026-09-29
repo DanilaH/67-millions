@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
+
 import type {
   CasinoUpgradeId,
   CasinoUpgradePreview,
@@ -21,13 +23,13 @@ export const createCasinoUpgradePanel = (
   const dynamic: Phaser.GameObjects.GameObject[] = [];
 
   const background = scene.add
-    .rectangle(1100, 350, 330, 500, 0x10151b, 0.96)
-    .setStrokeStyle(2, 0x3c4853, 1);
+    .rectangle(1100, 350, 330, 500, visualColor('inkPanel'), 0.97)
+    .setStrokeStyle(2, visualColor('cold'), 0.7);
 
   const title = scene.add
     .text(950, 112, 'АПГРЕЙДЫ', {
-      color: '#f4f6f8',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '18px',
       fontStyle: 'bold',
     })
@@ -55,12 +57,12 @@ export const createCasinoUpgradePanel = (
             y + 20,
             304,
             44,
-            locked ? 0x171c21 : 0x202930,
+            locked ? visualColor('inkPanel') : visualColor('inkRaised'),
             1,
           )
           .setStrokeStyle(
             1,
-            locked ? 0x353b41 : 0x50616f,
+            locked ? visualColor('lineDirty') : visualColor('cold'),
             1,
           );
 
@@ -69,8 +71,8 @@ export const createCasinoUpgradePanel = (
           y + 6,
           `${preview.title}  L${preview.currentLevel}/${preview.maxLevel}`,
           {
-            color: locked ? '#969da4' : '#f4f6f8',
-            fontFamily: 'system-ui, sans-serif',
+            color: locked ? visualHex('textMuted') : visualHex('textMain'),
+            fontFamily: VISUAL_FONT.sans,
             fontSize: '12px',
             fontStyle: 'bold',
           },
@@ -81,8 +83,8 @@ export const createCasinoUpgradePanel = (
           y + 24,
           preview.detail,
           {
-            color: '#89939c',
-            fontFamily: 'system-ui, sans-serif',
+            color: visualHex('textMuted'),
+            fontFamily: VISUAL_FONT.sans,
             fontSize: '10px',
           },
         );
@@ -97,8 +99,8 @@ export const createCasinoUpgradePanel = (
                 ? preview.lockedReason!
                 : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`,
             {
-              color: locked ? '#c2766d' : '#d9bf7d',
-              fontFamily: 'ui-monospace, monospace',
+              color: locked ? visualHex('warning') : visualHex('mustard'),
+              fontFamily: VISUAL_FONT.mono,
               fontSize: '10px',
               align: 'right',
               wordWrap: { width: 126 },

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { VISUAL_FONT, VISUAL_METRICS, visualColor, visualHex } from '../visual/visualTheme';
+
 import type {
   EventChoicePresentation,
   EventPresentation,
@@ -21,7 +23,7 @@ export const createEventOverlay = (
 
   const container = scene.add
     .container(0, 0)
-    .setDepth(1_800)
+    .setDepth(VISUAL_METRICS.overlayDepth)
     .setVisible(false);
 
   const shade = scene.add
@@ -30,7 +32,7 @@ export const createEventOverlay = (
       height / 2,
       width,
       height,
-      0x050607,
+      visualColor('inkDeep'),
       0.72,
     )
     .setInteractive();
@@ -41,15 +43,15 @@ export const createEventOverlay = (
       height / 2,
       720,
       420,
-      0x171c22,
+      visualColor('inkPanel'),
       1,
     )
-    .setStrokeStyle(3, 0x6c5841, 1);
+    .setStrokeStyle(3, visualColor('rust'), 1);
 
   const kicker = scene.add
     .text(width / 2, 176, 'СОБЫТИЕ', {
-      color: '#b99b6e',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('paperOld'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '14px',
       fontStyle: 'bold',
     })
@@ -57,8 +59,8 @@ export const createEventOverlay = (
 
   const title = scene.add
     .text(width / 2, 204, '', {
-      color: '#f4f6f8',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMain'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '28px',
       fontStyle: 'bold',
       align: 'center',
@@ -67,8 +69,8 @@ export const createEventOverlay = (
 
   const body = scene.add
     .text(width / 2, 258, '', {
-      color: '#cbd2d9',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMuted'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '17px',
       align: 'center',
       wordWrap: { width: 610 },
@@ -99,12 +101,12 @@ export const createEventOverlay = (
             y,
             610,
             68,
-            choice.available ? 0x263039 : 0x202428,
+            choice.available ? visualColor('inkRaised') : visualColor('inkPanel'),
             1,
           )
           .setStrokeStyle(
             2,
-            choice.available ? 0x576978 : 0x3a4046,
+            choice.available ? visualColor('cold') : visualColor('lineDirty'),
             1,
           );
 
@@ -114,8 +116,8 @@ export const createEventOverlay = (
             y - 19,
             `${choice.id.toUpperCase()}. ${choice.label}`,
             {
-              color: choice.available ? '#f4f6f8' : '#8c939a',
-              fontFamily: 'system-ui, sans-serif',
+              color: choice.available ? visualHex('textMain') : visualHex('textMuted'),
+              fontFamily: VISUAL_FONT.sans,
               fontSize: '15px',
               wordWrap: { width: 465 },
             },
@@ -128,8 +130,8 @@ export const createEventOverlay = (
             y - 8,
             choice.lockedReason ?? '[ ВЫБРАТЬ ]',
             {
-              color: choice.available ? '#d9bf7d' : '#c2766d',
-              fontFamily: 'ui-monospace, monospace',
+              color: choice.available ? visualHex('mustard') : visualHex('warning'),
+              fontFamily: VISUAL_FONT.mono,
               fontSize: '12px',
               align: 'right',
             },

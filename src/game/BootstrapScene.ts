@@ -92,6 +92,7 @@ import {
   type EventOverlay,
 } from './events/createEventOverlay';
 import { buildEventPresentation } from './events/eventUiModel';
+import { VISUAL_FONT, visualHex } from './visual/visualTheme';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
@@ -142,17 +143,17 @@ export class BootstrapScene extends Phaser.Scene {
     );
 
     this.messageText = this.add.text(280, height - 67, 'Загрузка…', {
-      color: '#d0d6dd',
-      fontFamily: 'system-ui, sans-serif',
+      color: visualHex('textMuted'),
+      fontFamily: VISUAL_FONT.sans,
       fontSize: '15px',
       wordWrap: { width: 720 },
     });
 
     this.payoutToastText = this.add
       .text(760, 116, '', {
-        color: '#f4f6f8',
-        backgroundColor: '#2f4937',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('mold'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '15px',
         padding: { x: 14, y: 10 },
         wordWrap: { width: 440 },
@@ -163,9 +164,9 @@ export class BootstrapScene extends Phaser.Scene {
 
     this.principalButton = this.add
       .text(1240, 66, '[ ПОГАСИТЬ 67М ]', {
-        color: '#f4f6f8',
-        backgroundColor: '#5a4630',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        backgroundColor: visualHex('rust'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '13px',
         padding: { x: 8, y: 5 },
       })
@@ -443,9 +444,9 @@ export class BootstrapScene extends Phaser.Scene {
           646,
           `[ ${label} ]`,
           {
-            color: '#f4f6f8',
-            backgroundColor: '#252d35',
-            fontFamily: 'system-ui, sans-serif',
+            color: visualHex('textMain'),
+            backgroundColor: visualHex('inkRaised'),
+            fontFamily: VISUAL_FONT.sans,
             fontSize: '15px',
             padding: { x: 10, y: 7 },
           },
@@ -1013,7 +1014,7 @@ export class BootstrapScene extends Phaser.Scene {
         `PLINKO · ${toast.stake.toLocaleString('ru-RU')} ₽ → ${toast.payout.toLocaleString('ru-RU')} ₽ · ${toast.multiplier.toFixed(2)}x${insurance}`,
       )
       .setBackgroundColor(
-        toast.losing ? '#583836' : '#2f4937',
+        toast.losing ? visualHex('rust') : visualHex('mold'),
       )
       .setVisible(true);
 
