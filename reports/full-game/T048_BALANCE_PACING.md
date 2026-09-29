@@ -1,28 +1,25 @@
 # T048 — Full-game balance / pacing report
 
-Status: **diagnostic complete; current calibration does not satisfy the stated V0 balance/pacing hypotheses.**
+Status: **diagnostic complete; current calibration does not satisfy the stated V0 balance hypotheses.**
 
-## Key finding
+## Gate interpretation
 
-Across **600 deterministic runs** (100 per policy), the current diagnostic produced **0 victories**.
-
-This is a rejection signal for the current economy/pacing state, not evidence that the game is balanced:
-
-- `BASELINE_GROWTH` target hypothesis was roughly 30–45% wins; measured here: **0%**.
-- even the fastest losing policies have a median real-session proxy around **71.8 min**, above the ~30 min successful-run target;
-- `BASELINE_GROWTH` median loss proxy is **149.1 min**;
-- `CAUTIOUS` / `WORKER` median loss proxies are **982.4 / 1058.4 min**.
-- the result is systemic across all tested policies, so there is no single anomaly seed explaining the failure.
-
-This report is still an economy diagnostic rather than final physical truth: the full-game Plinko model is evidence-derived and uses documented interpolation/approximation for some special-upgrade states. Therefore the correct conclusion is **“current calibration is not defensible yet”**, not “the exact true win rate is zero”.
-
-GitHub Actions evidence run: **36538612754**.
+- Exact diagnostic workflow run: **36540607910**.
+- Artifact: `t048-full-game-balance` (id `11020601148`, sha256:e4b4e05e2d89e986ee8eac63fb13a74d315dd140cb57eb2f33a14bbbdde99083).
+- Sample: **600 deterministic runs** — 100 per policy.
+- Victories: **0 / 600**.
+- `BASELINE_GROWTH` observed **0% wins / 99% Barry loss / 1% HP death**, versus the SIMULATION_SPEC starting hypothesis of roughly **30–45% wins**.
+- `CAUTIOUS` and `WORKER` now lose **100% to Barry and 0% to HP** after fixing survival-first recovery ordering, so the earlier mass HP deaths were a policy defect rather than a stable balance conclusion.
+- `AGGRESSIVE` observed **98% Barry loss / 2% HP death**. `DEGENERATE` and `RECKLESS_NEEDS` remain mostly HP-death strategies at **95%** and **90%**, respectively.
+- Plinko is materially exercised: `BASELINE_GROWTH` averages **17.2 Drops** with **28.4%** of modeled credited income from Plinko; `AGGRESSIVE` averages **14.4 Drops** with **37.0%** from Plinko. The 0-win result is therefore not explained by bots simply never gambling.
+- The reported `real-session proxy` is a **natural-clock upper-bound proxy**: it converts all advanced game minutes using 3 real seconds/game minute, even though several actions advance game time faster than literal wall-clock waiting. It is not a direct measurement against the ~30-minute product target.
+- T048 satisfies the **diagnostic/reporting** requirement, but the current economy is **not ready for balance freeze**. No `balance.v0.json` values are changed by this task.
 
 ## Provenance
 
 - config version: `0.7-canonical-preproduction`
 - config SHA-256: `d8ab0e3cfd7edb9cc4a76c1165bc7cfbe7d5140ec632d598f94771de46676aaf`
-- measured code revision: `57819a2dcd082a3b34dae8086afb4c08fd314605`
+- code revision: `c4c3c1f25072c67a609ba1c150e57fa8e5307c55`
 - runs per policy: **100**
 - seed start: **67100000**
 - Plinko economy model: `physical-evidence-derived-rtp-v1`
@@ -46,12 +43,12 @@ Upgrade prices and final economy remain tunable until later large-batch + playte
 
 | Policy | Win | Barry loss | HP death | Median win real min | Avg work | Avg Drops | Avg dumpster | Work income | Plinko income | Dumpster income |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| CAUTIOUS | 0.0% | 18.0% | 82.0% | n/a | 42.2 | 0.0 | 8.0 | 99.5% | 0.0% | 0.5% |
-| BASELINE_GROWTH | 0.0% | 48.0% | 52.0% | n/a | 8.4 | 9.9 | 6.0 | 39.8% | 58.7% | 1.5% |
-| AGGRESSIVE | 0.0% | 74.0% | 26.0% | n/a | 6.3 | 9.4 | 2.2 | 22.3% | 77.2% | 0.5% |
-| WORKER | 0.0% | 19.0% | 81.0% | n/a | 50.0 | 0.0 | 7.0 | 99.7% | 0.0% | 0.3% |
-| DEGENERATE | 0.0% | 91.0% | 9.0% | n/a | 6.3 | 9.9 | 1.2 | 27.1% | 72.5% | 0.4% |
-| RECKLESS_NEEDS | 0.0% | 90.0% | 10.0% | n/a | 5.7 | 8.7 | 1.0 | 31.8% | 67.8% | 0.4% |
+| CAUTIOUS | 0.0% | 100.0% | 0.0% | n/a | 67.9 | 0.0 | 0.0 | 100.0% | 0.0% | 0.0% |
+| BASELINE_GROWTH | 0.0% | 99.0% | 1.0% | n/a | 66.9 | 17.2 | 0.1 | 71.6% | 28.4% | 0.0% |
+| AGGRESSIVE | 0.0% | 98.0% | 2.0% | n/a | 53.0 | 14.4 | 0.1 | 63.0% | 37.0% | 0.0% |
+| WORKER | 0.0% | 100.0% | 0.0% | n/a | 70.8 | 0.0 | 0.0 | 100.0% | 0.0% | 0.0% |
+| DEGENERATE | 0.0% | 5.0% | 95.0% | n/a | 14.8 | 10.2 | 1.3 | 58.0% | 41.7% | 0.4% |
+| RECKLESS_NEEDS | 0.0% | 10.0% | 90.0% | n/a | 6.4 | 6.2 | 4.9 | 50.3% | 46.9% | 2.7% |
 
 ## Per-policy details
 
@@ -59,94 +56,88 @@ Upgrade prices and final economy remain tunable until later large-batch + playte
 
 - median victory elapsed days: **n/a**
 - p10 / p90 victory elapsed days: **n/a / n/a**
-- median loss elapsed days: **13.64**
-- median real-session proxy: **982.4 min**
-- average food / sleep / entertainment / events: **21.1 / 18.8 / 10.6 / 5.6**
+- median loss elapsed days: **16.00**
+- median real-session proxy: **1151.8 min**
+- median / p10 / p90 victory real minutes: **n/a / n/a / n/a**
+- average food / sleep / entertainment / events: **36.3 / 23.8 / 19.0 / 8.7**
 - dumpster comebacks / HP deaths: **0 / 0**
 - near-zero cash recoveries: **100**
-- average / p95 max bankroll drawdown: **116372 / 205341 ₽**
+- average / p95 max bankroll drawdown: **197356 / 267310 ₽**
 - wins dominated by one giant payout: **0.0%**
-- most common upgrade order (41/100): `job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3`
+- top upgrade sequences: `job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (51); `job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (26); `job:dishes:L2 > job:trash:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (9); `job:trash:L2 > job:dishes:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (4); `job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3` (2); `job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3` (2); `job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (2); `job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (2); `job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3` (1); `job:dishes:L2 > job:trash:L2 > job:courier:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3` (1)
 
 ### BASELINE_GROWTH
 
 - median victory elapsed days: **n/a**
 - p10 / p90 victory elapsed days: **n/a / n/a**
-- median loss elapsed days: **2.07**
-- median real-session proxy: **149.1 min**
-- average food / sleep / entertainment / events: **1.7 / 4.8 / 0.1 / 0.9**
-- dumpster comebacks / HP deaths: **5 / 0**
-- near-zero cash recoveries: **346**
-- average / p95 max bankroll drawdown: **20585 / 78652 ₽**
+- median loss elapsed days: **13.00**
+- median real-session proxy: **935.8 min**
+- median / p10 / p90 victory real minutes: **n/a / n/a / n/a**
+- average food / sleep / entertainment / events: **26.9 / 20.3 / 4.7 / 7.4**
+- dumpster comebacks / HP deaths: **0 / 1**
+- near-zero cash recoveries: **103**
+- average / p95 max bankroll drawdown: **89892 / 435778 ₽**
 - wins dominated by one giant payout: **0.0%**
-- most common upgrade order (56/100): `plinko:maxBet:L1 > plinko:maxBet:L2`
+- top upgrade sequences: `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:courier:L2 > plinko:jackpotBias:L1 > job:trash:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:maxBet:L4 > plinko:return:L1` (2); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2 > plinko:return:L1 > job:dishes:L3` (2); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:maxBet:L4 > plinko:return:L1 > job:dishes:L3` (2); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2` (2); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:maxBet:L4` (2); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:courier:L2 > plinko:jackpotBias:L1 > job:trash:L2 > job:dishes:L2 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L3 > plinko:mid:L2 > plinko:return:L1 > plinko:maxBet:L4` (1); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:courier:L2 > plinko:jackpotBias:L1 > job:trash:L2 > job:dishes:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2 > plinko:return:L1 > job:dishes:L3` (1); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:courier:L2 > plinko:jackpotBias:L1 > job:trash:L2 > plinko:amplifier:L1 > job:dishes:L2 > plinko:jackpot:L1 > plinko:maxBet:L3 > plinko:mid:L2 > plinko:maxBet:L4 > plinko:return:L1` (1); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:courier:L2 > job:trash:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:return:L1 > plinko:maxBet:L4 > job:dishes:L3` (1); `plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:courier:L2 > job:trash:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:maxBet:L4 > plinko:return:L1 > job:dishes:L3` (1)
 
 ### AGGRESSIVE
 
 - median victory elapsed days: **n/a**
 - p10 / p90 victory elapsed days: **n/a / n/a**
-- median loss elapsed days: **1.00**
-- median real-session proxy: **71.8 min**
-- average food / sleep / entertainment / events: **0.9 / 1.9 / 0.0 / 0.7**
-- dumpster comebacks / HP deaths: **8 / 0**
-- near-zero cash recoveries: **916**
-- average / p95 max bankroll drawdown: **19691 / 71755 ₽**
+- median loss elapsed days: **11.00**
+- median real-session proxy: **791.8 min**
+- median / p10 / p90 victory real minutes: **n/a / n/a / n/a**
+- average food / sleep / entertainment / events: **46.7 / 16.7 / 16.2 / 6.5**
+- dumpster comebacks / HP deaths: **1 / 1**
+- near-zero cash recoveries: **109**
+- average / p95 max bankroll drawdown: **49708 / 176348 ₽**
 - wins dominated by one giant payout: **0.0%**
-- most common upgrade order (61/100): `plinko:maxBet:L1 > plinko:maxBet:L2`
+- top upgrade sequences: `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3` (47); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4` (36); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:maxBet:L5` (9); `plinko:maxBet:L1 > plinko:maxBet:L2` (8)
 
 ### WORKER
 
 - median victory elapsed days: **n/a**
 - p10 / p90 victory elapsed days: **n/a / n/a**
-- median loss elapsed days: **14.70**
-- median real-session proxy: **1058.4 min**
-- average food / sleep / entertainment / events: **24.5 / 20.9 / 13.1 / 6.7**
+- median loss elapsed days: **16.00**
+- median real-session proxy: **1151.8 min**
+- median / p10 / p90 victory real minutes: **n/a / n/a / n/a**
+- average food / sleep / entertainment / events: **36.4 / 24.0 / 20.3 / 9.5**
 - dumpster comebacks / HP deaths: **0 / 0**
 - near-zero cash recoveries: **100**
-- average / p95 max bankroll drawdown: **162958 / 315981 ₽**
+- average / p95 max bankroll drawdown: **222184 / 286252 ₽**
 - wins dominated by one giant payout: **0.0%**
-- most common upgrade order (64/100): `job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3`
+- top upgrade sequences: `job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (76); `job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (14); `job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (3); `job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3` (2); `job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3` (1); `job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3` (1); `job:dishes:L2 > job:trash:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (1); `job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3` (1); `job:trash:L2 > job:dishes:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3` (1)
 
 ### DEGENERATE
 
 - median victory elapsed days: **n/a**
 - p10 / p90 victory elapsed days: **n/a / n/a**
-- median loss elapsed days: **1.00**
-- median real-session proxy: **71.8 min**
-- average food / sleep / entertainment / events: **1.1 / 1.4 / 0.0 / 0.8**
+- median loss elapsed days: **3.04**
+- median real-session proxy: **218.6 min**
+- median / p10 / p90 victory real minutes: **n/a / n/a / n/a**
+- average food / sleep / entertainment / events: **7.1 / 4.3 / 0.8 / 1.7**
 - dumpster comebacks / HP deaths: **6 / 0**
-- near-zero cash recoveries: **866**
-- average / p95 max bankroll drawdown: **15295 / 32500 ₽**
+- near-zero cash recoveries: **121**
+- average / p95 max bankroll drawdown: **16477 / 41750 ₽**
 - wins dominated by one giant payout: **0.0%**
-- most common upgrade order (49/100): `plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:maxBet:L2`
+- top upgrade sequences: `plinko:maxBet:L1 > plinko:maxBet:L2` (20); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:jackpotBias:L1 > plinko:jackpot:L1` (16); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:splitter:L1` (13); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3` (9); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:jackpotBias:L1` (9); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1` (7); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:splitter:L1 > plinko:jackpot:L1 > plinko:maxBet:L3` (7); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:jackpot:L1` (4); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3` (3); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:jackpot:L1 > plinko:splitter:L1` (3)
 
 ### RECKLESS_NEEDS
 
 - median victory elapsed days: **n/a**
 - p10 / p90 victory elapsed days: **n/a / n/a**
-- median loss elapsed days: **1.00**
-- median real-session proxy: **71.8 min**
-- average food / sleep / entertainment / events: **0.0 / 1.3 / 0.0 / 0.7**
-- dumpster comebacks / HP deaths: **5 / 0**
-- near-zero cash recoveries: **864**
-- average / p95 max bankroll drawdown: **12551 / 44052 ₽**
+- median loss elapsed days: **1.70**
+- median real-session proxy: **122.2 min**
+- median / p10 / p90 victory real minutes: **n/a / n/a / n/a**
+- average food / sleep / entertainment / events: **0.0 / 3.0 / 0.0 / 0.9**
+- dumpster comebacks / HP deaths: **4 / 0**
+- near-zero cash recoveries: **129**
+- average / p95 max bankroll drawdown: **9514 / 33050 ₽**
 - wins dominated by one giant payout: **0.0%**
-- most common upgrade order (72/100): `plinko:maxBet:L1 > plinko:maxBet:L2`
+- top upgrade sequences: `plinko:maxBet:L1 > plinko:maxBet:L2` (64); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3` (18); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:amplifier:L1` (9); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:amplifier:L1` (5); `plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4` (4)
+
 
 ## Anomaly seeds
 
-No individual anomaly seeds were emitted under the configured per-run rules. The primary finding is **systemic**: all six strategies had 0% wins in this batch.
-
-## Interpretation / next action
-
-T048 satisfies the diagnostic requirement, but its result should block any claim that the economy is calibrated.
-
-Before a final balance freeze, investigate at least:
-
-1. whether current policy logic reaches positive-EV Plinko progression quickly enough;
-2. whether upgrade prices / max-bet progression prevent reaching compounding states before Barry growth;
-3. whether current needs/sleep pressure is too slow for the intended real-session target yet still lethal over long runs;
-4. whether the evidence-derived special-upgrade approximation materially understates reachable tails;
-5. whether a targeted balance/policy sweep can produce the intended BASELINE_GROWTH win corridor without creating a dominant strategy.
-
-Do **not** tune a single number from this report in isolation. Any candidate change should be rerun through the same six-policy batch.
+- BASELINE_GROWTH seed `67100122`: dumpster-hp-death
+- AGGRESSIVE seed `67100283`: dumpster-hp-death
