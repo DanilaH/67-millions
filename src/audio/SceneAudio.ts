@@ -507,6 +507,24 @@ class SharedSceneAudioRuntime {
     const masterGain = this.masterGain;
     if (!context || !masterGain) return;
 
+    if (context.state !== 'running') {
+      if (context.state === 'suspended') {
+        void context
+          .resume()
+          .then(() => {
+            if (
+              !this.disposed &&
+              !this.blocked &&
+              !this.muted
+            ) {
+              this.play(cue);
+            }
+          })
+          .catch(() => undefined);
+      }
+      return;
+    }
+
     const spec = SCENE_AUDIO_TONES[cue];
     const nowMs = this.nowMs();
     const last =
@@ -516,12 +534,6 @@ class SharedSceneAudioRuntime {
       nowMs - last < spec.minIntervalMs ||
       !this.transientBudget.tryAcquire()
     ) {
-      return;
-    }
-
-    if (context.state !== 'running') {
-      this.transientBudget.release();
-      this.prime();
       return;
     }
 
