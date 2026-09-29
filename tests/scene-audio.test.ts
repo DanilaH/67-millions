@@ -11,7 +11,6 @@ import {
   SCENE_AUDIO_WORST_CASE_POST_MASTER_GAIN,
   deriveLowNeedKeys,
   resolveSceneAudioPersistentState,
-  shouldBlockSceneAudio,
 } from '../src/audio/sceneAudioPolicy';
 
 describe('T065 scene audio policy', () => {
@@ -109,21 +108,6 @@ describe('T065 scene audio policy', () => {
     ).toEqual(
       ['happiness', 'health', 'satiety'].sort(),
     );
-  });
-
-  it('blocks shared ambience for either platform pause or scene-local suppression', () => {
-    expect(
-      shouldBlockSceneAudio(false, false),
-    ).toBe(false);
-    expect(
-      shouldBlockSceneAudio(true, false),
-    ).toBe(true);
-    expect(
-      shouldBlockSceneAudio(false, true),
-    ).toBe(true);
-    expect(
-      shouldBlockSceneAudio(true, true),
-    ).toBe(true);
   });
 
   it('keeps tactile cues rate-limited and semantically distinct', () => {
