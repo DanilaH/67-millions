@@ -1,4 +1,6 @@
 import type { BalanceConfig } from '../../src/config/balance.schema';
+import { calculateActualBet } from '../../src/core/plinko-rules/drop';
+import { getMaxBetForLevel } from '../../src/core/plinko-rules/progression';
 import { getBarryPaymentDue } from '../../src/core/barry/barry';
 import {
   getEventChoiceAvailability,
@@ -103,6 +105,10 @@ const chooseDegenerateUpgrade = (
   config: BalanceConfig,
   reserve: number,
 ): FullGameDecision | null => {
+  if (state.eventModifiers.plinkoLockRemainingMinutes > 0) {
+    return null;
+  }
+
   const biasPrice = nextPrice(
     config.plinko.jackpotBias,
     state.plinkoJackpotBiasLevel,
@@ -164,6 +170,10 @@ const chooseRecklessUpgrade = (
   config: BalanceConfig,
   reserve: number,
 ): FullGameDecision | null => {
+  if (state.eventModifiers.plinkoLockRemainingMinutes > 0) {
+    return null;
+  }
+
   const maxBetPrice = nextPrice(
     config.plinko.maxBetLevels,
     state.plinkoMaxBetLevel,
@@ -330,11 +340,26 @@ const createDecisionFunction = (
     if (upgrade !== null) return upgrade;
 
     const excessCash = state.cash - reserve;
-    if (
+    const maxBet = getMaxBetForLevel(
+      config,
+      state.plinkoMaxBetLevel,
+    );
+    const safeFraction =
+      state.cash > 0 &&
       excessCash > 0 &&
       state.eventModifiers.plinkoLockRemainingMinutes <= 0
-    ) {
-      return { type: 'PLINKO', fraction: 1 };
+        ? ([1, 0.5, 0.25] as const).find((fraction) => {
+            const stake = calculateActualBet(
+              state.cash,
+              maxBet,
+              fraction,
+            );
+            return state.cash - stake >= reserve;
+          }) ?? null
+        : null;
+
+    if (safeFraction !== null) {
+      return { type: 'PLINKO', fraction: safeFraction };
     }
 
     const work = chooseAvailableWork(

@@ -99,6 +99,25 @@ export interface FullGameCounters {
   purchases: number;
 }
 
+export interface FullGameIncomeDiagnostics {
+  work: number;
+  plinko: number;
+  dumpster: number;
+}
+
+export interface FullGameDiagnostics {
+  nearZeroCashThreshold: number;
+  peakCash: number;
+  minCash: number;
+  maxBankrollDrawdown: number;
+  income: FullGameIncomeDiagnostics;
+  largestPlinkoPayout: number;
+  dumpsterComebacks: number;
+  dumpsterHpDeaths: number;
+  nearZeroCashRecoveries: number;
+  upgradeOrder: string[];
+}
+
 export interface FullGamePolicyContext {
   state: GameState;
   activeAction: ActiveAction | null;
@@ -144,6 +163,7 @@ export interface FullGameRunResult {
   outcome: FullGameOutcome;
   state: GameState;
   counters: FullGameCounters;
+  diagnostics: FullGameDiagnostics;
 }
 
 interface RunnerState {
@@ -166,6 +186,57 @@ const createCounters = (): FullGameCounters => ({
   purchases: 0,
 });
 
+const createDiagnostics = (
+  initialCash: number,
+): FullGameDiagnostics => ({
+  nearZeroCashThreshold: initialCash * 2,
+  peakCash: initialCash,
+  minCash: initialCash,
+  maxBankrollDrawdown: 0,
+  income: {
+    work: 0,
+    plinko: 0,
+    dumpster: 0,
+  },
+  largestPlinkoPayout: 0,
+  dumpsterComebacks: 0,
+  dumpsterHpDeaths: 0,
+  nearZeroCashRecoveries: 0,
+  upgradeOrder: [],
+});
+
+const observeCash = (
+  diagnostics: FullGameDiagnostics,
+  cash: number,
+): void => {
+  diagnostics.peakCash = Math.max(diagnostics.peakCash, cash);
+  diagnostics.minCash = Math.min(diagnostics.minCash, cash);
+  diagnostics.maxBankrollDrawdown = Math.max(
+    diagnostics.maxBankrollDrawdown,
+    diagnostics.peakCash - cash,
+  );
+};
+
+const recordIncome = (
+  diagnostics: FullGameDiagnostics,
+  source: keyof FullGameIncomeDiagnostics,
+  amount: number,
+  cashBeforeCredit: number,
+): void => {
+  if (!Number.isFinite(amount) || amount <= 0) return;
+  diagnostics.income[source] += amount;
+
+  if (
+    cashBeforeCredit <= diagnostics.nearZeroCashThreshold &&
+    cashBeforeCredit + amount > diagnostics.nearZeroCashThreshold
+  ) {
+    diagnostics.nearZeroCashRecoveries += 1;
+    if (source === 'dumpster') {
+      diagnostics.dumpsterComebacks += 1;
+    }
+  }
+};
+
 const getOutcome = (
   state: GameState,
   stopped: boolean,
@@ -183,15 +254,32 @@ const settleCompletedAction = (
   state: GameState,
   action: ActiveAction,
   config: BalanceConfig,
+  diagnostics: FullGameDiagnostics,
 ): GameState => {
   if (state.terminalReason !== null || state.victory) return state;
 
   if (action.kind === 'WORK') {
-    return settleWork(state, action, config);
+    const beforeCash = state.cash;
+    const settled = settleWork(state, action, config);
+    recordIncome(
+      diagnostics,
+      'work',
+      Math.max(0, settled.cash - beforeCash),
+      beforeCash,
+    );
+    return settled;
   }
 
   if (action.kind === 'DUMPSTER') {
-    return settleDumpsterSearch(state, config).state;
+    const beforeCash = state.cash;
+    const settled = settleDumpsterSearch(state, config);
+    recordIncome(
+      diagnostics,
+      'dumpster',
+      settled.cashAward,
+      beforeCash,
+    );
+    return settled.state;
   }
 
   if (action.kind === 'TIMED_PAID') {
@@ -209,6 +297,7 @@ const completeActiveAction = (
   initialAction: ActiveAction,
   config: BalanceConfig,
   counters: FullGameCounters,
+  diagnostics: FullGameDiagnostics,
   maxGameMinutes: number,
 ): { state: GameState; activeAction: ActiveAction | null } => {
   let state = initialState;
@@ -232,6 +321,13 @@ const completeActiveAction = (
     activeAction = advanced.activeAction;
     counters.gameMinutesAdvanced += advanced.advancedMinutes;
 
+    if (
+      currentAction.kind === 'DUMPSTER' &&
+      state.terminalReason === 'HEALTH_ZERO'
+    ) {
+      diagnostics.dumpsterHpDeaths += 1;
+    }
+
     if (state.barryInterruptPending) {
       state = resolveBarryPayment(state, config);
       if (state.terminalReason !== null) break;
@@ -239,7 +335,12 @@ const completeActiveAction = (
     }
 
     if (advanced.actionCompleted) {
-      state = settleCompletedAction(state, currentAction, config);
+      state = settleCompletedAction(
+        state,
+        currentAction,
+        config,
+        diagnostics,
+      );
       activeAction = null;
       break;
     }
@@ -336,14 +437,18 @@ export const runFullGame = (
   const maxDecisions = options.maxDecisions ?? 10_000;
   const maxGameMinutes = options.maxGameMinutes ?? 60 * 24 * 60;
   const counters = createCounters();
+  const initialGame = createInitialGameState(config, options.seed);
+  const diagnostics = createDiagnostics(initialGame.cash);
   let runner: RunnerState = {
-    game: createInitialGameState(config, options.seed),
+    game: initialGame,
     activeAction: null,
     stopped: false,
   };
   let dropIndex = 0;
 
   while (true) {
+    observeCash(diagnostics, runner.game.cash);
+
     const outcome = getOutcome(
       runner.game,
       runner.stopped,
@@ -360,6 +465,7 @@ export const runFullGame = (
         outcome,
         state: runner.game,
         counters,
+        diagnostics,
       };
     }
 
@@ -369,6 +475,7 @@ export const runFullGame = (
         runner.activeAction,
         config,
         counters,
+        diagnostics,
         maxGameMinutes,
       );
       runner = {
@@ -505,6 +612,9 @@ export const runFullGame = (
         config,
       );
       counters.dumpsterSearches += 1;
+      if (started.state.terminalReason === 'HEALTH_ZERO') {
+        diagnostics.dumpsterHpDeaths += 1;
+      }
       runner = {
         ...runner,
         game: started.state,
@@ -546,6 +656,8 @@ export const runFullGame = (
         `full-game:${options.seed}:${dropIndex}`,
         decision.fraction,
       );
+      observeCash(diagnostics, committed.state.cash);
+
       const outcome = plinkoOutcomeModel.resolve({
         state: committed.state,
         pendingDrop: committed.pendingDrop,
@@ -587,6 +699,16 @@ export const runFullGame = (
       );
       counters.gameMinutesAdvanced +=
         settled.remainingMinutesAdvancedAfterBarry;
+      recordIncome(
+        diagnostics,
+        'plinko',
+        settled.payout,
+        timed.state.cash,
+      );
+      diagnostics.largestPlinkoPayout = Math.max(
+        diagnostics.largestPlinkoPayout,
+        settled.payout,
+      );
 
       runner = {
         ...runner,
@@ -597,68 +719,102 @@ export const runFullGame = (
 
     if (decision.type === 'BUY_JOB_UPGRADE') {
       counters.purchases += 1;
+      const nextGame = purchaseJobUpgrade(
+        runner.game,
+        null,
+        null,
+        config,
+        decision.jobId,
+      );
+      diagnostics.upgradeOrder.push(
+        `job:${decision.jobId}:L${nextGame.jobLevels[decision.jobId]}`,
+      );
       runner = {
         ...runner,
-        game: purchaseJobUpgrade(
-          runner.game,
-          null,
-          null,
-          config,
-          decision.jobId,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     if (decision.type === 'BUY_PLINKO_MAX_BET') {
       counters.purchases += 1;
+      const nextGame = purchaseMaxBetUpgrade(
+        runner.game,
+        null,
+        config,
+      );
+      diagnostics.upgradeOrder.push(
+        `plinko:maxBet:L${nextGame.plinkoMaxBetLevel}`,
+      );
       runner = {
         ...runner,
-        game: purchaseMaxBetUpgrade(
-          runner.game,
-          null,
-          config,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     if (decision.type === 'BUY_PLINKO_POCKET') {
       counters.purchases += 1;
+      const nextGame = purchasePocketUpgrade(
+        runner.game,
+        null,
+        config,
+        decision.track,
+      );
+      const level =
+        decision.track === 'center'
+          ? nextGame.plinkoCenterLevel
+          : decision.track === 'mid'
+            ? nextGame.plinkoMidLevel
+            : nextGame.plinkoJackpotLevel;
+      diagnostics.upgradeOrder.push(
+        `plinko:${decision.track}:L${level}`,
+      );
       runner = {
         ...runner,
-        game: purchasePocketUpgrade(
-          runner.game,
-          null,
-          config,
-          decision.track,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     if (decision.type === 'BUY_PLINKO_SPECIAL') {
       counters.purchases += 1;
+      const nextGame = purchaseSpecialUpgrade(
+        runner.game,
+        null,
+        config,
+        decision.track,
+      );
+      const level =
+        decision.track === 'amplifier'
+          ? nextGame.plinkoAmplifierLevel
+          : decision.track === 'return'
+            ? nextGame.plinkoReturnLevel
+            : decision.track === 'splitter'
+              ? nextGame.plinkoSplitterLevel
+              : nextGame.plinkoJackpotBiasLevel;
+      diagnostics.upgradeOrder.push(
+        `plinko:${decision.track}:L${level}`,
+      );
       runner = {
         ...runner,
-        game: purchaseSpecialUpgrade(
-          runner.game,
-          null,
-          config,
-          decision.track,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     counters.purchases += 1;
+    const nextGame = purchaseInsuranceUpgrade(
+      runner.game,
+      null,
+      config,
+    );
+    diagnostics.upgradeOrder.push(
+      `plinko:insurance:L${nextGame.plinkoInsuranceLevel}`,
+    );
     runner = {
       ...runner,
-      game: purchaseInsuranceUpgrade(
-        runner.game,
-        null,
-        config,
-      ),
+      game: nextGame,
     };
   }
 };

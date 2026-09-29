@@ -1,0 +1,41 @@
+name: Full-game balance diagnostic
+
+on:
+  pull_request:
+    paths:
+      - 'balance.v0.json'
+      - 'package.json'
+      - 'simulation/full-game/**'
+      - 'src/core/**'
+      - 'src/config/**'
+      - '.github/workflows/full-game-balance.yml'
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm install --no-audit --no-fund
+      - name: Run T048 full-game batch
+        run: npm run simulate:full-game:report -- --runs-per-policy 100 --seed-start 67100000 --output artifacts/full-game/t048
+      - name: Print T048 Markdown summary
+        if: always()
+        run: |
+          if [ -f artifacts/full-game/t048/REPORT.md ]; then
+            echo '===== T048_REPORT_BEGIN ====='
+            cat artifacts/full-game/t048/REPORT.md
+            echo '===== T048_REPORT_END ====='
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: t048-full-game-balance
+          path: artifacts/full-game/t048
+          if-no-files-found: error
