@@ -5,6 +5,7 @@ import { PlinkoAudio } from '../audio/PlinkoAudio';
 import {
   clearPlinkoPerfProbe,
   isPlinkoPerfMode,
+  isPlinkoStressPerfMode,
 } from '../app/perfMode';
 import {
   assertDropBoardCompatible,
@@ -244,8 +245,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.renderAll();
 
-    if (isPlinkoPerfMode() && !this.save.pendingDrop) {
-      this.installPerfProbe();
+    if (!this.save.pendingDrop) {
+      if (isPlinkoStressPerfMode()) {
+        this.installSplitterStressPerfProbe();
+      } else if (isPlinkoPerfMode()) {
+        this.installPerfProbe();
+      }
     }
   }
 
@@ -630,6 +635,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
       startedAtMs: null,
       resolvedAtMs: null,
       activeBallCount: this.balls.size,
+      maxActiveBallCount: this.balls.size,
+      targetActiveBallCount: null,
       error: null,
       start: async () => {
         const probe = window.__PLINKO_PERF__;
@@ -648,6 +655,93 @@ export class PlinkoDebugScene extends Phaser.Scene {
         } catch (error: unknown) {
           probe.phase = 'error';
           probe.error = error instanceof Error ? error.message : String(error);
+        }
+      },
+    };
+  }
+
+  private installSplitterStressPerfProbe(): void {
+    if (!this.save || !this.runtime) return;
+
+    const targetActiveBallCount = balance.plinko.maxActiveBalls;
+    const holdMs = 5_000;
+
+    window.__PLINKO_PERF__ = {
+      phase: 'ready',
+      startedAtMs: null,
+      resolvedAtMs: null,
+      activeBallCount: this.balls.size,
+      maxActiveBallCount: this.balls.size,
+      targetActiveBallCount,
+      error: null,
+      start: async () => {
+        const probe = window.__PLINKO_PERF__;
+        if (!probe || probe.phase !== 'ready' || !this.runtime) return;
+
+        probe.phase = 'running';
+        probe.startedAtMs = performance.now();
+
+        try {
+          const rootBody = this.runtime.spawnBall();
+          this.balls.set(
+            rootBody,
+            createRootBallState('perf-splitter-stress'),
+          );
+
+          while (this.balls.size < targetActiveBallCount) {
+            const entry = this.balls.entries().next().value as
+              | [MatterJS.BodyType, DropBallState]
+              | undefined;
+            if (!entry) {
+              throw new Error('Splitter stress lost all active bodies');
+            }
+
+            const [body, metadata] = entry;
+            const [leftState, rightState] = createSplitChildren(
+              metadata,
+              `stress-splitter-${this.balls.size}`,
+              0.5,
+            );
+            const [leftBody, rightBody] = this.runtime.splitBall(body);
+
+            this.balls.delete(body);
+            this.balls.set(leftBody, leftState);
+            this.balls.set(rightBody, rightState);
+
+            probe.activeBallCount = this.balls.size;
+            probe.maxActiveBallCount = Math.max(
+              probe.maxActiveBallCount,
+              this.balls.size,
+            );
+          }
+
+          if (this.balls.size !== targetActiveBallCount) {
+            throw new Error(
+              `Splitter stress expected ${targetActiveBallCount} balls, got ${this.balls.size}`,
+            );
+          }
+
+          await new Promise<void>((resolvePromise) => {
+            window.setTimeout(resolvePromise, holdMs);
+          });
+
+          for (const body of [...this.balls.keys()]) {
+            this.runtime.removeBall(body);
+            this.balls.delete(body);
+          }
+
+          probe.activeBallCount = this.balls.size;
+          probe.maxActiveBallCount = Math.max(
+            probe.maxActiveBallCount,
+            targetActiveBallCount,
+          );
+          probe.phase = 'resolved';
+          probe.resolvedAtMs = performance.now();
+        } catch (error: unknown) {
+          probe.phase = 'error';
+          probe.error =
+            error instanceof Error ? error.message : String(error);
+          probe.resolvedAtMs = performance.now();
         }
       },
     };
