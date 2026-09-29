@@ -120,6 +120,7 @@ describe('T065 scene audio policy', () => {
       'lowNeeds',
       'cashGain',
       'cashSpend',
+      'casinoEnter',
     ] as const) {
       expect(
         SCENE_AUDIO_TONES[cue].minIntervalMs,
@@ -144,5 +145,11 @@ describe('T065 scene audio policy', () => {
     ).toBeLessThan(
       SCENE_AUDIO_TONES.cashSpend.frequency,
     );
+    expect(
+      SCENE_AUDIO_TONES.casinoEnter.durationMs,
+    ).toBeGreaterThanOrEqual(400);
+    expect(
+      SCENE_AUDIO_TONES.casinoEnter.gain,
+    ).toBeLessThan(0.03);
   });
 });
