@@ -57,6 +57,67 @@ describe('Plinko cascade physical runner', () => {
     expect(metrics.maxActiveBalls).toBe(1);
   });
 
+  it('resolves a synthetic 24-ball single-Drop stress state without exceeding the production cap', () => {
+    const samples = runCascadePhysicalDrops(balance, {
+      runs: 4,
+      seed: 67_049_000,
+      stake: 100_000,
+      batchSize: 1,
+      initialBallCount: balance.plinko.maxActiveBalls,
+      maxTicks: 3600,
+      pocketMultipliers: derivePocketMultipliers(balance, {
+        centerLevel: 2,
+        midLevel: 3,
+        jackpotLevel: 3,
+      }),
+      specialLevels: {
+        amplifierLevel: 5,
+        returnLevel: 4,
+        splitterLevel: 5,
+        jackpotBiasLevel: 4,
+      },
+    });
+
+    expect(samples).toHaveLength(4);
+    expect(
+      samples.every(
+        (sample) =>
+          sample.maxActiveBalls === balance.plinko.maxActiveBalls,
+      ),
+    ).toBe(true);
+    const theoreticalTerminalCap =
+      balance.plinko.maxActiveBalls *
+      2 ** balance.plinko.maxSplitDepth;
+
+    expect(
+      samples.every(
+        (sample) =>
+          sample.terminalBallCount >= balance.plinko.maxActiveBalls &&
+          sample.terminalBallCount <= theoreticalTerminalCap,
+      ),
+    ).toBe(true);
+    expect(samples.every((sample) => !sample.stuck)).toBe(true);
+  });
+
+  it('rejects a synthetic initial ball count above the production cap', () => {
+    expect(() =>
+      runCascadePhysicalDrops(balance, {
+        runs: 1,
+        seed: 67_049_001,
+        stake: 100_000,
+        batchSize: 1,
+        initialBallCount: balance.plinko.maxActiveBalls + 1,
+        pocketMultipliers: balance.plinko.basePockets,
+        specialLevels: {
+          amplifierLevel: 0,
+          returnLevel: 0,
+          splitterLevel: 5,
+          jackpotBiasLevel: 0,
+        },
+      }),
+    ).toThrow('initialBallCount must be within');
+  });
+
   it('never exceeds configured Splitter depth-derived active-ball cap in a stress smoke', () => {
     const maxSplitterLevel = balance.plinko.splitter.at(-1)!.level;
     const samples = runCascadePhysicalDrops(balance, {

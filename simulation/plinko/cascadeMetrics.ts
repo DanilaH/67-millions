@@ -14,6 +14,7 @@ export interface CascadeMetrics {
   probabilityAtLeast5x: number;
   probabilityAtLeast10x: number;
   meanTerminalBalls: number;
+  maxTerminalBalls: number;
   meanChildBalls: number;
   meanReturns: number;
   meanAmplifierProcs: number;
@@ -111,6 +112,10 @@ export const summarizeCascadeDrops = (
     probabilityAtLeast10x: ratio((value) => value >= 10),
     meanTerminalBalls: mean(
       resolved.map((sample) => sample.terminalBallCount),
+    ),
+    maxTerminalBalls: Math.max(
+      0,
+      ...resolved.map((sample) => sample.terminalBallCount),
     ),
     meanChildBalls: mean(
       resolved.map((sample) => sample.childBallCount),

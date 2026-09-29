@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
 
 import { balance } from '../../src/config/balance';
@@ -23,6 +24,8 @@ interface CliOptions {
   returnLevel: number;
   splitterLevel: number;
   jackpotBiasLevel: number;
+  batchSize: number;
+  initialBallCount: number;
 }
 
 const positiveInt = (
@@ -62,6 +65,8 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
     returnLevel: 0,
     splitterLevel: 0,
     jackpotBiasLevel: 0,
+    batchSize: 64,
+    initialBallCount: 1,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -87,6 +92,10 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
       options.splitterLevel = nonNegativeInt(argv[++index], key);
     } else if (key === '--jackpot-bias-level') {
       options.jackpotBiasLevel = nonNegativeInt(argv[++index], key);
+    } else if (key === '--batch-size') {
+      options.batchSize = positiveInt(argv[++index], key);
+    } else if (key === '--initial-ball-count') {
+      options.initialBallCount = positiveInt(argv[++index], key);
     } else if (key === '--output') {
       const value = argv[++index];
       if (!value) throw new Error('Missing --output value');
@@ -117,14 +126,38 @@ const pocketMultipliers = derivePocketMultipliers(
   pocketLevels,
 );
 
+const wallStartedAt = performance.now();
 const samples = runCascadePhysicalDrops(balance, {
   runs: options.runs,
   seed: options.seed,
   stake: options.stake,
   pocketMultipliers,
   specialLevels,
+  batchSize: options.batchSize,
+  initialBallCount: options.initialBallCount,
 });
+const wallElapsedMs = performance.now() - wallStartedAt;
 const metrics = summarizeCascadeDrops(balance, samples);
+const processedTerminalBalls = samples.reduce(
+  (sum, sample) => sum + sample.terminalBallCount,
+  0,
+);
+const performanceMetrics = {
+  wallElapsedMs,
+  wallMsPerDrop: wallElapsedMs / options.runs,
+  wallMsPerTerminalBall:
+    processedTerminalBalls === 0
+      ? 0
+      : wallElapsedMs / processedTerminalBalls,
+  dropsPerSecond:
+    wallElapsedMs === 0
+      ? 0
+      : (options.runs * 1000) / wallElapsedMs,
+  terminalBallsPerSecond:
+    wallElapsedMs === 0
+      ? 0
+      : (processedTerminalBalls * 1000) / wallElapsedMs,
+};
 const stuckDiagnostics = samples.flatMap((sample, dropIndex) =>
   sample.stuck
     ? [{
@@ -159,8 +192,13 @@ const report = {
     specialLevels,
     pocketMultipliers,
     ballBallCollisions: balance.plinko.ballBallCollisions,
+    batchSize: options.batchSize,
+    initialBallCount: options.initialBallCount,
+    maxActiveBallsCap: balance.plinko.maxActiveBalls,
+    maxSplitDepth: balance.plinko.maxSplitDepth,
   },
   metrics,
+  performance: performanceMetrics,
   stuckDiagnostics,
 };
 
@@ -178,6 +216,8 @@ const markdown = `# Plinko cascade physical report
 - pocket levels: center L${options.centerLevel}, mid L${options.midLevel}, jackpot L${options.jackpotLevel}
 - special levels: amplifier L${options.amplifierLevel}, return L${options.returnLevel}, splitter L${options.splitterLevel}, Jackpot Bias L${options.jackpotBiasLevel}
 - ball-ball collisions: **${balance.plinko.ballBallCollisions ? 'enabled' : 'disabled'}**
+- runner batch size: **${options.batchSize}**
+- synthetic initial active balls per Drop: **${options.initialBallCount}**
 
 ## Aggregate outcome
 
@@ -194,6 +234,7 @@ const markdown = `# Plinko cascade physical report
 ## Cascade load
 
 - mean terminal balls: **${metrics.meanTerminalBalls.toFixed(4)}**
+- max terminal balls: **${metrics.maxTerminalBalls}**
 - mean child balls created: **${metrics.meanChildBalls.toFixed(4)}**
 - mean Returns: **${metrics.meanReturns.toFixed(4)}**
 - mean Amplifier procs: **${metrics.meanAmplifierProcs.toFixed(4)}**
@@ -202,6 +243,14 @@ const markdown = `# Plinko cascade physical report
 - mean duration: **${metrics.meanCascadeSeconds.toFixed(3)}s**
 - p95 duration: **${metrics.p95CascadeSeconds.toFixed(3)}s**
 - max duration: **${metrics.maxCascadeSeconds.toFixed(3)}s**
+
+## Runner performance
+
+- wall elapsed: **${performanceMetrics.wallElapsedMs.toFixed(1)} ms**
+- wall ms / Drop: **${performanceMetrics.wallMsPerDrop.toFixed(3)} ms**
+- wall ms / terminal ball: **${performanceMetrics.wallMsPerTerminalBall.toFixed(3)} ms**
+- Drops / second: **${performanceMetrics.dropsPerSecond.toFixed(2)}**
+- terminal balls / second: **${performanceMetrics.terminalBallsPerSecond.toFixed(2)}**
 
 ## Watchdog diagnostics
 
