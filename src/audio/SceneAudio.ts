@@ -920,6 +920,9 @@ export class SceneAudio {
   private readonly handleBlocked = (
     blocked: boolean,
   ): void => {
+    this.runtime.setMuted(
+      this.scene.game.sound.mute,
+    );
     this.runtime.setBlocked(blocked);
   };
 }
