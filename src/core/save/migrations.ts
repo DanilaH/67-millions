@@ -208,6 +208,19 @@ const v10Schema = z.object({
   pendingDrop: v8PendingDropSchema.nullable(),
 });
 
+const v11GameSchema = v10GameSchema.extend({
+  statuses: z.object({
+    SMELLY: z.boolean(),
+  }),
+});
+
+const v11Schema = z.object({
+  version: z.literal(11),
+  game: v11GameSchema,
+  activeAction: z.unknown().nullable(),
+  pendingDrop: v8PendingDropSchema.nullable(),
+});
+
 const ZERO_GAME_POCKET_LEVELS = {
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,
@@ -256,6 +269,12 @@ const ZERO_STATUSES = {
   },
 } as const;
 
+const ZERO_EVENT_SCHEDULER = {
+  pendingEventId: null,
+  eventsResolvedThisGameDay: 0,
+  lastResolvedEventId: null,
+} as const;
+
 export class UnsupportedSaveVersionError extends Error {
   public constructor(public readonly version: number) {
     super(`Unsupported save version: ${version}`);
@@ -265,6 +284,7 @@ export class UnsupportedSaveVersionError extends Error {
 
 const addPlinkoDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
@@ -277,6 +297,7 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
 
 const addPocketDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
@@ -287,6 +308,7 @@ const addPocketDefaults = <T extends object>(game: T) => ({
 
 const addSpecialDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
@@ -296,6 +318,7 @@ const addSpecialDefaults = <T extends object>(game: T) => ({
 
 const addBiasDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
@@ -305,6 +328,7 @@ const addBiasDefaults = <T extends object>(game: T) => ({
 
 const addInsuranceDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
@@ -313,6 +337,7 @@ const addInsuranceDefaults = <T extends object>(game: T) => ({
 
 const addJobDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
@@ -320,13 +345,20 @@ const addJobDefaults = <T extends object>(game: T) => ({
 
 const addDumpsterDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
   ...ZERO_DUMPSTER_STREAK,
 });
 
 const addStatusDefaults = <T extends object>(game: T) => ({
   ...game,
+  ...ZERO_EVENT_SCHEDULER,
   ...ZERO_STATUSES,
+});
+
+const addEventDefaults = <T extends object>(game: T) => ({
+  ...game,
+  ...ZERO_EVENT_SCHEDULER,
 });
 
 const migrateV1 = (value: unknown): SaveState => {
@@ -493,10 +525,22 @@ const migrateV10 = (value: unknown): SaveState => {
   });
 };
 
+const migrateV11 = (value: unknown): SaveState => {
+  const old = v11Schema.parse(value);
+
+  return parseSaveState({
+    version: SAVE_VERSION,
+    game: addEventDefaults(old.game),
+    activeAction: old.activeAction,
+    pendingDrop: old.pendingDrop,
+  });
+};
+
 export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
+  if (version === 11) return migrateV11(value);
   if (version === 10) return migrateV10(value);
   if (version === 9) return migrateV9(value);
   if (version === 8) return migrateV8(value);
