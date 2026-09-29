@@ -4,6 +4,7 @@ import { createStartupPreloadDomView, StartupPreloadController } from '@danilah/
 
 import './style.css';
 import { installDebugPanel } from './app/debug';
+import { GAME_AUDIO_BLOCKED_EVENT } from './audio/audioLifecycle';
 import { createPlatformRuntime } from './app/platform';
 import {
   afterPaintFrames,
@@ -68,6 +69,7 @@ try {
   const viewport = installViewportRuntime(game, platform.activity);
   const removeBlockedListener = platform.activity.onBlockedChange((blocked) => {
     game.sound.mute = blocked;
+    game.events.emit(GAME_AUDIO_BLOCKED_EVENT, blocked);
     if (blocked) game.loop.sleep();
     else game.loop.wake();
   });
