@@ -8,6 +8,7 @@ import {
 } from './timedPaidAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
+import { hasStatus } from '../state/statuses';
 
 type FoodConfigEntry = BalanceConfig['food'][number];
 type EntertainmentConfigEntry = BalanceConfig['entertainment'][number];
@@ -59,15 +60,24 @@ const foodToTimedDefinition = (
 });
 
 const entertainmentToTimedDefinition = (
+  state: GameState,
   entry: EntertainmentConfigEntry,
-): TimedPaidActionDefinition => ({
-  id: entry.id,
-  price: entry.price,
-  durationMinutes: entry.durationMinutes,
-  completionNeedsDelta: {
-    happiness: entry.happiness,
-  },
-});
+  config: BalanceConfig,
+): TimedPaidActionDefinition => {
+  const happinessMultiplier =
+    entry.price > 0 && hasStatus(state, 'SMELLY')
+      ? config.statuses.SMELLY.paidEntertainmentMultiplier
+      : 1;
+
+  return {
+    id: entry.id,
+    price: entry.price,
+    durationMinutes: entry.durationMinutes,
+    completionNeedsDelta: {
+      happiness: entry.happiness * happinessMultiplier,
+    },
+  };
+};
 
 export const startFood = (
   state: GameState,
@@ -94,12 +104,15 @@ export const startEntertainment = (
   return startTimedPaidAction(
     state,
     entertainmentToTimedDefinition(
+      state,
       getEntertainmentEntry(config, entertainmentId),
+      config,
     ),
   );
 };
 
 const getCompletionDefinition = (
+  state: GameState,
   config: BalanceConfig,
   actionId: string,
 ): TimedPaidActionDefinition => {
@@ -112,7 +125,9 @@ const getCompletionDefinition = (
     throw new Error(`Ambiguous recovery action id: ${actionId}`);
   }
   if (food) return foodToTimedDefinition(food);
-  if (entertainment) return entertainmentToTimedDefinition(entertainment);
+  if (entertainment) {
+    return entertainmentToTimedDefinition(state, entertainment, config);
+  }
 
   throw new Error(`Unknown recovery action: ${actionId}`);
 };
@@ -124,6 +139,6 @@ export const settleRecoveryAction = (
 ): GameState =>
   applyTimedPaidCompletion(
     state,
-    getCompletionDefinition(config, action.actionId),
+    getCompletionDefinition(state, config, action.actionId),
     config,
   );
