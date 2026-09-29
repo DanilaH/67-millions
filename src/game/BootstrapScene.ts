@@ -127,6 +127,8 @@ export class BootstrapScene extends Phaser.Scene {
       }
 
       if (
+        this.state.terminalReason === null &&
+        !this.state.victory &&
         this.activeAction?.kind === 'WORK' &&
         this.activeAction.actionId === 'dishes' &&
         this.activeAction.result === null
@@ -137,6 +139,8 @@ export class BootstrapScene extends Phaser.Scene {
       }
 
       if (
+        this.state.terminalReason === null &&
+        !this.state.victory &&
         this.activeAction?.kind === 'WORK' &&
         this.activeAction.actionId === 'trash' &&
         this.activeAction.result === null
@@ -147,6 +151,8 @@ export class BootstrapScene extends Phaser.Scene {
       }
 
       if (
+        this.state.terminalReason === null &&
+        !this.state.victory &&
         this.activeAction?.kind === 'WORK' &&
         this.activeAction.actionId === 'courier' &&
         this.activeAction.result === null
