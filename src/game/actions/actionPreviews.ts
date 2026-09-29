@@ -179,9 +179,9 @@ export const buildFoodPreviews = (
       id: `food:${entry.id}`,
       title: content.title,
       summary: [
-        content.description,
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
         deltas.join(' · '),
+        content.description,
       ],
       lockedReason: validate(() => {
         startFood(
@@ -216,9 +216,9 @@ export const buildEntertainmentPreviews = (
       id: `entertainment:${entry.id}`,
       title: content.title,
       summary: [
-        content.description,
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
         `счастье ${formatSigned(happiness)}`,
+        content.description,
       ],
       lockedReason: validate(() => {
         startEntertainment(
