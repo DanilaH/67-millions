@@ -51,7 +51,10 @@ import {
   type MainMapView,
 } from './map/createMainMapView';
 import type { MainMapLocationId } from './map/mainMapModel';
-import { consumeCasinoPayoutToast } from './casino/casinoPayoutToast';
+import {
+  consumeCasinoPayoutToast,
+  type CasinoPayoutToast,
+} from './casino/casinoPayoutToast';
 import { PersistentHud } from './ui/PersistentHud';
 
 export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
@@ -760,9 +763,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private showCasinoPayoutToast(
-    toast: ReturnType<typeof consumeCasinoPayoutToast> extends infer T
-      ? Exclude<T, null>
-      : never,
+    toast: CasinoPayoutToast,
   ): void {
     const insurance = toast.insuranceApplied
       ? ` · страховка +${toast.insuranceTopUp.toLocaleString('ru-RU')} ₽`
