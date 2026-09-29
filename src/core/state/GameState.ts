@@ -38,6 +38,9 @@ export interface GameState {
   jobLevels: JobLevelsState;
   dumpsterSearchStreak: number;
   statuses: StatusState;
+  pendingEventId: string | null;
+  eventsResolvedThisGameDay: number;
+  lastResolvedEventId: string | null;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
   plinkoMaxBetLevel: number;
   plinkoCenterLevel: number;
@@ -80,6 +83,9 @@ export const createInitialGameState = (
   },
   dumpsterSearchStreak: 0,
   statuses: { SMELLY: false },
+  pendingEventId: null,
+  eventsResolvedThisGameDay: 0,
+  lastResolvedEventId: null,
   plinkoSelectedBetFraction: 1,
   plinkoMaxBetLevel: 0,
   plinkoCenterLevel: 0,
