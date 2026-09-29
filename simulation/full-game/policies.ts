@@ -385,14 +385,10 @@ const chooseRecovery = (
   state: GameState,
   config: BalanceConfig,
   profile: BaselinePolicyProfile,
-  reserve: number,
+  _reserve: number,
 ): FullGameDecision | null => {
   if (state.statuses.SMELLY && state.cash >= 300) {
     return { type: 'SHOWER' };
-  }
-
-  if (state.needs.health <= 35 || state.needs.energy < profile.energyFloor) {
-    return { type: 'SLEEP' };
   }
 
   if (state.needs.satiety < profile.satietyFloor) {
@@ -402,9 +398,11 @@ const chooseRecovery = (
     const multiplier =
       state.eventModifiers.foodPriceMultiplier?.multiplier ?? 1;
     const price =
-      food === undefined ? Number.POSITIVE_INFINITY : Math.round(food.price * multiplier);
+      food === undefined
+        ? Number.POSITIVE_INFINITY
+        : Math.round(food.price * multiplier);
 
-    return state.cash >= price && state.cash - price >= reserve
+    return state.cash >= price
       ? { type: 'FOOD', id: profile.preferredFoodId }
       : { type: 'DUMPSTER' };
   }
@@ -415,12 +413,19 @@ const chooseRecovery = (
     );
     const price = entertainment?.price ?? Number.POSITIVE_INFINITY;
 
-    return state.cash >= price && state.cash - price >= reserve
+    return state.cash >= price
       ? {
           type: 'ENTERTAINMENT',
           id: profile.preferredEntertainmentId,
         }
       : { type: 'ENTERTAINMENT', id: 'FREE_FUN' };
+  }
+
+  if (
+    state.needs.health <= 35 ||
+    state.needs.energy < profile.energyFloor
+  ) {
+    return { type: 'SLEEP' };
   }
 
   return null;
