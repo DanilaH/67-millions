@@ -1,7 +1,10 @@
 import Phaser from 'phaser';
 
 import { balance } from '../config/balance';
-import { PlinkoAudio } from '../audio/PlinkoAudio';
+import {
+  PlinkoAudio,
+  shouldUseBigJackpotStinger,
+} from '../audio/PlinkoAudio';
 import {
   clearPlinkoPerfProbe,
   isPlinkoPerfMode,
@@ -245,8 +248,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
     this.runtime = createBarePlinko(this, balance, this.random, {
       onPocket: (index, body) => {
-        this.audio?.pocket(balance.plinko.basePockets[index] ?? 1);
-        this.enqueueCascadeMutation(() => this.resolvePocket(index, body));
+        const multiplier =
+          this.visualSnapshot?.pocketMultipliers[index] ??
+          balance.plinko.basePockets[index] ??
+          1;
+        this.audio?.pocket(
+          multiplier,
+          getPocketVisualRole(index, balance) === 'jackpot',
+        );
+        this.enqueueCascadeMutation(() =>
+          this.resolvePocket(index, body),
+        );
       },
       onPeg: (pegId, body) => {
         this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
@@ -541,6 +553,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
       // Stake + pendingDrop are durable before time or physical outcome generation.
       await this.enqueueSave(true);
 
+      if (
+        committed.pendingDrop.insuranceAtCommit !== null
+      ) {
+        this.audio?.insuranceActivation();
+      }
+
       const timed = advancePendingDropTime(
         this.save.game,
         committed.pendingDrop,
@@ -769,7 +787,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const terminalSuffix = result.state.terminalReason
       ? ` / GAME OVER: ${result.state.terminalReason}`
       : '';
-    this.audio?.result(result.losing);
+    if (result.payout > 0) {
+      this.audio?.payoutCount();
+    }
+    this.audio?.result(
+      result.losing,
+      shouldUseBigJackpotStinger(
+        result.multiplier,
+        Math.max(...balance.plinko.basePockets),
+      ),
+    );
     this.lastResultMessage =
       `PLINKO: ставка ${pending.originalStake.toLocaleString('ru-RU')} ₽ → выплата ${result.payout.toLocaleString('ru-RU')} ₽ · ${result.multiplier.toFixed(2)}x${result.insuranceApplied ? ` · страховка +${result.insuranceTopUp.toLocaleString('ru-RU')} ₽` : ''}${result.losing ? ' · Счастье -1' : ''}${terminalSuffix}`;
 
