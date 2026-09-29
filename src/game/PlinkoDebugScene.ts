@@ -487,6 +487,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         );
       }
 
+      this.audio?.amplifier();
       await this.persistPendingPhysics(true);
       return;
     }
@@ -514,6 +515,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           rngState: this.random.snapshot().state,
         },
       };
+      this.audio?.returnCue();
       await this.persistPendingPhysics(true);
       return;
     }
@@ -537,6 +539,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.balls.set(leftBody, leftState);
       this.balls.set(rightBody, rightState);
 
+      this.audio?.splitter();
       await this.persistPendingPhysics(true);
     }
   }
