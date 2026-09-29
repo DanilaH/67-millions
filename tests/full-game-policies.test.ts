@@ -264,7 +264,10 @@ describe('baseline full-game policies', () => {
       counters: zeroCounters(),
       decisionIndex: 1,
     });
-    expect(noFoodBuffer.type).toBe('DUMPSTER');
+    expect(noFoodBuffer).toEqual({
+      type: 'FOOD',
+      id: 'FOOD_04',
+    });
 
     const smelly = policy.decide({
       state: {
