@@ -1,5 +1,6 @@
 import type { BalanceConfig } from '../../config/balance.schema';
 import { creditCash, debitCash, roundMoney } from '../economy/money';
+import { isPlinkoEventLocked } from '../events/modifiers';
 import type { GameState, InsuranceArmState } from '../state/GameState';
 import { applyNeedsDelta } from '../state/mutations';
 import { deriveJackpotBiasGeometry } from './jackpotBias';
@@ -166,6 +167,9 @@ export const commitBareDrop = (
 ): { state: GameState; pendingDrop: PendingDrop } => {
   if (!dropId) throw new Error('Drop requires a stable dropId');
   if (existingPendingDrop !== null) throw new Error('A Drop is already pending');
+  if (isPlinkoEventLocked(state)) {
+    throw new Error('Plinko is temporarily event-locked');
+  }
   if (state.terminalReason !== null || state.victory || state.barryInterruptPending) {
     throw new Error('Cannot commit Drop in the current run state');
   }
