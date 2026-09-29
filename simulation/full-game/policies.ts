@@ -201,7 +201,10 @@ const chooseMaxBetUpgrade = (
   profile: BaselinePolicyProfile,
   reserve: number,
 ): FullGameDecision | null => {
-  if (!profile.buyPlinkoMaxBet) return null;
+  if (
+    !profile.buyPlinkoMaxBet ||
+    state.eventModifiers.plinkoLockRemainingMinutes > 0
+  ) return null;
 
   const next = config.plinko.maxBetLevels.find(
     (entry) => entry.level === state.plinkoMaxBetLevel + 1,
