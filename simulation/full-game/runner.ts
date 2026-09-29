@@ -719,68 +719,102 @@ export const runFullGame = (
 
     if (decision.type === 'BUY_JOB_UPGRADE') {
       counters.purchases += 1;
+      const nextGame = purchaseJobUpgrade(
+        runner.game,
+        null,
+        null,
+        config,
+        decision.jobId,
+      );
+      diagnostics.upgradeOrder.push(
+        `job:${decision.jobId}:L${nextGame.jobLevels[decision.jobId]}`,
+      );
       runner = {
         ...runner,
-        game: purchaseJobUpgrade(
-          runner.game,
-          null,
-          null,
-          config,
-          decision.jobId,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     if (decision.type === 'BUY_PLINKO_MAX_BET') {
       counters.purchases += 1;
+      const nextGame = purchaseMaxBetUpgrade(
+        runner.game,
+        null,
+        config,
+      );
+      diagnostics.upgradeOrder.push(
+        `plinko:maxBet:L${nextGame.plinkoMaxBetLevel}`,
+      );
       runner = {
         ...runner,
-        game: purchaseMaxBetUpgrade(
-          runner.game,
-          null,
-          config,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     if (decision.type === 'BUY_PLINKO_POCKET') {
       counters.purchases += 1;
+      const nextGame = purchasePocketUpgrade(
+        runner.game,
+        null,
+        config,
+        decision.track,
+      );
+      const level =
+        decision.track === 'center'
+          ? nextGame.plinkoCenterLevel
+          : decision.track === 'mid'
+            ? nextGame.plinkoMidLevel
+            : nextGame.plinkoJackpotLevel;
+      diagnostics.upgradeOrder.push(
+        `plinko:${decision.track}:L${level}`,
+      );
       runner = {
         ...runner,
-        game: purchasePocketUpgrade(
-          runner.game,
-          null,
-          config,
-          decision.track,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     if (decision.type === 'BUY_PLINKO_SPECIAL') {
       counters.purchases += 1;
+      const nextGame = purchaseSpecialUpgrade(
+        runner.game,
+        null,
+        config,
+        decision.track,
+      );
+      const level =
+        decision.track === 'amplifier'
+          ? nextGame.plinkoAmplifierLevel
+          : decision.track === 'return'
+            ? nextGame.plinkoReturnLevel
+            : decision.track === 'splitter'
+              ? nextGame.plinkoSplitterLevel
+              : nextGame.plinkoJackpotBiasLevel;
+      diagnostics.upgradeOrder.push(
+        `plinko:${decision.track}:L${level}`,
+      );
       runner = {
         ...runner,
-        game: purchaseSpecialUpgrade(
-          runner.game,
-          null,
-          config,
-          decision.track,
-        ),
+        game: nextGame,
       };
       continue;
     }
 
     counters.purchases += 1;
+    const nextGame = purchaseInsuranceUpgrade(
+      runner.game,
+      null,
+      config,
+    );
+    diagnostics.upgradeOrder.push(
+      `plinko:insurance:L${nextGame.plinkoInsuranceLevel}`,
+    );
     runner = {
       ...runner,
-      game: purchaseInsuranceUpgrade(
-        runner.game,
-        null,
-        config,
-      ),
+      game: nextGame,
     };
   }
 };
