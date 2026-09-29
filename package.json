@@ -25,7 +25,8 @@
     "simulate:plinko:pocket-entry-sweep": "tsx simulation/plinko/pocketEntrySweep.ts",
     "simulate:plinko:jackpot-bias": "tsx simulation/plinko/jackpotBiasSweep.ts",
     "simulate:plinko:jackpot-bias-probe": "tsx simulation/plinko/jackpotBiasProbe.ts",
-    "simulate:full-game": "tsx simulation/full-game/cli.ts"
+    "simulate:full-game": "tsx simulation/full-game/cli.ts",
+    "simulate:full-game:report": "tsx simulation/full-game/reportCli.ts"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
