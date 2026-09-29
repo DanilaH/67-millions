@@ -9,6 +9,7 @@ import {
   advanceEventCheckpoints,
   resetEventGameDayCounter,
 } from '../events/eventScheduler';
+import { advanceEventModifiers } from '../events/modifiers';
 import { advanceNeeds } from '../needs/needs';
 import { finalizeSleepCycle } from '../sleep/sleep';
 import type { GameState } from '../state/GameState';
@@ -76,6 +77,8 @@ export const advanceRunTime = (
     ? consumeActiveActionTime(activeAction, actualMinutes)
     : null;
   let actionCompleted = activeAction !== null && nextAction === null;
+
+  nextState = advanceEventModifiers(nextState, actualMinutes);
 
   if (
     activeAction?.kind === 'SLEEP' &&
