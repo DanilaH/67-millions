@@ -20,6 +20,7 @@ import {
   SCENE_AUDIO_VOICE_LIMIT,
   deriveLowNeedKeys,
   resolveSceneAudioPersistentState,
+  shouldBlockSceneAudio,
   type PersistentSceneAudioState,
   type SceneAmbienceKind,
   type SceneAudioCue,
@@ -584,7 +585,10 @@ class SharedSceneAudioRuntime {
 
   private syncMixerBlockedState(): void {
     this.mixer?.setBlocked(
-      this.blocked || this.sceneSuppressed,
+      shouldBlockSceneAudio(
+        this.blocked,
+        this.sceneSuppressed,
+      ),
     );
   }
 
