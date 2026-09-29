@@ -1,3 +1,4 @@
+import { BARRY_CONTENT } from '../content/contentCatalog';
 import type { TutorialStep } from './tutorialProgress';
 
 export type TutorialSurface = 'map' | 'casino';
@@ -18,9 +19,9 @@ export const buildTutorialCard = (
   if (step === 'BARRY') {
     return {
       step,
-      title: 'БАРРИ',
+      title: BARRY_CONTENT.name.toUpperCase(),
       body:
-        'Каждый день в 09:00 нужно заплатить Барри. Если денег не хватает — забег окончен.',
+        'Каждый день в 09:00 Барри приходит за обязательным платежом. Если денег не хватает — забег окончен.',
       acknowledge: 'BARRY',
     };
   }
@@ -31,7 +32,7 @@ export const buildTutorialCard = (
       title: 'СНАЧАЛА ЗАРАБОТАЙ',
       body:
         surface === 'map'
-          ? 'Открой РАБОТА и закончи любую смену. Работа — безопасный стартовый доход.'
+          ? 'Открой ПОДРАБОТКИ и закончи любую смену. Работа — безопасный стартовый доход.'
           : 'Вернись на карту и закончи любую работу перед первым серьёзным риском.',
       acknowledge: null,
     };
