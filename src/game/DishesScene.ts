@@ -48,6 +48,7 @@ export class DishesScene extends Phaser.Scene {
   private lastPointer: DishesPoint | null = null;
   private pointerDown = false;
   private completionInFlight = false;
+  private saveWriteChain: Promise<void> = Promise.resolve();
   private readonly minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
 
@@ -316,8 +317,16 @@ export class DishesScene extends Phaser.Scene {
 
   private async persistRuntime(flush: boolean): Promise<void> {
     if (!this.repository || !this.save) return;
-    await this.repository.write(this.save);
-    if (flush) await this.repository.flush();
+
+    const repository = this.repository;
+    const snapshot = structuredClone(this.save);
+
+    this.saveWriteChain = this.saveWriteChain.then(async () => {
+      await repository.write(snapshot);
+      if (flush) await repository.flush();
+    });
+
+    await this.saveWriteChain;
   }
 
   private async complete(
@@ -349,8 +358,7 @@ export class DishesScene extends Phaser.Scene {
       activeAction: completion.activeAction,
     };
 
-    await this.repository.write(this.save);
-    await this.repository.flush();
+    await this.persistRuntime(true);
 
     const cleanPercent = this.session
       ? Math.round(getDishesCleanPercent(this.session) * 100)
