@@ -9,6 +9,7 @@ import { createInitialGameState } from '../core/state/GameState';
 import { completeWorkSkill } from '../core/work/skillCompletion';
 import { WorkMinigameClock } from '../core/work/WorkMinigameClock';
 import { recordTutorialMilestone } from './tutorial/tutorialProgress';
+import { VISUAL_FONT, visualColor, visualHex } from './visual/visualTheme';
 import {
   createBarryMinigameOverlay,
   type BarryMinigameOverlay,
@@ -62,8 +63,8 @@ export class TrashScene extends Phaser.Scene {
 
     this.add
       .text(width / 2, 24, 'ВЫНЕСТИ МУСОР', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '30px',
         fontStyle: 'bold',
       })
@@ -75,8 +76,8 @@ export class TrashScene extends Phaser.Scene {
         66,
         'Перетащи все 5 мешков в контейнер. Зоны захвата и приёма расширены.',
         {
-          color: '#aeb7c3',
-          fontFamily: 'system-ui, sans-serif',
+          color: visualHex('textMuted'),
+          fontFamily: VISUAL_FONT.sans,
           fontSize: '17px',
         },
       )
@@ -84,8 +85,8 @@ export class TrashScene extends Phaser.Scene {
 
     this.timerText = this.add
       .text(36, 32, '', {
-        color: '#f4f6f8',
-        fontFamily: 'ui-monospace, monospace',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.mono,
         fontSize: '24px',
       })
       .setOrigin(0, 0);
@@ -100,8 +101,8 @@ export class TrashScene extends Phaser.Scene {
 
     this.messageText = this.add
       .text(width / 2, 662, '', {
-        color: '#f4f6f8',
-        fontFamily: 'system-ui, sans-serif',
+        color: visualHex('textMain'),
+        fontFamily: VISUAL_FONT.sans,
         fontSize: '20px',
       })
       .setOrigin(0.5, 0);
@@ -417,13 +418,13 @@ export class TrashScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(0x14181b, 1);
+    graphics.fillStyle(visualColor('inkPanel'), 1);
     graphics.fillRoundedRect(80, 120, 650, 510, 32);
-    graphics.lineStyle(4, 0x5b646e, 1);
+    graphics.lineStyle(4, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(80, 120, 650, 510, 32);
 
     const target = this.session.target;
-    graphics.fillStyle(0x26352f, 1);
+    graphics.fillStyle(visualColor('mold'), 0.58);
     graphics.fillRoundedRect(
       target.x,
       target.y,
@@ -431,7 +432,7 @@ export class TrashScene extends Phaser.Scene {
       target.height,
       20,
     );
-    graphics.lineStyle(7, 0x667d70, 1);
+    graphics.lineStyle(7, visualColor('good'), 0.9);
     graphics.strokeRoundedRect(
       target.x,
       target.y,
@@ -439,7 +440,7 @@ export class TrashScene extends Phaser.Scene {
       target.height,
       20,
     );
-    graphics.fillStyle(0x34463f, 1);
+    graphics.fillStyle(visualColor('mold'), 0.82);
     graphics.fillRect(
       target.x - 12,
       target.y - 24,
@@ -452,7 +453,7 @@ export class TrashScene extends Phaser.Scene {
 
       const held = bag.id === this.heldBagId;
       graphics.fillStyle(
-        held ? 0xd3bc75 : 0x80745f,
+        held ? visualColor('mustard') : visualColor('paperOld'),
         1,
       );
       graphics.fillRoundedRect(
@@ -462,7 +463,7 @@ export class TrashScene extends Phaser.Scene {
         84,
         18,
       );
-      graphics.fillStyle(0x4c4437, 1);
+      graphics.fillStyle(visualColor('rust'), 0.72);
       graphics.fillTriangle(
         bag.x - 17,
         bag.y - 40,
@@ -473,7 +474,7 @@ export class TrashScene extends Phaser.Scene {
       );
 
       if (held) {
-        graphics.lineStyle(2, 0x69d6ff, 0.7);
+        graphics.lineStyle(2, visualColor('cold'), 0.9);
         graphics.strokeCircle(
           bag.x,
           bag.y,
