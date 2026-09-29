@@ -3,6 +3,11 @@ import { describe, expect, it } from 'vitest';
 import type { BalanceConfig } from '../src/config/balance.schema';
 import { balance } from '../src/config/balance';
 import { resolveBarryPayment } from '../src/core/barry/barry';
+import { commitBareDrop } from '../src/core/plinko-rules/drop';
+import {
+  advancePendingDropTime,
+  settlePendingDropAndResumeTime,
+} from '../src/core/plinko-rules/dropTiming';
 import {
   advanceEventCheckpoints,
   getPresentablePendingEventId,
@@ -178,6 +183,51 @@ describe('event scheduler', () => {
         pendingDropActive: false,
       }),
     ).toBe(advanced.state.pendingEventId);
+  });
+
+  it('keeps a Drop checkpoint event pending until the cascade is settled', () => {
+    const config = withEventChance(1);
+    const state = {
+      ...createInitialGameState(config, 8642),
+      cash: 1_000,
+      clock: createGameClock('12:50'),
+    };
+    const committed = commitBareDrop(
+      state,
+      null,
+      config,
+      'event-drop',
+      1,
+    );
+
+    const timed = advancePendingDropTime(
+      committed.state,
+      committed.pendingDrop,
+      config,
+    );
+
+    expect(timed.softCheckpointsCrossed).toEqual(['13:00']);
+    expect(timed.state.pendingEventId).not.toBeNull();
+    expect(
+      getPresentablePendingEventId(timed.state, {
+        skillInputActive: false,
+        pendingDropActive: true,
+      }),
+    ).toBeNull();
+
+    const settled = settlePendingDropAndResumeTime(
+      timed.state,
+      timed.pendingDrop,
+      3,
+      config,
+    );
+
+    expect(
+      getPresentablePendingEventId(settled.state, {
+        skillInputActive: false,
+        pendingDropActive: false,
+      }),
+    ).toBe(settled.state.pendingEventId);
   });
 
   it('keeps pending event behind Barry and resets only the daily resolved counter', () => {
