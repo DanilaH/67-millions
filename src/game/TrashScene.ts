@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
+import { preloadProductionArt, addProductionImage } from './visual/productionArt';
 
 import { balance } from '../config/balance';
 import { SceneAudio } from '../audio/SceneAudio';
@@ -48,11 +50,19 @@ export class TrashScene extends Phaser.Scene {
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
+  private bagImages: Phaser.GameObjects.Image[] = [];
+
   public constructor() {
     super('trash');
   }
 
+  public preload(): void {
+    preloadProductionArt(this, ['trash', 'bag', 'barry-due', 'barry-paid']);
+  }
+
   public create(): void {
+    this.bagImages = [];
+    addProductionImage(this, 'trash', 640, 375, 1080, 525);
     const { width } = this.scale;
 
     this.audio = new SceneAudio(this, 'work');
@@ -214,6 +224,7 @@ export class TrashScene extends Phaser.Scene {
       this.save = save;
       this.session = createTrashSession(balance);
       this.render();
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;
       this.messageText?.setText(
@@ -388,10 +399,14 @@ export class TrashScene extends Phaser.Scene {
     this.completionInFlight = true;
     this.heldBagId = null;
 
+    const unresolvedAction = this.save.activeAction;
+    const settledAction = { ...unresolvedAction, result: result };
+    this.save = { ...this.save, activeAction: settledAction };
+    await this.persistRuntime(true);
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
-      this.save.activeAction,
+      unresolvedAction,
       result,
       balance,
     );
@@ -445,7 +460,7 @@ export class TrashScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(visualColor('inkPanel'), 1);
+    graphics.fillStyle(visualColor('inkPanel'), 0.12);
     graphics.fillRoundedRect(80, 120, 650, 510, 32);
     graphics.lineStyle(4, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(80, 120, 650, 510, 32);
@@ -475,31 +490,12 @@ export class TrashScene extends Phaser.Scene {
       32,
     );
 
-    for (const bag of this.session.bags) {
+    for (const [index, bag] of this.session.bags.entries()) {
+      const image = this.bagImages[index] ?? (this.bagImages[index] = addProductionImage(this, 'bag', bag.x, bag.y, 90, 110, 1));
+      image.setVisible(!bag.accepted).setPosition(bag.x, bag.y).setTint(bag.id === this.heldBagId ? 0xd0a74b : 0xffffff);
       if (bag.accepted) continue;
 
       const held = bag.id === this.heldBagId;
-      graphics.fillStyle(
-        held ? visualColor('mustard') : visualColor('paperOld'),
-        1,
-      );
-      graphics.fillRoundedRect(
-        bag.x - 35,
-        bag.y - 42,
-        70,
-        84,
-        18,
-      );
-      graphics.fillStyle(visualColor('rust'), 0.72);
-      graphics.fillTriangle(
-        bag.x - 17,
-        bag.y - 40,
-        bag.x + 17,
-        bag.y - 40,
-        bag.x,
-        bag.y - 60,
-      );
-
       if (held) {
         graphics.lineStyle(2, visualColor('cold'), 0.9);
         graphics.strokeCircle(

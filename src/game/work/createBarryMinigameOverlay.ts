@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { addProductionImage } from '../visual/productionArt';
 
 import type { BalanceConfig } from '../../config/balance.schema';
 import { getBarryPaymentDue } from '../../core/barry/barry';
@@ -92,7 +93,8 @@ export const createBarryMinigameOverlay = (
     .setInteractive({ useHandCursor: true })
     .on('pointerup', onPay);
 
-  container.add([shade, panel, title, dueText, message, pay]);
+  const portrait = addProductionImage(scene, 'barry-due', width / 2 - 425, height / 2, 260, 266);
+  container.add([shade, portrait, panel, title, dueText, message, pay]);
 
   return {
     show: (state) => {

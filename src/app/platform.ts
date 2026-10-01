@@ -5,6 +5,8 @@ import {
   type PlatformRuntime,
 } from '@danilah/mini-games-kit/yandex';
 
+import { createGameAnalyticsAdapter } from './analytics/platformAnalytics';
+
 import { SAVE_STORAGE_KEY } from '../core/save/repository';
 import {
   YANDEX_SAVE_CLOUD_FIELD,
@@ -15,8 +17,10 @@ import { normalizeGameLanguage, type GameLanguage } from './language';
 export const isYandexBuild = (): boolean => import.meta.env.VITE_PLATFORM === 'yandex';
 
 export const createPlatformRuntime = async (): Promise<PlatformRuntime<GameLanguage>> => {
+  const analytics = createGameAnalyticsAdapter(isYandexBuild(), import.meta.env.VITE_METRICA_COUNTER_ID, import.meta.env.DEV);
   if (isYandexBuild()) {
     return bootstrapYandexPlatformRuntime<GameLanguage>({
+      analytics,
       normalizeLanguage: normalizeGameLanguage,
       cloud: {
         syncKey: SAVE_STORAGE_KEY,
@@ -39,6 +43,7 @@ export const createPlatformRuntime = async (): Promise<PlatformRuntime<GameLangu
   }
 
   return createMockPlatformRuntime<GameLanguage>({
+    analytics,
     language: normalizeGameLanguage(typeof navigator === 'undefined' ? undefined : navigator.language),
     storage: new WebStorageAdapter(window.localStorage),
   });

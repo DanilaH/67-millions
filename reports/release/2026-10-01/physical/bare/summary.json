@@ -1,0 +1,90 @@
+{
+  "metadata": {
+    "generatedAt": "2026-10-01T13:20:52.266Z",
+    "configVersion": "0.8-candidate-price0.5-payout1.5",
+    "configHash": "ffd96790e8327c7319f9ad1836cd5f9b3399b1be9a923f83c2ecac99ad9a2c48",
+    "codeRevision": "e3ea69c51ede805c9a5222336c284a4dfa819389",
+    "engine": "matter-js@0.20.0 (Phaser Matter baseline)",
+    "seed": 67069000,
+    "runs": 100000,
+    "boardLabel": "Bare",
+    "boardHash": "cb9d7781fc3bbfbb15322332a22eaa42c3cdb10a79081cec5dd39a0ca479a172",
+    "pocketLevels": {
+      "centerLevel": 0,
+      "midLevel": 0,
+      "jackpotLevel": 0
+    },
+    "pocketMultipliers": [
+      12,
+      4,
+      1.5,
+      1,
+      0.25,
+      0.25,
+      1,
+      1.5,
+      4,
+      12
+    ]
+  },
+  "metrics": {
+    "runs": 100000,
+    "resolvedRuns": 100000,
+    "stuckRuns": 0,
+    "stuckRate": 0,
+    "pocketCounts": [
+      548,
+      1415,
+      4742,
+      17594,
+      26233,
+      25687,
+      17126,
+      4616,
+      1450,
+      589
+    ],
+    "pocketFrequencies": [
+      0.00548,
+      0.01415,
+      0.04742,
+      0.17594,
+      0.26233,
+      0.25687,
+      0.17126,
+      0.04616,
+      0.0145,
+      0.00589
+    ],
+    "ev": 0.86841,
+    "medianMultiplier": 0.25,
+    "standardDeviation": 1.3898737611382075,
+    "probabilityBelow1x": 0.5192,
+    "probabilityAtLeast2x": 0.04002,
+    "probabilityAtLeast5x": 0.01137,
+    "probabilityAtLeast10x": 0.01137,
+    "edgePocketProbability": 0.01137,
+    "combinedCenterProbability": 0.5192,
+    "targetEvDelta": 0.018410000000000037,
+    "galtonShapeL1Error": 0.1071025,
+    "idealEdgeProbability": 0.00390625,
+    "edgeProbabilityDelta": 0.00746375,
+    "p95Multiplier": 1.5,
+    "p99Multiplier": 12,
+    "meanCollisions": 22.37997,
+    "meanCascadeSeconds": 4.957775499999371,
+    "p95CascadeSeconds": 5.7,
+    "maxCascadeSeconds": 7.85,
+    "symmetryDelta": 0.00546000000000002,
+    "childBallCount": 0,
+    "returnCount": 0,
+    "stuckInsideBoard": 0,
+    "escapedBelowSensors": 0,
+    "stuckPositionBounds": {
+      "minX": null,
+      "maxX": null,
+      "minY": null,
+      "maxY": null
+    }
+  }
+}

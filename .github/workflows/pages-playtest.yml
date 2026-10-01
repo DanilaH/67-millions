@@ -1,0 +1,55 @@
+name: Pages playtest
+
+on:
+  push:
+    branches: [feat/roadmap-completion]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-playtest
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/feat/roadmap-completion'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npm run build:pages
+      - run: npx playwright install --with-deps chromium
+      - run: npm run smoke:pages
+      - name: Record preview revision
+        run: |
+          node --input-type=module -e "import {writeFileSync} from 'node:fs'; writeFileSync('dist/preview-version.json', JSON.stringify({sha:process.env.GITHUB_SHA, branch:process.env.GITHUB_REF_NAME, purpose:'playtest; not an accepted RC', platform:'local browser storage; no hosted Yandex services'}, null, 2));"
+          touch dist/.nojekyll
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pages-smoke
+          path: artifacts/pages-smoke
+          if-no-files-found: warn
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - uses: actions/deploy-pages@v4
+        id: deployment

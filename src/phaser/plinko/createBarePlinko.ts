@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { BALL_LABEL, PEG_LABEL_PREFIX, POCKET_SENSOR_LABEL_PREFIX, dispatchPlinkoCollisions } from './collisionEvents';
+import { snapshotSolver, restoreSolver } from './solverCheckpoint';
+import type { PhysicsCheckpoint } from '../../core/plinko-rules/physicsCheckpoint';
 
 import type { BalanceConfig } from '../../config/balance.schema';
 import type {
@@ -20,9 +23,6 @@ import {
 
 const BALL_CATEGORY = 0x0002;
 const STATIC_CATEGORY = 0x0001;
-const PEG_LABEL_PREFIX = 'plinko:peg:';
-const BALL_LABEL = 'plinko:ball';
-const POCKET_SENSOR_LABEL_PREFIX = 'plinko:pocket:';
 
 export interface BarePlinkoRuntime {
   layout: PlinkoBoardLayout;
@@ -38,6 +38,8 @@ export interface BarePlinkoRuntime {
   ): DropBallSnapshot;
   getFixedTicksElapsed(): number;
   setFixedTicksElapsed(ticks: number): void;
+  snapshotSolver(balls: ReadonlyMap<MatterJS.BodyType, DropBallState>): PhysicsCheckpoint;
+  restoreSolver(snapshot: PhysicsCheckpoint, balls: ReadonlyMap<MatterJS.BodyType, DropBallState>): void;
   destroy(): void;
 }
 
@@ -174,34 +176,9 @@ export const createBarePlinko = (
   }
 
   const handleCollision = (
-    _event: unknown,
-    bodyA: MatterJS.BodyType,
-    bodyB: MatterJS.BodyType,
+    event: { pairs: { bodyA: MatterJS.BodyType; bodyB: MatterJS.BodyType }[] },
   ): void => {
-    const ball =
-      bodyA.label === BALL_LABEL
-        ? bodyA
-        : bodyB.label === BALL_LABEL
-          ? bodyB
-          : null;
-    if (!ball) return;
-
-    const other = bodyA === ball ? bodyB : bodyA;
-
-    if (other.label.startsWith(POCKET_SENSOR_LABEL_PREFIX)) {
-      const index = Number(
-        other.label.slice(POCKET_SENSOR_LABEL_PREFIX.length),
-      );
-      if (Number.isInteger(index)) callbacks.onPocket?.(index, ball);
-      return;
-    }
-
-    if (other.label.startsWith(PEG_LABEL_PREFIX)) {
-      callbacks.onPeg?.(
-        other.label.slice(PEG_LABEL_PREFIX.length),
-        ball,
-      );
-    }
+    dispatchPlinkoCollisions(event.pairs, callbacks);
   };
 
   const handleAfterUpdate = (): void => {
@@ -364,6 +341,8 @@ export const createBarePlinko = (
         ballStationaryTicks.get(body) ?? 0,
     }),
     getFixedTicksElapsed: () => fixedTicksElapsed,
+    snapshotSolver: balls => snapshotSolver(matter.world.engine, matter.world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId]))),
+    restoreSolver: (snapshot, balls) => restoreSolver(matter.world.engine, matter.world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId])), snapshot),
     setFixedTicksElapsed: (ticks) => {
       if (!Number.isInteger(ticks) || ticks < 0) {
         throw new RangeError(

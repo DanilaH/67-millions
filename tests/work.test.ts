@@ -295,6 +295,6 @@ describe('work transaction', () => {
     const action = setWorkResult(started.action, 'SUCCESS');
     const settled = settleWork(started.state, action, balance);
 
-    expect(settled.cash).toBe(500 + 2550);
+    expect(settled.cash).toBe(500 + 3825);
   });
 });

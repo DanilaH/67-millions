@@ -1,4 +1,8 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
+import { createPinTextures } from './casino/createPinTextures';
+import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
+import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 
 import { balance } from '../config/balance';
 import {
@@ -45,6 +49,7 @@ import {
 } from '../core/plinko-rules/cascade';
 import { SeededRandom } from '../core/rng/SeededRandom';
 import type { SaveRepository } from '../core/save/repository';
+import { createInitialGameState } from '../core/state/GameState';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import {
   createBarePlinko,
@@ -104,8 +109,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private worldAudio: SceneAudio | null = null;
 
   private casinoLayer?: Phaser.GameObjects.Container;
+  private staticBoardGraphics?: Phaser.GameObjects.Graphics;
+  private ballImages: Phaser.GameObjects.Image[] = [];
+  private pegImages: Phaser.GameObjects.Image[] = [];
   private mapLayer?: Phaser.GameObjects.Container;
-  private graphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
   private mapText?: Phaser.GameObjects.Text;
@@ -123,12 +130,50 @@ export class PlinkoDebugScene extends Phaser.Scene {
     super('plinko-debug');
   }
 
+  public preload(): void {
+    preloadProductionArt(this, ['map', 'casino', 'barry-due', 'barry-paid']);
+  }
+
   public create(): void {
     this.casinoLayer = this.add.container(0, 0);
+    // Draw the painted frame as four cropped strips rather than shading every board pixel.
+    const frameSize = this.textures.get(productionArtKey('casino')).getSourceImage();
+    const border = 40;
+    for (const [x, y, width, height] of [
+      [0, 0, frameSize.width, border],
+      [0, frameSize.height - border, frameSize.width, border],
+      [0, border, border, frameSize.height - 2 * border],
+      [frameSize.width - border, border, border, frameSize.height - 2 * border],
+    ]) {
+      this.casinoLayer.add(addProductionImage(this, 'casino', 640, 400, 600, 590).setCrop(x, y, width, height));
+    }
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
-    this.graphics = this.add.graphics();
-    this.casinoLayer.add(this.graphics);
+    this.staticBoardGraphics = this.add.graphics();
+    this.casinoLayer.add(this.staticBoardGraphics);
+    this.ballImages = [];
+    this.pegImages = [];
+    createPinTextures(this, balance.plinko.geometry.pegRadius);
+    const radius = balance.plinko.geometry.ballRadius;
+    const size = (radius + 4) * 2;
+    for (const kind of ['normal', 'amplified', 'split'] as const) {
+      const key = `67m:ball:${kind}`;
+      if (this.textures.exists(key)) continue;
+      const stamp = this.add.graphics();
+      stamp.fillStyle(visualColor(kind === 'amplified' ? 'mustard' : kind === 'split' ? 'paperOld' : 'textMain'), 1);
+      stamp.fillCircle(size / 2, size / 2, radius);
+      if (kind !== 'normal') {
+        stamp.lineStyle(2, visualColor(kind === 'amplified' ? 'rust' : 'cold'), 0.95);
+        stamp.strokeCircle(size / 2, size / 2, radius + 2);
+      }
+      stamp.generateTexture(key, size, size);
+      stamp.destroy();
+    }
+    for (let index = 0; index < balance.plinko.maxActiveBalls; index += 1) {
+      const image = this.add.image(0, 0, '67m:ball:normal').setVisible(false);
+      this.ballImages.push(image);
+      this.casinoLayer.add(image);
+    }
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
       color: visualHex('textMain'),
@@ -204,50 +249,43 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public update(): void {
-    if (!this.graphics || this.mapMode) return;
+    if (!this.staticBoardGraphics || this.mapMode) return;
 
-    this.graphics.clear();
-    this.drawStaticBoard();
-
+    let index = 0;
     for (const [ball, metadata] of this.balls) {
-      const amplified = metadata.currentValue > 1;
-      const split = metadata.splitDepth > 0;
-      const fill = amplified
-        ? visualColor('mustard')
-        : split
-          ? visualColor('paperOld')
-          : visualColor('textMain');
-
-      this.graphics.fillStyle(fill, 1);
-      this.graphics.fillCircle(
-        ball.position.x,
-        ball.position.y,
-        balance.plinko.geometry.ballRadius,
-      );
-
-      if (amplified || split) {
-        this.graphics.lineStyle(
-          2,
-          amplified
-            ? visualColor('rust')
-            : visualColor('cold'),
-          0.95,
-        );
-        this.graphics.strokeCircle(
-          ball.position.x,
-          ball.position.y,
-          balance.plinko.geometry.ballRadius + 2,
-        );
-      }
+      const kind = metadata.currentValue > 1 ? 'amplified' : metadata.splitDepth > 0 ? 'split' : 'normal';
+      const image = this.ballImages[index] ?? (this.ballImages[index] = this.add.image(0, 0, `67m:ball:${kind}`));
+      if (!image.parentContainer) this.casinoLayer!.add(image);
+      const texture = `67m:ball:${kind}`;
+      if (image.texture.key !== texture) image.setTexture(texture);
+      image.setPosition(ball.position.x, ball.position.y).setVisible(true);
+      index += 1;
     }
+    for (; index < this.ballImages.length; index += 1) this.ballImages[index]!.setVisible(false);
   }
 
   private async initialize(): Promise<void> {
     this.repository = getSceneSaveRepository(this);
     this.save = await this.repository.load();
+    if (isPlinkoPerfMode() && new URLSearchParams(window.location.search).get('stress') === '24') {
+      this.save = { version: SAVE_VERSION, activeAction: null, pendingDrop: null, game: {
+        ...createInitialGameState(balance, 67072000), cash: 50_000_000,
+        plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3,
+        plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5,
+        plinkoJackpotBiasLevel: 4,
+      }};
+    }
     this.refreshVisualSnapshot();
 
     const pendingAtLoad = this.save.pendingDrop;
+    if (pendingAtLoad?.physics && !pendingAtLoad.physics.solver) {
+      // Older pose-only snapshots cannot preserve the warmed solver's exact outcome.
+      // Stop before constructing or persisting physics; keep the original save intact.
+      this.save = null;
+      this.showStatus('Сохранение каскада устарело. Данные не изменены; продолжение этого броска недоступно.');
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
+      return;
+    }
     this.random = new SeededRandom(
       pendingAtLoad?.physics === null
         ? pendingAtLoad.rngStateAtCommit
@@ -271,6 +309,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
       },
       onFixedTick: (fixedTicksElapsed) => {
+        const probe = window.__PLINKO_PERF__;
+        if (probe?.phase === 'running') {
+          probe.activeBallCount = this.balls.size;
+          probe.maxActiveBallCount = Math.max(probe.maxActiveBallCount ?? 0, this.balls.size);
+        }
         if (
           this.save?.pendingDrop &&
           fixedTicksElapsed - this.lastPersistedPhysicsTick >= 15
@@ -309,6 +352,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           const body = this.runtime.restoreBall(snapshot);
           this.balls.set(body, this.metadataFromSnapshot(snapshot));
         }
+        if (pendingAtLoad.physics.solver) this.runtime.restoreSolver(pendingAtLoad.physics.solver, this.balls);
 
         this.showStatus(
           `RESTORED DROP ${pendingAtLoad.dropId} at fixed tick ${pendingAtLoad.physics.fixedTicksElapsed}.`,
@@ -352,6 +396,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+    this.game.events.emit(GAME_PRESENTABLE_EVENT);
 
     if (isPlinkoPerfMode() && !this.save.pendingDrop) {
       this.installPerfProbe();
@@ -590,6 +635,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.runtime.setJackpotBiasLevel(
         committed.pendingDrop.specialLevelsAtCommit.jackpotBiasLevel,
       );
+      this.runtime.setFixedTicksElapsed(0);
+      this.lastPersistedPhysicsTick = 0;
       const body = this.runtime.spawnBall();
       this.balls.set(
         body,
@@ -752,6 +799,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         pendingDrop: setDropPhysicsSnapshot(pending, {
           fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
           alreadySettledPayout: aggregatePayout,
+          solver: this.runtime.snapshotSolver(this.balls),
           balls: Array.from(this.balls.entries()).map(
             ([activeBody, activeMetadata]) =>
               this.runtime!.snapshotBall(activeBody, activeMetadata),
@@ -759,10 +807,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
         }),
       };
       await this.enqueueSave(true);
-      this.renderAll();
       return;
     }
 
+    const previousBarryTotal = this.save.game.totalBarryPaid;
     const previousBarryPaymentIndex =
       this.save.game.barryPaymentIndex;
     const result = settleAggregatePendingDropAndResumeTime(
@@ -782,6 +830,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.save.game.plinkoJackpotBiasLevel,
     );
     await this.enqueueSave(true);
+
+    (this.game.registry.get(GAME_ANALYTICS_KEY) as GameAnalytics | undefined)?.track('plinko_resolved', result.state, {
+      bet: pending.originalStake, payout: result.payout, board_hash: pending.boardFingerprint,
+      cash_before: this.save.game.cash - result.payout + result.state.totalBarryPaid - previousBarryTotal + pending.originalStake,
+      cash_after: result.state.cash, seed: pending.rngStateAtCommit, drop_id: pending.dropId,
+      cascade_fixed_ticks: this.runtime.getFixedTicksElapsed(), cascade_active_balls: this.balls.size,
+      insurance_top_up: result.insuranceTopUp,
+    });
 
     recordTutorialMilestone('DROP_RESOLVED');
     if (
@@ -851,17 +907,37 @@ export class PlinkoDebugScene extends Phaser.Scene {
       startedAtMs: null,
       resolvedAtMs: null,
       activeBallCount: this.balls.size,
+      maxActiveBallCount: this.balls.size,
       error: null,
+      diagnostics: () => ({ bodies: this.matter.world.getAllBodies().length, audioListeners: this.game.events.listenerCount(GAME_AUDIO_BLOCKED_EVENT), pointerListeners: this.input.listenerCount('pointerdown'), textures: this.textures.getTextureKeys().length, ...Object.fromEntries(Object.entries(this.audio?.diagnostics() ?? {}).map(([key,value]) => [`plinko_${key}`, value])), ...Object.fromEntries(Object.entries(this.worldAudio?.diagnostics() ?? {}).map(([key,value]) => [`world_${key}`, value])) }),
       start: async () => {
         const probe = window.__PLINKO_PERF__;
-        if (!probe || probe.phase !== 'ready') return;
+        if (!probe || (probe.phase !== 'ready' && probe.phase !== 'resolved')) return;
 
         probe.phase = 'running';
+        probe.maxActiveBallCount = 0;
+        probe.resolvedAtMs = null;
         probe.startedAtMs = performance.now();
 
         try {
           await this.commitAndSpawn(1);
+          if (!this.save?.pendingDrop) {
+            probe.phase = 'error';
+            probe.error = 'Drop was not committed; resolve gameplay blockers before measuring';
+            return;
+          }
+          if (this.runtime && this.save?.pendingDrop && new URLSearchParams(window.location.search).get('stress') === '24') {
+            // Performance build only: synthetic cap concurrency, preserving the original total stake.
+            const roots = balance.plinko.maxActiveBalls;
+            for (const metadata of this.balls.values()) metadata.currentValue = 1 / roots;
+            for (let index = this.balls.size; index < roots; index += 1) {
+              const body = this.runtime.spawnBall();
+              this.balls.set(body, {...createRootBallState(`perf:${index}`), currentValue: 1 / roots});
+            }
+            await this.persistPendingPhysics(true);
+          }
           probe.activeBallCount = this.balls.size;
+          probe.maxActiveBallCount = Math.max(probe.maxActiveBallCount ?? 0, this.balls.size);
           if (this.save?.game.terminalReason !== null) {
             probe.phase = 'error';
             probe.error = this.save?.game.terminalReason ?? 'terminal';
@@ -876,6 +952,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private readonly handleAudioPrime = (): void => {
     this.audio?.prime();
+    this.worldAudio?.prime();
   };
 
   private readonly handleAudioBlocked = (
@@ -961,6 +1038,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       const physics = {
         fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
         alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0,
+        solver: this.runtime.snapshotSolver(this.balls),
         balls: Array.from(this.balls.entries()).map(([body, metadata]) =>
           this.runtime!.snapshotBall(body, metadata),
         ),
@@ -989,6 +1067,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     if (this.runtime) {
       this.installPocketLabels();
+      this.drawStaticBoard();
     }
   }
 
@@ -1172,146 +1251,26 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private drawStaticBoard(): void {
     if (
-      !this.graphics ||
+      !this.staticBoardGraphics ||
       !this.runtime ||
       !this.visualSnapshot
     ) {
       return;
     }
 
-    const graphics = this.graphics;
+    const graphics = this.staticBoardGraphics;
+    graphics.clear();
     const geometry = balance.plinko.geometry;
     const layout = this.runtime.layout;
     const snapshot = this.visualSnapshot;
 
-    graphics.fillStyle(
-      visualColor('lineDirty'),
-      1,
-    );
-    for (const peg of layout.pegs) {
-      if (
-        getPegVisualRole(
-          peg.id,
-          snapshot.pegRoles,
-        ) === 'regular'
-      ) {
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius,
-        );
-      }
-    }
-
-    for (const peg of layout.pegs) {
-      const role = getPegVisualRole(
-        peg.id,
-        snapshot.pegRoles,
-      );
-      if (role === 'regular') continue;
-
-      if (role === 'amplifier') {
-        graphics.fillStyle(
-          SPECIAL_PIN_STYLE.amplifier.color,
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius + 4,
-        );
-        graphics.fillStyle(
-          visualColor('inkDeep'),
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          Math.max(2, geometry.pegRadius - 1),
-        );
-        continue;
-      }
-
-      if (role === 'return') {
-        graphics.fillStyle(
-          SPECIAL_PIN_STYLE.return.color,
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius + 3,
-        );
-        graphics.lineStyle(
-          2,
-          visualColor('inkDeep'),
-          1,
-        );
-        graphics.strokeLineShape(
-          new Phaser.Geom.Line(
-            peg.x,
-            peg.y + 4,
-            peg.x,
-            peg.y - 5,
-          ),
-        );
-        graphics.strokeLineShape(
-          new Phaser.Geom.Line(
-            peg.x,
-            peg.y - 5,
-            peg.x - 4,
-            peg.y - 1,
-          ),
-        );
-        graphics.strokeLineShape(
-          new Phaser.Geom.Line(
-            peg.x,
-            peg.y - 5,
-            peg.x + 4,
-            peg.y - 1,
-          ),
-        );
-        continue;
-      }
-
-      graphics.fillStyle(
-        SPECIAL_PIN_STYLE.splitter.color,
-        1,
-      );
-      graphics.fillCircle(
-        peg.x,
-        peg.y,
-        geometry.pegRadius + 3,
-      );
-      graphics.lineStyle(
-        2,
-        visualColor('inkDeep'),
-        1,
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          peg.x,
-          peg.y + 4,
-          peg.x,
-          peg.y,
-        ),
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          peg.x,
-          peg.y,
-          peg.x - 4,
-          peg.y - 4,
-        ),
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          peg.x,
-          peg.y,
-          peg.x + 4,
-          peg.y - 4,
-        ),
-      );
+    for (const [index, peg] of layout.pegs.entries()) {
+      const role = getPegVisualRole(peg.id, snapshot.pegRoles);
+      const texture = `67m:pin:${role}`;
+      const image = this.pegImages[index] ?? (this.pegImages[index] = this.add.image(peg.x, peg.y, texture));
+      if (!image.parentContainer) this.casinoLayer!.addAt(image, 4);
+      if (image.texture.key !== texture) image.setTexture(texture);
+      image.setPosition(peg.x, peg.y);
     }
 
     const biasGeometry = deriveJackpotBiasGeometry(

@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "generation": {
+    "tool": "OpenAI image generation",
+    "date": "2026-10-01",
+    "style": "original hand-painted dirty cartoon; generated, not a manually painted commission"
+  },
+  "assets": [
+    {
+      "id": "map",
+      "source": "assets-src/map.png",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "sourceSha256": "aa22119fb258957e96763fc264ad09858045d725979522be004c32c22f878f47",
+      "width": 1509,
+      "height": 780,
+      "alpha": false,
+      "category": "background",
+      "loadClass": "startup",
+      "webp": "art/map.webp",
+      "avif": "art/map.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": null
+    },
+    {
+      "id": "barry-due",
+      "source": "assets-src/barry-states.png",
+      "sourceWidth": 1774,
+      "sourceHeight": 887,
+      "sourceSha256": "7fa488bd01e67553da082de80e9d59439c6d36763ae10962cd5589bf47dc9b3c",
+      "width": 630,
+      "height": 645,
+      "alpha": true,
+      "category": "character",
+      "loadClass": "startup",
+      "webp": "art/barry-due.webp",
+      "avif": "art/barry-due.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 1,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "barry-paid",
+      "source": "assets-src/barry-states.png",
+      "sourceWidth": 1774,
+      "sourceHeight": 887,
+      "sourceSha256": "7fa488bd01e67553da082de80e9d59439c6d36763ae10962cd5589bf47dc9b3c",
+      "width": 630,
+      "height": 645,
+      "alpha": true,
+      "category": "character",
+      "loadClass": "startup",
+      "webp": "art/barry-paid.webp",
+      "avif": "art/barry-paid.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 1,
+        "x": 1,
+        "y": 0
+      }
+    },
+    {
+      "id": "dishes",
+      "source": "assets-src/scene-atlas.png",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "sourceSha256": "8660a94c4bc8746024f2b60ce05b6bad584deed1b0eccdd8348f845ae8791922",
+      "width": 836,
+      "height": 470,
+      "alpha": false,
+      "category": "background",
+      "loadClass": "scene",
+      "webp": "art/dishes.webp",
+      "avif": "art/dishes.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "trash",
+      "source": "assets-src/scene-atlas.png",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "sourceSha256": "8660a94c4bc8746024f2b60ce05b6bad584deed1b0eccdd8348f845ae8791922",
+      "width": 836,
+      "height": 470,
+      "alpha": false,
+      "category": "background",
+      "loadClass": "scene",
+      "webp": "art/trash.webp",
+      "avif": "art/trash.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 1,
+        "y": 0
+      }
+    },
+    {
+      "id": "courier",
+      "source": "assets-src/scene-atlas.png",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "sourceSha256": "8660a94c4bc8746024f2b60ce05b6bad584deed1b0eccdd8348f845ae8791922",
+      "width": 836,
+      "height": 470,
+      "alpha": false,
+      "category": "background",
+      "loadClass": "scene",
+      "webp": "art/courier.webp",
+      "avif": "art/courier.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "id": "casino",
+      "source": "assets-src/scene-atlas.png",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "sourceSha256": "8660a94c4bc8746024f2b60ce05b6bad584deed1b0eccdd8348f845ae8791922",
+      "width": 836,
+      "height": 470,
+      "alpha": false,
+      "category": "background",
+      "loadClass": "scene",
+      "webp": "art/casino.webp",
+      "avif": "art/casino.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "id": "plate",
+      "source": "assets-src/interactables.png",
+      "sourceWidth": 1270,
+      "sourceHeight": 1239,
+      "sourceSha256": "7ee2eb4369ea3fc537d7711a377e8ad2affe9cd1ae108e391571f8f857c89a5f",
+      "width": 384,
+      "height": 384,
+      "alpha": true,
+      "category": "interactable",
+      "loadClass": "scene",
+      "webp": "art/plate.webp",
+      "avif": "art/plate.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "bag",
+      "source": "assets-src/interactables.png",
+      "sourceWidth": 1270,
+      "sourceHeight": 1239,
+      "sourceSha256": "7ee2eb4369ea3fc537d7711a377e8ad2affe9cd1ae108e391571f8f857c89a5f",
+      "width": 384,
+      "height": 384,
+      "alpha": true,
+      "category": "interactable",
+      "loadClass": "scene",
+      "webp": "art/bag.webp",
+      "avif": "art/bag.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 1,
+        "y": 0
+      }
+    },
+    {
+      "id": "crate",
+      "source": "assets-src/interactables.png",
+      "sourceWidth": 1270,
+      "sourceHeight": 1239,
+      "sourceSha256": "7ee2eb4369ea3fc537d7711a377e8ad2affe9cd1ae108e391571f8f857c89a5f",
+      "width": 384,
+      "height": 384,
+      "alpha": true,
+      "category": "interactable",
+      "loadClass": "scene",
+      "webp": "art/crate.webp",
+      "avif": "art/crate.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 0,
+        "y": 1
+      }
+    },
+    {
+      "id": "courier-icon",
+      "source": "assets-src/interactables.png",
+      "sourceWidth": 1270,
+      "sourceHeight": 1239,
+      "sourceSha256": "7ee2eb4369ea3fc537d7711a377e8ad2affe9cd1ae108e391571f8f857c89a5f",
+      "width": 384,
+      "height": 384,
+      "alpha": true,
+      "category": "interactable",
+      "loadClass": "scene",
+      "webp": "art/courier-icon.webp",
+      "avif": "art/courier-icon.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": {
+        "columns": 2,
+        "rows": 2,
+        "x": 1,
+        "y": 1
+      }
+    }
+  ],
+  "budget": {
+    "count": 11,
+    "encodedBytes": 830728,
+    "pixels": 4151224,
+    "estimatedRgbaBytes": 16604896,
+    "categories": {
+      "background": {
+        "count": 5,
+        "encodedBytes": 524220,
+        "pixels": 2748700,
+        "estimatedRgbaBytes": 10994800
+      },
+      "character": {
+        "count": 2,
+        "encodedBytes": 181222,
+        "pixels": 812700,
+        "estimatedRgbaBytes": 3250800
+      },
+      "interactable": {
+        "count": 4,
+        "encodedBytes": 125286,
+        "pixels": 589824,
+        "estimatedRgbaBytes": 2359296
+      }
+    }
+  }
+}

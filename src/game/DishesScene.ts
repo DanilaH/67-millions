@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
+import { preloadProductionArt, addProductionImage } from './visual/productionArt';
 
 import { balance } from '../config/balance';
 import { SceneAudio } from '../audio/SceneAudio';
@@ -48,11 +50,19 @@ export class DishesScene extends Phaser.Scene {
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
+  private plateImages: Phaser.GameObjects.Image[] = [];
+
   public constructor() {
     super('dishes');
   }
 
+  public preload(): void {
+    preloadProductionArt(this, ['dishes', 'plate', 'barry-due', 'barry-paid']);
+  }
+
   public create(): void {
+    this.plateImages = [];
+    addProductionImage(this, 'dishes', 640, 375, 1080, 525);
     const { width } = this.scale;
 
     this.audio = new SceneAudio(this, 'work');
@@ -103,7 +113,7 @@ export class DishesScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 0);
 
-    this.graphics = this.add.graphics();
+    this.graphics = this.add.graphics().setDepth(1);
     this.barryOverlay = createBarryMinigameOverlay(
       this,
       balance,
@@ -217,6 +227,7 @@ export class DishesScene extends Phaser.Scene {
       this.save = save;
       this.session = createDishesSession(balance);
       this.render();
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;
       this.messageText?.setText(
@@ -368,10 +379,14 @@ export class DishesScene extends Phaser.Scene {
     this.completionInFlight = true;
     this.pointerDown = false;
 
+    const unresolvedAction = this.save.activeAction;
+    const settledAction = { ...unresolvedAction, result: result };
+    this.save = { ...this.save, activeAction: settledAction };
+    await this.persistRuntime(true);
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
-      this.save.activeAction,
+      unresolvedAction,
       result,
       balance,
     );
@@ -426,33 +441,16 @@ export class DishesScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(visualColor('inkPanel'), 1);
+    graphics.fillStyle(visualColor('inkPanel'), 0.12);
     graphics.fillRoundedRect(150, 112, 980, 500, 36);
 
     graphics.lineStyle(5, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(150, 112, 980, 500, 36);
 
-    for (const plate of this.session.plates) {
-      graphics.fillStyle(visualColor('paperOld'), 0.95);
-      graphics.fillCircle(
-        plate.x,
-        plate.y,
-        plate.radius,
-      );
-
-      graphics.lineStyle(5, visualColor('cold'), 0.95);
-      graphics.strokeCircle(
-        plate.x,
-        plate.y,
-        plate.radius - 9,
-      );
-      graphics.lineStyle(2, visualColor('lineDirty'), 0.9);
-      graphics.strokeCircle(
-        plate.x,
-        plate.y,
-        plate.radius * 0.45,
-      );
-    }
+    this.session.plates.forEach((plate, index) => {
+      const image = this.plateImages[index] ?? (this.plateImages[index] = addProductionImage(this, 'plate', plate.x, plate.y, plate.radius * 2.25, plate.radius * 2.25, 0));
+      image.setPosition(plate.x, plate.y);
+    });
 
     for (const spot of this.session.spots) {
       if (spot.cleaned) continue;

@@ -1,0 +1,3 @@
+archetype,policyId,seed,outcome,realSessionMinutes,reasons
+AGGRESSIVE,aggressive-v1-fail0.12,67100209,HP_DEATH,664.6,dumpster-hp-death
+AGGRESSIVE,aggressive-v1-fail0.12,67100272,HP_DEATH,753.75,dumpster-hp-death

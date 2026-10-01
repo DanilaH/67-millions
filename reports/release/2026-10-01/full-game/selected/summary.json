@@ -1,0 +1,6280 @@
+{
+  "metadata": {
+    "configVersion": "0.8-candidate-price0.5-payout1.5",
+    "configHash": "ffd96790e8327c7319f9ad1836cd5f9b3399b1be9a923f83c2ecac99ad9a2c48",
+    "codeRevision": "50da7bc97308a35a98f2484f4d198c69d01bade2",
+    "runsPerPolicy": 1000,
+    "seedStart": 67074000,
+    "realSecondsPerGameMinute": 3,
+    "plinkoOutcomeModelId": "matter-cascade-direct-v1",
+    "plinkoModelNotes": [
+      "Actual canonical Matter cascade per committed Drop; exact consumed RNG state; no approximate payout tails."
+    ],
+    "nearZeroCashThreshold": 1000,
+    "giantPayoutDominanceThreshold": 0.5,
+    "samplingNote": "Executed with the physical model in the working tree at HEAD 50da7bc; model code was subsequently committed as 2d68fe2. The original report incorrectly inherited an evidence-model tag. Only provenance labels are corrected here; sampled statistics are unchanged.",
+    "durationMetric": "Legacy RealMinutes fields convert ALL game minutes including instantaneous jumps. They are clock-equivalent proxies, not human or browser wall-clock pacing."
+  },
+  "strategies": [
+    {
+      "archetype": "CAUTIOUS",
+      "policyId": "cautious-v1-fail0.05+liquidity-v1",
+      "runs": 1000,
+      "wins": 0,
+      "barryLosses": 1000,
+      "hpDeaths": 0,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 1,
+      "hpDeathRate": 0,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 17.99652777777778,
+      "medianRealSessionMinutes": 1295.75,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 75.955,
+      "averagePlinkoDrops": 0,
+      "averageFoodActions": 41.158,
+      "averageSleepActions": 27.095,
+      "averageEntertainmentActions": 21.166,
+      "averageEventsResolved": 10.305,
+      "averageDumpsterSearches": 0.003,
+      "dumpsterComebacks": 0,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 1013,
+      "averageMaxBankrollDrawdown": 742454.985,
+      "p95MaxBankrollDrawdown": 963142.5,
+      "incomeShare": {
+        "work": 1,
+        "plinko": 0,
+        "dumpster": 0
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 784,
+          "share": 0.784
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:trash:L3 > job:dishes:L3 > job:courier:L3",
+          "count": 104,
+          "share": 0.104
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 57,
+          "share": 0.057
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 20,
+          "share": 0.02
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:trash:L3 > job:courier:L3 > job:dishes:L3",
+          "count": 19,
+          "share": 0.019
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 5,
+          "share": 0.005
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:trash:L3 > job:dishes:L3 > job:courier:L3",
+          "count": 4,
+          "share": 0.004
+        },
+        {
+          "sequence": "job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:trash:L3 > job:dishes:L3 > job:courier:L3",
+          "count": 4,
+          "share": 0.004
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:courier:L3 > job:trash:L3 > job:dishes:L3",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:courier:L3 > job:dishes:L3 > job:trash:L3",
+          "count": 1,
+          "share": 0.001
+        }
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "runs": 1000,
+      "wins": 497,
+      "barryLosses": 501,
+      "hpDeaths": 2,
+      "stepLimits": 0,
+      "winRate": 0.497,
+      "barryLossRate": 0.501,
+      "hpDeathRate": 0.002,
+      "medianVictoryElapsedDays": 6.611111111111111,
+      "p10VictoryElapsedDays": 3.884027777777778,
+      "p90VictoryElapsedDays": 10.054861111111112,
+      "medianLossElapsedDays": 15.996527777777779,
+      "medianRealSessionMinutes": 861.125,
+      "medianVictoryRealMinutes": 476,
+      "p10VictoryRealMinutes": 279.65,
+      "p90VictoryRealMinutes": 723.95,
+      "averageWorkShifts": 51.419,
+      "averagePlinkoDrops": 102.952,
+      "averageFoodActions": 23.73,
+      "averageSleepActions": 15.808,
+      "averageEntertainmentActions": 4.016,
+      "averageEventsResolved": 7.033,
+      "averageDumpsterSearches": 0.057,
+      "dumpsterComebacks": 7,
+      "dumpsterHpDeaths": 1,
+      "nearZeroCashRecoveries": 1047,
+      "averageMaxBankrollDrawdown": 5891436.147,
+      "p95MaxBankrollDrawdown": 15868324.999999998,
+      "incomeShare": {
+        "work": 0.003609395528223201,
+        "plinko": 0.9963905383500992,
+        "dumpster": 6.612167765785688e-08
+      },
+      "shareWinsDominatedByOneGiantPayout": 0.993963782696177,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:mid:L1 > plinko:maxBet:L1 > plinko:jackpotBias:L1 > job:courier:L2 > plinko:amplifier:L1 > plinko:jackpot:L1 > job:trash:L2 > job:dishes:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:return:L1 > job:dishes:L3 > plinko:maxBet:L3 > plinko:jackpot:L2 > job:courier:L3 > job:trash:L3 > plinko:jackpotBias:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L3 > plinko:amplifier:L4 > plinko:return:L2 > plinko:jackpot:L3 > plinko:amplifier:L5 > plinko:return:L3 > plinko:return:L4 > plinko:maxBet:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 2,
+          "share": 0.002
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:mid:L1 > plinko:maxBet:L1 > plinko:jackpotBias:L1 > job:courier:L2 > plinko:amplifier:L1 > plinko:jackpot:L1 > job:trash:L2 > job:dishes:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:return:L1 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:jackpot:L2 > job:dishes:L3 > plinko:jackpotBias:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L3 > plinko:amplifier:L4 > job:trash:L3 > plinko:maxBet:L3 > job:courier:L3 > plinko:amplifier:L5 > plinko:return:L2 > plinko:jackpot:L3 > plinko:maxBet:L4 > plinko:return:L3 > plinko:return:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 2,
+          "share": 0.002
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:mid:L1 > plinko:maxBet:L1 > plinko:jackpotBias:L1 > job:dishes:L2 > plinko:amplifier:L1 > job:courier:L2 > plinko:jackpot:L1 > job:trash:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:jackpotBias:L3 > plinko:amplifier:L2 > plinko:amplifier:L3 > plinko:return:L1 > plinko:jackpot:L2 > plinko:jackpotBias:L4 > plinko:amplifier:L4 > plinko:return:L2 > plinko:jackpot:L3 > job:courier:L3 > job:trash:L3 > job:dishes:L3 > plinko:maxBet:L3 > plinko:amplifier:L5 > plinko:return:L3 > plinko:return:L4 > plinko:maxBet:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 2,
+          "share": 0.002
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > job:trash:L2 > plinko:jackpot:L1 > job:dishes:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:return:L1 > plinko:amplifier:L3 > plinko:return:L2 > plinko:jackpot:L2 > job:trash:L3 > job:dishes:L3 > job:courier:L3 > plinko:maxBet:L3 > plinko:jackpotBias:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L4 > plinko:amplifier:L5 > plinko:return:L3 > plinko:jackpot:L3 > plinko:maxBet:L4 > plinko:return:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > job:trash:L2 > plinko:jackpot:L1 > job:dishes:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:return:L1 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:jackpot:L2 > job:dishes:L3 > plinko:maxBet:L3 > job:courier:L3 > job:trash:L3 > plinko:jackpotBias:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L3 > plinko:amplifier:L4 > plinko:return:L2 > plinko:jackpot:L3 > plinko:maxBet:L4 > plinko:amplifier:L5 > plinko:return:L3 > plinko:return:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > plinko:jackpot:L1 > job:trash:L2 > job:dishes:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:return:L1 > plinko:jackpot:L2 > job:dishes:L3 > plinko:mid:L3 > plinko:jackpotBias:L3 > plinko:amplifier:L3 > plinko:return:L2 > job:courier:L3 > job:trash:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L4 > plinko:jackpot:L3 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:return:L3",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > plinko:jackpotBias:L1 > job:courier:L2 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:return:L1 > plinko:jackpotBias:L3 > plinko:amplifier:L3 > plinko:jackpot:L2 > job:trash:L3 > job:dishes:L3 > plinko:jackpotBias:L4 > job:courier:L3 > plinko:maxBet:L3 > plinko:amplifier:L4 > plinko:amplifier:L5 > plinko:return:L2 > plinko:jackpot:L3 > plinko:maxBet:L4 > plinko:return:L3 > plinko:return:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:dishes:L2 > plinko:jackpotBias:L1 > job:trash:L2 > plinko:amplifier:L1 > job:courier:L2 > plinko:jackpot:L1 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:return:L1 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:jackpot:L2 > job:courier:L3 > plinko:jackpotBias:L3 > job:trash:L3 > job:dishes:L3 > plinko:maxBet:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L3 > plinko:amplifier:L4 > plinko:return:L2 > plinko:amplifier:L5 > plinko:return:L3 > plinko:maxBet:L4 > plinko:return:L4 > plinko:jackpot:L3 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:dishes:L2 > plinko:jackpotBias:L1 > job:trash:L2 > plinko:amplifier:L1 > plinko:jackpot:L1 > job:courier:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:return:L1 > job:dishes:L3 > plinko:maxBet:L3 > plinko:jackpot:L2 > job:trash:L3 > job:courier:L3 > plinko:jackpotBias:L3 > plinko:jackpotBias:L4 > plinko:amplifier:L3 > plinko:amplifier:L4 > plinko:return:L2 > plinko:jackpot:L3 > plinko:amplifier:L5 > plinko:return:L3 > plinko:return:L4 > plinko:maxBet:L4 > plinko:maxBet:L5",
+          "count": 1,
+          "share": 0.001
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:mid:L1 > job:dishes:L2 > plinko:jackpotBias:L1 > job:trash:L2 > plinko:amplifier:L1 > plinko:jackpot:L1 > job:courier:L2 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:jackpotBias:L3 > plinko:amplifier:L2 > plinko:amplifier:L3 > plinko:jackpotBias:L4 > plinko:return:L1 > plinko:jackpot:L2 > job:courier:L3 > job:dishes:L3 > job:trash:L3 > plinko:maxBet:L3 > plinko:amplifier:L4 > plinko:amplifier:L5 > plinko:return:L2 > plinko:return:L3 > plinko:return:L4 > plinko:jackpot:L3 > plinko:maxBet:L4 > plinko:maxBet:L5",
+          "count": 1,
+          "share": 0.001
+        }
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "runs": 1000,
+      "wins": 9,
+      "barryLosses": 964,
+      "hpDeaths": 27,
+      "stepLimits": 0,
+      "winRate": 0.009,
+      "barryLossRate": 0.964,
+      "hpDeathRate": 0.027,
+      "medianVictoryElapsedDays": 4.847222222222222,
+      "p10VictoryElapsedDays": 3.165277777777778,
+      "p90VictoryElapsedDays": 6.951388888888889,
+      "medianLossElapsedDays": 10.996527777777779,
+      "medianRealSessionMinutes": 791.75,
+      "medianVictoryRealMinutes": 349,
+      "p10VictoryRealMinutes": 227.9,
+      "p90VictoryRealMinutes": 500.5,
+      "averageWorkShifts": 48.349,
+      "averagePlinkoDrops": 79.34,
+      "averageFoodActions": 49.029,
+      "averageSleepActions": 16.026,
+      "averageEntertainmentActions": 17.065,
+      "averageEventsResolved": 6.555,
+      "averageDumpsterSearches": 0.241,
+      "dumpsterComebacks": 19,
+      "dumpsterHpDeaths": 12,
+      "nearZeroCashRecoveries": 1209,
+      "averageMaxBankrollDrawdown": 514807.431,
+      "p95MaxBankrollDrawdown": 1615484.999999995,
+      "incomeShare": {
+        "work": 0.053076198765015195,
+        "plinko": 0.9469076064728101,
+        "dumpster": 1.6194762174683312e-05
+      },
+      "shareWinsDominatedByOneGiantPayout": 0.3333333333333333,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2",
+          "count": 63,
+          "share": 0.063
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:jackpot:L2 > plinko:mid:L2 > plinko:maxBet:L3",
+          "count": 59,
+          "share": 0.059
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:maxBet:L3",
+          "count": 48,
+          "share": 0.048
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:mid:L2",
+          "count": 46,
+          "share": 0.046
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:jackpot:L2 > plinko:maxBet:L3",
+          "count": 39,
+          "share": 0.039
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:jackpot:L2 > plinko:jackpot:L3 > plinko:mid:L2 > plinko:maxBet:L3",
+          "count": 22,
+          "share": 0.022
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:jackpot:L2 > plinko:jackpot:L3",
+          "count": 20,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:mid:L2 > plinko:jackpot:L2",
+          "count": 19,
+          "share": 0.019
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:jackpot:L1 > plinko:maxBet:L1 > plinko:mid:L1 > plinko:maxBet:L2 > plinko:jackpot:L2 > plinko:jackpot:L3 > plinko:mid:L2 > plinko:mid:L3 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:maxBet:L5",
+          "count": 15,
+          "share": 0.015
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:mid:L1 > plinko:maxBet:L1 > plinko:jackpot:L1 > plinko:maxBet:L2",
+          "count": 15,
+          "share": 0.015
+        }
+      ]
+    },
+    {
+      "archetype": "WORKER",
+      "policyId": "worker-v1-fail0.07+liquidity-v1",
+      "runs": 1000,
+      "wins": 0,
+      "barryLosses": 999,
+      "hpDeaths": 1,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 0.999,
+      "hpDeathRate": 0.001,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 17.99652777777778,
+      "medianRealSessionMinutes": 1295.75,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 76.937,
+      "averagePlinkoDrops": 0,
+      "averageFoodActions": 40.894,
+      "averageSleepActions": 26.137,
+      "averageEntertainmentActions": 22.115,
+      "averageEventsResolved": 10.934,
+      "averageDumpsterSearches": 0.009,
+      "dumpsterComebacks": 0,
+      "dumpsterHpDeaths": 1,
+      "nearZeroCashRecoveries": 1035,
+      "averageMaxBankrollDrawdown": 716507.679,
+      "p95MaxBankrollDrawdown": 982627.2499999999,
+      "incomeShare": {
+        "work": 0.9999996842295529,
+        "plinko": 0,
+        "dumpster": 3.1577044712981284e-07
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 571,
+          "share": 0.571
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:courier:L3 > job:dishes:L3 > job:trash:L3",
+          "count": 211,
+          "share": 0.211
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:trash:L3 > job:courier:L3 > job:dishes:L3",
+          "count": 55,
+          "share": 0.055
+        },
+        {
+          "sequence": "job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 46,
+          "share": 0.046
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 36,
+          "share": 0.036
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:trash:L3 > job:dishes:L3 > job:courier:L3",
+          "count": 30,
+          "share": 0.03
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:courier:L3 > job:trash:L3 > job:dishes:L3",
+          "count": 16,
+          "share": 0.016
+        },
+        {
+          "sequence": "job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 9,
+          "share": 0.009
+        },
+        {
+          "sequence": "job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:courier:L3 > job:trash:L3 > job:dishes:L3",
+          "count": 6,
+          "share": 0.006
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 5,
+          "share": 0.005
+        }
+      ]
+    },
+    {
+      "archetype": "DEGENERATE",
+      "policyId": "degenerate-v1-fail0.14+liquidity-v1",
+      "runs": 1000,
+      "wins": 1,
+      "barryLosses": 155,
+      "hpDeaths": 844,
+      "stepLimits": 0,
+      "winRate": 0.001,
+      "barryLossRate": 0.155,
+      "hpDeathRate": 0.844,
+      "medianVictoryElapsedDays": 3.3715277777777777,
+      "p10VictoryElapsedDays": 3.3715277777777777,
+      "p90VictoryElapsedDays": 3.3715277777777777,
+      "medianLossElapsedDays": 2.986111111111111,
+      "medianRealSessionMinutes": 215.05,
+      "medianVictoryRealMinutes": 242.75,
+      "p10VictoryRealMinutes": 242.75,
+      "p90VictoryRealMinutes": 242.75,
+      "averageWorkShifts": 13.111,
+      "averagePlinkoDrops": 30.705,
+      "averageFoodActions": 7.003,
+      "averageSleepActions": 3.974,
+      "averageEntertainmentActions": 0.958,
+      "averageEventsResolved": 1.677,
+      "averageDumpsterSearches": 1.806,
+      "dumpsterComebacks": 47,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 1495,
+      "averageMaxBankrollDrawdown": 105964.843,
+      "p95MaxBankrollDrawdown": 160627.6,
+      "incomeShare": {
+        "work": 0.16977763181120856,
+        "plinko": 0.8289956949050401,
+        "dumpster": 0.0012266732837513579
+      },
+      "shareWinsDominatedByOneGiantPayout": 1,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:maxBet:L2 > plinko:splitter:L1",
+          "count": 256,
+          "share": 0.256
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:maxBet:L2",
+          "count": 83,
+          "share": 0.083
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1",
+          "count": 67,
+          "share": 0.067
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:splitter:L1 > plinko:jackpot:L1 > plinko:maxBet:L2",
+          "count": 46,
+          "share": 0.046
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1",
+          "count": 45,
+          "share": 0.045
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:splitter:L1 > plinko:maxBet:L2",
+          "count": 45,
+          "share": 0.045
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:maxBet:L2 > plinko:splitter:L1 > plinko:jackpotBias:L2",
+          "count": 28,
+          "share": 0.028
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpotBias:L2 > plinko:splitter:L1 > plinko:jackpot:L1 > plinko:maxBet:L2",
+          "count": 24,
+          "share": 0.024
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:jackpotBias:L2 > plinko:splitter:L1 > plinko:jackpot:L2 > plinko:maxBet:L2",
+          "count": 23,
+          "share": 0.023
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:maxBet:L2 > plinko:splitter:L1 > plinko:jackpotBias:L2 > plinko:splitter:L2",
+          "count": 23,
+          "share": 0.023
+        }
+      ]
+    },
+    {
+      "archetype": "RECKLESS_NEEDS",
+      "policyId": "reckless_needs-v1-fail0.16+liquidity-v1",
+      "runs": 1000,
+      "wins": 0,
+      "barryLosses": 135,
+      "hpDeaths": 865,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 0.135,
+      "hpDeathRate": 0.865,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 1.8003472222222223,
+      "medianRealSessionMinutes": 129.625,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 6.273,
+      "averagePlinkoDrops": 11.985,
+      "averageFoodActions": 0,
+      "averageSleepActions": 3.034,
+      "averageEntertainmentActions": 0.001,
+      "averageEventsResolved": 1.034,
+      "averageDumpsterSearches": 5.548,
+      "dumpsterComebacks": 70,
+      "dumpsterHpDeaths": 1,
+      "nearZeroCashRecoveries": 1214,
+      "averageMaxBankrollDrawdown": 16144.659,
+      "p95MaxBankrollDrawdown": 38250,
+      "incomeShare": {
+        "work": 0.3674646225454351,
+        "plinko": 0.6153987918868431,
+        "dumpster": 0.017136585567721838
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:amplifier:L1",
+          "count": 739,
+          "share": 0.739
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:amplifier:L1 > plinko:maxBet:L3",
+          "count": 71,
+          "share": 0.071
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:amplifier:L1",
+          "count": 65,
+          "share": 0.065
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2",
+          "count": 54,
+          "share": 0.054
+        },
+        {
+          "sequence": "plinko:maxBet:L1",
+          "count": 34,
+          "share": 0.034
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:amplifier:L2",
+          "count": 14,
+          "share": 0.014
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:amplifier:L2",
+          "count": 10,
+          "share": 0.01
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:amplifier:L2",
+          "count": 4,
+          "share": 0.004
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:amplifier:L2 > plinko:amplifier:L3",
+          "count": 3,
+          "share": 0.003
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:maxBet:L4 > plinko:amplifier:L2 > plinko:amplifier:L3",
+          "count": 2,
+          "share": 0.002
+        }
+      ]
+    }
+  ],
+  "anomalySeeds": [
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075000,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 638.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075001,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 542,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075003,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 300.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075004,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 485,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075005,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 521.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075006,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 245.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075008,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 360.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075010,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 208.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075011,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 624.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075013,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 334.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075014,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 312.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075015,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 634.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075017,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 562.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075018,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 508.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075020,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 376.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075021,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 589.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075022,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 455.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075023,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 422,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075026,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 335.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075028,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 578,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075030,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 682.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075032,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 631.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075033,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 635,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075035,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 796.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075037,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 408,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075038,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 244.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075042,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 519.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075043,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 575,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075044,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 527.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075048,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 744.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075050,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 763.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075051,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 600.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075052,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 566.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075053,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 395,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075054,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 270,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075056,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075058,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 318.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075059,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 491.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075060,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 719,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075062,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 824.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075063,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 704,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075066,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 850.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075069,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 551,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075071,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 509.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075075,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 247.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075077,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 255.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075078,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 270,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075079,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 871.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075080,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 555.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075085,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 481.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075089,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 138.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075090,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 629,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075091,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 476,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075093,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 437,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075095,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 383,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075096,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 405.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075097,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 416.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075101,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 611.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075102,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 279.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075104,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 329.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075105,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 743,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075106,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 866.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075107,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 482,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075108,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 482.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075109,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 699.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075117,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 713.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075118,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 431.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075119,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 473,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075120,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 725.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075121,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 283.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075122,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 627.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075127,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 382.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075128,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 452.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075129,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 704.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075132,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 539.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075133,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 474.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075134,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 339.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075135,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 688.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075137,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 562.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075140,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 207,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075141,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 466.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075143,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 438.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075144,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 536,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075146,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 275.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075147,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 790.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075149,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 273.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075151,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 383,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075152,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 373.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075154,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 486.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075156,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 411.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075157,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 641,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075158,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 786.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075161,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 362,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075164,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 279.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075168,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 697.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075171,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 717.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075172,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 474.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075174,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 610.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075175,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 704.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075179,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 671,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075183,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 525.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075185,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 377.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075186,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 710.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075187,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 513.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075189,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 361.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075190,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 552.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075192,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 268.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075194,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 703.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075195,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 413,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075196,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 278.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075198,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 359.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075199,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 307.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075200,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 708.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075201,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 268.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075202,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 525.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075203,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 642.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075208,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 563,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075209,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 473,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075210,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 580.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075211,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 406.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075213,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 323,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075214,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 389,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075216,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 338,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075217,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 623,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075219,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 288,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075222,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 542,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075223,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 633.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075224,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 682.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075227,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 499.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075229,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 419.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075233,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 554,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075235,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 278,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075236,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 408,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075237,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 360.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075240,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 771.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075241,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 482.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075243,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 490.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075248,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 377.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075250,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 317,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075251,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 632,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075252,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 337.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075253,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 559.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075261,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 441.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075265,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 341,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075273,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 791,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075275,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 413,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075280,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 785,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075284,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 483.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075285,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 406.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075287,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 335.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075289,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 668.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075292,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 342.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075294,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 778.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075298,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 854,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075299,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 442.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075301,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 770,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075302,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 484.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075306,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 704,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075307,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 339.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075309,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 282.6,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075313,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 414.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075314,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 412.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075318,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 439.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075322,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 434,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075323,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 410,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075325,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 659,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075328,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 937.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075329,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 548.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075330,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 410,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075331,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 325.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075334,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 356.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075335,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 619.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075338,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 627.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075346,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 404,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075347,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 409.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075348,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 375.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075350,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 339.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075351,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 492.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075352,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 513.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075354,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 517.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075355,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 385.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075360,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 453.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075363,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 361.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075364,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 512.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075371,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 577.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075372,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 618.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075373,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 698.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075375,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 574.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075376,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 686,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075381,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 580.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075382,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 761,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075384,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 506.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075385,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 267.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075387,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 626,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075393,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 264.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075397,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 864.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075399,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 394.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075401,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 382.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075402,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 423.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075405,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 935.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075407,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 701,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075409,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 315.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075412,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 794,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075413,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 683,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075415,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 339.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075419,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 291.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075420,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 486.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075423,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 320.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075425,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 305,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075427,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075428,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 693,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075429,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 673.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075431,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075432,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 563,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075434,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 345.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075436,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 350,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075437,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 482,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075438,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 402.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075444,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 386,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075447,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 350,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075448,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 576.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075451,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 353,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075452,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 491.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075453,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 809,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075455,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 463.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075456,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 501.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075457,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 503,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075458,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 502.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075460,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 569.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075463,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 414.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075464,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 342,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075467,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 695,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075468,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 566,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075470,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 433.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075471,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 779.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075473,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 605,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075474,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 236.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075476,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 504.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075485,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 470.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075486,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 245.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075488,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 621.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075489,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 635.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075493,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 340.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075495,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 508.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075497,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 543.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075498,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 258.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075499,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 354,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075501,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 436.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075502,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 386,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075508,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 644,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075509,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 456.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075510,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 621.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075513,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 567.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075520,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 698,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075523,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 479.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075525,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 494,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075526,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 272,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075528,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 774.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075529,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 613.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075530,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 412.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075534,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 442.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075535,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 397.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075537,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 485.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075539,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 359.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075541,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 677.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075546,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 513.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075548,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 282.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075549,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 625.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075551,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 405.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075552,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 413.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075553,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 622.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075554,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 443,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075555,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075556,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 352.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075557,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 438.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075559,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 270,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075562,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 437,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075563,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 763.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075564,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 473,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075565,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 494.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075566,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 497,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075569,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 334.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075571,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 416.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075575,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 788,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075576,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 566,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075578,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 571.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075579,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 728,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075583,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 381.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075584,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 493.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075585,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075588,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 341,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075589,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 359.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075590,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 197.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075592,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 560.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075594,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 431.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075600,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 300.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075601,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 292.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075606,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 450.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075607,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 169.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075608,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 709.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075610,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 419.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075611,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 336.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075612,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 492.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075616,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 343.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075617,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 551.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075618,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 778.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075621,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 416.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075622,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 262.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075623,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 538.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075624,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 542.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075625,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 210,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075626,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 857.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075627,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 264.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075629,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 661.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075634,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 778.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075635,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075637,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 269.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075638,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 461.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075641,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 685.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075642,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 362,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075645,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 308.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075647,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 499.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075651,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 493.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075652,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 709.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075653,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 773,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075654,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 316.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075655,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 336.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075657,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 626,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075661,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 640.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075662,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 466.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075663,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 435.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075665,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 249,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075667,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 851,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075669,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 638.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075670,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 340.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075673,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 323.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075678,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 483.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075679,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 348,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075680,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 409.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075681,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 637.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075682,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 515,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075683,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 781.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075685,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 211.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075686,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 647,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075687,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 671,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075689,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 420.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075691,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 210,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075695,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 688.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075696,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 596.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075697,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 469.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075701,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 383,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075702,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 477.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075703,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 483.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075706,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 329.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075709,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 647,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075710,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 501.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075711,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 689,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075714,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 929.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075716,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 692,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075717,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 548,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075725,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 277.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075726,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 615.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075728,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 682.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075732,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 569,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075734,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 609.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075736,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 356.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075737,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 565.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075738,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 267,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075743,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 583.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075745,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 636.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075749,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 762.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075750,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 576.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075752,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 268.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075753,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 373.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075755,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 431,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075757,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 491.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075760,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 434.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075762,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 675.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075763,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 626,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075766,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 623,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075767,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 357.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075774,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 434,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075776,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 452,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075780,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 722.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075782,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 223.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075783,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 250.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075784,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 419,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075785,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 423.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075786,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 500.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075787,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 350,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075789,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 638.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075792,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 495.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075794,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 460.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075795,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 347.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075796,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 215.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075797,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 541.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075798,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 292.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075799,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 272.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075800,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 794.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075801,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 491.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075802,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 368,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075805,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 446,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075806,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 223.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075808,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 733.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075809,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 636.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075811,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 440,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075813,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 344.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075815,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 632,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075818,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 290.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075824,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 405,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075825,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 403.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075828,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 704,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075830,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 707,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075832,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 709.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075834,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 277.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075836,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 363.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075837,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 331.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075838,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 637.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075839,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 872,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075843,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 377,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075844,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 316.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075845,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 394.25,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075848,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 932,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075849,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 355.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075852,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 141.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075857,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 292.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075860,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 305,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075863,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 685.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075864,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 773,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075866,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 370.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075868,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 476,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075869,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 707,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075871,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 407,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075873,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 394.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075877,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 520.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075878,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 347.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075881,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 642.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075884,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 336.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075885,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 358.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075889,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 207.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075890,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 479.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075891,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 273,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075892,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 917,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075893,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 761.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075896,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 710,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075898,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 779,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075899,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 293.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075900,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 494,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075902,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 338,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075904,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 632,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075906,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 572.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075908,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 475.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075909,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 667.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075910,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 787.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075912,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 256.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075915,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 578.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075916,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 475.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075918,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 422,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075921,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 345.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075923,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 719.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075924,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 474.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075925,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 469.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075926,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 249.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075928,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 770,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075929,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 316.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075931,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 450.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075932,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 247.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075933,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 579.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075934,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 497,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075935,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 385.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075937,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 293.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075939,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 386.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075941,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 321.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075944,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 283.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075947,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 779,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075948,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 577.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075953,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 351,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075956,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 782.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075959,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 843.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075961,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 410.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075964,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 560,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075966,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 507.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075967,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 388.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075972,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 361.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075973,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 322.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075974,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 633.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075975,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 270,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075977,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 330.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075979,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 556.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075981,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 701.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075982,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 632.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075984,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 431,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075985,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 704,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075989,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 318.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075990,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 276.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075991,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 766.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075995,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 196.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08+liquidity-v1",
+      "seed": 67075996,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 619.25,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076024,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 754.15,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076126,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 822.8,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076153,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 459.75,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076181,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 129,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076204,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 708.5,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076322,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 627.9,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076354,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 483.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076422,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 295.25,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076464,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 381.4,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076496,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 168.4,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076523,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 415.25,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076588,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 515.25,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076602,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 683.5,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076621,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 246.5,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076646,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 546.4,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076772,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 335.5,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076811,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 153.5,
+      "reasons": [
+        "victory-over-45-real-minutes"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076865,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 850.4,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076899,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 349,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076911,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 386.2,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12+liquidity-v1",
+      "seed": 67076956,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 568.5,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "WORKER",
+      "policyId": "worker-v1-fail0.07+liquidity-v1",
+      "seed": 67077666,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 98,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "DEGENERATE",
+      "policyId": "degenerate-v1-fail0.14+liquidity-v1",
+      "seed": 67078094,
+      "outcome": "VICTORY",
+      "realSessionMinutes": 242.75,
+      "reasons": [
+        "victory-over-45-real-minutes",
+        "giant-payout-dominated-win"
+      ]
+    },
+    {
+      "archetype": "RECKLESS_NEEDS",
+      "policyId": "reckless_needs-v1-fail0.16+liquidity-v1",
+      "seed": 67079970,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 197.3,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    }
+  ]
+}

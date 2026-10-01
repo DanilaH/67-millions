@@ -61,6 +61,7 @@ describe('full-game balance reporting', () => {
     );
     expect(result.diagnostics.nearZeroCashRecoveries).toBe(1);
     expect(result.diagnostics.maxBankrollDrawdown).toBeGreaterThan(0);
+    expect(result.diagnostics.maxBankrollDrawdown).toBeLessThan(balance.game.mainDebt);
     expect(result.diagnostics.minCash).toBe(0);
   });
 
@@ -152,6 +153,7 @@ describe('full-game balance reporting', () => {
     expect(report.strategies[0]?.barryLossRate).toBe(0.5);
     expect(report.strategies[0]?.incomeShare.plinko).toBeGreaterThan(0);
     expect(report.metadata.plinkoModelNotes.length).toBeGreaterThan(0);
+    expect(report.metadata.plinkoOutcomeModelId).toBe('test-debt-payout + test-zero-payout');
     expect(
       report.anomalySeeds.some(
         (entry) => entry.seed === victory.seed,

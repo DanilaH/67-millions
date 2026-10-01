@@ -1,0 +1,896 @@
+{
+  "status": "blocked",
+  "rcReady": false,
+  "configVersion": "0.8-candidate-price0.5-payout1.5",
+  "configSha256": "ffd96790e8327c7319f9ad1836cd5f9b3399b1be9a923f83c2ecac99ad9a2c48",
+  "testFilesPassed": 59,
+  "testsPassed": 337,
+  "hostedYandexVerified": false,
+  "humanPacingVerified": false,
+  "realDeviceVerified": false,
+  "nativeKeyArtMasterSatisfied": false,
+  "requirements": [
+    {
+      "sourceLine": 4,
+      "section": "Complete loop",
+      "requirement": "Intro → Map → Work → Plinko → Needs → Sleep → Barry → multiple days → Victory/Game Over.",
+      "status": "PARTIAL",
+      "evidence": "Individual loop rules pass automated checks; the complete multi-day human loop remains pending"
+    },
+    {
+      "sourceLine": 6,
+      "section": "Complete loop",
+      "requirement": "main debt only full payment",
+      "status": "AUTO PASS",
+      "evidence": "tests/main-debt, barry, run-end-flow; full human loop remains pending"
+    },
+    {
+      "sourceLine": 7,
+      "section": "Complete loop",
+      "requirement": "Barry payments don't reduce 67m",
+      "status": "AUTO PASS",
+      "evidence": "tests/main-debt, barry, run-end-flow; full human loop remains pending"
+    },
+    {
+      "sourceLine": 8,
+      "section": "Complete loop",
+      "requirement": "victory manual only",
+      "status": "AUTO PASS",
+      "evidence": "tests/main-debt, barry, run-end-flow; full human loop remains pending"
+    },
+    {
+      "sourceLine": 12,
+      "section": "Loss is real",
+      "requirement": "Barry fail",
+      "status": "PARTIAL",
+      "evidence": "Physical bot outcomes and anomaly seeds exist; a human replay/comeback/bad-event session has not been recorded"
+    },
+    {
+      "sourceLine": 13,
+      "section": "Loss is real",
+      "requirement": "HP death",
+      "status": "PARTIAL",
+      "evidence": "Physical bot outcomes and anomaly seeds exist; a human replay/comeback/bad-event session has not been recorded"
+    },
+    {
+      "sourceLine": 14,
+      "section": "Loss is real",
+      "requirement": "bankroll ruin + comeback attempt",
+      "status": "PARTIAL",
+      "evidence": "Physical bot outcomes and anomaly seeds exist; a human replay/comeback/bad-event session has not been recorded"
+    },
+    {
+      "sourceLine": 15,
+      "section": "Loss is real",
+      "requirement": "bad event sequence",
+      "status": "PARTIAL",
+      "evidence": "Physical bot outcomes and anomaly seeds exist; a human replay/comeback/bad-event session has not been recorded"
+    },
+    {
+      "sourceLine": 17,
+      "section": "Loss is real",
+      "requirement": "Игра не должна гарантировать victory после понимания правил.",
+      "status": "PARTIAL",
+      "evidence": "Physical bot outcomes and anomaly seeds exist; a human replay/comeback/bad-event session has not been recorded"
+    },
+    {
+      "sourceLine": 20,
+      "section": "No softlock",
+      "requirement": "Если hero alive и Barry не провален, существует recovery action. Dumpster доступна при 0 cash/energy/happiness.",
+      "status": "AUTO PASS",
+      "evidence": "tests/dumpster, work, run-time; production cold Drop routing regression"
+    },
+    {
+      "sourceLine": 23,
+      "section": "Time",
+      "requirement": "AFK active screen advances time",
+      "status": "AUTO PASS",
+      "evidence": "tests/time, plinko-drop-timing, needs-sleep, work-minigame-barry; browser background/SDK pause soak"
+    },
+    {
+      "sourceLine": 24,
+      "section": "Time",
+      "requirement": "actions jump time",
+      "status": "AUTO PASS",
+      "evidence": "tests/time, plinko-drop-timing, needs-sleep, work-minigame-barry; browser background/SDK pause soak"
+    },
+    {
+      "sourceLine": 25,
+      "section": "Time",
+      "requirement": "background/offline doesn't",
+      "status": "AUTO PASS",
+      "evidence": "tests/time, plinko-drop-timing, needs-sleep, work-minigame-barry; browser background/SDK pause soak"
+    },
+    {
+      "sourceLine": 26,
+      "section": "Time",
+      "requirement": "09:00 interrupt correct",
+      "status": "AUTO PASS",
+      "evidence": "tests/time, plinko-drop-timing, needs-sleep, work-minigame-barry; browser background/SDK pause soak"
+    },
+    {
+      "sourceLine": 27,
+      "section": "Time",
+      "requirement": "sleep stops at 09:00",
+      "status": "AUTO PASS",
+      "evidence": "tests/time, plinko-drop-timing, needs-sleep, work-minigame-barry; browser background/SDK pause soak"
+    },
+    {
+      "sourceLine": 28,
+      "section": "Time",
+      "requirement": "active Plinko cascade resolves before pending Barry",
+      "status": "AUTO PASS",
+      "evidence": "tests/time, plinko-drop-timing, needs-sleep, work-minigame-barry; browser background/SDK pause soak"
+    },
+    {
+      "sourceLine": 31,
+      "section": "Save",
+      "requirement": "no event reroll",
+      "status": "AUTO PASS",
+      "evidence": "tests/save, plinko-solver-checkpoint; 40-Drop v14 soak and production mouse/touch restore"
+    },
+    {
+      "sourceLine": 32,
+      "section": "Save",
+      "requirement": "no stake refund",
+      "status": "AUTO PASS",
+      "evidence": "tests/save, plinko-solver-checkpoint; 40-Drop v14 soak and production mouse/touch restore"
+    },
+    {
+      "sourceLine": 33,
+      "section": "Save",
+      "requirement": "active Drop restore",
+      "status": "AUTO PASS",
+      "evidence": "tests/save, plinko-solver-checkpoint; 40-Drop v14 soak and production mouse/touch restore"
+    },
+    {
+      "sourceLine": 34,
+      "section": "Save",
+      "requirement": "no duplicate payout",
+      "status": "AUTO PASS",
+      "evidence": "tests/save, plinko-solver-checkpoint; 40-Drop v14 soak and production mouse/touch restore"
+    },
+    {
+      "sourceLine": 35,
+      "section": "Save",
+      "requirement": "no duplicate Barry debit",
+      "status": "AUTO PASS",
+      "evidence": "tests/save, plinko-solver-checkpoint; 40-Drop v14 soak and production mouse/touch restore"
+    },
+    {
+      "sourceLine": 39,
+      "section": "Plinko physics",
+      "requirement": "distribution reasonably symmetric",
+      "status": "AUTO PASS",
+      "evidence": "Exact-config physical/bare: 100000 Drops, EV 0.86841, center 51.92%, symmetry delta 0.546%, zero stuck"
+    },
+    {
+      "sourceLine": 40,
+      "section": "Plinko physics",
+      "requirement": "combined center roughly 45–54%",
+      "status": "AUTO PASS",
+      "evidence": "Exact-config physical/bare: 100000 Drops, EV 0.86841, center 51.92%, symmetry delta 0.546%, zero stuck"
+    },
+    {
+      "sourceLine": 41,
+      "section": "Plinko physics",
+      "requirement": "no abnormal edge rate",
+      "status": "AUTO PASS",
+      "evidence": "Exact-config physical/bare: 100000 Drops, EV 0.86841, center 51.92%, symmetry delta 0.546%, zero stuck"
+    },
+    {
+      "sourceLine": 42,
+      "section": "Plinko physics",
+      "requirement": "actual EV reasonably near 0.85",
+      "status": "AUTO PASS",
+      "evidence": "Exact-config physical/bare: 100000 Drops, EV 0.86841, center 51.92%, symmetry delta 0.546%, zero stuck"
+    },
+    {
+      "sourceLine": 43,
+      "section": "Plinko physics",
+      "requirement": "no stuck balls",
+      "status": "AUTO PASS",
+      "evidence": "Exact-config physical/bare: 100000 Drops, EV 0.86841, center 51.92%, symmetry delta 0.546%, zero stuck"
+    },
+    {
+      "sourceLine": 44,
+      "section": "Plinko physics",
+      "requirement": "no infinite cascade",
+      "status": "AUTO PASS",
+      "evidence": "Exact-config physical/bare: 100000 Drops, EV 0.86841, center 51.92%, symmetry delta 0.546%, zero stuck"
+    },
+    {
+      "sourceLine": 47,
+      "section": "Plinko progression",
+      "requirement": "all upgrades automatic",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-progression, visual-progression, insurance, cascade; physical/max 10000 resolved"
+    },
+    {
+      "sourceLine": 48,
+      "section": "Plinko progression",
+      "requirement": "no manual placement",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-progression, visual-progression, insurance, cascade; physical/max 10000 resolved"
+    },
+    {
+      "sourceLine": 49,
+      "section": "Plinko progression",
+      "requirement": "visible board evolution",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-progression, visual-progression, insurance, cascade; physical/max 10000 resolved"
+    },
+    {
+      "sourceLine": 50,
+      "section": "Plinko progression",
+      "requirement": "positive EV only after investment",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-progression, visual-progression, insurance, cascade; physical/max 10000 resolved"
+    },
+    {
+      "sourceLine": 51,
+      "section": "Plinko progression",
+      "requirement": "late cascades possible",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-progression, visual-progression, insurance, cascade; physical/max 10000 resolved"
+    },
+    {
+      "sourceLine": 52,
+      "section": "Plinko progression",
+      "requirement": "max bet can reach 67m path",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-progression, visual-progression, insurance, cascade; physical/max 10000 resolved"
+    },
+    {
+      "sourceLine": 53,
+      "section": "Plinko progression",
+      "requirement": "no obviously dominant upgrade path",
+      "status": "PENDING",
+      "evidence": "Six archetypes and three economy candidates do not exhaust upgrade-path dominance/event robustness."
+    },
+    {
+      "sourceLine": 56,
+      "section": "Work repetition",
+      "requirement": "Initial simulation corridor: ~25–50 work minigames, but the stronger constraint is the ~30-real-minute successful-run target. If these conflict, reduce work repetition rather than extending the session.",
+      "status": "PENDING",
+      "evidence": "All-outcome bot work averages do not establish successful human repetition or 30-minute pacing"
+    },
+    {
+      "sourceLine": 59,
+      "section": "Minigames",
+      "requirement": "reliable touch/mouse",
+      "status": "LOCAL PASS",
+      "evidence": "Production mouse at 1280×720 and real CDP touch at 640×360 complete all three jobs and credit exactly once; human comprehension/device feel remains pending"
+    },
+    {
+      "sourceLine": 60,
+      "section": "Minigames",
+      "requirement": "clear success/fail",
+      "status": "LOCAL PASS",
+      "evidence": "Production mouse at 1280×720 and real CDP touch at 640×360 complete all three jobs and credit exactly once; human comprehension/device feel remains pending"
+    },
+    {
+      "sourceLine": 61,
+      "section": "Minigames",
+      "requirement": "no tiny hitbox punishment",
+      "status": "PARTIAL",
+      "evidence": "Production mouse at 1280×720 and real CDP touch at 640×360 complete all three jobs and credit exactly once; human comprehension/device feel remains pending"
+    },
+    {
+      "sourceLine": 64,
+      "section": "Needs",
+      "requirement": "different roles",
+      "status": "AUTO PASS",
+      "evidence": "tests/needs-sleep, work, full-game policies; physical batch includes reckless HP death"
+    },
+    {
+      "sourceLine": 65,
+      "section": "Needs",
+      "requirement": "partial sleep works",
+      "status": "AUTO PASS",
+      "evidence": "tests/needs-sleep, work, full-game policies; physical batch includes reckless HP death"
+    },
+    {
+      "sourceLine": 66,
+      "section": "Needs",
+      "requirement": "sleep debt cuts work payout",
+      "status": "AUTO PASS",
+      "evidence": "tests/needs-sleep, work, full-game policies; physical batch includes reckless HP death"
+    },
+    {
+      "sourceLine": 67,
+      "section": "Needs",
+      "requirement": "reckless style can die from HP",
+      "status": "AUTO PASS",
+      "evidence": "tests/needs-sleep, work, full-game policies; physical batch includes reckless HP death"
+    },
+    {
+      "sourceLine": 68,
+      "section": "Needs",
+      "requirement": "disciplined player isn't forced into constant micro-management",
+      "status": "PENDING",
+      "evidence": "Requires a disciplined human session; bot choices are diagnostic."
+    },
+    {
+      "sourceLine": 71,
+      "section": "Dumpster",
+      "requirement": "EV/hour clearly worse than regular work",
+      "status": "AUTO PASS",
+      "evidence": "tests/dumpster, smelly-shower; physical batch records come backs and dumpster HP deaths"
+    },
+    {
+      "sourceLine": 72,
+      "section": "Dumpster",
+      "requirement": "can sometimes rescue zero cash",
+      "status": "AUTO PASS",
+      "evidence": "tests/dumpster, smelly-shower; physical batch records come backs and dumpster HP deaths"
+    },
+    {
+      "sourceLine": 73,
+      "section": "Dumpster",
+      "requirement": "spam burns Energy→Happiness→HP",
+      "status": "AUTO PASS",
+      "evidence": "tests/dumpster, smelly-shower; physical batch records come backs and dumpster HP deaths"
+    },
+    {
+      "sourceLine": 74,
+      "section": "Dumpster",
+      "requirement": "SMELLY doesn't softlock",
+      "status": "AUTO PASS",
+      "evidence": "tests/dumpster, smelly-shower; physical batch records come backs and dumpster HP deaths"
+    },
+    {
+      "sourceLine": 75,
+      "section": "Dumpster",
+      "requirement": "courier blocked, dishes/trash remain",
+      "status": "AUTO PASS",
+      "evidence": "tests/dumpster, smelly-shower; physical batch records come backs and dumpster HP deaths"
+    },
+    {
+      "sourceLine": 78,
+      "section": "Events",
+      "requirement": "10 data-driven placeholder events",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 79,
+      "section": "Events",
+      "requirement": "max 2/day",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 80,
+      "section": "Events",
+      "requirement": "fixed checkpoints / pending-event rules respected",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 81,
+      "section": "Events",
+      "requirement": "no immediate duplicate",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 82,
+      "section": "Events",
+      "requirement": "conditions respected",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 83,
+      "section": "Events",
+      "requirement": "no event during active skill input",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 84,
+      "section": "Events",
+      "requirement": "no scripted instant death",
+      "status": "AUTO PASS",
+      "evidence": "tests/events-scheduler, events-effects, events-reload; exact scheduler checks preserved"
+    },
+    {
+      "sourceLine": 88,
+      "section": "UX",
+      "requirement": "cash",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 89,
+      "section": "UX",
+      "requirement": "next Barry payment",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 90,
+      "section": "UX",
+      "requirement": "main debt",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 93,
+      "section": "UX",
+      "requirement": "time",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 94,
+      "section": "UX",
+      "requirement": "HP",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 95,
+      "section": "UX",
+      "requirement": "satiety",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 96,
+      "section": "UX",
+      "requirement": "energy",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 97,
+      "section": "UX",
+      "requirement": "happiness",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 98,
+      "section": "UX",
+      "requirement": "Barry countdown",
+      "status": "LOCAL PASS",
+      "evidence": "Actual desktop/mobile screenshots and main-map-HUD tests; target-device readability review pending"
+    },
+    {
+      "sourceLine": 101,
+      "section": "Visual",
+      "requirement": "hand-painted dirty cartoon",
+      "status": "PARTIAL",
+      "evidence": "Original generated dirty-cartoon runtime assets inspected; native >=2560×1440 key-art master and human visual review missing"
+    },
+    {
+      "sourceLine": 102,
+      "section": "Visual",
+      "requirement": "Barry original",
+      "status": "PARTIAL",
+      "evidence": "Original generated dirty-cartoon runtime assets inspected; native >=2560×1440 key-art master and human visual review missing"
+    },
+    {
+      "sourceLine": 103,
+      "section": "Visual",
+      "requirement": "no real marketplace logos",
+      "status": "PARTIAL",
+      "evidence": "Original generated dirty-cartoon runtime assets inspected; native >=2560×1440 key-art master and human visual review missing"
+    },
+    {
+      "sourceLine": 104,
+      "section": "Visual",
+      "requirement": "Plinko growth visible",
+      "status": "PARTIAL",
+      "evidence": "Original generated dirty-cartoon runtime assets inspected; native >=2560×1440 key-art master and human visual review missing"
+    },
+    {
+      "sourceLine": 105,
+      "section": "Visual",
+      "requirement": "readable mobile landscape",
+      "status": "PARTIAL",
+      "evidence": "Original generated dirty-cartoon runtime assets inspected; native >=2560×1440 key-art master and human visual review missing"
+    },
+    {
+      "sourceLine": 108,
+      "section": "Audio",
+      "requirement": "multiball doesn't clip",
+      "status": "PARTIAL",
+      "evidence": "Voice limits/maximum gain and distinct cue models tested; actual audio contexts run in soak; listening/device review missing"
+    },
+    {
+      "sourceLine": 109,
+      "section": "Audio",
+      "requirement": "special pin cues distinct",
+      "status": "PARTIAL",
+      "evidence": "Voice limits/maximum gain and distinct cue models tested; actual audio contexts run in soak; listening/device review missing"
+    },
+    {
+      "sourceLine": 110,
+      "section": "Audio",
+      "requirement": "jackpot/bad result clearly different",
+      "status": "PARTIAL",
+      "evidence": "Voice limits/maximum gain and distinct cue models tested; actual audio contexts run in soak; listening/device review missing"
+    },
+    {
+      "sourceLine": 111,
+      "section": "Audio",
+      "requirement": "work tactile audio",
+      "status": "PARTIAL",
+      "evidence": "Voice limits/maximum gain and distinct cue models tested; actual audio contexts run in soak; listening/device review missing"
+    },
+    {
+      "sourceLine": 112,
+      "section": "Audio",
+      "requirement": "Barry signature cue",
+      "status": "PARTIAL",
+      "evidence": "Voice limits/maximum gain and distinct cue models tested; actual audio contexts run in soak; listening/device review missing"
+    },
+    {
+      "sourceLine": 115,
+      "section": "Performance",
+      "requirement": "no sustained severe jank in normal play",
+      "status": "FAILED SCREENING",
+      "evidence": "Isolated current v14 CPU×4: median 33.4 ms >33.333, p95 50.1 ms >50; all balls resolved. Real target-device gate unverified."
+    },
+    {
+      "sourceLine": 116,
+      "section": "Performance",
+      "requirement": "24-ball late cascade remains playable",
+      "status": "FAILED SCREENING",
+      "evidence": "Isolated current v14 CPU×4: median 33.4 ms >33.333, p95 50.1 ms >50; all balls resolved. Real target-device gate unverified."
+    },
+    {
+      "sourceLine": 117,
+      "section": "Performance",
+      "requirement": "no memory growth across repeated Drops",
+      "status": "PARTIAL",
+      "evidence": "40-Drop v14 heap/body/listener/audio soak passes; 24-ball strict synthetic frame thresholds fail narrowly; real low-end device test missing"
+    },
+    {
+      "sourceLine": 118,
+      "section": "Performance",
+      "requirement": "no duplicate bodies/listeners after resume",
+      "status": "PARTIAL",
+      "evidence": "40-Drop v14 heap/body/listener/audio soak passes; 24-ball strict synthetic frame thresholds fail narrowly; real low-end device test missing"
+    },
+    {
+      "sourceLine": 120,
+      "section": "Performance",
+      "requirement": "Fallback threshold: no sustained drop below ~30 FPS in worst allowed cascade on target mobile profile.",
+      "status": "PARTIAL",
+      "evidence": "40-Drop v14 heap/body/listener/audio soak passes; 24-ball strict synthetic frame thresholds fail narrowly; real low-end device test missing"
+    },
+    {
+      "sourceLine": 124,
+      "section": "Simulation corridor",
+      "requirement": "baseline not near-guaranteed",
+      "status": "PARTIAL",
+      "evidence": "6000 physical candidate runs with versioned liquidity policies; broader build/event robustness and real-session pacing remain open"
+    },
+    {
+      "sourceLine": 125,
+      "section": "Simulation corridor",
+      "requirement": "cautious loses to Barry growth",
+      "status": "PARTIAL",
+      "evidence": "6000 physical candidate runs with versioned liquidity policies; broader build/event robustness and real-session pacing remain open"
+    },
+    {
+      "sourceLine": 126,
+      "section": "Simulation corridor",
+      "requirement": "aggressive faster but riskier",
+      "status": "PARTIAL",
+      "evidence": "6000 physical candidate runs with versioned liquidity policies; broader build/event robustness and real-session pacing remain open"
+    },
+    {
+      "sourceLine": 127,
+      "section": "Simulation corridor",
+      "requirement": "high-variance faster on success",
+      "status": "PARTIAL",
+      "evidence": "6000 physical candidate runs with versioned liquidity policies; broader build/event robustness and real-session pacing remain open"
+    },
+    {
+      "sourceLine": 128,
+      "section": "Simulation corridor",
+      "requirement": "events materially affect outcome",
+      "status": "PARTIAL",
+      "evidence": "6000 physical candidate runs with versioned liquidity policies; broader build/event robustness and real-session pacing remain open"
+    },
+    {
+      "sourceLine": 129,
+      "section": "Simulation corridor",
+      "requirement": "no dominant build",
+      "status": "PARTIAL",
+      "evidence": "6000 physical candidate runs with versioned liquidity policies; broader build/event robustness and real-session pacing remain open"
+    },
+    {
+      "sourceLine": 132,
+      "section": "Platform",
+      "requirement": "Yandex SDK",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 133,
+      "section": "Platform",
+      "requirement": "pause during ads",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 134,
+      "section": "Platform",
+      "requirement": "saves",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 135,
+      "section": "Platform",
+      "requirement": "analytics",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 136,
+      "section": "Platform",
+      "requirement": "mobile + desktop",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 137,
+      "section": "Platform",
+      "requirement": "landscape",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 138,
+      "section": "Platform",
+      "requirement": "no offline progression",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 139,
+      "section": "Platform",
+      "requirement": "moderation checklist",
+      "status": "PARTIAL",
+      "evidence": "Production local SDK stub, cloud adapter unit tests, Metrica configuration and blocker overlap pass; actual hosted Yandex checks missing"
+    },
+    {
+      "sourceLine": 143,
+      "section": "Scope gate",
+      "requirement": "second board",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 144,
+      "section": "Scope gate",
+      "requirement": "more jobs",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 145,
+      "section": "Scope gate",
+      "requirement": "manual pin placement",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 146,
+      "section": "Scope gate",
+      "requirement": "upgraded dumpster",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 147,
+      "section": "Scope gate",
+      "requirement": "lottery ending",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 148,
+      "section": "Scope gate",
+      "requirement": "big city",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 149,
+      "section": "Scope gate",
+      "requirement": "extra metagame",
+      "status": "AUTO PASS",
+      "evidence": "Diff adds no listed post-MVP gameplay system; key-art/native gates still block RC"
+    },
+    {
+      "sourceLine": 155,
+      "section": "Ambiguity checks",
+      "requirement": "time jump crossing 09:00;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 156,
+      "section": "Ambiguity checks",
+      "requirement": "active work minigame paused by Barry and resumed;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 157,
+      "section": "Ambiguity checks",
+      "requirement": "Drop launched before 09:00 resolves before Barry;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 158,
+      "section": "Ambiguity checks",
+      "requirement": "pocket result independent of upgrade purchase order;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 159,
+      "section": "Ambiguity checks",
+      "requirement": "Insurance aggregate-cascade semantics;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 160,
+      "section": "Ambiguity checks",
+      "requirement": "work cannot start below Energy cost;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 161,
+      "section": "Ambiguity checks",
+      "requirement": "no inventory created by dumpster loot;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 162,
+      "section": "Ambiguity checks",
+      "requirement": "restart fully resets upgrades/seed/state;",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 163,
+      "section": "Ambiguity checks",
+      "requirement": "betting quick buttons 25/50/100 behave with low cash.",
+      "status": "AUTO PASS",
+      "evidence": "tests/plinko-drop-timing, work-minigame-barry, progression, insurance, work, dumpster, run-end-flow, casino-ui"
+    },
+    {
+      "sourceLine": 168,
+      "section": "Real-session pacing",
+      "requirement": "median successful run ≈ 30 real minutes;",
+      "status": "PENDING",
+      "evidence": "No successful human wall-clock session dataset; legacy simulation RealMinutes includes action jumps and is not a playtest"
+    },
+    {
+      "sourceLine": 169,
+      "section": "Real-session pacing",
+      "requirement": "typical ≈25–40;",
+      "status": "PENDING",
+      "evidence": "No successful human wall-clock session dataset; legacy simulation RealMinutes includes action jumps and is not a playtest"
+    },
+    {
+      "sourceLine": 170,
+      "section": "Real-session pacing",
+      "requirement": "repeated >45 minute successful runs trigger pacing review.",
+      "status": "PENDING",
+      "evidence": "No successful human wall-clock session dataset; legacy simulation RealMinutes includes action jumps and is not a playtest"
+    },
+    {
+      "sourceLine": 174,
+      "section": "Transaction / scheduler correctness",
+      "requirement": "timed paid actions debit cash at start and grant effect only at completion;",
+      "status": "AUTO PASS",
+      "evidence": "tests/timed-paid-action, work integration, work-minigame-barry, plinko-drop-timing, events-scheduler"
+    },
+    {
+      "sourceLine": 175,
+      "section": "Transaction / scheduler correctness",
+      "requirement": "work state cost is paid at start and salary/fine only at completion;",
+      "status": "AUTO PASS",
+      "evidence": "tests/timed-paid-action, work integration, work-minigame-barry, plinko-drop-timing, events-scheduler"
+    },
+    {
+      "sourceLine": 176,
+      "section": "Transaction / scheduler correctness",
+      "requirement": "a job started before 09:00 cannot use its future salary to pay Barry unless the payout has actually completed;",
+      "status": "AUTO PASS",
+      "evidence": "tests/timed-paid-action, work integration, work-minigame-barry, plinko-drop-timing, events-scheduler"
+    },
+    {
+      "sourceLine": 177,
+      "section": "Transaction / scheduler correctness",
+      "requirement": "Plinko launched before 09:00 freezes GameClock at 09:00, resolves cascade, pays Barry, then advances remaining Drop minutes;",
+      "status": "AUTO PASS",
+      "evidence": "tests/timed-paid-action, work integration, work-minigame-barry, plinko-drop-timing, events-scheduler"
+    },
+    {
+      "sourceLine": 178,
+      "section": "Transaction / scheduler correctness",
+      "requirement": "pendingDrop blocks every other cash mutation;",
+      "status": "AUTO PASS",
+      "evidence": "tests/timed-paid-action, work integration, work-minigame-barry, plinko-drop-timing, events-scheduler"
+    },
+    {
+      "sourceLine": 179,
+      "section": "Transaction / scheduler correctness",
+      "requirement": "pending event queue is max one and cannot explode after a long unsafe period.",
+      "status": "AUTO PASS",
+      "evidence": "tests/timed-paid-action, work integration, work-minigame-barry, plinko-drop-timing, events-scheduler"
+    },
+    {
+      "sourceLine": 182,
+      "section": "Save architecture",
+      "requirement": "local/core SaveState exists before Yandex persistence integration;",
+      "status": "AUTO PASS",
+      "evidence": "Local/shared v14 schema, ordinary action tests, finite solver checkpoint regression; incompatible old pose-only Drop preserved without mutation"
+    },
+    {
+      "sourceLine": 183,
+      "section": "Save architecture",
+      "requirement": "active ordinary action restores without duplicate charge;",
+      "status": "AUTO PASS",
+      "evidence": "Local/shared v14 schema, ordinary action tests, finite solver checkpoint regression; incompatible old pose-only Drop preserved without mutation"
+    },
+    {
+      "sourceLine": 184,
+      "section": "Save architecture",
+      "requirement": "active Drop restores exact outcome state;",
+      "status": "AUTO PASS",
+      "evidence": "Local/shared v14 schema, ordinary action tests, finite solver checkpoint regression; incompatible old pose-only Drop preserved without mutation"
+    },
+    {
+      "sourceLine": 185,
+      "section": "Save architecture",
+      "requirement": "corrupted/incompatible save fails safely rather than duplicating money/progression.",
+      "status": "AUTO PASS",
+      "evidence": "Local/shared v14 schema, ordinary action tests, finite solver checkpoint regression; incompatible old pose-only Drop preserved without mutation"
+    },
+    {
+      "sourceLine": 188,
+      "section": "Early platform/performance gates",
+      "requirement": "Yandex smoke build is tested before content/art completion;",
+      "status": "PARTIAL",
+      "evidence": "Historical reports retained for their own source/config; current hosted/device and strict 24-ball screening gates remain open"
+    },
+    {
+      "sourceLine": 189,
+      "section": "Early platform/performance gates",
+      "requirement": "bare Plinko gets a mobile performance smoke in M2;",
+      "status": "PARTIAL",
+      "evidence": "Historical reports retained for their own source/config; current hosted/device and strict 24-ball screening gates remain open"
+    },
+    {
+      "sourceLine": 190,
+      "section": "Early platform/performance gates",
+      "requirement": "24-ball/splitter stress gets a performance gate in M3;",
+      "status": "PARTIAL",
+      "evidence": "Historical reports retained for their own source/config; current hosted/device and strict 24-ball screening gates remain open"
+    },
+    {
+      "sourceLine": 191,
+      "section": "Early platform/performance gates",
+      "requirement": "placeholder Plinko audio is tested before final audio pass.",
+      "status": "PARTIAL",
+      "evidence": "Historical reports retained for their own source/config; current hosted/device and strict 24-ball screening gates remain open"
+    }
+  ]
+}

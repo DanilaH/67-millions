@@ -45,7 +45,7 @@ describe('Dishes work transaction integration', () => {
     expect(completed.state.clock.minuteOfDay).toBe(
       createGameClock('18:00').minuteOfDay,
     );
-    expect(completed.state.cash).toBe(4_000);
+    expect(completed.state.cash).toBe(5_500);
   });
 
   it('applies the configured failure fine and Happiness penalty after the shift', () => {
@@ -76,7 +76,7 @@ describe('Dishes work transaction integration', () => {
 
     expect(completed.shiftCompleted).toBe(true);
     expect(completed.activeAction).toBeNull();
-    expect(completed.state.cash).toBe(4_250);
+    expect(completed.state.cash).toBe(3_875);
     expect(completed.state.needs.happiness).toBeLessThan(89);
     expect(completed.state.needs.happiness).toBeGreaterThan(80);
   });

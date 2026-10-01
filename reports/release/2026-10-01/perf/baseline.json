@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-10-01T12:32:25.614Z",
+  "profile": {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "mobileContext": true,
+    "touch": true,
+    "deviceScaleFactor": 1,
+    "cpuThrottleRate": 4,
+    "syntheticScreening": true,
+    "syntheticInitialBalls": 1,
+    "realDeviceEvidence": false
+  },
+  "thresholds": {
+    "fallbackThirtyFpsFrameMs": 33.333333333333336,
+    "medianFrameMsMax": 33.333333333333336,
+    "p95FrameMsMax": 50,
+    "longFrameOver50MsRatioMax": 0.1,
+    "activeBallsAfterResolve": 0
+  },
+  "measurements": {
+    "sampleCount": 140,
+    "durationMs": 4444.600000000093,
+    "medianFrameMs": 33.30000000000018,
+    "p95FrameMs": 50,
+    "maxFrameMs": 183.30000000000018,
+    "longFrameOver50MsRatio": 0.02142857142857143,
+    "activeBallsAfterResolve": 0,
+    "jsHeapUsedBefore": 8713636,
+    "jsHeapUsedAfter": 9326160,
+    "jsHeapUsedDelta": 612524
+  },
+  "probe": {
+    "phase": "resolved",
+    "error": null
+  },
+  "failures": []
+}

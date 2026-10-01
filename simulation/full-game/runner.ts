@@ -447,7 +447,8 @@ export const runFullGame = (
   let dropIndex = 0;
 
   while (true) {
-    observeCash(diagnostics, runner.game.cash);
+    // Paying the principal is a successful exit, not a bankroll loss during play.
+    if (!runner.game.victory) observeCash(diagnostics, runner.game.cash);
 
     const outcome = getOutcome(
       runner.game,

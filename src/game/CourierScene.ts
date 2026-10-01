@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
+import { preloadProductionArt, addProductionImage } from './visual/productionArt';
 
 import { balance } from '../config/balance';
 import { SceneAudio } from '../audio/SceneAudio';
@@ -67,11 +69,21 @@ export class CourierScene extends Phaser.Scene {
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
+  private obstacleImages: Phaser.GameObjects.Image[] = [];
+  private courierImage: Phaser.GameObjects.Image | undefined;
+
   public constructor() {
     super('courier');
   }
 
+  public preload(): void {
+    preloadProductionArt(this, ['courier', 'crate', 'courier-icon', 'barry-due', 'barry-paid']);
+  }
+
   public create(): void {
+    this.obstacleImages = [];
+    this.courierImage = undefined;
+    addProductionImage(this, 'courier', 640, 375, 1080, 525);
     const { width } = this.scale;
 
     this.audio = new SceneAudio(this, 'work');
@@ -98,7 +110,7 @@ export class CourierScene extends Phaser.Scene {
       )
       .setOrigin(0.5, 0);
 
-    this.graphics = this.add.graphics();
+    this.graphics = this.add.graphics().setDepth(1);
     this.barryOverlay = createBarryMinigameOverlay(
       this,
       balance,
@@ -234,6 +246,7 @@ export class CourierScene extends Phaser.Scene {
         deriveCourierSeed(save, save.activeAction),
       );
       this.render();
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;
       this.statusText?.setText(
@@ -412,10 +425,14 @@ export class CourierScene extends Phaser.Scene {
 
     this.completionInFlight = true;
     const skillResult = this.session.result;
+    const unresolvedAction = this.save.activeAction;
+    const settledAction = { ...unresolvedAction, result: skillResult };
+    this.save = { ...this.save, activeAction: settledAction };
+    await this.persistRuntime(true);
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
-      this.save.activeAction,
+      unresolvedAction,
       skillResult,
       balance,
     );
@@ -467,13 +484,15 @@ export class CourierScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(visualColor('inkPanel'), 1);
+    graphics.fillStyle(visualColor('inkPanel'), 0.12);
     graphics.fillRoundedRect(100, 105, 1080, 525, 28);
     graphics.lineStyle(4, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(100, 105, 1080, 525, 28);
 
-    for (const obstacle of this.session.obstacles) {
-      graphics.fillStyle(visualColor('rust'), 0.78);
+    for (const [index, obstacle] of this.session.obstacles.entries()) {
+      const image = this.obstacleImages[index] ?? (this.obstacleImages[index] = addProductionImage(this, 'crate', obstacle.x, obstacle.y, obstacle.width, obstacle.height, 0));
+      image.setPosition(obstacle.x, obstacle.y).setDisplaySize(obstacle.width, obstacle.height);
+      graphics.fillStyle(visualColor('rust'), 0.08);
       graphics.fillRoundedRect(
         obstacle.x - obstacle.width / 2,
         obstacle.y - obstacle.height / 2,
@@ -491,6 +510,8 @@ export class CourierScene extends Phaser.Scene {
       );
     }
 
+    this.courierImage ??= addProductionImage(this, 'courier-icon', this.session.start.x, this.session.start.y, 58, 58, 2);
+    this.courierImage.setPosition(this.session.start.x, this.session.start.y);
     graphics.fillStyle(visualColor('good'), 1);
     graphics.fillCircle(
       this.session.start.x,

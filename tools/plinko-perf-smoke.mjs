@@ -4,8 +4,9 @@ import { resolve } from 'node:path';
 
 import { chromium } from 'playwright';
 
-const PORT = 4173;
-const URL = `http://127.0.0.1:${PORT}/?perf=plinko`;
+const PORT = Number(process.env.PLINKO_PERF_PORT ?? 4173);
+const OUTPUT = resolve(process.env.PLINKO_PERF_OUTPUT ?? 'artifacts/perf');
+const URL = `http://127.0.0.1:${PORT}/?perf=plinko${process.env.PLINKO_PERF_STRESS === '24' ? '&stress=24' : ''}${process.env.PLINKO_PERF_ART === 'off' ? '&art=off' : ''}`;
 const CPU_THROTTLE = 4;
 const FALLBACK_FRAME_MS = 1000 / 30;
 
@@ -47,6 +48,7 @@ const server = spawn(
     '127.0.0.1',
     '--port',
     String(PORT),
+    '--strictPort',
   ],
   {
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -63,12 +65,14 @@ server.stderr.on('data', (chunk) => {
 });
 
 let browser;
+let page;
 
 try {
   await waitForServer();
 
   browser = await chromium.launch({
     headless: true,
+    ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ? {executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH} : {}),
     args: ['--disable-dev-shm-usage'],
   });
 
@@ -79,7 +83,7 @@ try {
     hasTouch: true,
   });
 
-  const page = await context.newPage();
+  page = await context.newPage();
   const cdp = await context.newCDPSession(page);
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU_THROTTLE });
   await cdp.send('Performance.enable');
@@ -110,6 +114,7 @@ try {
     { timeout: 20_000 },
   );
 
+  if (process.env.PLINKO_PERF_AUDIO !== 'off') await page.mouse.click(1250, 710);
   await cdp.send('HeapProfiler.collectGarbage');
   const before = metricMap(await cdp.send('Performance.getMetrics'));
 
@@ -122,7 +127,7 @@ try {
       window.__PLINKO_PERF__?.phase === 'resolved' ||
       window.__PLINKO_PERF__?.phase === 'error',
     null,
-    { timeout: 30_000 },
+    { timeout: 120_000 },
   );
 
   await page.waitForTimeout(250);
@@ -161,6 +166,9 @@ try {
       deviceScaleFactor: 1,
       cpuThrottleRate: CPU_THROTTLE,
       syntheticScreening: true,
+      art: process.env.PLINKO_PERF_ART ?? 'on',
+      audio: process.env.PLINKO_PERF_AUDIO ?? 'on',
+      syntheticInitialBalls: process.env.PLINKO_PERF_STRESS === '24' ? 24 : 1,
       realDeviceEvidence: false,
     },
     thresholds: {
@@ -179,6 +187,7 @@ try {
       longFrameOver50MsRatio:
         frameDeltas.length === 0 ? 1 : longFrames / frameDeltas.length,
       activeBallsAfterResolve: probe.activeBallCount,
+      maxActiveBalls: probe.maxActiveBallCount ?? null,
       jsHeapUsedBefore: before.JSHeapUsedSize ?? null,
       jsHeapUsedAfter: after.JSHeapUsedSize ?? null,
       jsHeapUsedDelta:
@@ -224,9 +233,9 @@ try {
 
   report.failures = failures;
 
-  mkdirSync(resolve('artifacts/perf'), { recursive: true });
+  mkdirSync(OUTPUT, { recursive: true });
   writeFileSync(
-    resolve('artifacts/perf/plinko-bare.json'),
+    resolve(OUTPUT, 'plinko.json'),
     JSON.stringify(report, null, 2) + '\n',
   );
 
@@ -238,9 +247,13 @@ try {
 
   await context.close();
 } catch (error) {
-  mkdirSync(resolve('artifacts/perf'), { recursive: true });
+  mkdirSync(OUTPUT, { recursive: true });
+  if (page) {
+    writeFileSync(resolve(OUTPUT, 'unresolved.json'), JSON.stringify(await page.evaluate(() => ({ probe: window.__PLINKO_PERF__, diagnostics: window.__PLINKO_PERF__?.diagnostics?.(), save: JSON.parse(localStorage.getItem('67m.save') ?? 'null') })), null, 2));
+    await page.screenshot({path: resolve(OUTPUT, 'unresolved.png')});
+  }
   writeFileSync(
-    resolve('artifacts/perf/plinko-bare-error.txt'),
+    resolve(OUTPUT, 'error.txt'),
     `${error instanceof Error ? error.stack ?? error.message : String(error)}\n\nSERVER OUTPUT\n${serverOutput}`,
   );
   throw error;

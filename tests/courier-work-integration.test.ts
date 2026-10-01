@@ -43,7 +43,7 @@ describe('Courier work transaction integration', () => {
     expect(completed.state.clock.minuteOfDay).toBe(
       createGameClock('13:00').minuteOfDay,
     );
-    expect(completed.state.cash).toBe(5_200);
+    expect(completed.state.cash).toBe(7_300);
   });
 
   it('restored unresolved Courier work keeps its already-reserved start costs', () => {
