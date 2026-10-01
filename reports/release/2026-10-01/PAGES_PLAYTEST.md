@@ -1,5 +1,7 @@
 # Pages playtest recovery — 2026-10-01
 
+**Current status: PUBLISHED AND LIVE-VERIFIED (2026-10-02 user timezone).** Earlier failures below are recovery history. URL: https://danilah.github.io/67-millions/ . Published source: `e0b955fd2f064616806fa2f2f9070bc44710fc78` on `main`.
+
 Recovered source: PR #51, `feat/roadmap-completion`, `90713fbf002cea5b9807b66046934a70fcfee6a4`. PR remains open/draft; main is `545b2a1375975f5a6b1f00ace72bf3b9ea23b281`. No prior local changes were present.
 
 ## Fresh verification
@@ -29,4 +31,15 @@ See docs/PLATFORM_RELEASE.md. The Pages workflow retains smoke results/screensho
 
 ## Main publication continuation — 2026-10-02 (user timezone)
 
-The user enabled Pages. Retry of run 36910667177 failed before a runner started: `Branch "feat/roadmap-completion" is not allowed to deploy to github-pages due to environment protection rules.` The user explicitly requested merging to main. PR #51 merged at fb3425727588431bf5d221964a8ab692708ba091; Pages workflow is moved to main with a post-deploy real-site smoke and expected-SHA assertion. Live publication/verification remains pending until those jobs complete.
+The user enabled Pages. Retry of run 36910667177 failed before a runner started: `Branch "feat/roadmap-completion" is not allowed to deploy to github-pages due to environment protection rules.` The user explicitly requested merging to main. PR #51 merged at fb3425727588431bf5d221964a8ab692708ba091; Pages workflow is moved to main with a post-deploy real-site smoke and expected-SHA assertion. Publication and live verification subsequently passed; see the completed evidence below.
+
+
+## Completed publication and public-site evidence
+
+Run https://github.com/DanilaH/67-millions/actions/runs/36911601798 on source `e0b955fd2f064616806fa2f2f9070bc44710fc78` passed all three jobs: build (110535325075), deploy (110536609388), verify-live (110536712752).
+
+The real URL returned `preview-version.json` with that exact SHA and branch `main`. Unstubbed Chromium checks against https://danilah.github.io/67-millions/ passed for mouse at 1280×720 and genuine CDP touch at 640×360: fresh startup/reload, subpath assets, disabled debug/perf, all three work jobs and credited payouts, cold/mid-Drop exact payout and RNG restoration, no duplicate settled payout, restart without hosted ads, portrait blocker and 1280px logical canvas. Page errors, failed requests and Yandex service requests were all empty.
+
+Results and four screenshots: `pages-live-smoke`, artifact 11186469195 (SHA-256 `95abbac43d8c79acc4dee9128cc1ecb1d1ec9eb48b5de98f0890af2b8caaed19`). The build reran all 337 tests. This validates the Pages playtest path, not hosted Yandex services, real-device feel, human pacing or the open RC/performance gates.
+
+This evidence update changes documentation only; Pages continues to serve the tested source SHA above.
