@@ -2,7 +2,9 @@
 
 > **Non-authoritative view.** Runtime numeric source of truth is `balance.v0.json`. This file should be regenerated/updated whenever the JSON changes.
 
-Config version: `0.7-canonical-preproduction`. Target successful median: ~30 real minutes.
+Config version: `0.8-candidate-price0.5-payout1.5`. This is the T070 playtest candidate, not a frozen RC. Target successful median: ~30 real minutes.
+
+T070 changes: job salaries ×1.5; job and EV/special/Insurance upgrade prices ×0.5; max-bet prices and all game rules, needs, Barry payments and physics are unchanged. See `reports/release/2026-10-01/README.md` for exact candidate-hash evidence and measurement limits.
 
 ## Time / start
 - 1 game minute = 3 real seconds.
@@ -26,17 +28,17 @@ After listed ladder: ×2 if run continues.
 
 ## Work
 ### dishes
-- L1: 16:00-00:00; 3 000 ₽; 120m; Energy -12; Happiness -3; upgrade 0 ₽.
-- L2: 13:00-03:00; 6 500 ₽; 120m; Energy -12; Happiness -3; upgrade 5 000 ₽.
-- L3: 24/7; 12 000 ₽; 120m; Energy -12; Happiness -3; upgrade 40 000 ₽.
+- L1: 16:00-00:00; 4 500 ₽; 120m; Energy -12; Happiness -3; upgrade 0 ₽.
+- L2: 13:00-03:00; 9 750 ₽; 120m; Energy -12; Happiness -3; upgrade 2 500 ₽.
+- L3: 24/7; 18 000 ₽; 120m; Energy -12; Happiness -3; upgrade 20 000 ₽.
 ### trash
-- L1: 00:00-08:00; 3 600 ₽; 150m; Energy -18; Happiness -5; upgrade 0 ₽.
-- L2: 21:00-11:00; 7 600 ₽; 150m; Energy -18; Happiness -5; upgrade 6 000 ₽.
-- L3: 24/7; 14 500 ₽; 150m; Energy -18; Happiness -5; upgrade 50 000 ₽.
+- L1: 00:00-08:00; 5 400 ₽; 150m; Energy -18; Happiness -5; upgrade 0 ₽.
+- L2: 21:00-11:00; 11 400 ₽; 150m; Energy -18; Happiness -5; upgrade 3 000 ₽.
+- L3: 24/7; 21 750 ₽; 150m; Energy -18; Happiness -5; upgrade 25 000 ₽.
 ### courier
-- L1: 08:00-16:00; 4 200 ₽; 180m; Energy -15; Happiness -4; upgrade 0 ₽.
-- L2: 05:00-19:00; 8 500 ₽; 180m; Energy -15; Happiness -4; upgrade 7 000 ₽.
-- L3: 24/7; 17 000 ₽; 180m; Energy -15; Happiness -4; upgrade 60 000 ₽.
+- L1: 08:00-16:00; 6 300 ₽; 180m; Energy -15; Happiness -4; upgrade 0 ₽.
+- L2: 05:00-19:00; 12 750 ₽; 180m; Energy -15; Happiness -4; upgrade 3 500 ₽.
+- L3: 24/7; 25 500 ₽; 180m; Energy -15; Happiness -4; upgrade 30 000 ₽.
 
 Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 
@@ -108,9 +110,9 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 **Price provenance:** latestKnownTunedDiscussionValue; rerun canonical simulator before freeze.
 
 ### Insurance
-- L1: 1 000 ₽; after 3 losing Drop(s), next Drop floor 0.75x.
-- L2: 5 000 ₽; after 2 losing Drop(s), next Drop floor 0.90x.
-- L3: 25 000 ₽; after 1 losing Drop(s), next Drop floor 1.00x.
+- L1: 500 ₽; after 3 losing Drop(s), next Drop floor 0.75x.
+- L2: 2 500 ₽; after 2 losing Drop(s), next Drop floor 0.90x.
+- L3: 12 500 ₽; after 1 losing Drop(s), next Drop floor 1.00x.
 
 ### Other Plinko upgrade prices
 provisional V0 seed; not validated by a reproducible report for this exact config. Effects and current seed values live only in JSON and must be revalidated by physical + full-game simulators before freeze.

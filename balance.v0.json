@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "0.7-canonical-preproduction",
+    "version": "0.8-candidate-price0.5-payout1.5",
     "date": "2026-09-27",
     "sourceOfTruth": true,
     "targetMedianSuccessfulRealMinutes": 30,
@@ -100,7 +100,7 @@
         "levels": [
           {
             "level": 1,
-            "payout": 3000,
+            "payout": 4500,
             "durationMinutes": 120,
             "energyCost": 12,
             "happinessCost": 3,
@@ -109,21 +109,21 @@
           },
           {
             "level": 2,
-            "payout": 6500,
+            "payout": 9750,
             "durationMinutes": 120,
             "energyCost": 12,
             "happinessCost": 3,
             "window": "13:00-03:00",
-            "upgradePrice": 5000
+            "upgradePrice": 2500
           },
           {
             "level": 3,
-            "payout": 12000,
+            "payout": 18000,
             "durationMinutes": 120,
             "energyCost": 12,
             "happinessCost": 3,
             "window": "24/7",
-            "upgradePrice": 40000
+            "upgradePrice": 20000
           }
         ]
       },
@@ -135,7 +135,7 @@
         "levels": [
           {
             "level": 1,
-            "payout": 3600,
+            "payout": 5400,
             "durationMinutes": 150,
             "energyCost": 18,
             "happinessCost": 5,
@@ -144,21 +144,21 @@
           },
           {
             "level": 2,
-            "payout": 7600,
+            "payout": 11400,
             "durationMinutes": 150,
             "energyCost": 18,
             "happinessCost": 5,
             "window": "21:00-11:00",
-            "upgradePrice": 6000
+            "upgradePrice": 3000
           },
           {
             "level": 3,
-            "payout": 14500,
+            "payout": 21750,
             "durationMinutes": 150,
             "energyCost": 18,
             "happinessCost": 5,
             "window": "24/7",
-            "upgradePrice": 50000
+            "upgradePrice": 25000
           }
         ]
       },
@@ -171,7 +171,7 @@
         "levels": [
           {
             "level": 1,
-            "payout": 4200,
+            "payout": 6300,
             "durationMinutes": 180,
             "energyCost": 15,
             "happinessCost": 4,
@@ -180,21 +180,21 @@
           },
           {
             "level": 2,
-            "payout": 8500,
+            "payout": 12750,
             "durationMinutes": 180,
             "energyCost": 15,
             "happinessCost": 4,
             "window": "05:00-19:00",
-            "upgradePrice": 7000
+            "upgradePrice": 3500
           },
           {
             "level": 3,
-            "payout": 17000,
+            "payout": 25500,
             "durationMinutes": 180,
             "energyCost": 15,
             "happinessCost": 4,
             "window": "24/7",
-            "upgradePrice": 60000
+            "upgradePrice": 30000
           }
         ]
       }
@@ -571,12 +571,12 @@
     "centerUpgrades": [
       {
         "level": 1,
-        "price": 1000,
+        "price": 500,
         "center": 0.35
       },
       {
         "level": 2,
-        "price": 2500,
+        "price": 1250,
         "center": 0.4,
         "inner": 1.05
       }
@@ -584,19 +584,19 @@
     "midUpgrades": [
       {
         "level": 1,
-        "price": 5000,
+        "price": 2500,
         "mid": 1.8,
         "inner": 1.1
       },
       {
         "level": 2,
-        "price": 30000,
+        "price": 15000,
         "mid": 2.2,
         "inner": 1.25
       },
       {
         "level": 3,
-        "price": 150000,
+        "price": 75000,
         "mid": 2.8,
         "inner": 1.4
       }
@@ -604,48 +604,48 @@
     "jackpotUpgrades": [
       {
         "level": 1,
-        "price": 10000,
+        "price": 5000,
         "edge": 25
       },
       {
         "level": 2,
-        "price": 50000,
+        "price": 25000,
         "edge": 50
       },
       {
         "level": 3,
-        "price": 250000,
+        "price": 125000,
         "edge": 100
       }
     ],
     "amplifier": [
       {
         "level": 1,
-        "price": 10000,
+        "price": 5000,
         "count": 1,
         "multiplier": 1.25
       },
       {
         "level": 2,
-        "price": 45000,
+        "price": 22500,
         "count": 2,
         "multiplier": 1.25
       },
       {
         "level": 3,
-        "price": 150000,
+        "price": 75000,
         "count": 2,
         "multiplier": 1.4
       },
       {
         "level": 4,
-        "price": 500000,
+        "price": 250000,
         "count": 3,
         "multiplier": 1.4
       },
       {
         "level": 5,
-        "price": 1500000,
+        "price": 750000,
         "count": 3,
         "multiplier": 1.6
       }
@@ -653,56 +653,56 @@
     "return": [
       {
         "level": 1,
-        "price": 30000,
+        "price": 15000,
         "targetFrequency": 0.07
       },
       {
         "level": 2,
-        "price": 150000,
+        "price": 75000,
         "targetFrequency": 0.11
       },
       {
         "level": 3,
-        "price": 600000,
+        "price": 300000,
         "targetFrequency": 0.15
       },
       {
         "level": 4,
-        "price": 2000000,
+        "price": 1000000,
         "targetFrequency": 0.2
       }
     ],
     "splitter": [
       {
         "level": 1,
-        "price": 15000,
+        "price": 7500,
         "childValue": 0.48
       },
       {
         "level": 2,
-        "price": 90000,
+        "price": 45000,
         "childValue": 0.5
       },
       {
         "level": 3,
-        "price": 350000,
+        "price": 175000,
         "childValue": 0.52
       },
       {
         "level": 4,
-        "price": 1000000,
+        "price": 500000,
         "childValue": 0.55
       },
       {
         "level": 5,
-        "price": 3000000,
+        "price": 1500000,
         "childValue": 0.58
       }
     ],
     "jackpotBias": [
       {
         "level": 1,
-        "price": 8000,
+        "price": 4000,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 174,
@@ -716,7 +716,7 @@
       },
       {
         "level": 2,
-        "price": 45000,
+        "price": 22500,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 174,
@@ -738,7 +738,7 @@
       },
       {
         "level": 3,
-        "price": 180000,
+        "price": 90000,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 174,
@@ -768,7 +768,7 @@
       },
       {
         "level": 4,
-        "price": 700000,
+        "price": 350000,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 174,
@@ -808,19 +808,19 @@
     "insurance": [
       {
         "level": 1,
-        "price": 1000,
+        "price": 500,
         "lossesNeeded": 3,
         "floor": 0.75
       },
       {
         "level": 2,
-        "price": 5000,
+        "price": 2500,
         "lossesNeeded": 2,
         "floor": 0.9
       },
       {
         "level": 3,
-        "price": 25000,
+        "price": 12500,
         "lossesNeeded": 1,
         "floor": 1
       }

@@ -43,7 +43,7 @@ describe('Trash work transaction integration', () => {
     expect(completed.state.clock.minuteOfDay).toBe(
       createGameClock('02:30').minuteOfDay,
     );
-    expect(completed.state.cash).toBe(4_600);
+    expect(completed.state.cash).toBe(6_400);
   });
 
   it('does not charge Trash start costs again when an unresolved action is restored', () => {

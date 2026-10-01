@@ -87,7 +87,7 @@ describe('T057 casino UI model', () => {
     expect(center).toMatchObject({
       currentLevel: 0,
       maxLevel: 2,
-      nextPrice: 1_000,
+      nextPrice: 500,
       maxed: false,
       lockedReason: null,
     });
