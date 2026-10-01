@@ -98,3 +98,8 @@ The solver adapter is deliberately tied to the pinned Matter implementation. A f
 The canvas keeps the config's 1280×720 logical world at every viewport size; the kit viewport watcher scales its CSS presentation proportionally and keeps the portrait activity blocker. Resizing the physics/UI coordinate space to CSS pixels had clipped fixed-coordinate minigames and map controls on small screens. Mouse and genuine CDP touch input are verified separately at 1280×720 and 640×360, including portrait/landscape return.
 
 A cold load with a pending Drop enters Casino automatically. Leaving it on the ordinary map had locked every cash action without running physics. A restored work/Drop scene now emits presentable only after its own preload, state initialization and first render; Bootstrap's redirect no longer announces readiness early.
+
+
+## T071 — Independent Pages preview
+
+The user requested a publicly playable preview from draft PR #51 after executor failure. Use the existing mock/localStorage runtime in a production Vite `pages` mode and deploy the PR branch directly through GitHub Actions. Keep Yandex builds, strict performance thresholds, config, SaveState v14 and RC acceptance unchanged. Preview deployment is not release approval. No new hosting framework or platform abstraction is required.

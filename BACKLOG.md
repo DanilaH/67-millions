@@ -276,7 +276,7 @@ Status: Candidate selected (2026-10-01): 6000 physical runs on selected config p
 Acceptance: reproducible artifact; no unacceptable dominant policy.
 
 ### T071 [P0] Real-session pacing playtests
-Status: Open: no human successful-run timing dataset. Simulation clock-equivalent fields do not satisfy this gate.
+Status: Open: no human successful-run timing dataset. Simulation clock-equivalent fields do not satisfy this gate. Pages playtest tooling is documented in docs/PLATFORM_RELEASE.md; publication alone does not accept pacing.
 Acceptance: successful median around 30 real minutes; repetition reviewed; work-count target yields to pacing target.
 
 ## E22 — Reliability / performance
