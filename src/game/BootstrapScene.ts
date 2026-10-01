@@ -23,6 +23,8 @@ import {
   getPresentablePendingEventId,
 } from '../core/events/eventScheduler';
 import { canPayMainDebt, payMainDebt } from '../core/economy/mainDebt';
+import { END_RUN_ADS_KEY, type EndRunAds } from '../app/EndRunAds';
+import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 import type { SaveRepository } from '../core/save/repository';
 import { createRunSeed } from '../core/random/runSeed';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
@@ -182,7 +184,7 @@ export class BootstrapScene extends Phaser.Scene {
       );
 
     this.runEndOverlay = createRunEndOverlay(this, {
-      onRestart: () => this.guard(() => this.restart()),
+      onRestart: () => { void this.restart().catch((error: unknown) => this.showMessage(String(error))); },
       onConfirmPrincipal: () =>
         this.guard(() => this.payPrincipal()),
       onCancelPrincipal: () => {
@@ -656,6 +658,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.showMessage(
       `${getFoodContent(foodId).title}: оплачено, эффект после ${started.action.remainingMinutes} мин.`,
     );
+    void this.persist();
     this.advance(started.action.remainingMinutes);
   }
 
@@ -680,6 +683,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.showMessage(
       `${getEntertainmentContent(entertainmentId).title}: действие начато.`,
     );
+    void this.persist();
     this.advance(started.action.remainingMinutes);
   }
 
@@ -693,6 +697,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.showMessage(
       `Сон: до ${balance.sleep.fullSleepHours} ч, Барри в 09:00 прерывает.`,
     );
+    void this.persist();
     this.advance(this.activeAction.remainingMinutes);
   }
 
@@ -711,6 +716,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.showMessage(
       `Помойка: энергия -${started.energySpent}, счастье -${started.happinessSpent.toFixed(1)}, HP -${started.healthSpent.toFixed(1)}.`,
     );
+    void this.persist();
     this.advance(started.action.remainingMinutes);
   }
 
@@ -730,6 +736,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.audio?.play('cashSpend');
     }
     this.showMessage('Душ оплачен.');
+    void this.persist();
     this.advance(started.action.remainingMinutes);
   }
 
@@ -793,10 +800,12 @@ export class BootstrapScene extends Phaser.Scene {
     );
 
     this.state = resolved.state;
+    const choiceState = structuredClone(this.state);
     if (this.state.cash < cashBefore) {
       this.audio?.play('cashSpend');
     }
     this.activeAction = resolved.activeAction;
+    void this.persist().then(() => (this.game.registry.get(GAME_ANALYTICS_KEY) as GameAnalytics | undefined)?.track('event_choice', choiceState, { event_id: eventId, choice: choiceId }));
     this.eventOverlay?.hide();
 
     const lockedSuffix =
@@ -854,9 +863,16 @@ export class BootstrapScene extends Phaser.Scene {
     void this.persist();
   }
 
-  private restart(): void {
-    if (!this.state) return;
+  private async restart(): Promise<void> {
+    if (!this.state || !this.repository) return;
+    const gate = this.game.registry.get(END_RUN_ADS_KEY) as EndRunAds | undefined;
+    if (!gate) return;
+    await this.persist();
+    await this.repository.flush();
+    await gate.beforeRestart({ version: SAVE_VERSION, game: this.state, activeAction: this.activeAction, pendingDrop: this.pendingDrop }, () => this.restartRun());
+  }
 
+  private restartRun(): void {
     this.state = restartGame(balance, createRunSeed());
     this.activeAction = null;
     this.pendingDrop = null;
@@ -866,6 +882,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.clearContextControls();
     this.showMessage('Новый забег начат.');
     void this.persist();
+    this.render();
   }
 
   private async persist(): Promise<void> {
@@ -904,6 +921,7 @@ export class BootstrapScene extends Phaser.Scene {
           activeActionBlocking: this.activeAction !== null,
         },
       );
+    (this.game.registry.get(GAME_ANALYTICS_KEY) as GameAnalytics | undefined)?.eventShown(presentableEventId, this.state);
     const navigationLocked =
       hardLocked ||
       this.activeAction !== null ||

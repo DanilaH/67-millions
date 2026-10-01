@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 
 import { balance } from '../config/balance';
 import {
@@ -763,6 +764,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       return;
     }
 
+    const previousBarryTotal = this.save.game.totalBarryPaid;
     const previousBarryPaymentIndex =
       this.save.game.barryPaymentIndex;
     const result = settleAggregatePendingDropAndResumeTime(
@@ -782,6 +784,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.save.game.plinkoJackpotBiasLevel,
     );
     await this.enqueueSave(true);
+
+    (this.game.registry.get(GAME_ANALYTICS_KEY) as GameAnalytics | undefined)?.track('plinko_resolved', result.state, {
+      bet: pending.originalStake, payout: result.payout, board_hash: pending.boardFingerprint,
+      cash_before: this.save.game.cash - result.payout + result.state.totalBarryPaid - previousBarryTotal + pending.originalStake,
+      cash_after: result.state.cash, seed: pending.rngStateAtCommit, drop_id: pending.dropId,
+      cascade_fixed_ticks: this.runtime.getFixedTicksElapsed(), cascade_active_balls: this.balls.size,
+      insurance_top_up: result.insuranceTopUp,
+    });
 
     recordTutorialMilestone('DROP_RESOLVED');
     if (

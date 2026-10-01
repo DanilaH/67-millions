@@ -1,0 +1,13 @@
+{
+  "title": "67 миллионов",
+  "languages": ["ru"],
+  "orientation": "landscape",
+  "devices": ["desktop", "mobile"],
+  "shortDescription": "Переживи подработки, растущие выплаты Барри и рискованные каскады Plinko. Верни 67 миллионов — одним платежом.",
+  "description": "Барри Вайлд требует 67 миллионов рублей и отдельную выплату каждое утро. Зарабатывай на трёх подработках, заботься о сытости, энергии и настроении, улучшай Plinko-машину и решай, когда рискнуть. Победа наступит только после ручного погашения всего долга. Все деньги вымышленные: покупок, реальных ставок и вывода средств нет.",
+  "controls": "Мышь или касания. На карте выбирай локации; в посуде стирай грязь, в мусоре перетаскивай мешки, у курьера рисуй маршрут. В казино выбирай долю ставки и автоматические улучшения.",
+  "monetization": {"interstitial": "После итогов поражения или победы, по кнопке нового забега", "rewarded": false, "purchases": false},
+  "contentDeclarations": {"fictionalGambling": true, "realMoneyGambling": false, "blackComedy": true, "realBrands": false, "politicalReferences": false},
+  "ageRating": {"suggested": "18+", "status": "Requires publisher confirmation against current Yandex moderation rules"},
+  "submissionStatus": "candidate; hosted checks and final acceptance required"
+}

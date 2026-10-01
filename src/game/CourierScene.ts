@@ -412,10 +412,13 @@ export class CourierScene extends Phaser.Scene {
 
     this.completionInFlight = true;
     const skillResult = this.session.result;
+    const settledAction = { ...this.save.activeAction, result: skillResult };
+    this.save = { ...this.save, activeAction: settledAction };
+    await this.persistRuntime(true);
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
-      this.save.activeAction,
+      settledAction,
       skillResult,
       balance,
     );

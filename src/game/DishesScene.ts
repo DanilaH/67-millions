@@ -368,10 +368,13 @@ export class DishesScene extends Phaser.Scene {
     this.completionInFlight = true;
     this.pointerDown = false;
 
+    const settledAction = { ...this.save.activeAction, result: result };
+    this.save = { ...this.save, activeAction: settledAction };
+    await this.persistRuntime(true);
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
-      this.save.activeAction,
+      settledAction,
       result,
       balance,
     );

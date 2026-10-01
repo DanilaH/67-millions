@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { EndRunAds, END_RUN_ADS_KEY } from './app/EndRunAds';
+import { GameAnalytics, GAME_ANALYTICS_KEY } from './app/analytics/GameAnalytics';
 
 import { createStartupPreloadDomView, StartupPreloadController } from '@danilah/mini-games-kit/startup';
 
@@ -37,6 +39,7 @@ const artFormatTask = detectRuntimeImageFormat();
 try {
   const [platform, runtimeImageFormat] = await Promise.all([platformTask, artFormatTask]);
   const initialSize = getInitialGameSize();
+  const analytics = new GameAnalytics(platform.analytics, balance);
   const saveRepository = createSaveRepository(
     platform.storage,
     () =>
@@ -44,6 +47,7 @@ try {
         balance,
         createRunSeed(),
       ),
+    analytics,
   );
   let resolvePresentable!: () => void;
   const presentable = new Promise<void>((resolve) => {
@@ -74,6 +78,8 @@ try {
     scale: { mode: Phaser.Scale.NONE },
     callbacks: {
       preBoot: (bootingGame) => {
+        bootingGame.registry.set(GAME_ANALYTICS_KEY, analytics);
+        bootingGame.registry.set(END_RUN_ADS_KEY, new EndRunAds(platform.ads));
         bootingGame.registry.set(
           GAME_SAVE_REPOSITORY_REGISTRY_KEY,
           saveRepository,

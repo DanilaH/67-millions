@@ -26,7 +26,8 @@
     "simulate:plinko:jackpot-bias": "tsx simulation/plinko/jackpotBiasSweep.ts",
     "simulate:plinko:jackpot-bias-probe": "tsx simulation/plinko/jackpotBiasProbe.ts",
     "simulate:full-game": "tsx simulation/full-game/cli.ts",
-    "simulate:full-game:report": "tsx simulation/full-game/reportCli.ts"
+    "simulate:full-game:report": "tsx simulation/full-game/reportCli.ts",
+    "smoke:release": "node --import tsx tools/release-smoke.mjs"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
