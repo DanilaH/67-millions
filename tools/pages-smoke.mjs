@@ -34,8 +34,18 @@ let browser;
 const errors = [];
 const failures = [];
 const serviceRequests = [];
+let publishedVersion = null;
 try {
   browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH } : {}), args: ['--disable-dev-shm-usage'] });
+  if (process.env.SMOKE_URL) {
+    const request = await browser.newContext();
+    try {
+      const response = await request.request.get(new URL('preview-version.json', url).href);
+      assert.equal(response.status(), 200, 'published revision manifest available');
+      publishedVersion = await response.json();
+      if (process.env.SMOKE_EXPECTED_SHA) assert.equal(publishedVersion.sha, process.env.SMOKE_EXPECTED_SHA, 'live site matches deployed revision');
+    } finally { await request.close(); }
+  }
   for (const touch of [false, true]) {
     const context = await browser.newContext({ viewport: touch ? { width: 640, height: 360 } : { width: 1280, height: 720 }, hasTouch: touch });
     const page = await context.newPage();
@@ -123,7 +133,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs and payouts', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs and payouts', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

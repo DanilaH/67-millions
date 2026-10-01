@@ -103,3 +103,8 @@ A cold load with a pending Drop enters Casino automatically. Leaving it on the o
 ## T071 — Independent Pages preview
 
 The user requested a publicly playable preview from draft PR #51 after executor failure. Use the existing mock/localStorage runtime in a production Vite `pages` mode and deploy the PR branch directly through GitHub Actions. Keep Yandex builds, strict performance thresholds, config, SaveState v14 and RC acceptance unchanged. Preview deployment is not release approval. No new hosting framework or platform abstraction is required.
+
+
+## T071 — User-approved main publication
+
+After Pages enablement, GitHub refused PR-branch deployment due to the github-pages environment branch policy. The user explicitly requested merging all existing PR work to main for the playtest. PR #51 was merged normally at fb3425727588431bf5d221964a8ab692708ba091 (main had no branch protection/rulesets). Pages now publishes main and verifies the real URL/revision afterward. This integration decision does not accept the outstanding RC/Yandex/performance gates. Documentation-only pushes do not rebuild or redeploy the game.

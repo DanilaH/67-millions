@@ -25,3 +25,8 @@ Existing performance job 110465852218, run 36890869025: build/install passed; `p
 ## Reproduction
 
 See docs/PLATFORM_RELEASE.md. The Pages workflow retains smoke results/screenshots, deploys only after successful browser checks, and writes `preview-version.json` with the actual source SHA.
+
+
+## Main publication continuation — 2026-10-02 (user timezone)
+
+The user enabled Pages. Retry of run 36910667177 failed before a runner started: `Branch "feat/roadmap-completion" is not allowed to deploy to github-pages due to environment protection rules.` The user explicitly requested merging to main. PR #51 merged at fb3425727588431bf5d221964a8ab692708ba091; Pages workflow is moved to main with a post-deploy real-site smoke and expected-SHA assertion. Live publication/verification remains pending until those jobs complete.

@@ -2,7 +2,8 @@ name: Pages playtest
 
 on:
   push:
-    branches: [feat/roadmap-completion]
+    branches: [main]
+    paths-ignore: ['**/*.md']
   workflow_dispatch:
 
 concurrency:
@@ -14,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/feat/roadmap-completion'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -41,6 +42,8 @@ jobs:
           path: dist
 
   deploy:
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -53,3 +56,26 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/deploy-pages@v4
         id: deployment
+
+
+  verify-live:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20.19.0
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run smoke:pages
+        env:
+          SMOKE_URL: ${{ needs.deploy.outputs.page_url }}
+          SMOKE_EXPECTED_SHA: ${{ github.sha }}
+          SMOKE_OUTPUT: artifacts/pages-live-smoke
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pages-live-smoke
+          path: artifacts/pages-live-smoke
+          if-no-files-found: warn
