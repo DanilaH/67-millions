@@ -111,8 +111,13 @@ try {
  await page.reload({waitUntil:'networkidle'});await ready();
  assert.equal((await page.evaluate(()=>JSON.parse(localStorage.getItem('67m.save')))).game.cash,restored.game.cash,'settled production reload cannot duplicate payout');
  const originalViewport=page.viewportSize();await page.setViewportSize({width:360,height:640});await page.waitForFunction(()=>document.querySelector('#rotate-gate').getAttribute('aria-hidden')==='false');await page.setViewportSize(originalViewport);await page.waitForFunction(()=>document.querySelector('#rotate-gate').getAttribute('aria-hidden')==='true');assert.equal(await page.locator('canvas').evaluate(canvas=>canvas.width),1280);
+ const legacy=structuredClone(checkpoint);legacy.version=13;delete legacy.pendingDrop.physics.solver;
+ const legacyRaw=JSON.stringify(legacy);
+ await page.evaluate(raw=>localStorage.setItem('67m.save',raw),legacyRaw);
+ await page.reload({waitUntil:'networkidle'});await ready();await page.waitForTimeout(500);
+ assert.equal(await page.evaluate(()=>localStorage.getItem('67m.save')),legacyRaw,'legacy pose-only Drop fails safely without rewriting or refund');
  assert.deepEqual(errors,[]);
- const result={status:'passed',sdk:'local structural Yandex stub, not hosted evidence',counter:113254061,viewport:page.viewportSize(),input:touch?'actual CDP touch events':'mouse pointer events',checks:['production bootstrap','counter configuration and semantic goal','no debug panel','terminal save before ad','restart after close','independent platform blocker preserved','single restart event','dishes actual pointer input and payout','trash drag input and payout','courier route input and payout','production cold restore enters casino','exact production mid-Drop payout and RNG','single restored settlement event','no duplicate payout after settled reload','portrait gate and return without changing logical canvas'],logicalCanvas:logical,pageErrors:errors};
+ const result={status:'passed',sdk:'local structural Yandex stub, not hosted evidence',counter:113254061,viewport:page.viewportSize(),input:touch?'actual CDP touch events':'mouse pointer events',checks:['production bootstrap','counter configuration and semantic goal','no debug panel','terminal save before ad','restart after close','independent platform blocker preserved','single restart event','dishes actual pointer input and payout','trash drag input and payout','courier route input and payout','production cold restore enters casino','exact production mid-Drop payout and RNG','single restored settlement event','no duplicate payout after settled reload','legacy pose-only save refused without mutation','portrait gate and return without changing logical canvas'],logicalCanvas:logical,pageErrors:errors};
  writeFileSync(`${output}/result.json`,JSON.stringify(result,null,2));console.log(JSON.stringify(result));
  await context.close();
 }finally{await browser.close();}

@@ -278,6 +278,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.refreshVisualSnapshot();
 
     const pendingAtLoad = this.save.pendingDrop;
+    if (pendingAtLoad?.physics && !pendingAtLoad.physics.solver) {
+      // Older pose-only snapshots cannot preserve the warmed solver's exact outcome.
+      // Stop before constructing or persisting physics; keep the original save intact.
+      this.save = null;
+      this.showStatus('Сохранение каскада устарело. Данные не изменены; продолжение этого броска недоступно.');
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
+      return;
+    }
     this.random = new SeededRandom(
       pendingAtLoad?.physics === null
         ? pendingAtLoad.rngStateAtCommit
