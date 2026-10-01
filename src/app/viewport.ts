@@ -1,12 +1,12 @@
 import {
   BrowserViewportWatcher,
-  resolveInitialLandscapeGameCssSize,
   resolveLandscapeGameCssSize,
   resolveViewportState,
   type ViewportState,
 } from '@danilah/mini-games-kit/layout';
 import type { GameplayActivityCoordinator } from '@danilah/mini-games-kit/platform';
 import type Phaser from 'phaser';
+import { balance } from '../config/balance';
 
 const readSize = (width: number, height: number) => ({ width, height });
 
@@ -21,7 +21,7 @@ export const readInitialViewport = (): ViewportState => {
 };
 
 export const getInitialGameSize = (): { width: number; height: number } =>
-  resolveInitialLandscapeGameCssSize(readInitialViewport());
+  ({ width: balance.plinko.geometry.logicalViewportWidth, height: balance.plinko.geometry.logicalViewportHeight });
 
 export interface ViewportRuntimeHandle {
   destroy(): void;
@@ -35,15 +35,16 @@ export const installViewportRuntime = (
   if (!gate) throw new Error('Missing #rotate-gate bootstrap element');
 
   const watcher = new BrowserViewportWatcher({
-    onApply: (viewport, context) => {
+    onApply: (viewport) => {
       gate.setAttribute('aria-hidden', viewport.portrait ? 'false' : 'true');
       activity.setBlocked('orientation', viewport.portrait);
       if (viewport.portrait) return;
 
-      const size = resolveLandscapeGameCssSize(viewport);
-      game.canvas.style.width = `${Math.round(size.width)}px`;
-      game.canvas.style.height = `${Math.round(size.height)}px`;
-      if (context.changed) game.scale.resize(Math.round(size.width), Math.round(size.height));
+      const logical = getInitialGameSize();
+      const size = resolveLandscapeGameCssSize(viewport, logical.width / logical.height);
+      const scale = Math.min(size.width / logical.width, size.height / logical.height);
+      game.canvas.style.width = `${Math.round(logical.width * scale)}px`;
+      game.canvas.style.height = `${Math.round(logical.height * scale)}px`;
       game.scale.refresh();
     },
   });

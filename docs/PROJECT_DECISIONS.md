@@ -92,3 +92,9 @@ Browser soak showed a different payout after reloading a mid-cascade v13 pose sn
 Version 13 migrates to 14 with the committed stake, state and pending transaction intact. An old in-flight pose checkpoint has no warmed solver data; its historical exact trajectory cannot be reconstructed from missing information. The legacy restore path remains available without refund/recommit. New v14 checkpoints include the solver state at periodic saves, special-pin changes and partial pocket settlement. No elapsed offline time is added.
 
 The solver adapter is deliberately tied to the pinned Matter implementation. A future physics/geometry change requires revalidation and a save compatibility review. Pure Matter trajectory tests compare every subsequent step at six collision checkpoints. Browser tests additionally compare actual payout and RNG between uninterrupted and reloaded branches.
+
+## T068/T073 — Logical canvas and cold restore
+
+The canvas keeps the config's 1280×720 logical world at every viewport size; the kit viewport watcher scales its CSS presentation proportionally and keeps the portrait activity blocker. Resizing the physics/UI coordinate space to CSS pixels had clipped fixed-coordinate minigames and map controls on small screens. Mouse and genuine CDP touch input are verified separately at 1280×720 and 640×360, including portrait/landscape return.
+
+A cold load with a pending Drop enters Casino automatically. Leaving it on the ordinary map had locked every cash action without running physics. A restored work/Drop scene now emits presentable only after its own preload, state initialization and first render; Bootstrap's redirect no longer announces readiness early.

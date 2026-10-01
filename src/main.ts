@@ -16,7 +16,8 @@ import {
   startupTimeline,
 } from './app/startup';
 import { getInitialGameSize, installViewportRuntime } from './app/viewport';
-import { BootstrapScene, GAME_PRESENTABLE_EVENT } from './game/BootstrapScene';
+import { BootstrapScene } from './game/BootstrapScene';
+import { GAME_PRESENTABLE_EVENT } from './app/presentable';
 import { CourierScene } from './game/CourierScene';
 import { DishesScene } from './game/DishesScene';
 import { PlinkoDebugScene } from './game/PlinkoDebugScene';

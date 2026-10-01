@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
+import { createPinTextures } from './casino/createPinTextures';
 import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
 import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 
@@ -109,8 +111,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private casinoLayer?: Phaser.GameObjects.Container;
   private staticBoardGraphics?: Phaser.GameObjects.Graphics;
   private ballImages: Phaser.GameObjects.Image[] = [];
+  private pegImages: Phaser.GameObjects.Image[] = [];
   private mapLayer?: Phaser.GameObjects.Container;
-  private graphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
   private mapText?: Phaser.GameObjects.Text;
@@ -149,9 +151,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.staticBoardGraphics = this.add.graphics();
     this.casinoLayer.add(this.staticBoardGraphics);
-    this.graphics = this.add.graphics();
-    this.casinoLayer.add(this.graphics);
     this.ballImages = [];
+    this.pegImages = [];
+    createPinTextures(this, balance.plinko.geometry.pegRadius);
     const radius = balance.plinko.geometry.ballRadius;
     const size = (radius + 4) * 2;
     for (const kind of ['normal', 'amplified', 'split'] as const) {
@@ -166,6 +168,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
       }
       stamp.generateTexture(key, size, size);
       stamp.destroy();
+    }
+    for (let index = 0; index < balance.plinko.maxActiveBalls; index += 1) {
+      const image = this.add.image(0, 0, '67m:ball:normal').setVisible(false);
+      this.ballImages.push(image);
+      this.casinoLayer.add(image);
     }
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
@@ -242,16 +249,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public update(): void {
-    if (!this.graphics || this.mapMode) return;
-
-    this.graphics.clear();
+    if (!this.staticBoardGraphics || this.mapMode) return;
 
     let index = 0;
     for (const [ball, metadata] of this.balls) {
       const kind = metadata.currentValue > 1 ? 'amplified' : metadata.splitDepth > 0 ? 'split' : 'normal';
       const image = this.ballImages[index] ?? (this.ballImages[index] = this.add.image(0, 0, `67m:ball:${kind}`));
       if (!image.parentContainer) this.casinoLayer!.add(image);
-      image.setTexture(`67m:ball:${kind}`).setPosition(ball.position.x, ball.position.y).setVisible(true);
+      const texture = `67m:ball:${kind}`;
+      if (image.texture.key !== texture) image.setTexture(texture);
+      image.setPosition(ball.position.x, ball.position.y).setVisible(true);
       index += 1;
     }
     for (; index < this.ballImages.length; index += 1) this.ballImages[index]!.setVisible(false);
@@ -381,6 +388,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+    this.game.events.emit(GAME_PRESENTABLE_EVENT);
 
     if (isPlinkoPerfMode() && !this.save.pendingDrop) {
       this.installPerfProbe();
@@ -1248,134 +1256,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const layout = this.runtime.layout;
     const snapshot = this.visualSnapshot;
 
-    graphics.fillStyle(
-      visualColor('lineDirty'),
-      1,
-    );
-    for (const peg of layout.pegs) {
-      if (
-        getPegVisualRole(
-          peg.id,
-          snapshot.pegRoles,
-        ) === 'regular'
-      ) {
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius,
-        );
-      }
-    }
-
-    for (const peg of layout.pegs) {
-      const role = getPegVisualRole(
-        peg.id,
-        snapshot.pegRoles,
-      );
-      if (role === 'regular') continue;
-
-      if (role === 'amplifier') {
-        graphics.fillStyle(
-          SPECIAL_PIN_STYLE.amplifier.color,
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius + 4,
-        );
-        graphics.fillStyle(
-          visualColor('inkDeep'),
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          Math.max(2, geometry.pegRadius - 1),
-        );
-        continue;
-      }
-
-      if (role === 'return') {
-        graphics.fillStyle(
-          SPECIAL_PIN_STYLE.return.color,
-          1,
-        );
-        graphics.fillCircle(
-          peg.x,
-          peg.y,
-          geometry.pegRadius + 3,
-        );
-        graphics.lineStyle(
-          2,
-          visualColor('inkDeep'),
-          1,
-        );
-        graphics.strokeLineShape(
-          new Phaser.Geom.Line(
-            peg.x,
-            peg.y + 4,
-            peg.x,
-            peg.y - 5,
-          ),
-        );
-        graphics.strokeLineShape(
-          new Phaser.Geom.Line(
-            peg.x,
-            peg.y - 5,
-            peg.x - 4,
-            peg.y - 1,
-          ),
-        );
-        graphics.strokeLineShape(
-          new Phaser.Geom.Line(
-            peg.x,
-            peg.y - 5,
-            peg.x + 4,
-            peg.y - 1,
-          ),
-        );
-        continue;
-      }
-
-      graphics.fillStyle(
-        SPECIAL_PIN_STYLE.splitter.color,
-        1,
-      );
-      graphics.fillCircle(
-        peg.x,
-        peg.y,
-        geometry.pegRadius + 3,
-      );
-      graphics.lineStyle(
-        2,
-        visualColor('inkDeep'),
-        1,
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          peg.x,
-          peg.y + 4,
-          peg.x,
-          peg.y,
-        ),
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          peg.x,
-          peg.y,
-          peg.x - 4,
-          peg.y - 4,
-        ),
-      );
-      graphics.strokeLineShape(
-        new Phaser.Geom.Line(
-          peg.x,
-          peg.y,
-          peg.x + 4,
-          peg.y - 4,
-        ),
-      );
+    for (const [index, peg] of layout.pegs.entries()) {
+      const role = getPegVisualRole(peg.id, snapshot.pegRoles);
+      const texture = `67m:pin:${role}`;
+      const image = this.pegImages[index] ?? (this.pegImages[index] = this.add.image(peg.x, peg.y, texture));
+      if (!image.parentContainer) this.casinoLayer!.addAt(image, 4);
+      if (image.texture.key !== texture) image.setTexture(texture);
+      image.setPosition(peg.x, peg.y);
     }
 
     const biasGeometry = deriveJackpotBiasGeometry(

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt, addProductionImage } from './visual/productionArt';
 
 import { balance } from '../config/balance';
@@ -223,6 +224,7 @@ export class TrashScene extends Phaser.Scene {
       this.save = save;
       this.session = createTrashSession(balance);
       this.render();
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;
       this.messageText?.setText(

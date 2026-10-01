@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt, addProductionImage } from './visual/productionArt';
 
 import { balance } from '../config/balance';
@@ -245,6 +246,7 @@ export class CourierScene extends Phaser.Scene {
         deriveCourierSeed(save, save.activeAction),
       );
       this.render();
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;
       this.statusText?.setText(

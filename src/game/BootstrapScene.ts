@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
 
 import type { ActiveAction } from '../core/actions/ActiveAction';
@@ -98,8 +99,6 @@ import {
 import { buildEventPresentation } from './events/eventUiModel';
 import { VISUAL_FONT, visualHex } from './visual/visualTheme';
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
-
-export const GAME_PRESENTABLE_EVENT = 'bootstrap:game-presentable';
 
 export class BootstrapScene extends Phaser.Scene {
   private state: GameState | null = null;
@@ -243,7 +242,11 @@ export class BootstrapScene extends Phaser.Scene {
       this.pendingDrop = save.pendingDrop;
 
       if (isPlinkoPerfMode()) {
-        this.game.events.emit(GAME_PRESENTABLE_EVENT);
+        this.scene.start('plinko-debug');
+        return;
+      }
+
+      if (this.pendingDrop !== null) {
         this.scene.start('plinko-debug');
         return;
       }
@@ -255,7 +258,6 @@ export class BootstrapScene extends Phaser.Scene {
         this.activeAction.actionId === 'dishes' &&
         this.activeAction.result === null
       ) {
-        this.game.events.emit(GAME_PRESENTABLE_EVENT);
         this.scene.start('dishes');
         return;
       }
@@ -267,7 +269,6 @@ export class BootstrapScene extends Phaser.Scene {
         this.activeAction.actionId === 'trash' &&
         this.activeAction.result === null
       ) {
-        this.game.events.emit(GAME_PRESENTABLE_EVENT);
         this.scene.start('trash');
         return;
       }
@@ -279,11 +280,11 @@ export class BootstrapScene extends Phaser.Scene {
         this.activeAction.actionId === 'courier' &&
         this.activeAction.result === null
       ) {
-        this.game.events.emit(GAME_PRESENTABLE_EVENT);
         this.scene.start('courier');
         return;
       }
 
+      this.showMessage('Выберите локацию.');
       this.render();
 
       const payoutToast = consumeCasinoPayoutToast();
