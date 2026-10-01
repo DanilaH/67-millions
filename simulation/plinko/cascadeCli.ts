@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { hashConfig, resolveGitRevision } from './report';
 import { performance } from 'node:perf_hooks';
 import { resolve } from 'node:path';
 
@@ -184,6 +185,9 @@ const boardHash = createHash('sha256')
 const report = {
   metadata: {
     generatedAt: new Date().toISOString(),
+    configVersion: balance.meta.version,
+    configHash: hashConfig(readFileSync(new URL('../../balance.v0.json', import.meta.url), 'utf8')),
+    codeRevision: resolveGitRevision(),
     runs: options.runs,
     seed: options.seed,
     stake: options.stake,
@@ -209,6 +213,9 @@ const markdown = `# Plinko cascade physical report
 
 ## Provenance
 
+- config version: \`${report.metadata.configVersion}\`
+- config SHA-256: \`${report.metadata.configHash}\`
+- code revision: \`${report.metadata.codeRevision}\`
 - runs: **${options.runs}**
 - seed: **${options.seed}**
 - representative stake: **${options.stake.toLocaleString('en-US')}**
