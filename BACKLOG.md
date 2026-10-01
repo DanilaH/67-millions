@@ -234,9 +234,11 @@ Acceptance: 10 events/foods/locations + Barry copy; fictional setting, no real m
 ## E18 — Art
 
 ### T061 [P1] Visual bible + key art
+Status: Partial (2026-10-01): original generated runtime/key-art sources and provenance added; reviewed native >=2560×1440 master still missing.
 Acceptance: hand-painted dirty cartoon; map/Barry/Casino visual language fixed.
 
 ### T062 [P1] Production location/minigame/UI art
+Status: Implemented locally (2026-10-01): map, Barry, work backgrounds and interactables integrated; real-device visual review remains open.
 Acceptance: mobile readability maintained.
 
 ### T063 [P1] Plinko visual progression
@@ -256,37 +258,47 @@ Acceptance: tactile jobs, ambience, needs, Barry signature, pause/duck lifecycle
 Acceptance: same SaveState schema as local; restore tested.
 
 ### T067 [P1] Analytics
+Status: Implemented and tested (2026-10-01): semantic save-observer events, stable flat schema, counter 113254061 configured; hosted receipt belongs to T068.
 Acceptance: stable TECH_SPEC event schemas emitted.
 
 ### T068 [P1] Ads + metadata
+Status: Partial (2026-10-01): end-run ads, metadata, cold restore and scene readiness tested in production with a local SDK stub; hosted DRAFT/cloud/ads/Metrica checks remain open.
 Acceptance: safe interstitials, simulation pause, mobile/desktop lifecycle, rating/moderation metadata.
 
 ## E21 — Final balance / playtest
 
 ### T069 [P0] Re-run physical milestone boards
+Status: Candidate measured (2026-10-01): exact runtime hash, 100k bare and 10k max-cascade reports retained; final frozen-candidate review follows pacing/device acceptance.
 Acceptance: reports for frozen candidate geometry/config.
 
 ### T070 [P0] Large full-game batch + dominant strategy search
+Status: Candidate selected (2026-10-01): 6000 physical runs on selected config plus rejected candidate batches, versioned liquidity policy and honest report provenance; final dominance/event review remains open.
 Acceptance: reproducible artifact; no unacceptable dominant policy.
 
 ### T071 [P0] Real-session pacing playtests
+Status: Open: no human successful-run timing dataset. Simulation clock-equivalent fields do not satisfy this gate.
 Acceptance: successful median around 30 real minutes; repetition reviewed; work-count target yields to pacing target.
 
 ## E22 — Reliability / performance
 
 ### T072 [P0] Low-end mobile + max-cascade performance pass
+Status: Open: all 24 balls resolve, but v14 strict CPU×4 screening narrowly fails (median 33.4 ms / p95 50.1 ms); actual target-phone gate unverified.
 Acceptance: worst allowed state remains playable; no sustained catastrophic frame drop.
 
 ### T073 [P0] Save/background/refresh soak
+Status: Local verification passed (2026-10-01): v14 warm-solver restore, 40-Drop background/settled reload soak, production cold and mid-Drop mouse/touch restore. Legacy pose-only checkpoints stop unchanged.
 Acceptance: no duplicate money, progression, listeners or physics bodies.
 
 ### T074 [P1] Memory/audio soak
+Status: Local verification passed (2026-10-01): bounded body/listener/texture counts, post-GC heap and released audio voices across 40 max-upgrade Drops; real-device audio/memory review remains open.
 Acceptance: repeated Drops do not grow memory/audio voices without bound.
 
 ## E23 — RC
 
 ### T075 [P0] MVP acceptance audit
+Status: Audit performed, BLOCKED (2026-10-01): every MVP item has a disposition in docs/RELEASE_ACCEPTANCE.md; pending/partial/failed items block RC.
 Acceptance: every applicable `MVP_ACCEPTANCE.md` item checked; failures block RC.
 
 ### T076 [P0] Freeze config/content + build submission package
+Status: Partial (2026-10-01): reproducible production candidate ZIP/manifest tooling added. RC config/content freeze and submission wait for acceptance.
 Acceptance: config hash recorded; production build and submission artifacts ready.

@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "generatedAt": "2026-10-01T14:09:23.661Z",
+    "configVersion": "0.8-candidate-price0.5-payout1.5",
+    "configHash": "ffd96790e8327c7319f9ad1836cd5f9b3399b1be9a923f83c2ecac99ad9a2c48",
+    "codeRevision": "303eed4a85a2060bbb956c92555da88acbeb4ace",
+    "runs": 10000,
+    "seed": 67069001,
+    "stake": 100000,
+    "boardHash": "a2693868a04e7cd8fc6530ebd384a051729f4f07593fbacf44ff173288590abe",
+    "pocketLevels": {
+      "centerLevel": 2,
+      "midLevel": 3,
+      "jackpotLevel": 3
+    },
+    "specialLevels": {
+      "amplifierLevel": 5,
+      "returnLevel": 4,
+      "splitterLevel": 5,
+      "jackpotBiasLevel": 4
+    },
+    "pocketMultipliers": [
+      100,
+      4,
+      2.8,
+      1.4,
+      0.4,
+      0.4,
+      1.4,
+      2.8,
+      4,
+      100
+    ],
+    "ballBallCollisions": false,
+    "batchSize": 64,
+    "initialBallCount": 1,
+    "maxActiveBallsCap": 24,
+    "maxSplitDepth": 2
+  },
+  "metrics": {
+    "runs": 10000,
+    "resolvedRuns": 10000,
+    "stuckRuns": 0,
+    "stuckRate": 0,
+    "ev": 14.213205919999966,
+    "medianMultiplier": 0.7424,
+    "standardDeviation": 42.34171311768697,
+    "probabilityBelow1x": 0.6228,
+    "probabilityAtLeast2x": 0.2379,
+    "probabilityAtLeast5x": 0.0944,
+    "probabilityAtLeast10x": 0.0909,
+    "meanTerminalBalls": 1.3769,
+    "maxTerminalBalls": 2,
+    "meanChildBalls": 0.7538,
+    "meanReturns": 0.1511,
+    "meanAmplifierProcs": 0.617,
+    "meanMaxActiveBalls": 1.3769,
+    "maxActiveBalls": 2,
+    "meanCascadeSeconds": 5.051866666666738,
+    "p95CascadeSeconds": 6.283333333333333,
+    "maxCascadeSeconds": 8.3,
+    "terminalPocketCounts": [
+      444,
+      98,
+      64,
+      1211,
+      5144,
+      5041,
+      1162,
+      54,
+      86,
+      465
+    ]
+  },
+  "performance": {
+    "wallElapsedMs": 5871.434859,
+    "wallMsPerDrop": 0.5871434859,
+    "wallMsPerTerminalBall": 0.42642420357324423,
+    "dropsPerSecond": 1703.1611931573334,
+    "terminalBallsPerSecond": 2345.0826468583323
+  },
+  "stuckDiagnostics": []
+}

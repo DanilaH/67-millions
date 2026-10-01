@@ -1,0 +1,166 @@
+{
+  "status": "passed",
+  "drops": 40,
+  "profile": "desktop Chromium, max upgrades, sound on; synthetic visibility events; no real-device claim",
+  "samples": [
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 9674388
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 10977252
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 9840164
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 11037324
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 10923588
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 9795552
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 11016020
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 10771916
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 61,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 11176348
+    }
+  ],
+  "settledReloads": [
+    {
+      "index": 0,
+      "cash": 50079500
+    },
+    {
+      "index": 8,
+      "cash": 50366332
+    },
+    {
+      "index": 16,
+      "cash": 50527876
+    },
+    {
+      "index": 24,
+      "cash": 50577084
+    },
+    {
+      "index": 32,
+      "cash": 50577100
+    }
+  ],
+  "exactMidDropRestore": true,
+  "pageErrors": []
+}

@@ -115,7 +115,7 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 - L3: 12 500 ₽; after 1 losing Drop(s), next Drop floor 1.00x.
 
 ### Other Plinko upgrade prices
-provisional V0 seed; not validated by a reproducible report for this exact config. Effects and current seed values live only in JSON and must be revalidated by physical + full-game simulators before freeze.
+T070 playtest candidate: prices are listed in the numeric JSON and sampled by the retained exact-config physical/full-game reports. Broader build/event-robustness review and human pacing remain gates before RC freeze.
 
 ## Initial calibration hypotheses
 - Baseline rational policy should not be near-guaranteed; initial tuning hypothesis ≈30–45% wins.

@@ -1,0 +1,527 @@
+{
+  "metadata": {
+    "configVersion": "0.7-canonical-preproduction",
+    "configHash": "d8ab0e3cfd7edb9cc4a76c1165bc7cfbe7d5140ec632d598f94771de46676aaf",
+    "codeRevision": "50da7bc97308a35a98f2484f4d198c69d01bade2",
+    "runsPerPolicy": 100,
+    "seedStart": 67100000,
+    "realSecondsPerGameMinute": 3,
+    "plinkoOutcomeModelId": "matter-cascade-direct-v1",
+    "plinkoModelNotes": [
+      "Actual canonical Matter cascade per committed Drop; exact consumed RNG state; no approximate payout tails."
+    ],
+    "nearZeroCashThreshold": 1000,
+    "giantPayoutDominanceThreshold": 0.5,
+    "samplingNote": "Executed with the physical model in the working tree at HEAD 50da7bc; model code was subsequently committed as 2d68fe2. The original report incorrectly inherited an evidence-model tag. Only provenance labels are corrected here; sampled statistics are unchanged.",
+    "durationMetric": "Legacy RealMinutes fields convert ALL game minutes including instantaneous jumps. They are clock-equivalent proxies, not human or browser wall-clock pacing."
+  },
+  "strategies": [
+    {
+      "archetype": "CAUTIOUS",
+      "policyId": "cautious-v1-fail0.05",
+      "runs": 100,
+      "wins": 0,
+      "barryLosses": 100,
+      "hpDeaths": 0,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 1,
+      "hpDeathRate": 0,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 15.996527777777779,
+      "medianRealSessionMinutes": 1151.75,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 67.94,
+      "averagePlinkoDrops": 0,
+      "averageFoodActions": 36.26,
+      "averageSleepActions": 23.75,
+      "averageEntertainmentActions": 19,
+      "averageEventsResolved": 8.74,
+      "averageDumpsterSearches": 0,
+      "dumpsterComebacks": 0,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 100,
+      "averageMaxBankrollDrawdown": 197355.95,
+      "p95MaxBankrollDrawdown": 267310,
+      "incomeShare": {
+        "work": 1,
+        "plinko": 0,
+        "dumpster": 0
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 51,
+          "share": 0.51
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 26,
+          "share": 0.26
+        },
+        {
+          "sequence": "job:dishes:L2 > job:trash:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 9,
+          "share": 0.09
+        },
+        {
+          "sequence": "job:trash:L2 > job:dishes:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 4,
+          "share": 0.04
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "job:dishes:L2 > job:trash:L2 > job:courier:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 1,
+          "share": 0.01
+        }
+      ]
+    },
+    {
+      "archetype": "BASELINE_GROWTH",
+      "policyId": "baseline_growth-v1-fail0.08",
+      "runs": 100,
+      "wins": 0,
+      "barryLosses": 100,
+      "hpDeaths": 0,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 1,
+      "hpDeathRate": 0,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 12.996527777777779,
+      "medianRealSessionMinutes": 935.75,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 66.92,
+      "averagePlinkoDrops": 19.73,
+      "averageFoodActions": 26.95,
+      "averageSleepActions": 20.26,
+      "averageEntertainmentActions": 4.65,
+      "averageEventsResolved": 7.67,
+      "averageDumpsterSearches": 0.03,
+      "dumpsterComebacks": 2,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 104,
+      "averageMaxBankrollDrawdown": 142820.22,
+      "p95MaxBankrollDrawdown": 407622.95,
+      "incomeShare": {
+        "work": 0.6259321915713145,
+        "plinko": 0.3740030415936622,
+        "dumpster": 6.476683502323087e-05
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > job:courier:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2 > plinko:return:L1 > job:dishes:L3",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > plinko:jackpotBias:L1 > job:courier:L2 > plinko:amplifier:L1 > plinko:maxBet:L3 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2 > plinko:return:L1",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > plinko:jackpotBias:L1 > job:courier:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:trash:L2 > plinko:jackpotBias:L1 > job:courier:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:return:L1",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:trash:L2 > job:courier:L2 > plinko:jackpotBias:L1 > job:dishes:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2 > plinko:return:L1",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:courier:L2 > job:dishes:L2 > plinko:jackpotBias:L1 > job:trash:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:courier:L2 > job:trash:L2 > plinko:jackpotBias:L1 > job:dishes:L2 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:return:L1 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:jackpotBias:L3 > plinko:maxBet:L4 > job:dishes:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:courier:L2 > job:trash:L2 > plinko:jackpotBias:L1 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L3 > plinko:mid:L2 > plinko:maxBet:L4 > plinko:return:L1 > job:dishes:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:courier:L2 > job:trash:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:maxBet:L4 > plinko:mid:L2 > plinko:return:L1 > plinko:jackpotBias:L2",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "plinko:center:L1 > plinko:center:L2 > plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:mid:L1 > job:dishes:L2 > job:courier:L2 > job:trash:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:amplifier:L1 > plinko:jackpot:L1 > plinko:mid:L2 > plinko:mid:L3 > plinko:jackpotBias:L2 > plinko:amplifier:L2 > plinko:return:L1 > plinko:jackpot:L2 > job:dishes:L3 > plinko:jackpotBias:L3 > plinko:jackpotBias:L4 > job:courier:L3 > plinko:maxBet:L4 > job:trash:L3 > plinko:maxBet:L5 > plinko:amplifier:L3",
+          "count": 1,
+          "share": 0.01
+        }
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12",
+      "runs": 100,
+      "wins": 0,
+      "barryLosses": 96,
+      "hpDeaths": 4,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 0.96,
+      "hpDeathRate": 0.04,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 9.996527777777779,
+      "medianRealSessionMinutes": 719.75,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 50.89,
+      "averagePlinkoDrops": 18.29,
+      "averageFoodActions": 45.33,
+      "averageSleepActions": 16.51,
+      "averageEntertainmentActions": 15.34,
+      "averageEventsResolved": 6.26,
+      "averageDumpsterSearches": 0.32,
+      "dumpsterComebacks": 1,
+      "dumpsterHpDeaths": 2,
+      "nearZeroCashRecoveries": 113,
+      "averageMaxBankrollDrawdown": 41638.67,
+      "p95MaxBankrollDrawdown": 69132.24999999999,
+      "incomeShare": {
+        "work": 0.6470138738341586,
+        "plinko": 0.3528322400926157,
+        "dumpster": 0.00015388607322564294
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3",
+          "count": 57,
+          "share": 0.57
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4",
+          "count": 32,
+          "share": 0.32
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2",
+          "count": 8,
+          "share": 0.08
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:maxBet:L5",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:maxBet:L5 > plinko:maxBet:L6",
+          "count": 1,
+          "share": 0.01
+        }
+      ]
+    },
+    {
+      "archetype": "WORKER",
+      "policyId": "worker-v1-fail0.07",
+      "runs": 100,
+      "wins": 0,
+      "barryLosses": 100,
+      "hpDeaths": 0,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 1,
+      "hpDeathRate": 0,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 15.996527777777779,
+      "medianRealSessionMinutes": 1151.75,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 70.77,
+      "averagePlinkoDrops": 0,
+      "averageFoodActions": 36.43,
+      "averageSleepActions": 23.98,
+      "averageEntertainmentActions": 20.27,
+      "averageEventsResolved": 9.5,
+      "averageDumpsterSearches": 0,
+      "dumpsterComebacks": 0,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 100,
+      "averageMaxBankrollDrawdown": 222184.1,
+      "p95MaxBankrollDrawdown": 286251.5,
+      "incomeShare": {
+        "work": 1,
+        "plinko": 0,
+        "dumpster": 0
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 76,
+          "share": 0.76
+        },
+        {
+          "sequence": "job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 14,
+          "share": 0.14
+        },
+        {
+          "sequence": "job:courier:L2 > job:trash:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 3,
+          "share": 0.03
+        },
+        {
+          "sequence": "job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:courier:L3 > job:trash:L3",
+          "count": 2,
+          "share": 0.02
+        },
+        {
+          "sequence": "job:courier:L2 > job:dishes:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "job:dishes:L2 > job:courier:L2 > job:trash:L2 > job:dishes:L3 > job:trash:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "job:dishes:L2 > job:trash:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "job:trash:L2 > job:courier:L2 > job:dishes:L2 > job:dishes:L3 > job:trash:L3",
+          "count": 1,
+          "share": 0.01
+        },
+        {
+          "sequence": "job:trash:L2 > job:dishes:L2 > job:courier:L2 > job:dishes:L3 > job:trash:L3 > job:courier:L3",
+          "count": 1,
+          "share": 0.01
+        }
+      ]
+    },
+    {
+      "archetype": "DEGENERATE",
+      "policyId": "degenerate-v1-fail0.14",
+      "runs": 100,
+      "wins": 0,
+      "barryLosses": 5,
+      "hpDeaths": 95,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 0.05,
+      "hpDeathRate": 0.95,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 2.966666666666667,
+      "medianRealSessionMinutes": 213.6,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 14.86,
+      "averagePlinkoDrops": 8.54,
+      "averageFoodActions": 7.06,
+      "averageSleepActions": 4.19,
+      "averageEntertainmentActions": 0.82,
+      "averageEventsResolved": 1.64,
+      "averageDumpsterSearches": 1.13,
+      "dumpsterComebacks": 5,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 126,
+      "averageMaxBankrollDrawdown": 18863.16,
+      "p95MaxBankrollDrawdown": 42941.79999999996,
+      "incomeShare": {
+        "work": 0.5899866452235966,
+        "plinko": 0.4036866304747512,
+        "dumpster": 0.006326724301652275
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:jackpotBias:L1 > plinko:jackpot:L1",
+          "count": 22,
+          "share": 0.22
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2",
+          "count": 16,
+          "share": 0.16
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:jackpotBias:L1",
+          "count": 12,
+          "share": 0.12
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:jackpotBias:L1 > plinko:jackpot:L1 > plinko:splitter:L1",
+          "count": 11,
+          "share": 0.11
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1",
+          "count": 7,
+          "share": 0.07
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3",
+          "count": 6,
+          "share": 0.06
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3",
+          "count": 4,
+          "share": 0.04
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:jackpot:L1",
+          "count": 3,
+          "share": 0.03
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:maxBet:L3 > plinko:jackpot:L1",
+          "count": 3,
+          "share": 0.03
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:jackpotBias:L1 > plinko:splitter:L1 > plinko:jackpot:L1",
+          "count": 3,
+          "share": 0.03
+        }
+      ]
+    },
+    {
+      "archetype": "RECKLESS_NEEDS",
+      "policyId": "reckless_needs-v1-fail0.16",
+      "runs": 100,
+      "wins": 0,
+      "barryLosses": 11,
+      "hpDeaths": 89,
+      "stepLimits": 0,
+      "winRate": 0,
+      "barryLossRate": 0.11,
+      "hpDeathRate": 0.89,
+      "medianVictoryElapsedDays": null,
+      "p10VictoryElapsedDays": null,
+      "p90VictoryElapsedDays": null,
+      "medianLossElapsedDays": 1.7975694444444446,
+      "medianRealSessionMinutes": 129.425,
+      "medianVictoryRealMinutes": null,
+      "p10VictoryRealMinutes": null,
+      "p90VictoryRealMinutes": null,
+      "averageWorkShifts": 6.5,
+      "averagePlinkoDrops": 7.7,
+      "averageFoodActions": 0,
+      "averageSleepActions": 3.02,
+      "averageEntertainmentActions": 0.01,
+      "averageEventsResolved": 1.03,
+      "averageDumpsterSearches": 5.15,
+      "dumpsterComebacks": 7,
+      "dumpsterHpDeaths": 0,
+      "nearZeroCashRecoveries": 123,
+      "averageMaxBankrollDrawdown": 9218.08,
+      "p95MaxBankrollDrawdown": 23096.24999999997,
+      "incomeShare": {
+        "work": 0.5104512534153298,
+        "plinko": 0.4609260813403704,
+        "dumpster": 0.02862266524429982
+      },
+      "shareWinsDominatedByOneGiantPayout": 0,
+      "topUpgradeSequences": [
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2",
+          "count": 65,
+          "share": 0.65
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3",
+          "count": 18,
+          "share": 0.18
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:amplifier:L1",
+          "count": 12,
+          "share": 0.12
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4",
+          "count": 3,
+          "share": 0.03
+        },
+        {
+          "sequence": "plinko:maxBet:L1 > plinko:maxBet:L2 > plinko:maxBet:L3 > plinko:maxBet:L4 > plinko:amplifier:L1",
+          "count": 2,
+          "share": 0.02
+        }
+      ]
+    }
+  ],
+  "anomalySeeds": [
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12",
+      "seed": 67100209,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 664.6,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    },
+    {
+      "archetype": "AGGRESSIVE",
+      "policyId": "aggressive-v1-fail0.12",
+      "seed": 67100272,
+      "outcome": "HP_DEATH",
+      "realSessionMinutes": 753.75,
+      "reasons": [
+        "dumpster-hp-death"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "drops": 10,
+  "profile": "desktop Chromium, max upgrades, sound on; synthetic visibility events; no real-device claim",
+  "samples": [
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 65,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 9452756
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 65,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 10228916
+    },
+    {
+      "bodies": 74,
+      "audioListeners": 2,
+      "pointerListeners": 2,
+      "textures": 65,
+      "plinko_context": "running",
+      "plinko_bounceVoices": 0,
+      "plinko_accentVoices": 0,
+      "plinko_specialVoices": 0,
+      "plinko_transferVoices": 0,
+      "world_context": "running",
+      "world_transientVoices": 0,
+      "world_activeOwner": 1,
+      "heap": 9901900
+    }
+  ],
+  "settledReloads": [
+    {
+      "index": 0,
+      "cash": 50079500
+    },
+    {
+      "index": 8,
+      "cash": 50366332
+    }
+  ],
+  "exactMidDropRestore": true,
+  "pageErrors": []
+}

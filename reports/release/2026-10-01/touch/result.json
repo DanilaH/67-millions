@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "sdk": "local structural Yandex stub, not hosted evidence",
+  "counter": 113254061,
+  "viewport": {
+    "width": 640,
+    "height": 360
+  },
+  "input": "actual CDP touch events",
+  "checks": [
+    "production bootstrap",
+    "counter configuration and semantic goal",
+    "no debug panel",
+    "terminal save before ad",
+    "restart after close",
+    "independent platform blocker preserved",
+    "single restart event",
+    "dishes actual pointer input and payout",
+    "trash drag input and payout",
+    "courier route input and payout",
+    "production cold restore enters casino",
+    "exact production mid-Drop payout and RNG",
+    "single restored settlement event",
+    "no duplicate payout after settled reload",
+    "legacy pose-only save refused without mutation",
+    "portrait gate and return without changing logical canvas"
+  ],
+  "logicalCanvas": {
+    "width": 1280,
+    "height": 720
+  },
+  "pageErrors": []
+}
