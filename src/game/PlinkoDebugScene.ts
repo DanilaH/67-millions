@@ -337,6 +337,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           const body = this.runtime.restoreBall(snapshot);
           this.balls.set(body, this.metadataFromSnapshot(snapshot));
         }
+        if (pendingAtLoad.physics.solver) this.runtime.restoreSolver(pendingAtLoad.physics.solver, this.balls);
 
         this.showStatus(
           `RESTORED DROP ${pendingAtLoad.dropId} at fixed tick ${pendingAtLoad.physics.fixedTicksElapsed}.`,
@@ -782,6 +783,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         pendingDrop: setDropPhysicsSnapshot(pending, {
           fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
           alreadySettledPayout: aggregatePayout,
+          solver: this.runtime.snapshotSolver(this.balls),
           balls: Array.from(this.balls.entries()).map(
             ([activeBody, activeMetadata]) =>
               this.runtime!.snapshotBall(activeBody, activeMetadata),
@@ -1020,6 +1022,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       const physics = {
         fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
         alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0,
+        solver: this.runtime.snapshotSolver(this.balls),
         balls: Array.from(this.balls.entries()).map(([body, metadata]) =>
           this.runtime!.snapshotBall(body, metadata),
         ),

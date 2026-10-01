@@ -40,6 +40,7 @@ export interface DropPhysicsSnapshot {
   fixedTicksElapsed: number;
   alreadySettledPayout: number;
   balls: DropBallSnapshot[];
+  solver?: import('./physicsCheckpoint').PhysicsCheckpoint | undefined;
 }
 
 export interface PendingDrop {

@@ -84,3 +84,11 @@ None at M0 bootstrap creation.
 - On Drop commit, the arm snapshot moves atomically into `pendingDrop.insuranceAtCommit` and the persistent armed slot clears. Reload therefore cannot reuse the same arm on another Drop.
 - The committed insured Drop consumes that snapshot even when its natural payout already exceeds the floor.
 - After insured settlement, streak resets to zero. The final credited payout is the greater of natural aggregate payout and snapped stake floor.
+
+## T073 — Exact physical checkpoint, SaveState v14
+
+Browser soak showed a different payout after reloading a mid-cascade v13 pose snapshot. Position, velocity and lineage flags alone omit Matter's warmed collision solver, previous positions, rotated vertices and axes. Version 14 adds a validated finite solver checkpoint beside the existing ball/transaction snapshot. Restore reconnects contacts to the new world's bodies/vertices and retains engine timing; it does not pay/refund cash or consume RNG. Local and Yandex adapters continue to share one SaveState schema.
+
+Version 13 migrates to 14 with the committed stake, state and pending transaction intact. An old in-flight pose checkpoint has no warmed solver data; its historical exact trajectory cannot be reconstructed from missing information. The legacy restore path remains available without refund/recommit. New v14 checkpoints include the solver state at periodic saves, special-pin changes and partial pocket settlement. No elapsed offline time is added.
+
+The solver adapter is deliberately tied to the pinned Matter implementation. A future physics/geometry change requires revalidation and a save compatibility review. Pure Matter trajectory tests compare every subsequent step at six collision checkpoints. Browser tests additionally compare actual payout and RNG between uninterrupted and reloaded branches.

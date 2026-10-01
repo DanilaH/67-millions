@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { BALL_LABEL, PEG_LABEL_PREFIX, POCKET_SENSOR_LABEL_PREFIX, dispatchPlinkoCollisions } from './collisionEvents';
+import { snapshotSolver, restoreSolver } from './solverCheckpoint';
+import type { PhysicsCheckpoint } from '../../core/plinko-rules/physicsCheckpoint';
 
 import type { BalanceConfig } from '../../config/balance.schema';
 import type {
@@ -36,6 +38,8 @@ export interface BarePlinkoRuntime {
   ): DropBallSnapshot;
   getFixedTicksElapsed(): number;
   setFixedTicksElapsed(ticks: number): void;
+  snapshotSolver(balls: ReadonlyMap<MatterJS.BodyType, DropBallState>): PhysicsCheckpoint;
+  restoreSolver(snapshot: PhysicsCheckpoint, balls: ReadonlyMap<MatterJS.BodyType, DropBallState>): void;
   destroy(): void;
 }
 
@@ -337,6 +341,8 @@ export const createBarePlinko = (
         ballStationaryTicks.get(body) ?? 0,
     }),
     getFixedTicksElapsed: () => fixedTicksElapsed,
+    snapshotSolver: balls => snapshotSolver(matter.world.engine, matter.world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId]))),
+    restoreSolver: (snapshot, balls) => restoreSolver(matter.world.engine, matter.world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId])), snapshot),
     setFixedTicksElapsed: (ticks) => {
       if (!Number.isInteger(ticks) || ticks < 0) {
         throw new RangeError(

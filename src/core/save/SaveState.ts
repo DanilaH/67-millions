@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { physicsCheckpointSchema } from '../plinko-rules/physicsCheckpoint';
 
 import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 13 as const;
+export const SAVE_VERSION = 14 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -135,6 +136,7 @@ const dropPhysicsSnapshotSchema = z.object({
   fixedTicksElapsed: z.number().int().nonnegative(),
   alreadySettledPayout: z.number().int().nonnegative(),
   balls: z.array(ballSnapshotSchema).max(24),
+  solver: physicsCheckpointSchema.optional(),
 });
 
 const pendingDropSchema = z.object({
