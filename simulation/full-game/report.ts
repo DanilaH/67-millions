@@ -75,6 +75,7 @@ export interface BalancePacingReport {
     runsPerPolicy: number;
     seedStart: number;
     realSecondsPerGameMinute: number;
+    durationMetric: string;
     plinkoOutcomeModelId: string;
     plinkoModelNotes: readonly string[];
     nearZeroCashThreshold: number;
@@ -385,8 +386,13 @@ export const buildBalancePacingReport = (
       runsPerPolicy: metadata.runsPerPolicy,
       seedStart: metadata.seedStart,
       realSecondsPerGameMinute: config.time.realSecondsPerGameMinute,
-      plinkoOutcomeModelId: EVIDENCE_MODEL_ID,
-      plinkoModelNotes: EVIDENCE_MODEL_NOTES,
+      durationMetric: 'Legacy *RealMinutes fields are game-clock equivalents including instantaneous action jumps; they are not measured wall-clock playtime.',
+      plinkoOutcomeModelId: [...new Set(taggedRuns.map(run => run.result.plinkoOutcomeModelId))].join(' + '),
+      plinkoModelNotes: taggedRuns.every(run => run.result.plinkoOutcomeModelId === EVIDENCE_MODEL_ID)
+        ? EVIDENCE_MODEL_NOTES
+        : taggedRuns.every(run => run.result.plinkoOutcomeModelId === 'matter-cascade-direct-v1')
+          ? ['Each committed Drop uses the canonical Matter cascade and consumed RNG state; no heuristic payout tail.', 'Real session durations remain estimates; simulated skill failures do not establish human pacing.']
+          : ['Custom or mixed diagnostic models; inspect the per-run model IDs before making balance claims.'],
       nearZeroCashThreshold:
         taggedRuns[0]!.result.diagnostics.nearZeroCashThreshold,
       giantPayoutDominanceThreshold: 0.5,

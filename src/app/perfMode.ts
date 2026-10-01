@@ -3,6 +3,8 @@ export interface PlinkoPerfProbeState {
   startedAtMs: number | null;
   resolvedAtMs: number | null;
   activeBallCount: number;
+  maxActiveBallCount?: number;
+  diagnostics?(): Record<string, number | string>;
   error: string | null;
   start(): Promise<void>;
 }

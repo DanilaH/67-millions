@@ -19,6 +19,8 @@ import {
   type StrategyBalanceSummary,
   type TaggedFullGameRun,
 } from './report';
+import { createLiquidityPolicy } from './liquidityPolicy';
+import { createPhysicalPlinkoModel } from './physicalPlinkoModel';
 import { runFullGame } from './runner';
 import {
   hashConfig,
@@ -29,6 +31,9 @@ interface CliOptions {
   runsPerPolicy: number;
   seedStart: number;
   output: string;
+  configPath: string;
+  model: 'physical' | 'evidence';
+  liquidityPolicy: boolean;
 }
 
 const parsePositiveInteger = (
@@ -48,12 +53,25 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
     runsPerPolicy: 100,
     seedStart: 67_100_000,
     output: 'artifacts/full-game/t048',
+    configPath: new URL('../../balance.v0.json', import.meta.url).pathname,
+    model: 'evidence',
+    liquidityPolicy: false,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
     const key = argv[index];
 
-    if (key === '--runs-per-policy') {
+    if (key === '--liquidity-policy') {
+      options.liquidityPolicy = true;
+    } else if (key === '--config') {
+      const value = argv[++index];
+      if (!value) throw new Error('Missing --config');
+      options.configPath = value;
+    } else if (key === '--model') {
+      const value = argv[++index];
+      if (value !== 'physical' && value !== 'evidence') throw new Error('--model must be physical or evidence');
+      options.model = value;
+    } else if (key === '--runs-per-policy') {
       options.runsPerPolicy = parsePositiveInteger(
         argv[++index],
         '--runs-per-policy',
@@ -203,7 +221,7 @@ const markdown = (report: BalancePacingReport): string => {
     .map((note) => `- ${note}`)
     .join('\n');
 
-  return `# T048 — Full-game balance / pacing report
+  return `# Full-game balance / pacing report
 
 ## Provenance
 
@@ -213,12 +231,13 @@ const markdown = (report: BalancePacingReport): string => {
 - runs per policy: **${report.metadata.runsPerPolicy}**
 - seed start: **${report.metadata.seedStart}**
 - Plinko economy model: \`${report.metadata.plinkoOutcomeModelId}\`
+- duration metric: ${report.metadata.durationMetric}
 - near-zero cash threshold: **${report.metadata.nearZeroCashThreshold} ₽**
 - giant-payout-dominated win threshold: **${percent(report.metadata.giantPayoutDominanceThreshold)} of credited modeled income**
 
 ## Measurement caveat
 
-This is an **economy/pacing diagnostic**, not final physical Plinko balance evidence. The full-game runner is pure core and the Plinko model is evidence-derived:
+This is an **economy/pacing diagnostic**, not a human playtest or a release acceptance result. The model used for these runs is recorded above:
 
 ${modelNotes}
 
@@ -255,13 +274,13 @@ ${anomalyLines}
 
 const options = parseArgs(process.argv.slice(2));
 const rawConfig = readFileSync(
-  new URL('../../balance.v0.json', import.meta.url),
+  options.configPath,
   'utf8',
 );
 const config = parseBalanceConfig(JSON.parse(rawConfig));
 const configHash = hashConfig(rawConfig);
 const codeRevision = resolveGitRevision();
-const model = createEvidenceDerivedPlinkoModel();
+const model = options.model === 'physical' ? createPhysicalPlinkoModel() : createEvidenceDerivedPlinkoModel();
 
 const taggedRuns: TaggedFullGameRun[] = [];
 const allArchetypes = [
@@ -273,7 +292,7 @@ let seed = options.seedStart;
 for (const archetype of allArchetypes) {
   for (let runIndex = 0; runIndex < options.runsPerPolicy; runIndex += 1) {
     const runSeed = seed++;
-    const policy =
+    const policy = options.liquidityPolicy ? createLiquidityPolicy(config, archetype, runSeed) :
       archetype === 'DEGENERATE' ||
       archetype === 'RECKLESS_NEEDS'
         ? createHighVariancePolicy(config, archetype, runSeed)

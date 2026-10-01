@@ -188,6 +188,10 @@ class SharedSceneAudioRuntime {
     new Set<keyof SceneNeedsSnapshot>();
   private disposed = false;
 
+  public diagnostics(): Record<string, number | string> {
+    return { context: this.context?.state ?? 'unprimed', transientVoices: this.transientBudget.getActiveCount(), activeOwner: this.activeOwnerId === 0 ? 0 : 1 };
+  }
+
   public attach(
     ambience: SceneAmbienceKind,
   ): number {
@@ -672,6 +676,8 @@ export class SceneAudio {
       this.handleBlocked,
     );
   }
+
+  public diagnostics(): Record<string, number | string> { return this.runtime.diagnostics(); }
 
   public prime(): void {
     if (this.disposed) return;

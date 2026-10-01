@@ -375,6 +375,10 @@ export class PlinkoAudio {
     this.playSpecial('return');
   }
 
+  public diagnostics(): Record<string, number | string> {
+    return { context: this.context?.state ?? 'unprimed', bounceVoices: this.bounceBudget.getActiveCount(), accentVoices: this.accentBudget.getActiveCount(), specialVoices: this.specialBudget.getActiveCount(), transferVoices: this.transferBudget.getActiveCount() };
+  }
+
   public dispose(): void {
     if (this.disposed) return;
     this.disposed = true;

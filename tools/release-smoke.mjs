@@ -3,6 +3,9 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { balance } from '../src/config/balance.ts';
 import { createInitialGameState } from '../src/core/state/GameState.ts';
+import { startWork } from '../src/core/work/work.ts';
+import { createDishesSession } from '../src/minigames/dishes/dishesModel.ts';
+import { createTrashSession } from '../src/minigames/trash/trashModel.ts';
 import { createSaveState } from '../src/core/save/SaveState.ts';
 
 const url=process.env.SMOKE_URL ?? 'http://127.0.0.1:4173/';
@@ -52,8 +55,33 @@ try {
  await page.waitForFunction(count=>window.__gameplayStarts>count,starts);
  const restartedGoals=await page.evaluate(()=>window.__goals.filter(args=>args[1]==='reachGoal'&&args[2]==='game_start'));
  assert.equal(restartedGoals.length,2);
+ for (const [job, minute] of [['dishes',18*60],['trash',60],['courier',10*60]]) {
+  const workSave=structuredClone(initial);workSave.game.clock.minuteOfDay=minute;
+  const reserved=startWork(workSave.game,balance,job,1);workSave.game=reserved.state;workSave.activeAction=reserved.action;
+  await page.evaluate(save=>localStorage.setItem('67m.save',JSON.stringify(save)),workSave);
+  await page.reload({waitUntil:'networkidle'});await ready();await page.waitForTimeout(300);
+  await page.screenshot({path:`${output}/${job}.png`});
+  if(job==='dishes') {
+   const spots=createDishesSession(balance).spots;
+   await page.mouse.move(spots[0].x,spots[0].y);await page.mouse.down();
+   for(const spot of spots){await page.mouse.move(spot.x,spot.y);await page.waitForTimeout(17);}
+   await page.mouse.up();
+  } else if(job==='trash') {
+   const session=createTrashSession(balance);
+   for(const bag of session.bags){await page.mouse.move(bag.x,bag.y);await page.mouse.down();await page.mouse.move(session.target.x+150,session.target.y+150,{steps:6});await page.mouse.up();await page.waitForTimeout(30);}
+  } else {
+   await page.mouse.move(180,365);await page.mouse.down();
+   for(const point of [[180,600],[1100,600],[1100,365]]){await page.mouse.move(...point,{steps:8});await page.waitForTimeout(25);}
+   await page.mouse.up();await page.mouse.click(1180,670);
+  }
+  await page.waitForFunction(()=>JSON.parse(localStorage.getItem('67m.save')).activeAction===null,null,{timeout:12000});
+  const completed=await page.evaluate(()=>JSON.parse(localStorage.getItem('67m.save')));
+  assert.ok(completed.game.cash>workSave.game.cash,`${job}: actual input must settle a successful payout`);
+  const workGoals=await page.evaluate(()=>window.__goals.filter(args=>args[1]==='reachGoal'&&args[2]==='work_completed'));
+  assert.equal(workGoals.length,1,`${job}: one success event after authoritative settlement`);
+ }
  assert.deepEqual(errors,[]);
- const result={status:'passed',sdk:'local structural Yandex stub, not hosted evidence',counter:113254061,checks:['production bootstrap','counter configuration and semantic goal','no debug panel','terminal save before ad','restart after close','independent platform blocker preserved','single restart event'],logicalCanvas:logical,pageErrors:errors};
+ const result={status:'passed',sdk:'local structural Yandex stub, not hosted evidence',counter:113254061,checks:['production bootstrap','counter configuration and semantic goal','no debug panel','terminal save before ad','restart after close','independent platform blocker preserved','single restart event','dishes actual pointer input and payout','trash drag input and payout','courier route input and payout'],logicalCanvas:logical,pageErrors:errors};
  writeFileSync(`${output}/result.json`,JSON.stringify(result,null,2));console.log(JSON.stringify(result));
  await context.close();
 }finally{await browser.close();}

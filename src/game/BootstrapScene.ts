@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
 
 import type { ActiveAction } from '../core/actions/ActiveAction';
 import {
@@ -105,6 +106,7 @@ export class BootstrapScene extends Phaser.Scene {
   private activeAction: ActiveAction | null = null;
   private pendingDrop: PendingDrop | null = null;
   private repository: SaveRepository | null = null;
+  private barryPortrait?: Phaser.GameObjects.Image;
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
   );
@@ -126,9 +128,14 @@ export class BootstrapScene extends Phaser.Scene {
     super('bootstrap');
   }
 
+  public preload(): void {
+    preloadProductionArt(this, ['map', 'barry-due', 'barry-paid']);
+  }
+
   public create(): void {
     const { height } = this.scale;
 
+    this.barryPortrait = addProductionImage(this, 'barry-due', 150, 480, 220, 225, 6).setVisible(false);
     this.audio = new SceneAudio(this, 'city');
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.audio?.dispose();
@@ -905,6 +912,7 @@ export class BootstrapScene extends Phaser.Scene {
       balance.needs.lowThreshold,
     );
 
+    this.barryPortrait?.setVisible(this.state.barryInterruptPending);
     this.hud.render(this.state);
     this.renderTutorial();
 

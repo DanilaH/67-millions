@@ -1,7 +1,7 @@
 # 67M — Canonical Preproduction Pack
 
-**Status:** active implementation — M3 / E10 Plinko progression; Balance V0 remains tunable  
-**Date:** 2026-09-28  
+**Status:** M5/M6 implementation and verification in progress; RC gates remain open
+**Date:** 2026-10-01
 **Working title:** `67 миллионов` / `67M`
 
 ## Concept

@@ -27,7 +27,11 @@
     "simulate:plinko:jackpot-bias-probe": "tsx simulation/plinko/jackpotBiasProbe.ts",
     "simulate:full-game": "tsx simulation/full-game/cli.ts",
     "simulate:full-game:report": "tsx simulation/full-game/reportCli.ts",
-    "smoke:release": "node --import tsx tools/release-smoke.mjs"
+    "smoke:release": "node --import tsx tools/release-smoke.mjs",
+    "art:build": "node tools/build-art.mjs",
+    "balance:search": "tsx tools/balance-search.ts",
+    "soak:plinko": "node --import tsx tools/plinko-soak.mjs",
+    "release:package": "npm run release:check && node tools/package-candidate.mjs"
   },
   "dependencies": {
     "@danilah/mini-games-kit": "github:DanilaH/mini-games-kit#43913152e5b409cdb84515eabb69166f6caaa8bb",
@@ -35,13 +39,14 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@types/matter-js": "0.20.2",
     "@types/node": "26.4.1",
+    "matter-js": "0.20.0",
+    "playwright": "1.63.0",
+    "sharp": "0.35.4",
+    "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "8.2.2",
-    "vitest": "4.1.11",
-    "matter-js": "0.20.0",
-    "@types/matter-js": "0.20.2",
-    "tsx": "4.23.15",
-    "playwright": "1.63.0"
+    "vitest": "4.1.11"
   }
 }

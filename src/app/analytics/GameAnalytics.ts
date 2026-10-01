@@ -20,7 +20,7 @@ const upgrades = {
 
 /** Presentation telemetry observes successful save writes; it never changes saves or RNG. */
 export class GameAnalytics {
-  private previous: SaveState | null = null;
+  private previous: { game: GameState; activeAction: SaveState['activeAction']; pendingDrop: boolean } | null = null;
   private shownEvent: string | null = null;
   private runSequence = 0;
   constructor(private readonly adapter: AnalyticsAdapter, private readonly config: BalanceConfig) {}
@@ -37,7 +37,7 @@ export class GameAnalytics {
 
   loaded(save: SaveState): void {
     if (this.previous !== null) return; // Scene changes reuse one observer.
-    this.previous = structuredClone(save);
+    this.previous = this.snapshot(save);
     this.runSequence += 1;
     this.track('game_start', save.game, { entry: 'load_or_new', rng_state: save.game.rngState });
   }
@@ -52,7 +52,7 @@ export class GameAnalytics {
   committed(save: SaveState): void {
     const before = this.previous;
     if (before === null) { this.loaded(save); return; }
-    this.previous = structuredClone(save);
+    this.previous = this.snapshot(save);
     const a = before.game, b = save.game;
     if (a.pendingEventId !== null && b.pendingEventId === null) this.shownEvent = null;
     // A restart leaves a terminal state and creates a fresh initial state.
@@ -69,7 +69,7 @@ export class GameAnalytics {
       this.track('main_debt_paid', b, { amount: a.mainDebt });
       this.track('victory', b);
     }
-    if (!(canPayMainDebt(a) && before.pendingDrop === null && before.activeAction === null) && canPayMainDebt(b) && save.pendingDrop === null && save.activeAction === null) this.track('main_debt_ready', b, { amount: b.mainDebt });
+    if (!(canPayMainDebt(a) && !before.pendingDrop && before.activeAction === null) && canPayMainDebt(b) && save.pendingDrop === null && save.activeAction === null) this.track('main_debt_ready', b, { amount: b.mainDebt });
     // Near bankruptcy = downward crossing of the first daily payment, once per crossing.
     const threshold = this.config.barry.payments[0]!;
     if (a.cash >= threshold && b.cash < threshold && !b.victory && b.terminalReason === null) this.track('near_bankruptcy', b, { threshold });
@@ -99,5 +99,10 @@ export class GameAnalytics {
       const drop = save.pendingDrop;
       this.track('plinko_drop', b, { bet: drop.originalStake, payout: 0, board_hash: drop.boardFingerprint, cash_before: a.cash, cash_after: b.cash, seed: drop.rngStateAtCommit, drop_id: drop.dropId, cascade_fixed_ticks: 0, cascade_active_balls: 0 });
     }
+  }
+
+  private snapshot(save: SaveState): NonNullable<GameAnalytics['previous']> {
+    // Physics checkpoints can contain 24 balls; telemetry only needs the transaction edge.
+    return { game: structuredClone(save.game), activeAction: structuredClone(save.activeAction), pendingDrop: save.pendingDrop !== null };
   }
 }

@@ -33,6 +33,7 @@ const BALL_LABEL = 'cascade:ball';
 export interface CascadeRunnerOptions {
   runs: number;
   seed: number;
+  directSeed?: boolean;
   pocketMultipliers: readonly number[];
   specialLevels: SpecialUpgradeLevels;
   stake?: number;
@@ -54,6 +55,7 @@ export interface CascadeStuckBallDiagnostic {
 
 export interface CascadeDropSample {
   aggregatePayout: number;
+  nextRngState: number;
   aggregateMultiplier: number;
   terminalBallCount: number;
   childBallCount: number;
@@ -371,6 +373,7 @@ export const runCascadePhysicalDrops = (
     activeSpecial.splitter?.pegIds ?? [],
   );
 
+  if (options.directSeed && options.runs !== 1) throw new Error("directSeed requires exactly one Drop");
   const samples: CascadeDropSample[] = new Array(options.runs);
   const timestepMs =
     1000 / config.plinko.geometry.fixedTimestepHz;
@@ -423,7 +426,7 @@ export const runCascadePhysicalDrops = (
       dropIndex += 1
     ) {
       const random = new SeededRandom(
-        seedForDrop(options.seed, dropIndex),
+        options.directSeed ? options.seed : seedForDrop(options.seed, dropIndex),
       );
       drops.set(dropIndex, {
         random,
@@ -739,6 +742,7 @@ export const runCascadePhysicalDrops = (
 
       samples[dropIndex] = {
         aggregatePayout: drop.payout,
+        nextRngState: drop.random.snapshot().state,
         aggregateMultiplier: drop.payout / stake,
         terminalBallCount: drop.terminalBallCount,
         childBallCount: drop.childBallCount,

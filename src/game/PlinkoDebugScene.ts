@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
 import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 
 import { balance } from '../config/balance';
@@ -46,6 +47,7 @@ import {
 } from '../core/plinko-rules/cascade';
 import { SeededRandom } from '../core/rng/SeededRandom';
 import type { SaveRepository } from '../core/save/repository';
+import { createInitialGameState } from '../core/state/GameState';
 import { SAVE_VERSION, type SaveState } from '../core/save/SaveState';
 import {
   createBarePlinko,
@@ -105,6 +107,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private worldAudio: SceneAudio | null = null;
 
   private casinoLayer?: Phaser.GameObjects.Container;
+  private staticBoardGraphics?: Phaser.GameObjects.Graphics;
+  private ballImages: Phaser.GameObjects.Image[] = [];
   private mapLayer?: Phaser.GameObjects.Container;
   private graphics?: Phaser.GameObjects.Graphics;
   private infoText?: Phaser.GameObjects.Text;
@@ -124,12 +128,45 @@ export class PlinkoDebugScene extends Phaser.Scene {
     super('plinko-debug');
   }
 
+  public preload(): void {
+    preloadProductionArt(this, ['map', 'casino', 'barry-due', 'barry-paid']);
+  }
+
   public create(): void {
     this.casinoLayer = this.add.container(0, 0);
+    // Draw the painted frame as four cropped strips rather than shading every board pixel.
+    const frameSize = this.textures.get(productionArtKey('casino')).getSourceImage();
+    const border = 40;
+    for (const [x, y, width, height] of [
+      [0, 0, frameSize.width, border],
+      [0, frameSize.height - border, frameSize.width, border],
+      [0, border, border, frameSize.height - 2 * border],
+      [frameSize.width - border, border, border, frameSize.height - 2 * border],
+    ]) {
+      this.casinoLayer.add(addProductionImage(this, 'casino', 640, 400, 600, 590).setCrop(x, y, width, height));
+    }
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
+    this.staticBoardGraphics = this.add.graphics();
+    this.casinoLayer.add(this.staticBoardGraphics);
     this.graphics = this.add.graphics();
     this.casinoLayer.add(this.graphics);
+    this.ballImages = [];
+    const radius = balance.plinko.geometry.ballRadius;
+    const size = (radius + 4) * 2;
+    for (const kind of ['normal', 'amplified', 'split'] as const) {
+      const key = `67m:ball:${kind}`;
+      if (this.textures.exists(key)) continue;
+      const stamp = this.add.graphics();
+      stamp.fillStyle(visualColor(kind === 'amplified' ? 'mustard' : kind === 'split' ? 'paperOld' : 'textMain'), 1);
+      stamp.fillCircle(size / 2, size / 2, radius);
+      if (kind !== 'normal') {
+        stamp.lineStyle(2, visualColor(kind === 'amplified' ? 'rust' : 'cold'), 0.95);
+        stamp.strokeCircle(size / 2, size / 2, radius + 2);
+      }
+      stamp.generateTexture(key, size, size);
+      stamp.destroy();
+    }
 
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
       color: visualHex('textMain'),
@@ -208,44 +245,29 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.graphics || this.mapMode) return;
 
     this.graphics.clear();
-    this.drawStaticBoard();
 
+    let index = 0;
     for (const [ball, metadata] of this.balls) {
-      const amplified = metadata.currentValue > 1;
-      const split = metadata.splitDepth > 0;
-      const fill = amplified
-        ? visualColor('mustard')
-        : split
-          ? visualColor('paperOld')
-          : visualColor('textMain');
-
-      this.graphics.fillStyle(fill, 1);
-      this.graphics.fillCircle(
-        ball.position.x,
-        ball.position.y,
-        balance.plinko.geometry.ballRadius,
-      );
-
-      if (amplified || split) {
-        this.graphics.lineStyle(
-          2,
-          amplified
-            ? visualColor('rust')
-            : visualColor('cold'),
-          0.95,
-        );
-        this.graphics.strokeCircle(
-          ball.position.x,
-          ball.position.y,
-          balance.plinko.geometry.ballRadius + 2,
-        );
-      }
+      const kind = metadata.currentValue > 1 ? 'amplified' : metadata.splitDepth > 0 ? 'split' : 'normal';
+      const image = this.ballImages[index] ?? (this.ballImages[index] = this.add.image(0, 0, `67m:ball:${kind}`));
+      if (!image.parentContainer) this.casinoLayer!.add(image);
+      image.setTexture(`67m:ball:${kind}`).setPosition(ball.position.x, ball.position.y).setVisible(true);
+      index += 1;
     }
+    for (; index < this.ballImages.length; index += 1) this.ballImages[index]!.setVisible(false);
   }
 
   private async initialize(): Promise<void> {
     this.repository = getSceneSaveRepository(this);
     this.save = await this.repository.load();
+    if (isPlinkoPerfMode() && new URLSearchParams(window.location.search).get('stress') === '24') {
+      this.save = { version: SAVE_VERSION, activeAction: null, pendingDrop: null, game: {
+        ...createInitialGameState(balance, 67072000), cash: 50_000_000,
+        plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3,
+        plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5,
+        plinkoJackpotBiasLevel: 4,
+      }};
+    }
     this.refreshVisualSnapshot();
 
     const pendingAtLoad = this.save.pendingDrop;
@@ -272,6 +294,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
       },
       onFixedTick: (fixedTicksElapsed) => {
+        const probe = window.__PLINKO_PERF__;
+        if (probe?.phase === 'running') {
+          probe.activeBallCount = this.balls.size;
+          probe.maxActiveBallCount = Math.max(probe.maxActiveBallCount ?? 0, this.balls.size);
+        }
         if (
           this.save?.pendingDrop &&
           fixedTicksElapsed - this.lastPersistedPhysicsTick >= 15
@@ -591,6 +618,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.runtime.setJackpotBiasLevel(
         committed.pendingDrop.specialLevelsAtCommit.jackpotBiasLevel,
       );
+      this.runtime.setFixedTicksElapsed(0);
+      this.lastPersistedPhysicsTick = 0;
       const body = this.runtime.spawnBall();
       this.balls.set(
         body,
@@ -760,7 +789,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
         }),
       };
       await this.enqueueSave(true);
-      this.renderAll();
       return;
     }
 
@@ -861,17 +889,37 @@ export class PlinkoDebugScene extends Phaser.Scene {
       startedAtMs: null,
       resolvedAtMs: null,
       activeBallCount: this.balls.size,
+      maxActiveBallCount: this.balls.size,
       error: null,
+      diagnostics: () => ({ bodies: this.matter.world.getAllBodies().length, audioListeners: this.game.events.listenerCount(GAME_AUDIO_BLOCKED_EVENT), pointerListeners: this.input.listenerCount('pointerdown'), textures: this.textures.getTextureKeys().length, ...Object.fromEntries(Object.entries(this.audio?.diagnostics() ?? {}).map(([key,value]) => [`plinko_${key}`, value])), ...Object.fromEntries(Object.entries(this.worldAudio?.diagnostics() ?? {}).map(([key,value]) => [`world_${key}`, value])) }),
       start: async () => {
         const probe = window.__PLINKO_PERF__;
-        if (!probe || probe.phase !== 'ready') return;
+        if (!probe || (probe.phase !== 'ready' && probe.phase !== 'resolved')) return;
 
         probe.phase = 'running';
+        probe.maxActiveBallCount = 0;
+        probe.resolvedAtMs = null;
         probe.startedAtMs = performance.now();
 
         try {
           await this.commitAndSpawn(1);
+          if (!this.save?.pendingDrop) {
+            probe.phase = 'error';
+            probe.error = 'Drop was not committed; resolve gameplay blockers before measuring';
+            return;
+          }
+          if (this.runtime && this.save?.pendingDrop && new URLSearchParams(window.location.search).get('stress') === '24') {
+            // Performance build only: synthetic cap concurrency, preserving the original total stake.
+            const roots = balance.plinko.maxActiveBalls;
+            for (const metadata of this.balls.values()) metadata.currentValue = 1 / roots;
+            for (let index = this.balls.size; index < roots; index += 1) {
+              const body = this.runtime.spawnBall();
+              this.balls.set(body, {...createRootBallState(`perf:${index}`), currentValue: 1 / roots});
+            }
+            await this.persistPendingPhysics(true);
+          }
           probe.activeBallCount = this.balls.size;
+          probe.maxActiveBallCount = Math.max(probe.maxActiveBallCount ?? 0, this.balls.size);
           if (this.save?.game.terminalReason !== null) {
             probe.phase = 'error';
             probe.error = this.save?.game.terminalReason ?? 'terminal';
@@ -886,6 +934,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private readonly handleAudioPrime = (): void => {
     this.audio?.prime();
+    this.worldAudio?.prime();
   };
 
   private readonly handleAudioBlocked = (
@@ -999,6 +1048,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     if (this.runtime) {
       this.installPocketLabels();
+      this.drawStaticBoard();
     }
   }
 
@@ -1182,14 +1232,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private drawStaticBoard(): void {
     if (
-      !this.graphics ||
+      !this.staticBoardGraphics ||
       !this.runtime ||
       !this.visualSnapshot
     ) {
       return;
     }
 
-    const graphics = this.graphics;
+    const graphics = this.staticBoardGraphics;
+    graphics.clear();
     const geometry = balance.plinko.geometry;
     const layout = this.runtime.layout;
     const snapshot = this.visualSnapshot;

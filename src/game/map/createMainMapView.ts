@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { addProductionImage } from '../visual/productionArt';
 
 import type { BalanceConfig } from '../../config/balance.schema';
 import {
@@ -36,6 +37,7 @@ export const createMainMapView = (
   config: BalanceConfig,
   onSelect: (location: MainMapLocation) => void,
 ): MainMapView => {
+  addProductionImage(scene, 'map', 763, 380, 1006, 520);
   const graphics = scene.add.graphics().setDepth(0);
   const locations = deriveMainMapLocations(config);
   const buttons = new Map<
@@ -46,12 +48,12 @@ export const createMainMapView = (
   let selected: MainMapLocationId | null = null;
 
   const drawBackdrop = (): void => {
-    graphics.fillStyle(visualColor('inkDeep'), 1);
+    graphics.fillStyle(visualColor('inkDeep'), 0.08);
     graphics.fillRoundedRect(260, 120, 1006, 520, 24);
     graphics.lineStyle(2, visualColor('lineDirty'), 1);
     graphics.strokeRoundedRect(260, 120, 1006, 520, 24);
 
-    graphics.fillStyle(visualColor('inkPanel'), 0.7);
+    graphics.fillStyle(visualColor('inkPanel'), 0.08);
     graphics.fillRect(285, 145, 956, 450);
 
     graphics.fillStyle(visualColor('rust'), 0.12);
@@ -61,7 +63,7 @@ export const createMainMapView = (
     graphics.fillStyle(visualColor('bruise'), 0.1);
     graphics.fillRect(770, 160, 190, 105);
 
-    graphics.lineStyle(10, visualColor('lineDirty'), 0.4);
+    graphics.lineStyle(10, visualColor('lineDirty'), 0.08);
     graphics.strokeLineShape(
       new Phaser.Geom.Line(350, 325, 1160, 325),
     );
