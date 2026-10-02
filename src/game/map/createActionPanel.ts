@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
-
 import type { ActionPreview } from '../actions/actionPreviews';
-import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
+import { VISUAL_FONT, visualColor, visualHex, type VisualColorToken } from '../visual/visualTheme';
 
 export interface ActionPanel {
   show(title: string, actions: ActionPreview[]): void;
@@ -14,158 +13,63 @@ export const createActionPanel = (
   onBack: () => void,
   onAction: (action: ActionPreview) => void,
 ): ActionPanel => {
-  const container = scene.add
-    .container(0, 0)
-    .setDepth(200)
-    .setVisible(false);
-  let lastSignature = '';
+  const container = scene.add.container(0, 0).setDepth(200).setVisible(false);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
+  let lastSignature = '';
+  let currentTitle = '';
+  let currentActions: ActionPreview[] = [];
+  let page = 0;
+  const pageSize = 3;
+  const background = scene.add.rectangle(763, 380, 1006, 520, visualColor('inkDeep'), 0.985)
+    .setStrokeStyle(2, visualColor('lineDirty')).setInteractive();
+  const text = (x: number, y: number, label: string, size: number, color: VisualColorToken = 'textMain') =>
+    scene.add.text(x, y, label, { fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, color: visualHex(color) });
+  const title = text(292, 135, '', 28).setFontStyle('bold');
+  const back = text(1234, 131, 'НАЗАД', 24).setOrigin(1, 0)
+    .setBackgroundColor(visualHex('inkRaised')).setPadding(16, 10)
+    .setInteractive({ useHandCursor: true }).on('pointerup', onBack);
+  const count = text(763, 607, '', 22).setOrigin(0.5);
+  const previous = text(292, 590, '← НАЗАД', 22).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised'))
+    .setInteractive({ useHandCursor: true }).on('pointerup', () => { if (page > 0) { page--; draw(); } });
+  const next = text(1234, 590, 'ДАЛЬШЕ →', 22).setOrigin(1, 0).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised'))
+    .setInteractive({ useHandCursor: true }).on('pointerup', () => { if ((page + 1) * pageSize < currentActions.length) { page++; draw(); } });
+  container.add([background, title, back, count, previous, next]);
 
-  const backdrop = scene.add.rectangle(
-    763,
-    380,
-    1006,
-    520,
-    visualColor('inkDeep'),
-    0.985,
-  );
-  backdrop.setStrokeStyle(2, visualColor('lineDirty'), 1);
-  backdrop.setInteractive();
-
-  const titleText = scene.add
-    .text(300, 138, '', {
-      color: visualHex('textMain'),
-      fontFamily: VISUAL_FONT.sans,
-      fontSize: '24px',
-      fontStyle: 'bold',
-    })
-    .setOrigin(0, 0);
-
-  const back = scene.add
-    .text(1225, 136, '[ НАЗАД ]', {
-      color: visualHex('textMain'),
-      backgroundColor: visualHex('inkRaised'),
-      fontFamily: VISUAL_FONT.sans,
-      fontSize: '15px',
-      padding: { x: 9, y: 6 },
-    })
-    .setOrigin(1, 0)
-    .setInteractive({ useHandCursor: true })
-    .on('pointerup', onBack);
-
-  container.add([backdrop, titleText, back]);
-
-  const clearDynamic = (): void => {
-    for (const object of dynamic) {
-      object.destroy();
-    }
-    dynamic.length = 0;
-  };
-
-  const show = (
-    title: string,
-    actions: ActionPreview[],
-  ): void => {
-    const signature = JSON.stringify([title, actions]);
-    if (signature === lastSignature && container.visible) return;
-    lastSignature = signature;
-    clearDynamic();
-    titleText.setText(title);
-    scene.game.canvas.setAttribute('aria-label', title);
-
-    actions.forEach((action, index) => {
-      const column = index % 2;
-      const row = Math.floor(index / 2);
-      const x = 292 + column * 472;
-      const y = 190 + row * 82;
-      const width = 444;
-      const height = 70;
+  const draw = (): void => {
+    dynamic.splice(0).forEach(object => object.destroy());
+    title.setText(currentTitle);
+    const pages = Math.max(1, Math.ceil(currentActions.length / pageSize));
+    page = Math.min(page, pages - 1);
+    count.setText(pages > 1 ? `${page + 1} / ${pages}` : '').setVisible(pages > 1);
+    previous.setVisible(pages > 1).setAlpha(page > 0 ? 1 : 0.35);
+    next.setVisible(pages > 1).setAlpha(page + 1 < pages ? 1 : 0.35);
+    scene.game.canvas.setAttribute('aria-label', currentTitle);
+    scene.game.canvas.setAttribute('data-panel-page', `${page + 1}`);
+    currentActions.slice(page * pageSize, (page + 1) * pageSize).forEach((action, index) => {
+      const y = 190 + index * 130;
       const locked = action.lockedReason !== null;
-
-      const card = scene.add
-        .rectangle(
-          x + width / 2,
-          y + height / 2,
-          width,
-          height,
-          locked ? visualColor('inkPanel') : visualColor('inkRaised'),
-          1,
-        )
-        .setStrokeStyle(
-          2,
-          locked ? visualColor('lineDirty') : visualColor('cold'),
-          1,
-        );
-
-      const titleObject = scene.add.text(
-        x + 12,
-        y + 8,
-        action.title,
-        {
-          color: locked ? visualHex('textMuted') : visualHex('textMain'),
-          fontFamily: VISUAL_FONT.sans,
-          fontSize: '15px',
-          fontStyle: 'bold',
-        },
-      );
-
-      const summaryObject = scene.add.text(
-        x + 12,
-        y + 30,
-        action.summary.slice(0, 2).join('  ·  '),
-        {
-          color: visualHex('textMuted'),
-          fontFamily: VISUAL_FONT.sans,
-          fontSize: '13px',
-          wordWrap: { width: width - 24 },
-        },
-      );
-
-      const lockObject = scene.add
-        .text(
-          x + width - 10,
-          y + 8,
-          locked
-            ? action.lockedReason!
-            : '[ ВЫБРАТЬ ]',
-          {
-            color: locked ? visualHex('warning') : visualHex('mustard'),
-            fontFamily: VISUAL_FONT.sans,
-            fontSize: '11px',
-            align: 'right',
-          },
-        )
-        .setOrigin(1, 0);
-
-      if (!locked) {
-        card
-          .setInteractive({ useHandCursor: true })
-          .on('pointerup', () => onAction(action));
-      }
-
-      container.add([
-        card,
-        titleObject,
-        summaryObject,
-        lockObject,
-      ]);
-      dynamic.push(
-        card,
-        titleObject,
-        summaryObject,
-        lockObject,
-      );
+      const height = currentActions.length === 1 ? 260 : 120;
+      const card = scene.add.rectangle(763, y + height / 2, 942, height, visualColor(locked ? 'inkPanel' : 'inkRaised'))
+        .setStrokeStyle(2, visualColor(locked ? 'lineDirty' : 'cold'));
+      const name = text(308, y + 10, action.title, 24).setFontStyle('bold');
+      const lock = text(1216, y + 12, action.lockedReason ?? 'ВЫБРАТЬ →', 20, locked ? 'warning' : 'mustard')
+        .setOrigin(1, 0).setWordWrapWidth(530).setAlign('right');
+      const summary = text(308, y + 47, (currentActions.length === 1 ? action.summary : action.summary.slice(0, 2)).join('\n'), 22, 'textMuted')
+        .setWordWrapWidth(906).setLineSpacing(2);
+      if (!locked) card.setInteractive({ useHandCursor: true }).on('pointerup', () => onAction(action));
+      container.add([card, name, lock, summary]);
+      dynamic.push(card, name, lock, summary);
     });
-
-    container.setVisible(true);
   };
-
   return {
-    show,
-    hide: () => {
-      container.setVisible(false);
-      clearDynamic();
+    show: (heading, actions) => {
+      if (heading !== currentTitle || !container.visible) page = 0;
+      const signature = JSON.stringify([heading, actions]);
+      if (signature === lastSignature && container.visible) return;
+      currentTitle = heading; currentActions = actions; lastSignature = signature;
+      draw(); container.setVisible(true);
     },
+    hide: () => { container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); },
     isVisible: () => container.visible,
   };
 };

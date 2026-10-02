@@ -1,3 +1,5 @@
+import { publishWorkFeedback } from './actions/actionFeedback';
+import { showInteractionFeedback } from './work/showInteractionFeedback';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt, addProductionImage } from './visual/productionArt';
@@ -54,6 +56,7 @@ export class DishesScene extends Phaser.Scene {
   private plateImages: Phaser.GameObjects.Image[] = [];
 
   private dirtTexture?: Phaser.Textures.CanvasTexture;
+  private readonly finishedPlates = new Set<number>();
   private renderedSpots: DishesSession['spots'] | null = null;
 
   public constructor() {
@@ -74,6 +77,7 @@ export class DishesScene extends Phaser.Scene {
     this.lastPointer = null;
     this.plateImages = [];
     this.renderedSpots = null;
+    this.finishedPlates.clear();
     const dirtKey = '67m:dishes-dirt';
     if (this.textures.exists(dirtKey)) this.textures.remove(dirtKey);
     const tileSize = 128;
@@ -405,6 +409,7 @@ export class DishesScene extends Phaser.Scene {
     const settledAction = { ...unresolvedAction, result: result };
     this.save = { ...this.save, activeAction: settledAction };
     await this.persistRuntime(true);
+    const beforeCompletion = this.save.game;
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
@@ -434,6 +439,8 @@ export class DishesScene extends Phaser.Scene {
     }
 
     await this.persistRuntime(true);
+
+    publishWorkFeedback(settledAction, beforeCompletion, completion);
 
     const cleanPercent = this.session
       ? Math.round(getDishesCleanPercent(this.session) * 100)
@@ -478,7 +485,11 @@ export class DishesScene extends Phaser.Scene {
       const context = this.dirtTexture.context;
       if (this.renderedSpots === null) context.clearRect(0, 0, this.dirtTexture.width, this.dirtTexture.height);
       const size = DISHES_INTERACTION.dirtCellSize;
+      const total = this.session.plates.map(() => 0);
+      const cleaned = this.session.plates.map(() => 0);
       for (const [index, spot] of this.session.spots.entries()) {
+        total[spot.plateIndex]!++;
+        if (spot.cleaned) cleaned[spot.plateIndex]!++;
         const plate = this.session.plates[spot.plateIndex]!;
         const x = spot.x - plate.x + 64 + spot.plateIndex * 128 - size / 2;
         const y = spot.y - plate.y + 64 - size / 2;
@@ -494,6 +505,12 @@ export class DishesScene extends Phaser.Scene {
         context.fillStyle = `rgba(${75 + Math.floor(noise * 28)}, ${43 + Math.floor(stain * 27)}, 24, ${0.72 + stain * 0.24})`;
         context.fillRect(x, y, size, size);
       }
+      this.session.plates.forEach((plate, index) => {
+        if (cleaned[index]! / total[index]! >= this.session!.successCleanPercent && !this.finishedPlates.has(index)) {
+          this.finishedPlates.add(index);
+          showInteractionFeedback(this, plate.x, plate.y - plate.radius, 'ЧИСТО!');
+        }
+      });
       this.dirtTexture.refresh();
       this.renderedSpots = this.session.spots;
     }

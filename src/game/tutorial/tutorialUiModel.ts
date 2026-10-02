@@ -1,3 +1,4 @@
+import { balance } from '../../config/balance';
 import { BARRY_CONTENT } from '../content/contentCatalog';
 import type { TutorialStep } from './tutorialProgress';
 
@@ -41,10 +42,10 @@ export const buildTutorialCard = (
   if (step === 'FIRST_DROP') {
     return {
       step,
-      title: 'ПЕРВЫЙ DROP',
+      title: 'ПЕРВЫЙ БРОСОК',
       body:
         surface === 'casino'
-          ? 'Выбери быструю ставку 25%, 50% или 100% и дождись результата.'
+          ? 'Выбери 25%, 50% или 100%, проверь сумму и нажми БРОСИТЬ.'
           : 'Теперь зайди в КАЗИНО и сделай первый Plinko Drop.',
       acknowledge: null,
     };
@@ -56,7 +57,7 @@ export const buildTutorialCard = (
       title: 'ПЕРВЫЙ АПГРЕЙД',
       body:
         surface === 'casino'
-          ? 'Купи недорогой апгрейд. MAX BET L1 стоит 500 ₽, CENTER L1 — 1 000 ₽.'
+          ? `Лимит ставки L1: ${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽. Центр L1: ${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽. Нажми нужную карточку улучшения.`
           : 'Вернись в КАЗИНО и купи первый недорогой апгрейд.',
       acknowledge: null,
     };

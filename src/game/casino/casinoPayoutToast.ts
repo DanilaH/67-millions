@@ -27,3 +27,9 @@ export const peekCasinoPayoutToast =
     pendingCasinoPayoutToast === null
       ? null
       : { ...pendingCasinoPayoutToast };
+
+export const formatCasinoResult = (toast: CasinoPayoutToast): string => {
+  const net = toast.payout - toast.stake;
+  return `Выплата ${toast.payout.toLocaleString('ru-RU')} ₽ · итог ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽\nСтавка ${toast.stake.toLocaleString('ru-RU')} ₽ · ×${toast.multiplier.toFixed(2)}` +
+    (toast.insuranceApplied ? ` · страховка +${toast.insuranceTopUp.toLocaleString('ru-RU')} ₽ уже включена` : '');
+};

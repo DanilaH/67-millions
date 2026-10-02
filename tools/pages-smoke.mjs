@@ -87,6 +87,57 @@ try {
     const jobLabels = { dishes: 'Мойка посуды', trash: 'Вынос мусора', courier: 'Курьерский маршрут' };
     const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    // Page navigation and stake selection must never spend cash.
+    const rich = structuredClone(fixture); rich.game.cash = 100000;
+    await loadSave(rich);
+    await click(675, 190); await sceneReady('ЕДА');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page1.png` });
+    for (let number = 2; number <= 4; number++) {
+      await click(1170, 612);
+      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.panelPage === String(number), number);
+    }
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page4.png` });
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'food pagination does not buy anything');
+    await click(345, 612);
+    await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '3');
+    await page.waitForTimeout(3200);
+    assert.equal(await page.locator('canvas').getAttribute('data-panel-page'), '3', 'clock updates preserve selected page');
+    await click(345, 612); await click(345, 612);
+    await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '1');
+    await click(760, 250);
+    await page.waitForFunction(() => document.querySelector('canvas')?.getAttribute('aria-description')?.includes('ХОЛОДНАЯ ЛАПША'));
+    const afterFood = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(afterFood.game.cash, rich.game.cash - balance.food[0].price, 'food action charges advertised price once');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-result.png` });
+    await loadSave(rich);
+    await click(1080, 325); await sceneReady('Казино Plinko');
+    for (let number = 2; number <= 5; number++) {
+      await click(1215, 566);
+      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.upgradePage === String(number), number);
+    }
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-insurance.png` });
+    for (let number = 4; number >= 1; number--) {
+      await click(985, 566);
+      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.upgradePage === String(number), number);
+    }
+    await click(65, 283);
+    const selectedOnly = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(selectedOnly.game.cash, rich.game.cash, 'fraction selection and upgrade pagination do not spend');
+    assert.equal(selectedOnly.pendingDrop, null, 'fraction selection alone does not throw');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-controls.png` });
+    await click(1100, 270);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoMaxBetLevel === 1);
+    const upgraded = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(upgraded.game.cash, rich.game.cash - balance.plinko.maxBetLevels[1].price, 'upgrade card buys once');
+    await click(170, 390);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop !== null);
+    const thrown = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(thrown.pendingDrop.originalStake, 625, 'explicit throw uses selected fraction of new limit');
+    assert.equal(thrown.game.cash, upgraded.game.cash - 625);
+    await click(1100, 270);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.plinkoMaxBetLevel, 1, 'upgrade locked during throw');
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-result.png` });
     // A failed action checkpoint stays pending: retry bytes, never the command.
     await loadSave(fixture);
     await click(675, 470); await sceneReady('ПОМОЙКА');
@@ -168,7 +219,7 @@ try {
       // Re-enter the same Scene instance through the map, without a page reload.
       await click(430, 220); await sceneReady('РАБОТА');
       await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-panel.png` });
-      await click(job === 'trash' ? 985 : 515, job === 'courier' ? 307 : 225);
+      await click(760, job === 'courier' ? 510 : job === 'trash' ? 380 : 250);
       await page.waitForFunction(job => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === job, job);
       await sceneReady(jobLabels[job]);
       await playJob();
@@ -182,7 +233,7 @@ try {
       await click(1100, 660); await sceneReady('Карта города');
     }
     // A working map after exit must be able to launch a real action.
-    await click(430, 220); await sceneReady('РАБОТА'); await click(515, 307);
+    await click(430, 220); await sceneReady('РАБОТА'); await click(760, 510);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
     await loadSave(fixture); await click(1080, 325);
     const idleMinute = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.clock.minuteOfDay;
@@ -234,7 +285,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['large food cards and persistent pagination; all upgrade pages; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

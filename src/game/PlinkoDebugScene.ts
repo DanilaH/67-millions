@@ -1,3 +1,5 @@
+import { deriveHudSnapshot, formatBarryCountdown } from './ui/hudModel';
+import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { createPinTextures } from './casino/createPinTextures';
@@ -193,8 +195,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.mono,
-      fontSize: '16px',
-      lineSpacing: 5,
+      fontSize: '21px',
+      lineSpacing: 4,
     });
     this.casinoLayer.add(this.infoText);
 
@@ -213,9 +215,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         color: visualHex('mustard'),
         backgroundColor: visualHex('inkPanel'),
         fontFamily: VISUAL_FONT.mono,
-        fontSize: '14px',
+        fontSize: '20px',
         padding: { x: 10, y: 8 },
-        wordWrap: { width: 550 },
+        wordWrap: { width: 535 },
       })
       .setOrigin(0, 0)
       .setVisible(false);
@@ -901,9 +903,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
       recordTutorialMilestone('BARRY_PAID');
     }
 
-    const terminalSuffix = result.state.terminalReason
-      ? ` / GAME OVER: ${result.state.terminalReason}`
-      : '';
     if (result.payout > 0) {
       this.audio?.payoutCount();
       this.worldAudio?.play('cashGain');
@@ -915,8 +914,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
         Math.max(...balance.plinko.basePockets),
       ),
     );
-    this.lastResultMessage =
-      `PLINKO: ставка ${pending.originalStake.toLocaleString('ru-RU')} ₽ → выплата ${result.payout.toLocaleString('ru-RU')} ₽ · ${result.multiplier.toFixed(2)}x${result.insuranceApplied ? ` · страховка +${result.insuranceTopUp.toLocaleString('ru-RU')} ₽` : ''}${result.losing ? ' · Счастье -1' : ''}${terminalSuffix}`;
+    this.lastResultMessage = formatCasinoResult({
+      stake: pending.originalStake, payout: result.payout, multiplier: result.multiplier,
+      losing: result.losing, insuranceApplied: result.insuranceApplied, insuranceTopUp: result.insuranceTopUp,
+    });
 
     publishCasinoPayoutToast({
       stake: pending.originalStake,
@@ -1150,22 +1151,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.save.game.plinkoMaxBetLevel,
     );
 
-    const special = snapshot?.specialLevels;
-    const insurance =
-      snapshot === null
-        ? `L${this.save.game.plinkoInsuranceLevel}`
-        : `L${snapshot.insuranceLevel}${snapshot.insuranceArmed ? ' · ВЗВЕДЕНА' : ''}`;
-
+    const hud = deriveHudSnapshot(this.save.game, balance);
     this.infoText.setText([
-      `ДЕНЬ ${this.save.game.clock.gameDayIndex + 1} · ${Math.floor(this.save.game.clock.minuteOfDay / 60).toString().padStart(2, '0')}:${(this.save.game.clock.minuteOfDay % 60).toString().padStart(2, '0')}`,
-      `Деньги: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
-      `Макс. ставка: ${maxBet.toLocaleString('ru-RU')} ₽`,
-      `Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽ · ИДЁТ` : 'готов'}`,
-      `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
-      special
-        ? `AMP L${special.amplifierLevel} · RETURN L${special.returnLevel}\nSPLIT L${special.splitterLevel} · BIAS L${special.jackpotBiasLevel}`
-        : 'AMP L0 · RETURN L0\nSPLIT L0 · BIAS L0',
-      `INSURANCE ${insurance}`,
+      `ДЕНЬ ${hud.day} · ${hud.time}`,
+      `Деньги ${hud.cash.toLocaleString('ru-RU')} ₽`,
+      `Барри ${hud.nextBarry.toLocaleString('ru-RU')} ₽`,
+      `Через ${formatBarryCountdown(hud.minutesUntilBarry)}`,
+      `Лимит ${maxBet.toLocaleString('ru-RU')} ₽`,
+      `Страховка ${snapshot?.insuranceArmed ? 'ГОТОВА' : `L${snapshot?.insuranceLevel ?? 0}`}`,
+      this.save.pendingDrop ? `В броске ${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽` : 'Бросок готов',
     ]);
 
     this.betPanel?.render(
@@ -1260,7 +1254,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
               {
                 color: visualHex('textMuted'),
                 fontFamily: VISUAL_FONT.mono,
-                fontSize: '13px',
+                fontSize: '16px',
+                backgroundColor: visualHex('inkDeep'),
+                padding: { x: 1, y: 2 },
               },
             )
             .setOrigin(0.5, 0);
@@ -1292,7 +1288,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
               ? visualHex('paperOld')
               : upgraded
                 ? visualHex('textMain')
-                : visualHex('textMuted');
+                : visualHex('textMain');
 
       label
         .setText(`${pockets[index]}x`)

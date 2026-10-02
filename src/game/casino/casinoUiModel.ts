@@ -6,6 +6,8 @@ import {
 } from '../../core/plinko-rules/drop';
 import {
   getMaxBetForLevel,
+  derivePocketMultipliers,
+  getPocketUpgradeLevels,
   purchaseInsuranceUpgrade,
   purchaseMaxBetUpgrade,
   purchasePocketUpgrade,
@@ -13,6 +15,7 @@ import {
   type PocketUpgradeTrack,
   type SpecialUpgradeTrack,
 } from '../../core/plinko-rules/progression';
+import { getReturnPins } from '../../core/plinko-rules/specialPinLayout';
 import type { GameState } from '../../core/state/GameState';
 
 export interface CasinoQuickBetPreview {
@@ -36,6 +39,7 @@ export interface CasinoUpgradePreview {
   maxLevel: number;
   nextPrice: number | null;
   detail: string;
+  nextEffect: string;
   maxed: boolean;
   lockedReason: string | null;
 }
@@ -149,7 +153,7 @@ interface UpgradeSpec {
 const SPECS: readonly UpgradeSpec[] = [
   {
     id: 'maxBet',
-    title: 'MAX BET',
+    title: 'Лимит ставки',
     currentLevel: (state) => state.plinkoMaxBetLevel,
     levels: (config) => config.plinko.maxBetLevels,
     validate: (state, pending, config) => {
@@ -163,7 +167,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'center',
-    title: 'CENTER',
+    title: 'Центр',
     currentLevel: (state) => state.plinkoCenterLevel,
     levels: (config) => config.plinko.centerUpgrades,
     validate: (state, pending, config) => {
@@ -178,7 +182,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'mid',
-    title: 'MID',
+    title: 'Середина',
     currentLevel: (state) => state.plinkoMidLevel,
     levels: (config) => config.plinko.midUpgrades,
     validate: (state, pending, config) => {
@@ -193,7 +197,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'jackpot',
-    title: 'JACKPOT',
+    title: 'Крайние карманы',
     currentLevel: (state) => state.plinkoJackpotLevel,
     levels: (config) => config.plinko.jackpotUpgrades,
     validate: (state, pending, config) => {
@@ -208,7 +212,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'amplifier',
-    title: 'AMPLIFIER',
+    title: 'Усилитель',
     currentLevel: (state) => state.plinkoAmplifierLevel,
     levels: (config) => config.plinko.amplifier,
     validate: (state, pending, config) => {
@@ -223,7 +227,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'return',
-    title: 'RETURN',
+    title: 'Возврат',
     currentLevel: (state) => state.plinkoReturnLevel,
     levels: (config) => config.plinko.return,
     validate: (state, pending, config) => {
@@ -238,7 +242,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'splitter',
-    title: 'SPLITTER',
+    title: 'Разделитель',
     currentLevel: (state) => state.plinkoSplitterLevel,
     levels: (config) => config.plinko.splitter,
     validate: (state, pending, config) => {
@@ -253,7 +257,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'jackpotBias',
-    title: 'JACKPOT BIAS',
+    title: 'Уклон к краям',
     currentLevel: (state) => state.plinkoJackpotBiasLevel,
     levels: (config) => config.plinko.jackpotBias,
     validate: (state, pending, config) => {
@@ -268,7 +272,7 @@ const SPECS: readonly UpgradeSpec[] = [
   },
   {
     id: 'insurance',
-    title: 'INSURANCE',
+    title: 'Страховка',
     currentLevel: (state) => state.plinkoInsuranceLevel,
     levels: (config) => config.plinko.insurance,
     validate: (state, pending, config) => {
@@ -284,6 +288,35 @@ const SPECS: readonly UpgradeSpec[] = [
     },
   },
 ];
+
+const describeNextEffect = (id: CasinoUpgradeId, state: GameState, config: BalanceConfig, nextLevel: number): string => {
+  if (id === 'maxBet') return `Лимит: ${getMaxBetForLevel(config, state.plinkoMaxBetLevel).toLocaleString('ru-RU')} → ${getMaxBetForLevel(config, nextLevel).toLocaleString('ru-RU')} ₽`;
+  if (id === 'center' || id === 'mid' || id === 'jackpot') {
+    const levels = getPocketUpgradeLevels(state);
+    const next = { ...levels, [`${id}Level`]: nextLevel };
+    const before = derivePocketMultipliers(config, levels);
+    const after = derivePocketMultipliers(config, next);
+    const families = config.plinko.pocketFamilies;
+    const main = id === 'jackpot' ? families.edge[0] : id === 'mid' ? families.mid[0] : families.center[0];
+    const inner = families.inner[0];
+    return `Выплата: ×${before[main]} → ×${after[main]}` + (before[inner] !== after[inner] ? `\nБлижние: ×${before[inner]} → ×${after[inner]}` : '');
+  }
+  if (id === 'amplifier') {
+    const next = config.plinko.amplifier.find(entry => entry.level === nextLevel)!;
+    return `Пинов: ${next.count} · сила шара ×${next.multiplier}`;
+  }
+  if (id === 'return') return `Точек возврата: ${getReturnPins(config, nextLevel).length}\nОтправляют шар наверх`;
+  if (id === 'splitter') {
+    const next = config.plinko.splitter.find(entry => entry.level === nextLevel)!;
+    return `Два шара вместо одного\nСила каждого: ${Math.round(next.childValue * 100)}%`;
+  }
+  if (id === 'jackpotBias') {
+    const next = config.plinko.jackpotBias.find(entry => entry.level === nextLevel)!;
+    return `Пар направляющих: ${next.deflectorPairs.length}\nОтклоняют шары к краям`;
+  }
+  const next = config.plinko.insurance.find(entry => entry.level === nextLevel)!;
+  return `После ${next.lossesNeeded} проигрышей:\nследующий бросок вернёт\nот ${Math.round(next.floor * 100)}% ставки`;
+};
 
 export const buildCasinoUpgradePreviews = (
   state: GameState,
@@ -306,6 +339,7 @@ export const buildCasinoUpgradePreviews = (
       maxLevel,
       nextPrice: next?.price ?? null,
       detail: spec.detail(state, config),
+      nextEffect: maxed ? 'Максимальный уровень' : describeNextEffect(spec.id, state, config, currentLevel + 1),
       maxed,
       lockedReason: maxed
         ? 'МАКСИМУМ'

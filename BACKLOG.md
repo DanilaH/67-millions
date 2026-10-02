@@ -219,10 +219,12 @@ Acceptance: exact minigame state pauses in runtime; work transaction remains cor
 Acceptance: time, cash, next Barry, 67m, countdown, four needs, statuses; navigation costs zero time.
 
 ### T056 [P0] Work/food/sleep/entertainment/dumpster flows
+UI follow-up 2026-10-02: three large action cards/page; all ten foods reachable; stable page on clock refresh; separate lock reason; actual post-action money/need/time summary.
 Status: 2026-10-02 follow-up: three-second active-time dumpster rummage with progress; reload resumes reserved search without duplicate cost; completion still uses the authoritative 45-minute scheduler.
 Acceptance: pre-action cost/time/effect visible; lock reason readable.
 
 ### T057 [P0] Casino upgrade/bet/result UI
+UI follow-up 2026-10-02: fraction selection + explicit throw, next-effect upgrade cards with pagination, Barry countdown, payout versus net result including insurance exactly once.
 Status: 2026-10-02: exit shutdown crash, repeated entry, passive clock and overlapping controls fixed; detailed evidence in reports/release/2026-10-02/GAMEPLAY_AUDIT.md.
 Acceptance: quick bets; upgrade state; active-Drop locks visually clear; map payout toast.
 
@@ -232,6 +234,7 @@ Acceptance: reason/stats/restart; 67m manual confirmation.
 ## E17 — Tutorial / content
 
 ### T059 [P0] First-day contextual tutorial
+UI follow-up 2026-10-02: tutorial explains the explicit throw and uses actual upgrade prices from balance; action-result banner temporarily replaces the tutorial.
 Status: 2026-10-02: context-aware placement, hidden during actions/modals/cascade; board and action cards remain unobscured.
 Acceptance: Barry → first work → Drop → cheap upgrade → needs → food/sleep → first Barry payment; no text wall.
 

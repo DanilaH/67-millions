@@ -1,3 +1,4 @@
+import { roundMoney } from '../../core/economy/money';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { ActiveAction } from '../../core/actions/ActiveAction';
 import {
@@ -121,11 +122,9 @@ export const buildWorkPreviews = (
     );
     const eventMultiplier =
       state.eventModifiers.nextWorksPayoutMultiplier?.multiplier ?? 1;
-    const effectivePayout = Math.round(
-      definition.payout *
-        state.workPayoutMultiplier *
-        eventMultiplier,
-    );
+    const potentialPayout = roundMoney(definition.payout * state.workPayoutMultiplier);
+    const effectivePayout = roundMoney(potentialPayout * eventMultiplier);
+    const potentialFine = roundMoney(potentialPayout * config.work.failure.fineAsPotentialPayout);
     const globalLock = globalWorkLock(
       activeAction,
       pendingDrop,
@@ -140,7 +139,7 @@ export const buildWorkPreviews = (
       id: `work:${jobId}`,
       title: `${JOB_TITLES[jobId]} · L${level}`,
       summary: [
-        `Успех +${effectivePayout.toLocaleString('ru-RU')} ₽ · провал 0 ₽ / штраф 25%`,
+        `Успех +${effectivePayout.toLocaleString('ru-RU')} ₽ · провал: штраф до ${potentialFine.toLocaleString('ru-RU')} ₽, счастье ${formatSigned(config.work.failure.extraHappiness)}`,
         `${definition.durationMinutes} мин · ${definition.window} · энергия -${definition.energyCost} · счастье -${definition.happinessCost}`,
       ],
       lockedReason: lock,
@@ -217,7 +216,7 @@ export const buildEntertainmentPreviews = (
       title: content.title,
       summary: [
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
-        `счастье ${formatSigned(happiness)}`,
+        `счастье ${formatSigned(happiness)}${state.statuses.SMELLY && definition.price > 0 ? ' · ВОНЮЧИЙ снижает эффект' : ''}`,
         content.description,
       ],
       lockedReason: validate(() => {
@@ -305,7 +304,7 @@ export const buildShowerPreviews = (
   title: 'ДУШ',
   summary: [
     `${config.shower.price.toLocaleString('ru-RU')} ₽ · ${config.shower.durationMinutes} мин`,
-    `снимает: ${config.shower.removes.join(', ')}`,
+    'Смывает статус ВОНЮЧИЙ',
   ],
   lockedReason: validate(() => {
     startShower(

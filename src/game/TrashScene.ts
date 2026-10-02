@@ -1,3 +1,5 @@
+import { publishWorkFeedback } from './actions/actionFeedback';
+import { showInteractionFeedback } from './work/showInteractionFeedback';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt, addProductionImage } from './visual/productionArt';
@@ -319,6 +321,7 @@ export class TrashScene extends Phaser.Scene {
       acceptedBefore
     ) {
       this.audio?.play('trashBin');
+      showInteractionFeedback(this, this.session.target.x + this.session.target.width / 2, this.session.target.y, '+1 В КОНТЕЙНЕР');
     }
 
     this.render();
@@ -410,6 +413,7 @@ export class TrashScene extends Phaser.Scene {
     const settledAction = { ...unresolvedAction, result: result };
     this.save = { ...this.save, activeAction: settledAction };
     await this.persistRuntime(true);
+    const beforeCompletion = this.save.game;
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
@@ -437,6 +441,8 @@ export class TrashScene extends Phaser.Scene {
     }
 
     await this.persistRuntime(true);
+
+    publishWorkFeedback(settledAction, beforeCompletion, completion);
 
     const accepted = this.session
       ? getAcceptedTrashBagCount(this.session)

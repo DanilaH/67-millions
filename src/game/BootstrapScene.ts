@@ -1,3 +1,5 @@
+import { consumeWorkFeedback, formatActionFeedback, elapsedFeedbackMinutes } from './actions/actionFeedback';
+import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt } from './visual/productionArt';
@@ -122,6 +124,8 @@ export class BootstrapScene extends Phaser.Scene {
   private eventOverlay?: EventOverlay;
   private audio: SceneAudio | null = null;
   private contextMode = 'none';
+  private actionStart: GameState | null = null;
+  private resultTimer: Phaser.Time.TimerEvent | undefined;
   private rummageElapsedMs = 0;
   private rummageView?: Phaser.GameObjects.Container;
   private rummageProgress?: Phaser.GameObjects.Graphics;
@@ -138,6 +142,8 @@ export class BootstrapScene extends Phaser.Scene {
 
   public create(): void {
     this.state = null;
+    this.actionStart = null;
+    this.resultTimer = undefined;
     this.activeAction = null;
     this.pendingDrop = null;
     this.selectedLocation = null;
@@ -173,13 +179,14 @@ export class BootstrapScene extends Phaser.Scene {
     });
 
     this.payoutToastText = this.add
-      .text(760, 116, '', {
+      .text(763, 610, '', {
         color: visualHex('textMain'),
         backgroundColor: visualHex('mold'),
         fontFamily: VISUAL_FONT.mono,
-        fontSize: '15px',
-        padding: { x: 14, y: 10 },
-        wordWrap: { width: 440 },
+        fontSize: '22px',
+        padding: { x: 16, y: 10 },
+        wordWrap: { width: 950 },
+        fixedWidth: 982,
       })
       .setOrigin(0.5, 0)
       .setDepth(800)
@@ -332,6 +339,8 @@ export class BootstrapScene extends Phaser.Scene {
       this.showMessage('Выберите локацию.');
       this.render();
 
+      const workFeedback = consumeWorkFeedback();
+      if (workFeedback) this.showResultFeedback(workFeedback);
       const payoutToast = consumeCasinoPayoutToast();
       if (payoutToast !== null) {
         this.showCasinoPayoutToast(payoutToast);
@@ -428,6 +437,7 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     this.payoutToastText?.setVisible(false);
+    this.game.canvas.removeAttribute('aria-description');
     this.showMessage(
       'Перед действием видны цена, время, эффект и причина блокировки.',
     );
@@ -509,6 +519,8 @@ export class BootstrapScene extends Phaser.Scene {
     if (!this.state) return;
 
     const previousAction = this.activeAction;
+    if (previousAction && this.actionStart === null) this.actionStart = this.state;
+    const before = this.actionStart ?? this.state;
     const result = advanceRunTime(
       this.state,
       this.activeAction,
@@ -529,6 +541,13 @@ export class BootstrapScene extends Phaser.Scene {
 
     void this.persist();
     this.render();
+    if (previousAction && (result.actionCompleted || this.state.barryInterruptPending || this.state.terminalReason !== null)) {
+      this.actionStart = null;
+      if (previousAction.kind !== 'EVENT_TIME') {
+        const elapsed = elapsedFeedbackMinutes(before.clock, this.state.clock);
+        this.showResultFeedback(formatActionFeedback(previousAction, before, this.state, elapsed));
+      }
+    }
   }
 
   private settleCompletedAction(action: ActiveAction): void {
@@ -596,7 +615,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.state = started.state;
     this.activeAction = started.action;
     this.showMessage(
-      'Dishes costs reserved. Complete the skill minigame for the work result.',
+      'Смена начинается: отмой тарелки.',
     );
 
     void this.persist()
@@ -624,7 +643,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.state = started.state;
     this.activeAction = started.action;
     this.showMessage(
-      'Trash costs reserved. Complete the skill minigame for the work result.',
+      'Смена начинается: собери мешки в контейнер.',
     );
 
     void this.persist()
@@ -652,7 +671,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.state = started.state;
     this.activeAction = started.action;
     this.showMessage(
-      'Courier costs reserved. Draw and validate the route for the work result.',
+      'Смена начинается: нарисуй маршрут доставки.',
     );
 
     void this.persist()
@@ -668,6 +687,7 @@ export class BootstrapScene extends Phaser.Scene {
   private startFoodAction(foodId: string): void {
     if (!this.state) return;
 
+    this.actionStart = this.state;
     const cashBefore = this.state.cash;
     const started = startFood(
       this.state,
@@ -693,6 +713,7 @@ export class BootstrapScene extends Phaser.Scene {
   ): void {
     if (!this.state) return;
 
+    this.actionStart = this.state;
     const cashBefore = this.state.cash;
     const started = startEntertainment(
       this.state,
@@ -718,6 +739,7 @@ export class BootstrapScene extends Phaser.Scene {
       throw new Error('Finish the current action first');
     }
 
+    this.actionStart = this.state;
     this.activeAction = startSleep(this.state, balance);
     this.audio?.play('sleep');
     this.showMessage(
@@ -730,6 +752,7 @@ export class BootstrapScene extends Phaser.Scene {
   private startDumpster(): void {
     if (!this.state) return;
 
+    this.actionStart = this.state;
     this.audio?.play('dumpster');
     const started = startDumpsterSearch(
       this.state,
@@ -750,6 +773,7 @@ export class BootstrapScene extends Phaser.Scene {
   private startShowerAction(): void {
     if (!this.state) return;
 
+    this.actionStart = this.state;
     const cashBefore = this.state.cash;
     const started = startShower(
       this.state,
@@ -891,6 +915,10 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private async restart(): Promise<void> {
+    this.payoutToastText?.setVisible(false);
+    this.game.canvas.removeAttribute('aria-description');
+    this.resultTimer?.remove();
+    this.actionStart = null;
     if (!this.state || !this.repository) return;
     const gate = this.game.registry.get(END_RUN_ADS_KEY) as EndRunAds | undefined;
     if (!gate) return;
@@ -905,6 +933,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.pendingDrop = null;
     this.runEndOverlay?.hide();
     this.payoutToastText?.setVisible(false);
+    this.game.canvas.removeAttribute('aria-description');
     this.closeActionPanel();
     this.clearContextControls();
     this.showMessage('Новый забег начат.');
@@ -1061,6 +1090,7 @@ export class BootstrapScene extends Phaser.Scene {
     if (!this.state || !this.tutorialCard) return;
 
     if (
+      this.payoutToastText?.visible ||
       this.state.terminalReason !== null ||
       this.state.victory ||
       this.state.barryInterruptPending ||
@@ -1070,7 +1100,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.runEndOverlay?.getMode() === 'principal-confirm'
     ) {
       this.tutorialCard.render(null);
-      this.messageText?.setVisible(true);
+      this.messageText?.setVisible(!this.payoutToastText?.visible);
       return;
     }
 
@@ -1082,25 +1112,20 @@ export class BootstrapScene extends Phaser.Scene {
     this.messageText?.setVisible(model === null);
   }
 
-  private showCasinoPayoutToast(
-    toast: CasinoPayoutToast,
-  ): void {
-    const insurance = toast.insuranceApplied
-      ? ` · страховка +${toast.insuranceTopUp.toLocaleString('ru-RU')} ₽`
-      : '';
-
-    this.payoutToastText
-      ?.setText(
-        `PLINKO · ${toast.stake.toLocaleString('ru-RU')} ₽ → ${toast.payout.toLocaleString('ru-RU')} ₽ · ${toast.multiplier.toFixed(2)}x${insurance}`,
-      )
-      .setBackgroundColor(
-        toast.losing ? visualHex('rust') : visualHex('mold'),
-      )
-      .setVisible(true);
-
-    this.time.delayedCall(3_500, () => {
+  private showResultFeedback(message: string): void {
+    this.resultTimer?.remove();
+    this.game.canvas.setAttribute('aria-description', message);
+    this.payoutToastText?.setText(message).setBackgroundColor(visualHex(message.startsWith('ПРОВАЛ') || message.includes('итог −') ? 'rust' : 'mold')).setVisible(true);
+    this.renderTutorial();
+    this.resultTimer = this.time.delayedCall(7000, () => {
       this.payoutToastText?.setVisible(false);
+      this.game.canvas.removeAttribute('aria-description');
+      this.renderTutorial();
     });
+  }
+
+  private showCasinoPayoutToast(toast: CasinoPayoutToast): void {
+    this.showResultFeedback(formatCasinoResult(toast));
   }
 
   private showMessage(message: string): void {

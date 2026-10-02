@@ -1,3 +1,5 @@
+import { publishWorkFeedback } from './actions/actionFeedback';
+import { showInteractionFeedback } from './work/showInteractionFeedback';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { preloadProductionArt, addProductionImage } from './visual/productionArt';
@@ -444,11 +446,14 @@ export class CourierScene extends Phaser.Scene {
         !this.save || !isCourierAction(this.save.activeAction)) return;
 
     this.completionInFlight = true;
+    showInteractionFeedback(this, this.session.position.x, this.session.position.y - 50, this.session.result === 'SUCCESS' ? 'ДОСТАВЛЕНО!' : this.session.failureReason?.includes('врезался') ? 'СТОЛКНОВЕНИЕ!' : 'НЕ ДОШЁЛ ДО ФИНИША', this.session.result === 'SUCCESS' ? 'mustard' : 'warning');
+    this.courierImage?.setTint(this.session.result === 'SUCCESS' ? 0xcde6af : 0xe28474);
     const skillResult = this.session.result;
     const unresolvedAction = this.save.activeAction;
     const settledAction = { ...unresolvedAction, result: skillResult };
     this.save = { ...this.save, activeAction: settledAction };
     await this.persistRuntime(true);
+    const beforeCompletion = this.save.game;
     const cashBefore = this.save.game.cash;
     const completion = completeWorkSkill(
       this.save.game,
@@ -478,6 +483,8 @@ export class CourierScene extends Phaser.Scene {
     }
 
     await this.persistRuntime(true);
+
+    publishWorkFeedback(settledAction, beforeCompletion, completion);
 
     const message =
       skillResult === 'SUCCESS'
