@@ -298,12 +298,14 @@ export class BootstrapScene extends Phaser.Scene {
         this.showCasinoPayoutToast(payoutToast);
       }
 
+      this.game.canvas.setAttribute('aria-label', 'Карта города');
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.showMessage(
         `SAVE ERROR: ${error instanceof Error ? error.message : String(error)}`,
       );
       this.showMessage('Save is corrupt/incompatible. It was not overwritten.');
+      this.game.canvas.setAttribute('aria-label', 'Карта города');
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     }
   }
@@ -393,6 +395,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   private closeActionPanel(): void {
+    this.game.canvas.setAttribute('aria-label', 'Карта города');
     this.actionPanel?.hide();
     this.selectedLocation = null;
     this.mapView?.setSelected(null);

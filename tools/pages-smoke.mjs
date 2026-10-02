@@ -83,12 +83,15 @@ try {
       await page.waitForTimeout(300);
       rect = await page.locator('canvas').boundingBox(); assert.ok(rect);
     };
+    const sceneReady = async label => page.waitForFunction(label => document.querySelector('canvas')?.getAttribute('aria-label') === label, label);
+    const jobLabels = { dishes: 'Мойка посуды', trash: 'Вынос мусора', courier: 'Курьерский маршрут' };
     const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
     for (const [job, minute] of [['dishes', 960], ['trash', 60], ['courier', 545]]) {
       const work = structuredClone(fixture); work.game.clock.minuteOfDay = minute;
       const reserved = startWork(work.game, balance, job, 1); work.game = reserved.state; work.activeAction = reserved.action;
       await loadSave(work);
+      await sceneReady(jobLabels[job]);
       const playJob = async () => {
       // Screenshot readback on a software GPU can consume seconds of a 20s
       // skill timer. Keep timed input uninterrupted; capture untimed scenes.
@@ -122,13 +125,13 @@ try {
       const first = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
       assert.ok(first.game.cash > work.game.cash, `${job}: real input credits payout`);
       assert.equal(first.game.pendingEventId, null, `${job}: fixture leaves a safe point for repeat-entry test`);
-      await page.waitForTimeout(1100);
+      await sceneReady('Карта города');
       // Re-enter the same Scene instance through the map, without a page reload.
-      await click(430, 220); await page.waitForTimeout(100);
+      await click(430, 220); await sceneReady('РАБОТА');
       await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-panel.png` });
       await click(job === 'trash' ? 985 : 515, job === 'courier' ? 307 : 225);
       await page.waitForFunction(job => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === job, job);
-      await page.waitForTimeout(300);
+      await sceneReady(jobLabels[job]);
       await playJob();
       const second = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
       assert.ok(second.game.cash > first.game.cash, `${job}: second shift in same scene pays out (${first.game.cash} → ${second.game.cash}; ${JSON.stringify(second.game.clock)})`);
@@ -136,11 +139,11 @@ try {
     // Real map → casino → map transitions, including the same casino instance.
     await loadSave(fixture);
     for (let cycle = 0; cycle < 3; cycle++) {
-      await click(1080, 325); await page.waitForTimeout(250);
-      await click(1100, 660); await page.waitForTimeout(250);
+      await click(1080, 325); await sceneReady('Казино Plinko');
+      await click(1100, 660); await sceneReady('Карта города');
     }
     // A working map after exit must be able to launch a real action.
-    await click(430, 220); await page.waitForTimeout(100); await click(515, 307);
+    await click(430, 220); await sceneReady('РАБОТА'); await click(515, 307);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
     await loadSave(fixture); await click(1080, 325);
     const idleMinute = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.clock.minuteOfDay;
@@ -167,7 +170,7 @@ try {
     const due = structuredClone(fixture); due.game.clock.minuteOfDay = 539;
     await loadSave(due); await click(1080, 325);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.barryInterruptPending, null, { timeout: 6000 });
-    await page.waitForTimeout(300);
+    await sceneReady('Карта города');
     const frozen = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     await click(430, 220); await page.waitForTimeout(100);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction, null, 'Barry modal blocks map actions');

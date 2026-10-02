@@ -261,6 +261,7 @@ export class CourierScene extends Phaser.Scene {
         deriveCourierSeed(save, save.activeAction),
       );
       this.render();
+      this.game.canvas.setAttribute('aria-label', 'Курьерский маршрут');
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;

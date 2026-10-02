@@ -71,6 +71,7 @@ export const createActionPanel = (
     lastSignature = signature;
     clearDynamic();
     titleText.setText(title);
+    scene.game.canvas.setAttribute('aria-label', title);
 
     actions.forEach((action, index) => {
       const column = index % 2;

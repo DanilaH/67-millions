@@ -308,6 +308,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       // Stop before constructing or persisting physics; keep the original save intact.
       this.save = null;
       this.showStatus('Сохранение каскада устарело. Данные не изменены; продолжение этого броска недоступно.');
+      this.game.canvas.setAttribute('aria-label', 'Казино Plinko');
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
       return;
     }
@@ -428,7 +429,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
-    this.game.events.emit(GAME_PRESENTABLE_EVENT);
+    this.game.canvas.setAttribute('aria-label', 'Казино Plinko');
+      this.game.events.emit(GAME_PRESENTABLE_EVENT);
 
     if (isPlinkoPerfMode() && !this.save.pendingDrop) {
       this.installPerfProbe();
@@ -536,6 +538,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       return;
     }
 
+    this.game.canvas.setAttribute('aria-label', 'Карта: бросок продолжается');
     this.mapMode = true;
     this.casinoLayer?.setVisible(false);
     this.mapLayer?.setVisible(true);
@@ -546,6 +549,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private returnToCasino(): void {
+    this.game.canvas.setAttribute('aria-label', 'Казино Plinko');
     this.mapMode = false;
     this.mapLayer?.setVisible(false);
     this.casinoLayer?.setVisible(true);

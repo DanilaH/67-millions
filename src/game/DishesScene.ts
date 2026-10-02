@@ -248,6 +248,7 @@ export class DishesScene extends Phaser.Scene {
       this.save = save;
       this.session = createDishesSession(balance);
       this.render();
+      this.game.canvas.setAttribute('aria-label', 'Мойка посуды');
       this.game.events.emit(GAME_PRESENTABLE_EVENT);
     } catch (error: unknown) {
       this.completionInFlight = true;
