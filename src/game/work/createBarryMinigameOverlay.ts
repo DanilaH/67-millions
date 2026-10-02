@@ -77,6 +77,9 @@ export const createBarryMinigameOverlay = (
         color: visualHex('textMuted'),
         fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
+        wordWrap: { width: 500 },
+        align: 'center',
+        lineSpacing: 3,
       },
     )
     .setOrigin(0.5);
