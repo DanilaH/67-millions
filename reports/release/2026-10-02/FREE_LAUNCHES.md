@@ -18,7 +18,7 @@ User-authorized continuation of the existing game, extending the casino/UI/persi
 - `npm run release:check`: production build and upload-root audit passed.
 - `npm run build:pages`: passed.
 - `npm run smoke:pages`: real Chromium, mouse 1280×720 and CDP touch 640×360; all existing action/reload/Barry/event/scene-entry checks passed; no page errors, failed requests or hosted-service calls.
-- `npm run smoke:playtest`: 1920×1080 backing/input; six mixed-stake launches; seventh click at capacity does not debit; exact cash/RNG/clock restore; no duplicate settlement; max-special multi-cascade exact restore; courier reaches the endpoint through real 1080p pointer input; debug add/remove/time/reset. Passed, no page errors.
+- `npm run smoke:playtest`: 1920×1080 backing/input; six mixed-stake launches; seventh click at capacity does not debit; exact cash/RNG/clock restore; no duplicate settlement; max-special multi-cascade exact restore; courier reaches the endpoint through real 1080p pointer input; debug add/remove/time/reset; collapsed debug leaves the casino exit usable at 640×360. Passed, no page errors.
 - Screenshots inspected: full-screen 1080p map, compact HUD, six-ball board. Screenshots and machine-readable results are uploaded by the Pages workflow.
 
 Config SHA-256: `efc0e32a1e328ee2f453022ea344475531f16d1acbd343c8c229aa21d880b994`.

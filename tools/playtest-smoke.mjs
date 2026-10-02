@@ -119,8 +119,12 @@ try {
   await page.getByRole('button', { name: 'Да, удалить текущий забег', exact: true }).click();
   await page.waitForFunction(cash => JSON.parse(localStorage.getItem('67m.save')).game.cash === cash, createInitialGameState(balance, 1).cash);
   await page.locator('#debug-root summary').click(); await ready('Карта города');
+  await page.setViewportSize({ width: 640, height: 360 });
+  await page.waitForTimeout(300);
+  await click(1080, 325); await ready('Казино Plinko');
+  await click(1100, 660); await ready('Карта города');
   assert.deepEqual(errors, []);
-  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', '1080p courier path reaches destination', 'debug add/remove/time/reset'], errors }, null, 2));
+  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360'], errors }, null, 2));
   console.log('Playtest smoke passed');
 } catch (error) { writeFileSync(`${output}/failure.json`, JSON.stringify({ error: String(error), errors }, null, 2)); throw error; }
 finally { await browser.close(); server.close(); }

@@ -118,3 +118,6 @@ body {
 #debug-root button { min-height: 42px; padding: 7px 12px; }
 #debug-root button[hidden] { display: none; }
 #debug-root p { font-size: 14px; line-height: 1.4; margin: 6px 0; }
+/* The playtest dock must not cover the casino's bottom-right map button. */
+#debug-root { left: 12px; right: auto; }
+#debug-root:has(details:not([open])) { width: auto; }
