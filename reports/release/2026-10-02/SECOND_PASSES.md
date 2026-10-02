@@ -34,5 +34,15 @@ Browser-сценарии:
 ## Проверки
 
 - 353 unit tests / 61 files — passed; TypeScript и Pages build — passed.
-- Полный browser smoke и публикация фиксируются ниже после завершения.
+- Локальный полный browser smoke mouse/touch — passed, errors/failures/serviceRequests пусты.
 - Баланс, человеческая сложность/удовольствие, реальные Yandex SDK/cloud/ads и performance остаются открытыми пунктами прежнего аудита.
+
+
+## Публикация подтверждена
+
+- Игровой код `f426cf795ae4c41e0f4d45cf9447b6c9397841cd` в main и на https://danilah.github.io/67-millions/. Live manifest подтверждает тот же SHA.
+- [Pages run 37020241439](https://github.com/DanilaH/67-millions/actions/runs/37020241439): build `110881170971`, deploy `110884020652`, verify-live `110884138196` — SUCCESS.
+- Live mouse 1280×720 / CDP touch 640×360 завершён **2026-10-02 14:43:52 UTC**: все сценарии passed, `errors`, `failures`, `serviceRequests` пусты.
+- [Live screenshots + JSON](https://github.com/DanilaH/67-millions/actions/runs/37020241439/artifacts/11233196971); [предпубликационный browser smoke](https://github.com/DanilaH/67-millions/actions/runs/37020241439/artifacts/11232579752).
+- [CI 37020241457](https://github.com/DanilaH/67-millions/actions/runs/37020241457), verify `110881171068` — SUCCESS: 353 tests, TypeScript, production build/root audit.
+- Следующий commit меняет только этот отчёт и не требует повторной публикации игрового кода.
