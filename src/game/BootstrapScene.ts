@@ -575,8 +575,8 @@ export class BootstrapScene extends Phaser.Scene {
         result.loot === 'EMPTY'
           ? 'Помойка: пусто.'
           : result.cashAward > 0
-            ? `Помойка: ${result.loot} · +${result.cashAward.toLocaleString('ru-RU')} ₽`
-            : `Помойка: ${result.loot}`,
+            ? `Находка: +${result.cashAward.toLocaleString('ru-RU')} ₽`
+            : result.loot === 'CHEAP_FOOD' ? 'Нашёл еду и сразу съел.' : 'Поиск завершён.',
       );
     }
   }
@@ -1019,7 +1019,7 @@ export class BootstrapScene extends Phaser.Scene {
         this.contextMode = 'active';
       }
       this.showMessage(
-        `Активное действие: ${this.activeAction.actionId}. Карта временно заблокирована.`,
+        'Действие выполняется. Карта временно заблокирована.',
       );
       return;
     }
