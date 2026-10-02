@@ -339,6 +339,14 @@ export class BootstrapScene extends Phaser.Scene {
         return;
       }
 
+      // Reserved time jumps resume at the saved remainder. Skill input and
+      // dumpster presentation have their own resume paths; never reapply costs.
+      if (this.activeAction !== null && this.activeAction.kind !== 'DUMPSTER' &&
+          !this.state.barryInterruptPending && this.state.terminalReason === null && !this.state.victory) {
+        this.advance(this.activeAction.remainingMinutes);
+        await this.repository.flush();
+      }
+
       this.showMessage('Выберите локацию.');
       this.render();
 

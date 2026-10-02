@@ -6,6 +6,8 @@ import assert from 'node:assert/strict';
 import { balance } from '../src/config/balance.ts';
 import { createInitialGameState } from '../src/core/state/GameState.ts';
 import { createSaveState } from '../src/core/save/SaveState.ts';
+import { startFood } from '../src/core/actions/foodEntertainment.ts';
+import { startSleep } from '../src/core/sleep/sleep.ts';
 import { startWork } from '../src/core/work/work.ts';
 import { createDishesSession } from '../src/minigames/dishes/dishesModel.ts';
 import { createTrashSession } from '../src/minigames/trash/trashModel.ts';
@@ -87,6 +89,58 @@ try {
     const jobLabels = { dishes: 'Мойка посуды', trash: 'Вынос мусора', courier: 'Курьерский маршрут' };
     const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    // Reload must finish reserved timed actions through the same scheduler, once.
+    const reservedFood = startFood(fixture.game, null, null, balance, 'FOOD_01');
+    await loadSave({ ...fixture, game: reservedFood.state, activeAction: reservedFood.action });
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 5000 });
+    const foodRestored = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(foodRestored.game.cash, fixture.game.cash - balance.food[0].price, 'restore never charges food twice');
+    assert.equal(foodRestored.game.clock.minuteOfDay, fixture.game.clock.minuteOfDay + balance.food[0].durationMinutes);
+    await page.reload({ waitUntil: 'networkidle' }); await ready();
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, foodRestored.game.cash);
+    const lateSleep = structuredClone(fixture); lateSleep.game.clock.minuteOfDay = 8 * 60 + 30;
+    lateSleep.activeAction = startSleep(lateSleep.game, balance);
+    await loadSave(lateSleep);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.barryInterruptPending, null, { timeout: 5000 });
+    const sleepRestored = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(sleepRestored.game.clock.minuteOfDay, 540);
+    assert.equal(sleepRestored.activeAction, null, 'restored sleep stops at Barry');
+    const resolvedWork = structuredClone(fixture); resolvedWork.game.clock.minuteOfDay = 16 * 60;
+    const reservedWork = startWork(resolvedWork.game, balance, 'dishes', 1);
+    await loadSave({ ...resolvedWork, game: reservedWork.state, activeAction: { ...reservedWork.action, result: 'SUCCESS' } });
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 5000 });
+    const workRestored = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(workRestored.game.cash, fixture.game.cash + balance.work.jobs.dishes.levels[0].payout);
+    await page.reload({ waitUntil: 'networkidle' }); await ready();
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, workRestored.game.cash, 'resolved work pays only once after reload');
+    const crossingFood = structuredClone(fixture); crossingFood.game.cash = 100000; crossingFood.game.clock.minuteOfDay = 530;
+    const crossing = startFood(crossingFood.game, null, null, balance, 'FOOD_01');
+    await loadSave({ ...crossingFood, game: crossing.state, activeAction: crossing.action });
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.barryInterruptPending);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction.remainingMinutes, 35);
+    await click(640, 432);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null);
+    const afterCrossing = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(afterCrossing.game.cash, crossingFood.game.cash - balance.food[0].price - balance.barry.payments[0]);
+    assert.equal(afterCrossing.game.clock.minuteOfDay, 575, 'restore stops for Barry then resumes exact remainder');
+    // Long event labels and late-game amounts must remain legible on both inputs.
+    for (const eventId of ['EVENT_01', 'EVENT_09', 'EVENT_10']) {
+      const eventSave = structuredClone(fixture); eventSave.game.cash = 0; eventSave.game.pendingEventId = eventId;
+      await loadSave(eventSave);
+      await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-${eventId}.png` });
+      await click(640, 370);
+      assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.pendingEventId, eventId, 'unaffordable event choice stays locked');
+      await click(430, 220);
+      assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction, null, 'event shade blocks underlying map');
+      await click(640, 496);
+      await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.pendingEventId === null);
+    }
+    const lateBarry = structuredClone(fixture); lateBarry.game.cash = 100000000; lateBarry.game.barryPaymentIndex = 24; lateBarry.game.barryInterruptPending = true; lateBarry.game.clock.minuteOfDay = 540;
+    await loadSave(lateBarry);
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-late-barry.png` });
+    await click(640, 432);
+    await page.waitForFunction(() => !JSON.parse(localStorage.getItem('67m.save')).game.barryInterruptPending);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 100000000 - balance.barry.payments[24]);
     // Work progression must be reachable in production, durable, and charged once.
     const career = structuredClone(fixture); career.game.cash = 100000;
     await loadSave(career);
@@ -307,7 +361,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade pages; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade pages; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

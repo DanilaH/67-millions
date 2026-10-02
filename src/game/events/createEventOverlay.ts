@@ -41,15 +41,15 @@ export const createEventOverlay = (
     .rectangle(
       width / 2,
       height / 2,
-      720,
-      420,
+      880,
+      500,
       visualColor('inkPanel'),
       1,
     )
     .setStrokeStyle(3, visualColor('rust'), 1);
 
   const kicker = scene.add
-    .text(width / 2, 176, 'СОБЫТИЕ', {
+    .text(width / 2, 132, 'СОБЫТИЕ', {
       color: visualHex('paperOld'),
       fontFamily: VISUAL_FONT.sans,
       fontSize: '14px',
@@ -58,7 +58,7 @@ export const createEventOverlay = (
     .setOrigin(0.5, 0);
 
   const title = scene.add
-    .text(width / 2, 204, '', {
+    .text(width / 2, 160, '', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.sans,
       fontSize: '28px',
@@ -68,12 +68,12 @@ export const createEventOverlay = (
     .setOrigin(0.5, 0);
 
   const body = scene.add
-    .text(width / 2, 258, '', {
+    .text(width / 2, 214, '', {
       color: visualHex('textMuted'),
       fontFamily: VISUAL_FONT.sans,
-      fontSize: '17px',
+      fontSize: '21px',
       align: 'center',
-      wordWrap: { width: 610 },
+      wordWrap: { width: 760 },
       lineSpacing: 4,
     })
     .setOrigin(0.5, 0);
@@ -94,13 +94,13 @@ export const createEventOverlay = (
       body.setText(presentation.body);
 
       presentation.choices.forEach((choice, index) => {
-        const y = 372 + index * 86;
+        const y = 370 + index * 126;
         const row = scene.add
           .rectangle(
             width / 2,
             y,
-            610,
-            68,
+            800,
+            112,
             choice.available ? visualColor('inkRaised') : visualColor('inkPanel'),
             1,
           )
@@ -112,27 +112,27 @@ export const createEventOverlay = (
 
         const label = scene.add
           .text(
-            width / 2 - 280,
-            y - 19,
+            width / 2 - 380,
+            y - 42,
             `${choice.id.toUpperCase()}. ${choice.label}`,
             {
               color: choice.available ? visualHex('textMain') : visualHex('textMuted'),
               fontFamily: VISUAL_FONT.sans,
-              fontSize: '15px',
-              wordWrap: { width: 465 },
+              fontSize: '22px',
+              wordWrap: { width: 760 },
             },
           )
           .setOrigin(0, 0);
 
         const lock = scene.add
           .text(
-            width / 2 + 280,
-            y - 8,
+            width / 2 + 380,
+            y + 25,
             choice.lockedReason ?? '[ ВЫБРАТЬ ]',
             {
               color: choice.available ? visualHex('mustard') : visualHex('warning'),
               fontFamily: VISUAL_FONT.mono,
-              fontSize: '12px',
+              fontSize: '18px',
               align: 'right',
             },
           )

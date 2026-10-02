@@ -39,8 +39,8 @@ export const createBarryMinigameOverlay = (
     .rectangle(
       width / 2,
       height / 2,
-      560,
-      280,
+      720,
+      320,
       visualColor('inkPanel'),
       1,
     )
@@ -96,7 +96,7 @@ export const createBarryMinigameOverlay = (
     .setInteractive({ useHandCursor: true })
     .on('pointerup', onPay);
 
-  const portrait = addProductionImage(scene, 'barry-due', width / 2 - 425, height / 2, 260, 266);
+  const portrait = addProductionImage(scene, 'barry-due', width / 2 - 500, height / 2, 260, 266);
   container.add([shade, portrait, panel, title, dueText, message, pay]);
 
   return {
@@ -105,7 +105,7 @@ export const createBarryMinigameOverlay = (
         `Нужно: ${getBarryPaymentDue(
           state,
           config,
-        ).toLocaleString('ru-RU')} ₽   /   Есть: ${state.cash.toLocaleString('ru-RU')} ₽`,
+        ).toLocaleString('ru-RU')} ₽\nЕсть: ${state.cash.toLocaleString('ru-RU')} ₽`,
       );
       message.setText(BARRY_CONTENT.dueBody);
       container.setVisible(true);

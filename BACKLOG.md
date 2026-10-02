@@ -46,6 +46,7 @@ Acceptance: money integer; needs/HP clamp; terminal state emitted once.
 ## E02 — Save core
 
 ### T009 [P0] Versioned SaveState + local adapter
+Audit 2026-10-02: map restores reserved timed actions through their remaining scheduler jump; food/work/sleep/Barry-boundary browser regressions added.
 Status: 2026-10-02 follow-up: storage write recovery pauses gameplay and retries identical serialized bytes inside the existing ordered repository queue. Repeated/ambiguous failures covered; hosted Yandex cloud receipt remains T068.
 Acceptance: serialize/restore core run; version field; atomic replacement.
 
@@ -169,6 +170,7 @@ Acceptance: courier blocked; paid entertainment reduced; dishes/trash remain; sh
 Acceptance: fixed checkpoints; no sleep checks; max one pending; max 2/day; no repeat.
 
 ### T043 [P0] Ten V0 event definitions
+UI audit 2026-10-02: event consequence text and lock/CTA use separate rows; long-label and blocked-input mouse/touch checks.
 Acceptance: both choices; pay choice affordability; eligibility predicates; modifiers refresh not stack.
 
 ### T044 [P1] Event save/reload determinism
