@@ -1,0 +1,435 @@
+{
+  "model": "action-economy-audit-v1",
+  "configHash": "ffd96790e8327c7319f9ad1836cd5f9b3399b1be9a923f83c2ecac99ad9a2c48",
+  "baseRevision": "a8f33eeab3e0c0341150260574b63d9870140706",
+  "seed": 671002,
+  "assumptions": [
+    "Core transactions; events disabled only in comparison fixtures",
+    "Successful shifts; no sleep/event payout penalties",
+    "Opening assumes 7 game minutes of skill input plus normative shift duration",
+    "Recovery starts HP80/satiety25/energy50/happiness25; caps and passive decay included",
+    "No Plinko, human success probability, performance, or full-run win-rate measured"
+  ],
+  "jobs": [
+    {
+      "job": "dishes",
+      "level": 1,
+      "payout": 4500,
+      "durationMinutes": 120,
+      "energyCost": 12,
+      "happinessCost": 3,
+      "window": "16:00-00:00",
+      "upgradePrice": 0,
+      "rublesPerGameHour": 2250,
+      "shiftsToRecoupIncrement": null
+    },
+    {
+      "job": "dishes",
+      "level": 2,
+      "payout": 9750,
+      "durationMinutes": 120,
+      "energyCost": 12,
+      "happinessCost": 3,
+      "window": "13:00-03:00",
+      "upgradePrice": 2500,
+      "rublesPerGameHour": 4875,
+      "shiftsToRecoupIncrement": 1
+    },
+    {
+      "job": "dishes",
+      "level": 3,
+      "payout": 18000,
+      "durationMinutes": 120,
+      "energyCost": 12,
+      "happinessCost": 3,
+      "window": "24/7",
+      "upgradePrice": 20000,
+      "rublesPerGameHour": 9000,
+      "shiftsToRecoupIncrement": 3
+    },
+    {
+      "job": "trash",
+      "level": 1,
+      "payout": 5400,
+      "durationMinutes": 150,
+      "energyCost": 18,
+      "happinessCost": 5,
+      "window": "00:00-08:00",
+      "upgradePrice": 0,
+      "rublesPerGameHour": 2160,
+      "shiftsToRecoupIncrement": null
+    },
+    {
+      "job": "trash",
+      "level": 2,
+      "payout": 11400,
+      "durationMinutes": 150,
+      "energyCost": 18,
+      "happinessCost": 5,
+      "window": "21:00-11:00",
+      "upgradePrice": 3000,
+      "rublesPerGameHour": 4560,
+      "shiftsToRecoupIncrement": 1
+    },
+    {
+      "job": "trash",
+      "level": 3,
+      "payout": 21750,
+      "durationMinutes": 150,
+      "energyCost": 18,
+      "happinessCost": 5,
+      "window": "24/7",
+      "upgradePrice": 25000,
+      "rublesPerGameHour": 8700,
+      "shiftsToRecoupIncrement": 3
+    },
+    {
+      "job": "courier",
+      "level": 1,
+      "payout": 6300,
+      "durationMinutes": 180,
+      "energyCost": 15,
+      "happinessCost": 4,
+      "window": "08:00-16:00",
+      "upgradePrice": 0,
+      "rublesPerGameHour": 2100,
+      "shiftsToRecoupIncrement": null
+    },
+    {
+      "job": "courier",
+      "level": 2,
+      "payout": 12750,
+      "durationMinutes": 180,
+      "energyCost": 15,
+      "happinessCost": 4,
+      "window": "05:00-19:00",
+      "upgradePrice": 3500,
+      "rublesPerGameHour": 4250,
+      "shiftsToRecoupIncrement": 1
+    },
+    {
+      "job": "courier",
+      "level": 3,
+      "payout": 25500,
+      "durationMinutes": 180,
+      "energyCost": 15,
+      "happinessCost": 4,
+      "window": "24/7",
+      "upgradePrice": 30000,
+      "rublesPerGameHour": 8500,
+      "shiftsToRecoupIncrement": 3
+    }
+  ],
+  "recovery": [
+    {
+      "id": "FOOD_01",
+      "price": 150,
+      "minutes": 45,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 27,
+        "energy": -1.125,
+        "happiness": -2.225
+      }
+    },
+    {
+      "id": "FOOD_02",
+      "price": 250,
+      "minutes": 10,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 19.333,
+        "energy": -0.25,
+        "happiness": -0.05
+      }
+    },
+    {
+      "id": "FOOD_03",
+      "price": 350,
+      "minutes": 25,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 38.333,
+        "energy": -0.625,
+        "happiness": 0.875
+      }
+    },
+    {
+      "id": "FOOD_04",
+      "price": 500,
+      "minutes": 15,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 44,
+        "energy": -0.375,
+        "happiness": 5.925
+      }
+    },
+    {
+      "id": "FOOD_05",
+      "price": 700,
+      "minutes": 20,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 58.667,
+        "energy": -0.5,
+        "happiness": 7.9
+      }
+    },
+    {
+      "id": "FOOD_06",
+      "price": 900,
+      "minutes": 25,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 73.333,
+        "energy": -0.625,
+        "happiness": 9.875
+      }
+    },
+    {
+      "id": "FOOD_07",
+      "price": 1200,
+      "minutes": 30,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 75,
+        "energy": -0.75,
+        "happiness": 11.85
+      }
+    },
+    {
+      "id": "FOOD_08",
+      "price": 1800,
+      "minutes": 45,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 75,
+        "energy": -1.125,
+        "happiness": 19.775
+      }
+    },
+    {
+      "id": "FOOD_09",
+      "price": 350,
+      "minutes": 5,
+      "netNeeds": {
+        "health": -3,
+        "satiety": 4.667,
+        "energy": 24.875,
+        "happiness": -2.025
+      }
+    },
+    {
+      "id": "FOOD_10",
+      "price": 1100,
+      "minutes": 60,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 56,
+        "energy": -1.5,
+        "happiness": 24.7
+      }
+    },
+    {
+      "id": "FREE_FUN",
+      "price": 0,
+      "minutes": 60,
+      "netNeeds": {
+        "health": 0,
+        "satiety": -4,
+        "energy": -1.5,
+        "happiness": 14.7
+      }
+    },
+    {
+      "id": "PC_CLUB",
+      "price": 500,
+      "minutes": 90,
+      "netNeeds": {
+        "health": -0.375,
+        "satiety": -6,
+        "energy": -2.25,
+        "happiness": 39.55
+      }
+    },
+    {
+      "id": "CINEMA",
+      "price": 900,
+      "minutes": 120,
+      "netNeeds": {
+        "health": -1.125,
+        "satiety": -8,
+        "energy": -3,
+        "happiness": 69.4
+      }
+    }
+  ],
+  "smellyRecovery": [
+    {
+      "id": "FOOD_01",
+      "price": 150,
+      "minutes": 45,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 27,
+        "energy": -1.125,
+        "happiness": -2.225
+      }
+    },
+    {
+      "id": "FOOD_02",
+      "price": 250,
+      "minutes": 10,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 19.333,
+        "energy": -0.25,
+        "happiness": -0.05
+      }
+    },
+    {
+      "id": "FOOD_03",
+      "price": 350,
+      "minutes": 25,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 38.333,
+        "energy": -0.625,
+        "happiness": 0.875
+      }
+    },
+    {
+      "id": "FOOD_04",
+      "price": 500,
+      "minutes": 15,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 44,
+        "energy": -0.375,
+        "happiness": 5.925
+      }
+    },
+    {
+      "id": "FOOD_05",
+      "price": 700,
+      "minutes": 20,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 58.667,
+        "energy": -0.5,
+        "happiness": 7.9
+      }
+    },
+    {
+      "id": "FOOD_06",
+      "price": 900,
+      "minutes": 25,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 73.333,
+        "energy": -0.625,
+        "happiness": 9.875
+      }
+    },
+    {
+      "id": "FOOD_07",
+      "price": 1200,
+      "minutes": 30,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 75,
+        "energy": -0.75,
+        "happiness": 11.85
+      }
+    },
+    {
+      "id": "FOOD_08",
+      "price": 1800,
+      "minutes": 45,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 75,
+        "energy": -1.125,
+        "happiness": 19.775
+      }
+    },
+    {
+      "id": "FOOD_09",
+      "price": 350,
+      "minutes": 5,
+      "netNeeds": {
+        "health": -3,
+        "satiety": 4.667,
+        "energy": 24.875,
+        "happiness": -2.025
+      }
+    },
+    {
+      "id": "FOOD_10",
+      "price": 1100,
+      "minutes": 60,
+      "netNeeds": {
+        "health": 0,
+        "satiety": 56,
+        "energy": -1.5,
+        "happiness": 24.7
+      }
+    },
+    {
+      "id": "FREE_FUN",
+      "price": 0,
+      "minutes": 60,
+      "netNeeds": {
+        "health": 0,
+        "satiety": -4,
+        "energy": -1.5,
+        "happiness": 14.7
+      }
+    },
+    {
+      "id": "PC_CLUB",
+      "price": 500,
+      "minutes": 90,
+      "netNeeds": {
+        "health": -0.375,
+        "satiety": -6,
+        "energy": -2.25,
+        "happiness": 19.55
+      }
+    },
+    {
+      "id": "CINEMA",
+      "price": 900,
+      "minutes": 120,
+      "netNeeds": {
+        "health": -1.125,
+        "satiety": -8,
+        "energy": -3,
+        "happiness": 34.4
+      }
+    }
+  ],
+  "opening": [
+    {
+      "action": "start",
+      "cash": 500,
+      "minute": 545
+    },
+    {
+      "action": "courier L1 success",
+      "cash": 6800,
+      "minute": 732
+    },
+    {
+      "action": "buy courier L2",
+      "cash": 3300,
+      "minute": 732
+    },
+    {
+      "action": "courier L2 success",
+      "cash": 16050,
+      "minute": 919
+    }
+  ]
+}

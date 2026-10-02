@@ -87,6 +87,28 @@ try {
     const jobLabels = { dishes: 'Мойка посуды', trash: 'Вынос мусора', courier: 'Курьерский маршрут' };
     const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    // Work progression must be reachable in production, durable, and charged once.
+    const career = structuredClone(fixture); career.game.cash = 100000;
+    await loadSave(career);
+    await click(430, 220); await sceneReady('РАБОТА');
+    await click(850, 153); await sceneReady('УЛУЧШЕНИЯ РАБОТ');
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, career.game.cash);
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-upgrades.png` });
+    await click(760, 250);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.jobLevels.dishes === 2);
+    await click(760, 250);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.jobLevels.dishes === 3);
+    await click(760, 250);
+    const careerSaved = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(careerSaved.game.cash, career.game.cash - balance.work.jobs.dishes.levels[1].upgradePrice - balance.work.jobs.dishes.levels[2].upgradePrice);
+    await page.reload({ waitUntil: 'networkidle' }); await ready();
+    rect = await page.locator('canvas').boundingBox();
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.jobLevels.dishes, 3);
+    await click(430, 220); await sceneReady('РАБОТА');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-level3.png` });
+    await click(1190, 153); await sceneReady('Карта города');
+    await click(920, 220); await sceneReady('ДОМ / СОН');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-sleep-forecast.png` });
     // Page navigation and stake selection must never spend cash.
     const rich = structuredClone(fixture); rich.game.cash = 100000;
     await loadSave(rich);
@@ -285,7 +307,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['large food cards and persistent pagination; all upgrade pages; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade pages; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

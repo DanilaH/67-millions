@@ -3,7 +3,7 @@ import type { ActionPreview } from '../actions/actionPreviews';
 import { VISUAL_FONT, visualColor, visualHex, type VisualColorToken } from '../visual/visualTheme';
 
 export interface ActionPanel {
-  show(title: string, actions: ActionPreview[]): void;
+  show(title: string, actions: ActionPreview[], navigation?: ActionPreview): void;
   hide(): void;
   isVisible(): boolean;
 }
@@ -28,12 +28,14 @@ export const createActionPanel = (
   const back = text(1234, 131, 'НАЗАД', 24).setOrigin(1, 0)
     .setBackgroundColor(visualHex('inkRaised')).setPadding(16, 10)
     .setInteractive({ useHandCursor: true }).on('pointerup', onBack);
+  let navigationAction: ActionPreview | undefined;
+  const section = text(850, 131, '', 22).setOrigin(0.5, 0).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised')).setInteractive({ useHandCursor: true }).on('pointerup', () => { if (navigationAction) onAction(navigationAction); });
   const count = text(763, 607, '', 22).setOrigin(0.5);
   const previous = text(292, 590, '← НАЗАД', 22).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised'))
     .setInteractive({ useHandCursor: true }).on('pointerup', () => { if (page > 0) { page--; draw(); } });
   const next = text(1234, 590, 'ДАЛЬШЕ →', 22).setOrigin(1, 0).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised'))
     .setInteractive({ useHandCursor: true }).on('pointerup', () => { if ((page + 1) * pageSize < currentActions.length) { page++; draw(); } });
-  container.add([background, title, back, count, previous, next]);
+  container.add([background, title, back, section, count, previous, next]);
 
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
@@ -52,7 +54,7 @@ export const createActionPanel = (
       const card = scene.add.rectangle(763, y + height / 2, 942, height, visualColor(locked ? 'inkPanel' : 'inkRaised'))
         .setStrokeStyle(2, visualColor(locked ? 'lineDirty' : 'cold'));
       const name = text(308, y + 10, action.title, 24).setFontStyle('bold');
-      const lock = text(1216, y + 12, action.lockedReason ?? 'ВЫБРАТЬ →', 20, locked ? 'warning' : 'mustard')
+      const lock = text(1216, y + 12, action.lockedReason ?? action.cta ?? 'ВЫБРАТЬ →', 20, locked ? 'warning' : 'mustard')
         .setOrigin(1, 0).setWordWrapWidth(530).setAlign('right');
       const summary = text(308, y + 47, (currentActions.length === 1 ? action.summary : action.summary.slice(0, 2)).join('\n'), 22, 'textMuted')
         .setWordWrapWidth(906).setLineSpacing(2);
@@ -62,7 +64,9 @@ export const createActionPanel = (
     });
   };
   return {
-    show: (heading, actions) => {
+    show: (heading, actions, navigation) => {
+      navigationAction = navigation;
+      section.setText(navigation?.title ?? '').setVisible(navigation !== undefined);
       if (heading !== currentTitle || !container.visible) page = 0;
       const signature = JSON.stringify([heading, actions]);
       if (signature === lastSignature && container.visible) return;

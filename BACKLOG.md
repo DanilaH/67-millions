@@ -219,6 +219,7 @@ Acceptance: exact minigame state pauses in runtime; work transaction remains cor
 Acceptance: time, cash, next Barry, 67m, countdown, four needs, statuses; navigation costs zero time.
 
 ### T056 [P0] Work/food/sleep/entertainment/dumpster flows
+Audit follow-up 2026-10-02: restored production access to configured L2/L3 job purchases; separate shift/upgrade views; sleep previews capped at Barry with actual needs forecast and lethal-sleep warning.
 UI follow-up 2026-10-02: three large action cards/page; all ten foods reachable; stable page on clock refresh; separate lock reason; actual post-action money/need/time summary.
 Status: 2026-10-02 follow-up: three-second active-time dumpster rummage with progress; reload resumes reserved search without duplicate cost; completion still uses the authoritative 45-minute scheduler.
 Acceptance: pre-action cost/time/effect visible; lock reason readable.

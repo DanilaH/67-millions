@@ -8,6 +8,8 @@ import {
   buildEntertainmentPreviews,
   buildFoodPreviews,
   buildWorkPreviews,
+  buildWorkUpgradePreviews,
+  buildSleepPreviews,
 } from '../src/game/actions/actionPreviews';
 
 describe('T056 action previews', () => {
@@ -163,5 +165,28 @@ describe('T056 action previews', () => {
           'Сначала заверши текущее действие',
       ),
     ).toBe(true);
+  });
+});
+
+
+describe('work upgrade access and sleep forecasts', () => {
+  it('offers an upgrade even when the shift is closed, but respects cash and transaction locks', () => {
+    const state = { ...createInitialGameState(balance, 22), cash: 10000 };
+    expect(buildWorkPreviews(state, null, null, balance)[0]!.lockedReason).not.toBeNull();
+    expect(buildWorkUpgradePreviews(state, null, null, balance)[0]!.lockedReason).toBeNull();
+    expect(buildWorkUpgradePreviews({ ...state, cash: 0 }, null, null, balance)[0]!.lockedReason).toBe('Недостаточно денег');
+    expect(buildWorkUpgradePreviews(state, startSleep(state, balance), null, balance)[0]!.lockedReason).not.toBeNull();
+    expect(buildWorkUpgradePreviews({ ...state, jobLevels: { ...state.jobLevels, dishes: 3 } }, null, null, balance)[0]!.lockedReason).toBe('Уже улучшено полностью');
+  });
+  it('shows only the available sleep before Barry and warns of lethal attrition', () => {
+    const state = createInitialGameState(balance, 23);
+    state.clock.minuteOfDay = 8 * 60 + 30;
+    state.needs = { health: 90, satiety: 50, energy: 0, happiness: 50 };
+    const summary = buildSleepPreviews(state, null, null, balance)[0]!.summary.join(' ');
+    expect(summary).toContain('до 30 мин');
+    expect(summary).toContain('энергия +7.1');
+    expect(summary).toContain('сытость -2');
+    state.needs.health = 0.01; state.needs.satiety = 0;
+    expect(buildSleepPreviews(state, null, null, balance)[0]!.summary.join(' ')).toContain('ОПАСНО');
   });
 });

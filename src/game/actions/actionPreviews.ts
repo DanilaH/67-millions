@@ -1,3 +1,5 @@
+import { advanceNeeds } from '../../core/needs/needs';
+import { minutesUntilClockTime } from '../../core/time/GameClock';
 import { roundMoney } from '../../core/economy/money';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { ActiveAction } from '../../core/actions/ActiveAction';
@@ -19,6 +21,7 @@ import type { GameState } from '../../core/state/GameState';
 import {
   getWorkLevelDefinition,
   startWork,
+  purchaseJobUpgrade,
   type JobId,
 } from '../../core/work/work';
 import {
@@ -29,6 +32,7 @@ import {
 export interface ActionPreview {
   id: string;
   title: string;
+  cta?: string;
   summary: string[];
   lockedReason: string | null;
 }
@@ -146,6 +150,27 @@ export const buildWorkPreviews = (
     };
   });
 
+export const buildWorkUpgradePreviews = (
+  state: GameState,
+  activeAction: ActiveAction | null,
+  pendingDrop: PendingDrop | null,
+  config: BalanceConfig,
+): ActionPreview[] => (Object.keys(JOB_TITLES) as JobId[]).map(jobId => {
+  const current = getWorkLevelDefinition(config, jobId, state.jobLevels[jobId]);
+  const next = config.work.jobs[jobId].levels.find(entry => entry.level === current.level + 1);
+  const payout = (value: number) => roundMoney(roundMoney(value * state.workPayoutMultiplier) * (state.eventModifiers.nextWorksPayoutMultiplier?.multiplier ?? 1)).toLocaleString('ru-RU');
+  return {
+    id: `work-upgrade:${jobId}`,
+    cta: 'КУПИТЬ →',
+    title: `${JOB_TITLES[jobId]} · ${next ? `L${current.level} → L${next.level}` : `L${current.level}`}`,
+    summary: next ? [
+      `${next.upgradePrice.toLocaleString('ru-RU')} ₽ · выплата ${payout(current.payout)} → ${payout(next.payout)} ₽`,
+      `${next.window} · ${next.durationMinutes} мин · энергия -${next.energyCost} · счастье -${next.happinessCost}`,
+    ] : ['Максимальный уровень', `${current.window} · выплата ${payout(current.payout)} ₽`],
+    lockedReason: next ? validate(() => { purchaseJobUpgrade(state, activeAction, pendingDrop, config, jobId); }) : 'Уже улучшено полностью',
+  };
+});
+
 export const buildFoodPreviews = (
   state: GameState,
   activeAction: ActiveAction | null,
@@ -247,14 +272,17 @@ export const buildSleepPreviews = (
       startSleep(state, config);
     });
 
+  const duration = Math.min(config.sleep.fullSleepHours * 60, minutesUntilClockTime(state.clock, config.barry.time));
+  const forecast = advanceNeeds(state, duration, 'SLEEP', config);
+  const delta = forecast.state.needs;
   return [{
     id: 'sleep',
     title: 'СОН',
     summary: [
-      `0 ₽ · ${config.sleep.fullSleepHours * 60} мин`,
-      'энергия восстанавливается постепенно',
-      `HP до +${config.sleep.fullSleepHealthRestore} за полный сон`,
-      'Барри в 09:00 разбудит',
+      `0 ₽ · до ${duration} мин · до Барри ${minutesUntilClockTime(state.clock, config.barry.time)} мин`,
+      `энергия ${formatSigned(delta.energy - state.needs.energy)} · HP ${formatSigned(delta.health - state.needs.health)}`,
+      `сытость ${formatSigned(delta.satiety - state.needs.satiety)} · счастье не меняется`,
+      forecast.state.terminalReason ? 'ОПАСНО: здоровье закончится во сне' : 'Барри в 09:00 разбудит. Недосып снижает доход работ.',
     ],
     lockedReason: lock,
   }];

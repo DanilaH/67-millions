@@ -41,6 +41,7 @@ import {
 import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
 import { advanceRunTime } from '../core/time/runTime';
 import {
+  purchaseJobUpgrade,
   settleWork,
   startWork,
 } from '../core/work/work';
@@ -55,6 +56,7 @@ import {
   buildShowerPreviews,
   buildSleepPreviews,
   buildWorkPreviews,
+  buildWorkUpgradePreviews,
   type ActionPreview,
 } from './actions/actionPreviews';
 import {
@@ -108,6 +110,7 @@ export class BootstrapScene extends Phaser.Scene {
   private activeAction: ActiveAction | null = null;
   private pendingDrop: PendingDrop | null = null;
   private repository: SaveRepository | null = null;
+  private workUpgrades = false;
   private barryOverlay?: BarryMinigameOverlay;
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
@@ -382,6 +385,7 @@ export class BootstrapScene extends Phaser.Scene {
       return;
     }
 
+    this.workUpgrades = false;
     this.selectedLocation = id;
     this.mapView?.setSelected(id);
     this.renderSelectedLocation();
@@ -406,8 +410,9 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (this.selectedLocation === 'work') {
       this.actionPanel.show(
-        'РАБОТА',
-        buildWorkPreviews(...args),
+        this.workUpgrades ? 'УЛУЧШЕНИЯ РАБОТ' : 'РАБОТА',
+        this.workUpgrades ? buildWorkUpgradePreviews(...args) : buildWorkPreviews(...args),
+        { id: 'work-toggle', title: this.workUpgrades ? 'К СМЕНАМ' : 'УЛУЧШИТЬ РАБОТЫ', summary: [], lockedReason: null },
       );
     } else if (this.selectedLocation === 'food') {
       this.actionPanel.show(
@@ -457,6 +462,17 @@ export class BootstrapScene extends Phaser.Scene {
     }
 
     const [kind, id] = action.id.split(':');
+    if (kind === 'work-toggle') {
+      this.workUpgrades = !this.workUpgrades;
+      this.renderSelectedLocation();
+      return;
+    }
+    if (kind === 'work-upgrade' && (id === 'dishes' || id === 'trash' || id === 'courier') && this.state) {
+      this.state = purchaseJobUpgrade(this.state, this.activeAction, this.pendingDrop, balance, id);
+      void this.persist();
+      this.renderSelectedLocation();
+      return;
+    }
 
     if (kind === 'work' && id === 'dishes') {
       this.closeActionPanel();
