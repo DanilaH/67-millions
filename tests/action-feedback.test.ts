@@ -34,6 +34,7 @@ describe('readable action outcomes', () => {
     expect(message).toContain('прервано Барри');
     expect(message).toContain('20 мин');
     expect(message).toContain('энергия +10');
+    expect(formatActionFeedback(startSleep(before, balance), before, after, 480, true)).toContain('готово, Барри ждёт');
   });
   it('uses the 09:00 game-day boundary when reporting overnight work', () => {
     const before = createInitialGameState(balance, 1);

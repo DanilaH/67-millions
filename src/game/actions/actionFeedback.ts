@@ -23,8 +23,10 @@ export const elapsedFeedbackMinutes = (before: GameClockState, after: GameClockS
   return stamp(after) - stamp(before);
 };
 
-export const formatActionFeedback = (action: ActiveAction, before: GameState, after: GameState, minutes: number): string => {
-  const status = after.barryInterruptPending ? 'прервано Барри' : after.terminalReason !== null ? 'забег завершён' : 'готово';
+export const formatActionFeedback = (action: ActiveAction, before: GameState, after: GameState, minutes: number, completed = !after.barryInterruptPending): string => {
+  const status = after.terminalReason !== null ? 'забег завершён' : after.barryInterruptPending
+    ? completed ? 'готово, Барри ждёт' : 'прервано Барри'
+    : 'готово';
   const needs = ([['health', 'HP'], ['satiety', 'сытость'], ['energy', 'энергия'], ['happiness', 'счастье']] as const)
     .map(([key, name]) => ({ name, delta: Math.round((after.needs[key] - before.needs[key]) * 10) / 10 }))
     .filter(entry => entry.delta !== 0).map(entry => `${entry.name} ${signed(entry.delta)}`);

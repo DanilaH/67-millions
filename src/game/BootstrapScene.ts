@@ -545,7 +545,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.actionStart = null;
       if (previousAction.kind !== 'EVENT_TIME') {
         const elapsed = elapsedFeedbackMinutes(before.clock, this.state.clock);
-        this.showResultFeedback(formatActionFeedback(previousAction, before, this.state, elapsed));
+        this.showResultFeedback(formatActionFeedback(previousAction, before, this.state, elapsed, result.actionCompleted));
       }
     }
   }
