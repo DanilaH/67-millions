@@ -170,6 +170,7 @@ export const balanceSchema = z.object({
     }),
     quickBetFractions: z.array(z.number().positive().max(1)).min(1),
     maxActiveBalls: z.number().int().positive(),
+    maxConcurrentDrops: z.number().int().min(1).max(6),
     maxSplitDepth: z.number().int().nonnegative(),
     maxBetLevels: z.array(plinkoLevelSchema.extend({
       maxBet: z.number().int().positive(),

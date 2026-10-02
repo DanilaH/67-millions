@@ -1,3 +1,4 @@
+import { resolveRenderPixelRatio } from '@danilah/mini-games-kit/core';
 import {
   BrowserViewportWatcher,
   resolveLandscapeGameCssSize,
@@ -43,6 +44,10 @@ export const installViewportRuntime = (
       const logical = getInitialGameSize();
       const size = resolveLandscapeGameCssSize(viewport, logical.width / logical.height);
       const scale = Math.min(size.width / logical.width, size.height / logical.height);
+      const density = Math.max(1, resolveRenderPixelRatio(scale * window.devicePixelRatio, 2));
+      const backingWidth = Math.round(logical.width * density);
+      const backingHeight = Math.round(logical.height * density);
+      if (game.scale.width !== backingWidth || game.scale.height !== backingHeight) game.scale.resize(backingWidth, backingHeight);
       game.canvas.style.width = `${Math.round(logical.width * scale)}px`;
       game.canvas.style.height = `${Math.round(logical.height * scale)}px`;
       game.scale.refresh();

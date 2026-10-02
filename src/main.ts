@@ -103,7 +103,18 @@ try {
     if (blocked) game.loop.sleep();
     else game.loop.wake();
   });
-  const debug = installDebugPanel(() => getStartupSnapshot(runtimeImageFormat));
+  const debug = installDebugPanel(
+    () => getStartupSnapshot(runtimeImageFormat),
+    async (command) => {
+      const scene = game.scene.getScene('bootstrap');
+      if (!(scene instanceof BootstrapScene) || !scene.scene.isActive()) throw new Error('Открой карту и дождись завершения бросков / работы');
+      await scene.applyPreviewDebug(command);
+    },
+    (paused) => {
+      game.canvas.style.pointerEvents = paused ? 'none' : '';
+      platform.activity.setBlocked('preview-debug', paused);
+    },
+  );
 
   void presentable.then(async () => {
     startupTimeline.mark('gamePresentable');

@@ -183,7 +183,7 @@ Never:
 - let presentation state become the economic authority;
 - let animation timing decide durable game results.
 
-`pendingDrop` remains an atomic cash-lock transaction.
+`pendingDrop` remains an atomic cash-lock transaction, with the user-authorized concurrent paid-launch exception documented in PLINKO_SPEC.md (2026-10-02).
 
 Save/reload and background/resume edge cases are correctness requirements, not polish.
 

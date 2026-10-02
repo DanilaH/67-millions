@@ -49,6 +49,8 @@
 
 Физические и full-game отчёты текущего кандидата сохранены в [release evidence](reports/release/2026-10-01/README.md). Его raw-config SHA-256 — `ffd96790e8327c7319f9ad1836cd5f9b3399b1be9a923f83c2ecac99ad9a2c48`. В физической выборке 6000 партий (по 1000 на policy) BASELINE_GROWTH с явно обозначенной liquidity-v1 policy выиграл 49,7%; это диагностика бота, не прогноз человека. Конфиг остаётся кандидатом для плейтестов. Пороговые гипотезы `SIMULATION_SPEC.md` и 30-минутный target не объявлены выполненными. Статус acceptance: [аудит](docs/RELEASE_ACCEPTANCE.md).
 
+The 2026-10-02 user revision adds free concurrent launches and changes the config hash. The report above remains historical single-Drop evidence, not a pacing/performance result for the new rule. Current playtest verification: [free launches](reports/release/2026-10-02/FREE_LAUNCHES.md).
+
 ## Explicitly out of MVP
 
 - вторая Plinko-доска;

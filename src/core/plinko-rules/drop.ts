@@ -43,7 +43,7 @@ export interface DropPhysicsSnapshot {
   solver?: import('./physicsCheckpoint').PhysicsCheckpoint | undefined;
 }
 
-export interface PendingDrop {
+export interface PendingShot {
   dropId: string;
   originalStake: number;
   selectedFraction: BetFraction;
@@ -57,6 +57,11 @@ export interface PendingDrop {
   rngStateAtCommit: number;
   boardFingerprint: string;
   physics: DropPhysicsSnapshot | null;
+}
+
+export interface PendingDrop extends PendingShot {
+  /** Other paid launches sharing this physics world; completed entries are removed. */
+  additionalDrops?: PendingShot[] | undefined;
 }
 
 export interface DropSettlement {
@@ -341,7 +346,7 @@ export const settleAggregateDrop = (
     ...state,
     cash: creditCash(state.cash, insurance.payout),
     plinkoInsuranceLossStreak: insurance.nextLossStreak,
-    plinkoInsuranceArmed: insurance.nextArmed,
+    plinkoInsuranceArmed: state.plinkoInsuranceArmed ?? insurance.nextArmed,
   };
 
   if (insurance.naturalLosing) {

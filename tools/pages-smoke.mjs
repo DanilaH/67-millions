@@ -65,7 +65,7 @@ try {
     await ready();
     await page.waitForFunction(() => localStorage.getItem('67m.save') !== null);
     const initial = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
-    assert.equal(initial.version, 14);
+    assert.equal(initial.version, 15);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-fresh.png` });
     await page.reload({ waitUntil: 'networkidle' });
     await ready();

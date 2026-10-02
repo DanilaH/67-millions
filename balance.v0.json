@@ -530,6 +530,7 @@
       1
     ],
     "maxActiveBalls": 24,
+    "maxConcurrentDrops": 6,
     "maxSplitDepth": 2,
     "maxBetLevels": [
       {

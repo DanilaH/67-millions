@@ -150,11 +150,12 @@ All random content uses it, including event selection, dumpster rolls, Plinko sp
 ## 9. Plinko transaction / cash lock
 
 While `pendingDrop` exists:
-- no new Drop;
+- new individually paid Drops allowed up to configured concurrent limit (user revision 2026-10-02);
 - no purchases;
 - no work/food/entertainment/dumpster/shower;
 - no main-debt payment;
-- no other cash mutation except Drop settlement and then mandatory Barry flow.
+- no other cash mutation except new Drop commit, individual Drop settlement and mandatory Barry flow after all paid Drops finish.
+- save v15 adds a bounded `additionalDrops` ledger to the shared `pendingDrop` solver checkpoint; removal/rotation is atomic with settlement.
 
 This keeps cash state atomic and prevents UI races.
 

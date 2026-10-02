@@ -1,3 +1,5 @@
+import { applyDebugCommand, type DebugCommand } from '../core/state/debugCommands';
+import { installScenePresentation } from './visual/scenePresentation';
 import { consumeWorkFeedback, formatActionFeedback, elapsedFeedbackMinutes } from './actions/actionFeedback';
 import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
@@ -144,6 +146,7 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   public create(): void {
+    installScenePresentation(this);
     this.state = null;
     this.actionStart = null;
     this.resultTimer = undefined;
@@ -153,7 +156,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.contextMode = 'none';
     this.rummageElapsedMs = 0;
 
-    const { height } = this.scale;
+    const height = balance.plinko.geometry.logicalViewportHeight;
     this.barryOverlay = createBarryMinigameOverlay(this, balance, () => this.guard(() => this.payBarry()));
 
     this.audio = new SceneAudio(this, 'city');
@@ -963,6 +966,20 @@ export class BootstrapScene extends Phaser.Scene {
     this.showMessage('Новый забег начат.');
     void this.persist();
     this.render();
+  }
+
+  public async applyPreviewDebug(command: DebugCommand): Promise<void> {
+    if (!this.state || !this.repository || this.activeAction || this.pendingDrop) {
+      throw new Error('Вернись на карту и дождись завершения действия');
+    }
+    if (command.kind === 'reset') {
+      this.state = restartGame(balance, createRunSeed());
+    } else {
+      this.state = applyDebugCommand(this.state, command, balance);
+    }
+    await this.persist();
+    await this.repository.flush();
+    this.scene.restart();
   }
 
   private async persist(): Promise<void> {

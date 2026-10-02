@@ -1,3 +1,4 @@
+import { canLaunchDrop } from '../../core/plinko-rules/concurrentDrops';
 import type { BalanceConfig } from '../../config/balance.schema';
 import {
   calculateActualBet,
@@ -82,9 +83,10 @@ const validate = (run: () => void): string | null => {
 const quickBetLock = (
   state: GameState,
   pendingDrop: PendingDrop | null,
+  config: BalanceConfig,
 ): string | null => {
-  if (pendingDrop !== null) {
-    return 'DROP ИДЁТ — НОВАЯ СТАВКА ЗАБЛОКИРОВАНА';
+  if (!canLaunchDrop(pendingDrop, config)) {
+    return 'ДОСКА ЗАПОЛНЕНА — ДОЖДИСЬ ШАРА';
   }
   if (state.barryInterruptPending) {
     return 'СНАЧАЛА ЗАПЛАТИ БАРРИ';
@@ -106,7 +108,7 @@ export const buildCasinoQuickBets = (
   pendingDrop: PendingDrop | null,
   config: BalanceConfig,
 ): CasinoQuickBetPreview[] => {
-  const lock = quickBetLock(state, pendingDrop);
+  const lock = quickBetLock(state, pendingDrop, config);
   const maxBet = getMaxBetForLevel(
     config,
     state.plinkoMaxBetLevel,

@@ -1,3 +1,4 @@
+import { installScenePresentation, logicalPointer } from './visual/scenePresentation';
 import { publishWorkFeedback } from './actions/actionFeedback';
 import { showInteractionFeedback } from './work/showInteractionFeedback';
 import Phaser from 'phaser';
@@ -63,6 +64,7 @@ export class TrashScene extends Phaser.Scene {
   }
 
   public create(): void {
+    installScenePresentation(this);
     this.save = null;
     this.session = null;
     this.completionInFlight = false;
@@ -71,7 +73,7 @@ export class TrashScene extends Phaser.Scene {
     this.heldBagId = null;
     this.bagImages = [];
     addProductionImage(this, 'trash', 640, 375, 1080, 525);
-    const { width } = this.scale;
+    const width = balance.plinko.geometry.logicalViewportWidth;
 
     this.audio = new SceneAudio(this, 'work');
 
@@ -258,7 +260,7 @@ export class TrashScene extends Phaser.Scene {
 
     this.heldBagId = findTrashBagAtPoint(
       this.session,
-      { x: pointer.x, y: pointer.y },
+      logicalPointer(this, pointer),
     );
 
     if (this.heldBagId !== null) {
@@ -266,7 +268,7 @@ export class TrashScene extends Phaser.Scene {
       this.session = moveTrashBag(
         this.session,
         this.heldBagId,
-        { x: pointer.x, y: pointer.y },
+        logicalPointer(this, pointer),
       );
       this.render();
     }
@@ -288,7 +290,7 @@ export class TrashScene extends Phaser.Scene {
     this.session = moveTrashBag(
       this.session,
       this.heldBagId,
-      { x: pointer.x, y: pointer.y },
+      logicalPointer(this, pointer),
     );
     this.render();
   };
@@ -313,7 +315,7 @@ export class TrashScene extends Phaser.Scene {
     this.session = dropTrashBag(
       this.session,
       bagId,
-      { x: pointer.x, y: pointer.y },
+      logicalPointer(this, pointer),
     );
 
     if (

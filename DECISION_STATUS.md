@@ -22,7 +22,7 @@
 - Plinko multiplier = **total return including stake**, not profit on top.
 - Quick bet controls = 25% / 50% / 100% current max bet.
 - Losing aggregate Plinko Drop costs 1 Happiness.
-- While `pendingDrop` exists, player cannot mutate cash through another action/purchase/victory payment.
+- While `pendingDrop` exists, purchases, other activities and victory payment remain locked. User revision 2026-10-02: freely clicked additional paid Drops are allowed up to the configured concurrent limit; each Drop settles independently. Barry waits for every paid lineage.
 - Seeded RNG; no gameplay `Math.random()`.
 - Dumpster emergency recovery: Energy → Happiness → HP.
 - No inventory; dumpster loot resolves immediately.

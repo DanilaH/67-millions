@@ -27,6 +27,7 @@ jobs:
       - run: npm run build:pages
       - run: npx playwright install --with-deps chromium
       - run: npm run smoke:pages
+      - run: npm run smoke:playtest
       - name: Record preview revision
         run: |
           node --input-type=module -e "import {writeFileSync} from 'node:fs'; writeFileSync('dist/preview-version.json', JSON.stringify({sha:process.env.GITHUB_SHA, branch:process.env.GITHUB_REF_NAME, purpose:'playtest; not an accepted RC', platform:'local browser storage; no hosted Yandex services'}, null, 2));"
@@ -35,7 +36,9 @@ jobs:
         if: always()
         with:
           name: pages-smoke
-          path: artifacts/pages-smoke
+          path: |
+            artifacts/pages-smoke
+            artifacts/playtest-smoke
           if-no-files-found: warn
       - uses: actions/upload-pages-artifact@v4
         with:

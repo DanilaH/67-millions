@@ -22,7 +22,7 @@ describe('exact Matter solver checkpoints', () => {
     const committed = commitBareDrop(initial, null, balance, 'legacy', 1);
     const save = { ...createSaveState(committed.state), version: 13, pendingDrop: committed.pendingDrop };
     const restored = migrateSaveState(JSON.parse(JSON.stringify(save)));
-    expect(restored.version).toBe(14);
+    expect(restored.version).toBe(15);
     expect(restored.game.cash).toBe(0);
     expect(restored.pendingDrop).toEqual(committed.pendingDrop);
   });

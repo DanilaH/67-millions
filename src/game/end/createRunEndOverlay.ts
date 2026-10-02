@@ -1,3 +1,4 @@
+import { balance } from '../../config/balance';
 import Phaser from 'phaser';
 
 import { VISUAL_FONT, VISUAL_METRICS, visualColor, visualHex } from '../visual/visualTheme';
@@ -31,7 +32,8 @@ export const createRunEndOverlay = (
   scene: Phaser.Scene,
   handlers: RunEndOverlayHandlers,
 ): RunEndOverlay => {
-  const { width, height } = scene.scale;
+  const width = balance.plinko.geometry.logicalViewportWidth;
+  const height = balance.plinko.geometry.logicalViewportHeight;
   let mode: RunEndOverlayMode = 'hidden';
 
   const container = scene.add

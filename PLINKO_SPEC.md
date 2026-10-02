@@ -39,20 +39,17 @@ Exact calibrated physics values live in `balance.v0.json -> plinko.physicsSeed`.
 
 ## 6. Atomic Drop lifecycle
 
-1. Validate: no Barry flow, no active Drop, cash >0, bet ≤ cash/maxBet.
-2. Debit stake and persist committed `pendingDrop`.
-3. Snapshot dropId, RNG state, board state/hash, bet and timing state.
-4. Spawn initial ball.
-5. Advance configured Drop action-time through scheduler.
-6. If the action crosses 09:00, GameClock freezes at 09:00, cascade resolves, payout settles, Barry runs, then remaining action-time continues after payment.
-7. Resolve all descendants/cascade.
-8. Calculate one aggregate payout.
-9. Apply Insurance to aggregate payout.
-10. Credit payout.
-11. Apply losing-Drop Happiness penalty when applicable.
-12. Update Insurance state.
-13. Clear `pendingDrop` and atomic save.
-14. Resolve pending Barry/event according to scheduler priority.
+1. Validate: no Barry flow or terminal state, no active non-Plinko action, cash >0, and available concurrent capacity (`maxConcurrentDrops`, `maxActiveBalls`).
+2. Debit one stake; snapshot dropId, RNG, upgrades, insurance and timing state.
+3. Advance configured action time through the scheduler; spawn one initial ball.
+4. Atomically persist debit, timing, RNG and shared solver/body checkpoint before acknowledging launch. Legacy cold committed saves still replay their original root.
+5. Further clicks may launch independent paid Drops while prior balls fall. No batch/autofire.
+6. At 09:00 freeze GameClock and block new launches. Let every already-paid lineage finish before Barry payment, then resume leftover action minutes.
+7. Resolve each Drop's descendants; accumulate only that Drop's payout, using its own committed stake and upgrades.
+8. Apply its committed Insurance, credit payout and apply configured losing-Drop Happiness penalty.
+9. Update Insurance in deterministic completion order; preserve any shield already armed for a future launch.
+10. Remove the completed ledger entry immediately and atomically save result with all surviving bodies. Rotate the shared checkpoint owner if needed; never keep an unbounded completed ledger.
+11. Once the board is empty, unlock other activities and process Barry/events in scheduler priority.
 
 ## 7. Leaving Casino
 
@@ -60,7 +57,7 @@ After Drop commit:
 - Casino presentation may be hidden;
 - physics continues while app remains active;
 - player may inspect map/state;
-- all other state/cash-mutating actions are disabled until resolve;
+- all non-Plinko state/cash-mutating actions are disabled until all paid Drops resolve; returning to casino permits further launches while capacity and clock allow;
 - background freezes physics and GameClock together.
 
 ## 8. Reload active Drop

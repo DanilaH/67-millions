@@ -1,3 +1,4 @@
+import { balance } from '../../config/balance';
 import Phaser from 'phaser';
 import { addProductionImage } from '../visual/productionArt';
 
@@ -18,7 +19,8 @@ export const createBarryMinigameOverlay = (
   config: BalanceConfig,
   onPay: () => void,
 ): BarryMinigameOverlay => {
-  const { width, height } = scene.scale;
+  const width = balance.plinko.geometry.logicalViewportWidth;
+  const height = balance.plinko.geometry.logicalViewportHeight;
   const container = scene.add
     .container(0, 0)
     .setDepth(VISUAL_METRICS.barryDepth)

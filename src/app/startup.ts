@@ -8,7 +8,8 @@ export type BootstrapStartupPhase = 'platformReady' | 'artFormatReady' | 'gamePr
 export const startupTimeline = new StartupTimeline<BootstrapStartupPhase>();
 
 export const isDebugBuild = (): boolean =>
-  import.meta.env.DEV || import.meta.env.VITE_DEBUG_PANEL === 'true';
+  import.meta.env.DEV || import.meta.env.VITE_DEBUG_PANEL === 'true' ||
+  (import.meta.env.MODE === 'pages' && new URLSearchParams(window.location.search).get('debug') === '1');
 
 export const detectRuntimeImageFormat = async (): Promise<RuntimeImageFormat> => {
   const format = await detectPreferredRuntimeImageFormat({ overrideEnabled: isDebugBuild() });

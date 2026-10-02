@@ -13,6 +13,7 @@
     "build": "tsc --noEmit && vite build --mode yandex",
     "build:pages": "tsc --noEmit && vite build --mode pages --base /67-millions/",
     "smoke:pages": "node --import tsx tools/pages-smoke.mjs",
+    "smoke:playtest": "node --import tsx tools/playtest-smoke.mjs",
     "build:yandex:debug": "tsc --noEmit && vite build --mode yandex-debug",
     "preview": "vite preview",
     "release:check": "npm run build && node tools/yandex-audit.mjs",

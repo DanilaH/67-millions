@@ -175,7 +175,7 @@ Playtest target:
 - work state cost is paid at start and salary/fine only at completion;
 - a job started before 09:00 cannot use its future salary to pay Barry unless the payout has actually completed;
 - Plinko launched before 09:00 freezes GameClock at 09:00, resolves cascade, pays Barry, then advances remaining Drop minutes;
-- pendingDrop blocks every other cash mutation;
+- pendingDrop blocks purchases/activities/principal; independently paid launches remain available up to the cap; Barry waits for every paid lineage;
 - pending event queue is max one and cannot explode after a long unsafe period.
 
 ## Save architecture

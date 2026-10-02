@@ -592,7 +592,7 @@ export const migrateSaveState = (value: unknown): SaveState => {
   const { version } = versionProbeSchema.parse(value);
 
   if (version === SAVE_VERSION) return parseSaveState(value);
-  if (version === 13) return parseSaveState({ ...(value as object), version: SAVE_VERSION });
+  if (version === 14 || version === 13) return parseSaveState({ ...(value as object), version: SAVE_VERSION });
   if (version === 12) return migrateV12(value);
   if (version === 11) return migrateV11(value);
   if (version === 10) return migrateV10(value);

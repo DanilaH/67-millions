@@ -110,3 +110,11 @@ body {
   font-weight: 700;
   cursor: pointer;
 }
+
+#debug-root { width: min(380px, calc(100vw - 24px)); max-height: 80vh; overflow: auto; }
+#debug-root summary { cursor: pointer; font-weight: 700; padding: 8px; }
+#debug-root details > div { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 10px; }
+#debug-root input { width: 100%; color: #fff; background: #242a32; border: 1px solid #77818f; padding: 10px; font-size: 16px; }
+#debug-root button { min-height: 42px; padding: 7px 12px; }
+#debug-root button[hidden] { display: none; }
+#debug-root p { font-size: 14px; line-height: 1.4; margin: 6px 0; }

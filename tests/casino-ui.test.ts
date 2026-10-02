@@ -93,7 +93,7 @@ describe('T057 casino UI model', () => {
     });
   });
 
-  it('visually locks both quick bets and every upgrade while a Drop is pending', () => {
+  it('allows another launch but locks every upgrade while a Drop is pending', () => {
     const state = {
       ...createInitialGameState(balance, 1_103),
       cash: 100_000,
@@ -120,8 +120,7 @@ describe('T057 casino UI model', () => {
     expect(
       bets.every(
         (bet) =>
-          bet.lockedReason ===
-          'DROP ИДЁТ — НОВАЯ СТАВКА ЗАБЛОКИРОВАНА',
+          bet.lockedReason === null,
       ),
     ).toBe(true);
     expect(

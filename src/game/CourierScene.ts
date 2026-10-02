@@ -1,3 +1,4 @@
+import { installScenePresentation, logicalPointer } from './visual/scenePresentation';
 import { publishWorkFeedback } from './actions/actionFeedback';
 import { showInteractionFeedback } from './work/showInteractionFeedback';
 import Phaser from 'phaser';
@@ -85,6 +86,7 @@ export class CourierScene extends Phaser.Scene {
   }
 
   public create(): void {
+    installScenePresentation(this);
     this.save = null;
     this.session = null;
     this.completionInFlight = false;
@@ -94,7 +96,7 @@ export class CourierScene extends Phaser.Scene {
     this.obstacleImages = [];
     this.courierImage = undefined;
     addProductionImage(this, 'courier', 640, 375, 1080, 525);
-    const { width } = this.scale;
+    const width = balance.plinko.geometry.logicalViewportWidth;
 
     this.audio = new SceneAudio(this, 'work');
 
@@ -288,7 +290,7 @@ export class CourierScene extends Phaser.Scene {
       return;
     }
 
-    const point = { x: pointer.x, y: pointer.y };
+    const point = logicalPointer(this, pointer);
     if (this.session.route.length === 0) {
       if (!canBeginCourierRoute(this.session, point)) {
         this.statusText?.setText(
@@ -330,7 +332,7 @@ export class CourierScene extends Phaser.Scene {
 
     this.session = appendCourierRoutePoint(
       this.session,
-      { x: pointer.x, y: pointer.y },
+      logicalPointer(this, pointer),
     );
     this.audio?.play('courierDraw');
     this.render();

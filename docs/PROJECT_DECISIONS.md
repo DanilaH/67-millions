@@ -108,3 +108,15 @@ The user requested a publicly playable preview from draft PR #51 after executor 
 ## T071 — User-approved main publication
 
 After Pages enablement, GitHub refused PR-branch deployment due to the github-pages environment branch policy. The user explicitly requested merging all existing PR work to main for the playtest. PR #51 was merged normally at fb3425727588431bf5d221964a8ab692708ba091 (main had no branch protection/rulesets). Pages now publishes main and verifies the real URL/revision afterward. This integration decision does not accept the outstanding RC/Yandex/performance gates. Documentation-only pushes do not rebuild or redeploy the game.
+
+## 2026-10-02 — free launches and playtest presentation (user-authorized)
+
+The user explicitly replaced the single in-flight launch rule with repeated free clicks. Each click commits one independently paid Drop, up to `plinko.maxConcurrentDrops` (6), within the existing 24-body cap. No automatic batch or autofire. Each Drop keeps its own stake, partial payout, committed insurance and remaining action time. `pendingDrop` carries the shared solver; its first unsettled launch rotates as entries finish. Settled entries are removed immediately, bounding saves during continuous play. Cash remains locked for purchases, work and principal payment; additional paid launches and individual settlements are the only new exceptions.
+
+Commit checkpoint contains debit, scheduler state, spawned body and RNG atomically. A crash before this checkpoint restores the previous world without the new debit; a crash after it restores the paid ball. Legacy cold single-Drop checkpoints retain their replay path. Barry blocks further launches and waits for all paid lineages. Individual results use deterministic collision processing order. Earned Insurance remains armed until a future launch consumes it; another already-flying ball cannot erase or retroactively receive that shield.
+
+Full-screen map, compact vector need icons (tap for labels), short location tags and bounded Plinko effects replace the bulky map panels. Logical coordinates stay 1280×720; backing density follows CSS size × DPR, capped at 2× logical resolution. Scene cameras and pointer coordinates use the same transform. This improves sharpness but is not a new-art claim or a real-device performance result.
+
+Pages debug access is opt-in `?debug=1`; normal Pages and production Yandex remain without cheats. Panel pauses gameplay. Commands run from idle map, preserve scheduler boundaries and save before restart. Reset replaces the current run only, with an explicit in-panel confirmation; it does not clear unrelated browser storage or tutorial preferences. Time jumps stop at Barry and require handling that interruption before another jump.
+
+Historical single-Drop pacing/performance evidence does not certify the new continuous-launch behavior. New balancing requires fresh simulation and human playtest.

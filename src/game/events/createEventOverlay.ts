@@ -1,3 +1,4 @@
+import { balance } from '../../config/balance';
 import Phaser from 'phaser';
 
 import { VISUAL_FONT, VISUAL_METRICS, visualColor, visualHex } from '../visual/visualTheme';
@@ -17,7 +18,8 @@ export const createEventOverlay = (
   scene: Phaser.Scene,
   onChoose: (choice: EventChoicePresentation) => void,
 ): EventOverlay => {
-  const { width, height } = scene.scale;
+  const width = balance.plinko.geometry.logicalViewportWidth;
+  const height = balance.plinko.geometry.logicalViewportHeight;
   let visible = false;
   const choiceObjects: Phaser.GameObjects.GameObject[] = [];
 

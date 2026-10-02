@@ -315,3 +315,8 @@ Acceptance: every applicable `MVP_ACCEPTANCE.md` item checked; failures block RC
 ### T076 [P0] Freeze config/content + build submission package
 Status: Partial (2026-10-01): reproducible production candidate ZIP/manifest tooling added. RC config/content freeze and submission wait for acceptance.
 Acceptance: config hash recorded; production build and submission artifacts ready.
+
+
+## User playtest revision — 2026-10-02
+
+Extends T057 casino UI, map/HUD presentation and persistence verification: free concurrent launches, independent settlements, capped effects, full-screen map, vector stat icons, denser rendering and opt-in preview debug controls. Implemented; browser/deployment evidence is recorded in `reports/release/2026-10-02/FREE_LAUNCHES.md`. Real-device performance and new pacing/balance remain open.

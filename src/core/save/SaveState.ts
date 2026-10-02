@@ -5,7 +5,7 @@ import type { ActiveAction } from '../actions/ActiveAction';
 import type { PendingDrop } from '../plinko-rules/drop';
 import type { GameState } from '../state/GameState';
 
-export const SAVE_VERSION = 14 as const;
+export const SAVE_VERSION = 15 as const;
 
 const gameClockSchema = z.object({
   gameDayIndex: z.number().int().nonnegative(),
@@ -139,7 +139,7 @@ const dropPhysicsSnapshotSchema = z.object({
   solver: physicsCheckpointSchema.optional(),
 });
 
-const pendingDropSchema = z.object({
+const pendingShotSchema = z.object({
   dropId: z.string().min(1),
   originalStake: z.number().int().positive(),
   selectedFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
@@ -167,6 +167,10 @@ const pendingDropSchema = z.object({
   physics: dropPhysicsSnapshotSchema.nullable(),
 });
 
+const pendingDropSchema = pendingShotSchema.extend({
+  additionalDrops: z.array(pendingShotSchema).max(5).optional(),
+});
+
 export interface SaveState {
   version: typeof SAVE_VERSION;
   game: GameState;
@@ -180,6 +184,17 @@ const saveStateSchema = z.object({
   activeAction: activeActionSchema.nullable(),
   pendingDrop: pendingDropSchema.nullable(),
 }).superRefine((save, context) => {
+  if (save.pendingDrop) {
+    const shots = [save.pendingDrop, ...(save.pendingDrop.additionalDrops ?? [])];
+    if (new Set(shots.map(shot => shot.dropId)).size !== shots.length) {
+      context.addIssue({ code: 'custom', path: ['pendingDrop'], message: 'Paid Drop IDs must be unique' });
+    }
+    for (const shot of shots.slice(1)) {
+      if (shot.boardFingerprint !== save.pendingDrop.boardFingerprint || (shot.physics?.balls.length ?? 0) > 0 || shot.physics?.solver) {
+        context.addIssue({ code: 'custom', path: ['pendingDrop', 'additionalDrops'], message: 'Concurrent Drops must share one board and solver' });
+      }
+    }
+  }
   if (save.pendingDrop !== null && save.activeAction !== null) {
     context.addIssue({
       code: 'custom',

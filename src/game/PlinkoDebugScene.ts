@@ -1,3 +1,7 @@
+import { PersistentHud } from './ui/PersistentHud';
+import { PlinkoEffects } from './casino/PlinkoEffects';
+import { installScenePresentation } from './visual/scenePresentation';
+import { activeDrops, appendDrop, canLaunchDrop, findBallDrop, recordDropPayout, removeSettledDrop } from '../core/plinko-rules/concurrentDrops';
 import { deriveHudSnapshot, formatBarryCountdown } from './ui/hudModel';
 import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
@@ -22,6 +26,7 @@ import {
 import {
   assertDropBoardCompatible,
   commitBareDrop,
+  settleAggregateDrop,
   calculateBallPocketPayout,
   setDropPhysicsSnapshot,
   type BetFraction,
@@ -33,7 +38,6 @@ import {
   settleAggregatePendingDropAndResumeTime,
 } from '../core/plinko-rules/dropTiming';
 import {
-  getMaxBetForLevel,
   purchaseInsuranceUpgrade,
   purchaseMaxBetUpgrade,
   purchasePocketUpgrade,
@@ -99,6 +103,8 @@ import {
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
 
 export class PlinkoDebugScene extends Phaser.Scene {
+  private effects?: PlinkoEffects;
+  private mapHud?: PersistentHud;
   private runtime: BarePlinkoRuntime | null = null;
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
@@ -141,6 +147,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public create(): void {
+    installScenePresentation(this);
     this.save = null;
     this.mapMode = false;
     this.leaving = false;
@@ -168,6 +175,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.staticBoardGraphics = this.add.graphics();
     this.casinoLayer.add(this.staticBoardGraphics);
+    this.effects = new PlinkoEffects(this, this.casinoLayer);
     this.ballImages = [];
     this.pegImages = [];
     createPinTextures(this, balance.plinko.geometry.pegRadius);
@@ -278,6 +286,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
     if (!this.staticBoardGraphics || this.mapMode) return;
 
+    this.effects?.render(this.balls.keys());
     let index = 0;
     for (const [ball, metadata] of this.balls) {
       const kind = metadata.currentValue > 1 ? 'amplified' : metadata.splitDepth > 0 ? 'split' : 'normal';
@@ -334,6 +343,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         );
       },
       onPeg: (pegId, body) => {
+        this.effects?.hit(body.position.x, body.position.y);
         this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
       },
       onFixedTick: (fixedTicksElapsed) => {
@@ -450,7 +460,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           return;
         }
         this.audio?.prime();
-        void this.commitAndSpawn(preview.fraction);
+        this.enqueueCascadeMutation(() => this.commitAndSpawn(preview.fraction));
       },
       this.casinoLayer,
     );
@@ -491,10 +501,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private installMapLayer(): void {
     if (!this.mapLayer) return;
-    this.mapLayer.add(addProductionImage(this, 'map', 640, 360, 1280, 720).setAlpha(0.28));
+    const map = addProductionImage(this, 'map', 640, 360, 1280, 720);
+    const source = map.texture.getSourceImage();
+    const cover = Math.max(1280 / source.width, 720 / source.height);
+    map.setDisplaySize(source.width * cover, source.height * cover);
+    this.mapLayer.add(map);
+    const beforeHud = this.children.list.length;
+    this.mapHud = new PersistentHud(this, balance);
+    this.mapLayer.add(this.children.list.slice(beforeHud));
 
     const title = this.add
-      .text(40, 36, 'КАРТА · DROP РАЗРЕШАЕТСЯ', {
+      .text(40, 172, 'ШАРЫ ЕЩЁ НА ДОСКЕ', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
         fontSize: '24px',
@@ -502,7 +519,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .setOrigin(0, 0);
 
     this.mapText = this.add
-      .text(40, 100, '', {
+      .text(40, 218, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.mono,
         fontSize: '18px',
@@ -636,76 +653,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     try {
-      const dropId =
-        `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
+      if (!canLaunchDrop(this.save.pendingDrop, balance)) return;
+      const previous = this.save.pendingDrop;
+      const dropId = `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
+      const committed = commitBareDrop(this.save.game, null, balance, dropId, fraction);
+      const timed = advancePendingDropTime(committed.state, committed.pendingDrop, balance);
+      this.save = { ...this.save, game: timed.state, pendingDrop: appendDrop(previous, timed.pendingDrop) };
+      // Debit, scheduler, RNG and the spawned body become durable in one checkpoint.
+      // Before that write a crash restores the previous world, without charging this click.
       this.random = new SeededRandom(this.save.game.rngState);
-      const committed = commitBareDrop(
-        this.save.game,
-        this.save.pendingDrop,
-        balance,
-        dropId,
-        fraction,
-      );
-
-      this.save = {
-        ...this.save,
-        version: SAVE_VERSION,
-        game: committed.state,
-        pendingDrop: committed.pendingDrop,
-      };
-      this.refreshVisualSnapshot();
-      this.lastResultMessage = '';
-      this.resultText?.setVisible(false);
-
-      // Stake + pendingDrop are durable before time or physical outcome generation.
+      if (!previous) {
+        this.runtime.setJackpotBiasLevel(committed.pendingDrop.specialLevelsAtCommit.jackpotBiasLevel);
+        this.runtime.setFixedTicksElapsed(0);
+        this.lastPersistedPhysicsTick = 0;
+      }
+      const body = this.runtime.spawnBall();
+      this.balls.set(body, createRootBallState(dropId));
+      this.save.game = { ...this.save.game, rngState: this.random.snapshot().state };
+      this.capturePendingPhysics();
       await this.enqueueSave(true);
       this.worldAudio?.play('cashSpend');
-
-      if (
-        committed.pendingDrop.insuranceAtCommit !== null
-      ) {
-        this.audio?.insuranceActivation();
-      }
-
-      const timed = advancePendingDropTime(
-        this.save.game,
-        committed.pendingDrop,
-        balance,
-      );
-      this.save = {
-        ...this.save,
-        game: timed.state,
-        pendingDrop: timed.pendingDrop,
-      };
-      await this.enqueueSave(true);
-
-      if (this.save.game.terminalReason !== null) {
-        this.showStatus(
-          `Drop committed, but run ended with ${this.save.game.terminalReason} before physics spawn.`,
-        );
-        this.renderAll();
-        return;
-      }
-
-      this.runtime.setJackpotBiasLevel(
-        committed.pendingDrop.specialLevelsAtCommit.jackpotBiasLevel,
-      );
-      this.runtime.setFixedTicksElapsed(0);
-      this.lastPersistedPhysicsTick = 0;
-      const body = this.runtime.spawnBall();
-      this.balls.set(
-        body,
-        createRootBallState(committed.pendingDrop.dropId),
-      );
-
-      this.save = {
-        ...this.save,
-        game: {
-          ...this.save.game,
-          rngState: this.random.snapshot().state,
-        },
-      };
-      await this.persistPendingPhysics(true);
+      if (committed.pendingDrop.insuranceAtCommit) this.audio?.insuranceActivation();
+      this.refreshVisualSnapshot();
       this.renderAll();
     } catch (error: unknown) {
       this.showStatus(error instanceof Error ? error.message : String(error));
@@ -834,7 +803,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const metadata = this.balls.get(body);
     if (!metadata) return;
 
-    const pending = this.save.pendingDrop;
+    const worldPending = this.save.pendingDrop;
+    const pending = findBallDrop(worldPending, metadata.lineageId);
     const priorPayout =
       pending.physics?.alreadySettledPayout ?? 0;
     const ballPayout = calculateBallPocketPayout(
@@ -844,46 +814,29 @@ export class PlinkoDebugScene extends Phaser.Scene {
       balance,
     );
     const aggregatePayout = priorPayout + ballPayout;
+    this.effects?.payout(body.position.x, this.runtime.layout.pocketTopY - 12, ballPayout);
 
     this.balls.delete(body);
     this.runtime.removeBall(body);
 
-    if (this.balls.size > 0) {
-      this.save = {
-        ...this.save,
-        pendingDrop: setDropPhysicsSnapshot(pending, {
-          fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
-          alreadySettledPayout: aggregatePayout,
-          solver: this.runtime.snapshotSolver(this.balls),
-          balls: Array.from(this.balls.entries()).map(
-            ([activeBody, activeMetadata]) =>
-              this.runtime!.snapshotBall(activeBody, activeMetadata),
-          ),
-        }),
-      };
+    this.save.pendingDrop = recordDropPayout(worldPending, pending.dropId, aggregatePayout);
+    const lineageStillActive = Array.from(this.balls.values()).some((ball) => ball.lineageId === metadata.lineageId);
+    if (lineageStillActive) {
+      this.capturePendingPhysics();
       await this.enqueueSave(true);
       return;
     }
 
     const previousBarryTotal = this.save.game.totalBarryPaid;
-    const previousBarryPaymentIndex =
-      this.save.game.barryPaymentIndex;
-    const result = settleAggregatePendingDropAndResumeTime(
-      this.save.game,
-      pending,
-      aggregatePayout,
-      balance,
-    );
-
-    this.save = {
-      ...this.save,
-      game: result.state,
-      pendingDrop: null,
-    };
+    const previousBarryPaymentIndex = this.save.game.barryPaymentIndex;
+    const remaining = removeSettledDrop(this.save.pendingDrop, pending.dropId);
+    const result = remaining
+      ? settleAggregateDrop(this.save.game, pending, aggregatePayout, balance)
+      : settleAggregatePendingDropAndResumeTime(this.save.game, pending, aggregatePayout, balance);
+    this.save = { ...this.save, game: result.state, pendingDrop: remaining };
+    this.capturePendingPhysics();
     this.refreshVisualSnapshot();
-    this.runtime.setJackpotBiasLevel(
-      this.save.game.plinkoJackpotBiasLevel,
-    );
+    if (!remaining) this.runtime.setJackpotBiasLevel(this.save.game.plinkoJackpotBiasLevel);
     await this.enqueueSave(true);
 
     (this.game.registry.get(GAME_ANALYTICS_KEY) as GameAnalytics | undefined)?.track('plinko_resolved', result.state, {
@@ -946,9 +899,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.renderAll();
 
-    if (this.mapMode) {
+    if (this.mapMode && !this.save.pendingDrop) {
       this.time.delayedCall(250, () => {
-        this.scene.start('bootstrap');
+        if (this.mapMode && !this.save?.pendingDrop && !this.leaving) this.scene.start('bootstrap');
       });
     }
   }
@@ -986,7 +939,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
             for (const metadata of this.balls.values()) metadata.currentValue = 1 / roots;
             for (let index = this.balls.size; index < roots; index += 1) {
               const body = this.runtime.spawnBall();
-              this.balls.set(body, {...createRootBallState(`perf:${index}`), currentValue: 1 / roots});
+              this.balls.set(body, {...createRootBallState(this.save.pendingDrop.dropId), ballId: `perf:${index}`, currentValue: 1 / roots});
             }
             await this.persistPendingPhysics(true);
           }
@@ -1088,6 +1041,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.physicsSaveQueued = true;
 
     try {
+      this.capturePendingPhysics();
+      await this.enqueueSave(flush);
+    } finally {
+      this.physicsSaveQueued = false;
+    }
+  }
+
+  private capturePendingPhysics(): void {
+    if (!this.save?.pendingDrop || !this.runtime) return;
       const pending = this.save.pendingDrop;
       const physics = {
         fixedTicksElapsed: this.runtime.getFixedTicksElapsed(),
@@ -1103,10 +1065,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
         pendingDrop: setDropPhysicsSnapshot(pending, physics),
       };
       this.lastPersistedPhysicsTick = physics.fixedTicksElapsed;
-      await this.enqueueSave(flush);
-    } finally {
-      this.physicsSaveQueued = false;
-    }
   }
 
   private refreshVisualSnapshot(): void {
@@ -1145,21 +1103,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.infoText || !this.save) return;
 
     const snapshot = this.visualSnapshot;
-    const maxBet = getMaxBetForLevel(
-      balance,
-      snapshot?.maxBetLevel ??
-        this.save.game.plinkoMaxBetLevel,
-    );
-
     const hud = deriveHudSnapshot(this.save.game, balance);
     this.infoText.setText([
       `ДЕНЬ ${hud.day} · ${hud.time}`,
       `Деньги ${hud.cash.toLocaleString('ru-RU')} ₽`,
       `Барри ${hud.nextBarry.toLocaleString('ru-RU')} ₽`,
-      `Через ${formatBarryCountdown(hud.minutesUntilBarry)}`,
-      `Лимит ${maxBet.toLocaleString('ru-RU')} ₽`,
-      `Страховка ${snapshot?.insuranceArmed ? 'ГОТОВА' : `L${snapshot?.insuranceLevel ?? 0}`}`,
-      this.save.pendingDrop ? `В броске ${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽` : 'Бросок готов',
+      `До выплаты ${formatBarryCountdown(hud.minutesUntilBarry)}`,
+      ...(snapshot?.insuranceArmed ? ['Щит готов'] : []),
+      this.save.pendingDrop ? `На доске: ${activeDrops(this.save.pendingDrop).length} / ${balance.plinko.maxConcurrentDrops}` : 'Бросок готов',
     ]);
 
     this.betPanel?.render(
@@ -1187,21 +1138,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderMap(): void {
     if (!this.mapText || !this.mapMessageText || !this.save) return;
 
-    this.mapText.setText([
-      `Деньги: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
-      `Основной долг: ${this.save.game.mainDebt.toLocaleString('ru-RU')} ₽`,
-      `HP: ${this.save.game.needs.health.toFixed(1)}`,
-      `Сытость: ${this.save.game.needs.satiety.toFixed(1)}`,
-      `Энергия: ${this.save.game.needs.energy.toFixed(1)}`,
-      `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
-      `Бросок: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake} ₽ — в процессе` : 'завершён'}`,
-    ]);
+    this.mapHud?.render(this.save.game);
+    this.mapText.setText(`${activeDrops(this.save.pendingDrop).length} бросков · вернись в казино, чтобы продолжить`)
+      .setBackgroundColor(visualHex('inkPanel')).setPadding(12, 10);
 
-    this.mapMessageText.setText(
+    this.mapMessageText.setBackgroundColor(visualHex('inkPanel')).setPadding(12, 10).setText(
       this.lastResultMessage ||
         (this.save.pendingDrop
-          ? 'Drop is resolving. Read-only inspection only.'
-          : 'No active Drop.'),
+          ? 'Действия на карте станут доступны после завершения бросков.'
+          : 'Броски завершены.'),
     );
   }
 

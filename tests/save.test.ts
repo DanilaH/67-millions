@@ -88,7 +88,7 @@ describe('save repository', () => {
     await repo.flush();
 
     const restored = await repo.load();
-    expect(restored.version).toBe(14);
+    expect(restored.version).toBe(15);
     expect(restored.game.cash).toBe(777);
     expect(restored.game.jobLevels).toEqual({
       dishes: 2,
@@ -171,7 +171,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.barryInterruptPending).toBe(false);
     expect(migrated.game.workPayoutMultiplier).toBe(1);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
@@ -221,7 +221,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.plinkoSelectedBetFraction).toBe(1);
     expect(migrated.game.plinkoMaxBetLevel).toBe(0);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
@@ -256,7 +256,7 @@ describe('save repository', () => {
     const repo = createSaveRepository(storage, () => createInitialGameState(balance, 999));
     const migrated = await repo.load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.pendingDrop).toBeNull();
 
     await storage.setItem(
@@ -480,7 +480,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.plinkoCenterLevel).toBe(0);
     expect(migrated.game.plinkoMidLevel).toBe(0);
     expect(migrated.game.plinkoJackpotLevel).toBe(0);
@@ -558,7 +558,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.plinkoAmplifierLevel).toBe(0);
     expect(migrated.game.plinkoReturnLevel).toBe(0);
     expect(migrated.game.plinkoSplitterLevel).toBe(0);
@@ -661,7 +661,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.plinkoJackpotBiasLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
@@ -728,7 +728,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.plinkoInsuranceLevel).toBe(0);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(0);
     expect(migrated.game.plinkoInsuranceArmed).toBeNull();
@@ -778,7 +778,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.cash).toBe(12_345);
     expect(migrated.game.plinkoInsuranceLevel).toBe(2);
     expect(migrated.game.plinkoInsuranceLossStreak).toBe(1);
@@ -821,7 +821,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.cash).toBe(54_321);
     expect(migrated.game.jobLevels).toEqual({
       dishes: 2,
@@ -859,7 +859,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.cash).toBe(7_654);
     expect(migrated.game.dumpsterSearchStreak).toBe(2);
     expect(migrated.game.statuses.SMELLY).toBe(false);
@@ -897,7 +897,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.cash).toBe(8_765);
     expect(migrated.game.statuses.SMELLY).toBe(true);
     expect(migrated.game.pendingEventId).toBeNull();
@@ -945,7 +945,7 @@ describe('save repository', () => {
       () => createInitialGameState(balance, 999),
     ).load();
 
-    expect(migrated.version).toBe(14);
+    expect(migrated.version).toBe(15);
     expect(migrated.game.cash).toBe(9_876);
     expect(migrated.game.pendingEventId).toBe('EVENT_04');
     expect(migrated.game.eventsResolvedThisGameDay).toBe(1);
