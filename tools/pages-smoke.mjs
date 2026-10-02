@@ -90,7 +90,9 @@ try {
       const reserved = startWork(work.game, balance, job, 1); work.game = reserved.state; work.activeAction = reserved.action;
       await loadSave(work);
       const playJob = async () => {
-      await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-${job}-start.png` });
+      // Screenshot readback on a software GPU can consume seconds of a 20s
+      // skill timer. Keep timed input uninterrupted; capture untimed scenes.
+      if (job === 'courier') await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-${job}-start.png` });
       if (job === 'dishes') {
         for (const plate of createDishesSession(balance).plates) {
           await move(plate.x - 65, plate.y - 45); await down();
@@ -99,7 +101,6 @@ try {
             await page.waitForTimeout(25);
           }
           await up();
-          if (plate.x === 330) await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-dishes-erased.png` });
         }
       } else if (job === 'trash') {
         const session = createTrashSession(balance);
@@ -129,7 +130,8 @@ try {
       await page.waitForFunction(job => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === job, job);
       await page.waitForTimeout(300);
       await playJob();
-      assert.ok((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash > first.game.cash, `${job}: second shift in same scene pays out`);
+      const second = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+      assert.ok(second.game.cash > first.game.cash, `${job}: second shift in same scene pays out (${first.game.cash} → ${second.game.cash}; ${JSON.stringify(second.game.clock)})`);
     }
     // Real map → casino → map transitions, including the same casino instance.
     await loadSave(fixture);

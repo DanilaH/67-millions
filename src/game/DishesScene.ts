@@ -76,8 +76,13 @@ export class DishesScene extends Phaser.Scene {
     this.renderedSpots = null;
     const dirtKey = '67m:dishes-dirt';
     if (this.textures.exists(dirtKey)) this.textures.remove(dirtKey);
-    this.dirtTexture = this.textures.createCanvas(dirtKey, 1280, 720)!;
-    this.add.image(0, 0, dirtKey).setOrigin(0).setDepth(1);
+    const tileSize = 128;
+    this.dirtTexture = this.textures.createCanvas(dirtKey, tileSize * DISHES_INTERACTION.plates.length, tileSize)!;
+    DISHES_INTERACTION.plates.forEach((plate, index) => {
+      const frame = `plate-${index}`;
+      this.dirtTexture!.add(frame, 0, index * tileSize, 0, tileSize, tileSize);
+      this.add.image(plate.x, plate.y, dirtKey, frame).setDepth(1);
+    });
     addProductionImage(this, 'dishes', 640, 375, 1080, 525);
     const { width } = this.scale;
 
@@ -470,16 +475,23 @@ export class DishesScene extends Phaser.Scene {
 
     if (this.dirtTexture && this.renderedSpots !== this.session.spots) {
       const context = this.dirtTexture.context;
-      context.clearRect(0, 0, 1280, 720);
+      if (this.renderedSpots === null) context.clearRect(0, 0, this.dirtTexture.width, this.dirtTexture.height);
       const size = DISHES_INTERACTION.dirtCellSize;
-      for (const spot of this.session.spots) {
+      for (const [index, spot] of this.session.spots.entries()) {
+        const plate = this.session.plates[spot.plateIndex]!;
+        const x = spot.x - plate.x + 64 + spot.plateIndex * 128 - size / 2;
+        const y = spot.y - plate.y + 64 - size / 2;
+        if (this.renderedSpots !== null) {
+          if (spot.cleaned && !this.renderedSpots[index]!.cleaned) context.clearRect(x, y, size, size);
+          continue;
+        }
         if (spot.cleaned) continue;
         // Continuous greasy film with deterministic mottling and fine grain.
         const grain = Math.sin(spot.x * 12.9898 + spot.y * 78.233) * 43758.5453;
         const noise = grain - Math.floor(grain);
         const stain = (Math.sin(spot.x * 0.073) * Math.cos(spot.y * 0.097) + 1) / 2;
         context.fillStyle = `rgba(${75 + Math.floor(noise * 28)}, ${43 + Math.floor(stain * 27)}, 24, ${0.72 + stain * 0.24})`;
-        context.fillRect(spot.x - size / 2, spot.y - size / 2, size, size);
+        context.fillRect(x, y, size, size);
       }
       this.dirtTexture.refresh();
       this.renderedSpots = this.session.spots;
