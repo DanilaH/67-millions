@@ -46,7 +46,7 @@ export class TrashScene extends Phaser.Scene {
   private heldBagId: string | null = null;
   private completionInFlight = false;
   private saveWriteChain: Promise<void> = Promise.resolve();
-  private readonly minigameClock = new WorkMinigameClock(balance);
+  private minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
@@ -61,6 +61,12 @@ export class TrashScene extends Phaser.Scene {
   }
 
   public create(): void {
+    this.save = null;
+    this.session = null;
+    this.completionInFlight = false;
+    this.saveWriteChain = Promise.resolve();
+    this.minigameClock = new WorkMinigameClock(balance);
+    this.heldBagId = null;
     this.bagImages = [];
     addProductionImage(this, 'trash', 640, 375, 1080, 525);
     const { width } = this.scale;

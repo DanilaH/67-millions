@@ -198,12 +198,15 @@ Acceptance: Amplifier/Splitter/Return readable without clipping at stress state.
 ## E15 — Production minigames
 
 ### T051 [P0] Dishes
+Status: 2026-10-02: continuous eraser texture and area coverage; mouse/touch and repeat-entry regressions checked. See reports/release/2026-10-02/GAMEPLAY_AUDIT.md.
 Acceptance: 20 sec; >=90% clean; forgiving touch/mouse.
 
 ### T052 [P0] Trash
+Status: 2026-10-02: scene re-entry state reset; two shifts through the map without reload checked for mouse/touch.
 Acceptance: 5 bags; 25 sec; all accepted in dumpster; forgiving grab/target.
 
 ### T053 [P0] Courier
+Status: 2026-10-02: actual route traversal, sprite-size swept collision and arrival settlement; deterministic model and repeated mouse/touch shifts checked.
 Acceptance: draw route; one redraw before start; 2–4 obstacles; deterministic pass/fail.
 
 ### T054 [P1] Barry pause/resume across all minigames
@@ -218,6 +221,7 @@ Acceptance: time, cash, next Barry, 67m, countdown, four needs, statuses; naviga
 Acceptance: pre-action cost/time/effect visible; lock reason readable.
 
 ### T057 [P0] Casino upgrade/bet/result UI
+Status: 2026-10-02: exit shutdown crash, repeated entry, passive clock and overlapping controls fixed; detailed evidence in reports/release/2026-10-02/GAMEPLAY_AUDIT.md.
 Acceptance: quick bets; upgrade state; active-Drop locks visually clear; map payout toast.
 
 ### T058 [P0] Game Over / Victory flows
@@ -226,6 +230,7 @@ Acceptance: reason/stats/restart; 67m manual confirmation.
 ## E17 — Tutorial / content
 
 ### T059 [P0] First-day contextual tutorial
+Status: 2026-10-02: context-aware placement, hidden during actions/modals/cascade; board and action cards remain unobscured.
 Acceptance: Barry → first work → Drop → cheap upgrade → needs → food/sleep → first Barry payment; no text wall.
 
 ### T060 [P1] Content copy pass

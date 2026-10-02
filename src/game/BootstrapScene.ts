@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
-import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
+import { preloadProductionArt } from './visual/productionArt';
 
 import type { ActiveAction } from '../core/actions/ActiveAction';
 import {
@@ -42,6 +42,7 @@ import {
   settleWork,
   startWork,
 } from '../core/work/work';
+import { createBarryMinigameOverlay, type BarryMinigameOverlay } from './work/createBarryMinigameOverlay';
 import { balance } from '../config/balance';
 import { SceneAudio } from '../audio/SceneAudio';
 import { isPlinkoPerfMode } from '../app/perfMode';
@@ -105,7 +106,7 @@ export class BootstrapScene extends Phaser.Scene {
   private activeAction: ActiveAction | null = null;
   private pendingDrop: PendingDrop | null = null;
   private repository: SaveRepository | null = null;
-  private barryPortrait?: Phaser.GameObjects.Image;
+  private barryOverlay?: BarryMinigameOverlay;
   private readonly activeTime = new ActiveTimeAccumulator(
     balance.time.realSecondsPerGameMinute,
   );
@@ -120,7 +121,6 @@ export class BootstrapScene extends Phaser.Scene {
   private tutorialCard?: TutorialCard;
   private eventOverlay?: EventOverlay;
   private audio: SceneAudio | null = null;
-  private contextControls: Phaser.GameObjects.Text[] = [];
   private contextMode = 'none';
 
   public constructor() {
@@ -132,9 +132,15 @@ export class BootstrapScene extends Phaser.Scene {
   }
 
   public create(): void {
-    const { height } = this.scale;
+    this.state = null;
+    this.activeAction = null;
+    this.pendingDrop = null;
+    this.selectedLocation = null;
+    this.contextMode = 'none';
 
-    this.barryPortrait = addProductionImage(this, 'barry-due', 150, 480, 220, 225, 6).setVisible(false);
+    const { height } = this.scale;
+    this.barryOverlay = createBarryMinigameOverlay(this, balance, () => this.guard(() => this.payBarry()));
+
     this.audio = new SceneAudio(this, 'city');
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.audio?.dispose();
@@ -329,6 +335,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.selectedLocation = id;
     this.mapView?.setSelected(id);
     this.renderSelectedLocation();
+    this.renderTutorial();
   }
 
   private renderSelectedLocation(): void {
@@ -379,6 +386,7 @@ export class BootstrapScene extends Phaser.Scene {
       );
     }
 
+    this.payoutToastText?.setVisible(false);
     this.showMessage(
       'Перед действием видны цена, время, эффект и причина блокировки.',
     );
@@ -388,6 +396,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.actionPanel?.hide();
     this.selectedLocation = null;
     this.mapView?.setSelected(null);
+    this.renderTutorial();
   }
 
   private executeAction(action: ActionPreview): void {
@@ -441,40 +450,7 @@ export class BootstrapScene extends Phaser.Scene {
     throw new Error(`Unknown action preview: ${action.id}`);
   }
 
-  private setContextControls(
-    mode: string,
-    items: Array<[string, () => void]>,
-  ): void {
-    this.clearContextControls();
-    this.contextMode = mode;
-
-    items.forEach(([label, handler], index) => {
-      const button = this.add
-        .text(
-          285 + index * 190,
-          646,
-          `[ ${label} ]`,
-          {
-            color: visualHex('textMain'),
-            backgroundColor: visualHex('inkRaised'),
-            fontFamily: VISUAL_FONT.sans,
-            fontSize: '15px',
-            padding: { x: 10, y: 7 },
-          },
-        )
-        .setDepth(20)
-        .setInteractive({ useHandCursor: true })
-        .on('pointerup', () => this.guard(handler));
-
-      this.contextControls.push(button);
-    });
-  }
-
   private clearContextControls(): void {
-    for (const control of this.contextControls) {
-      control.destroy();
-    }
-    this.contextControls = [];
     this.contextMode = 'none';
   }
 
@@ -913,7 +889,7 @@ export class BootstrapScene extends Phaser.Scene {
       balance.needs.lowThreshold,
     );
 
-    this.barryPortrait?.setVisible(this.state.barryInterruptPending);
+    this.barryOverlay?.hide();
     this.hud.render(this.state);
     this.renderTutorial();
 
@@ -953,7 +929,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.renderSelectedLocation();
     }
 
-    if (this.state.barryInterruptPending) {
+    if (this.state.barryInterruptPending && this.state.terminalReason === null && !this.state.victory) {
       this.eventOverlay?.hide();
       if (
         this.runEndOverlay?.getMode() ===
@@ -961,11 +937,8 @@ export class BootstrapScene extends Phaser.Scene {
       ) {
         this.runEndOverlay.hide();
       }
-      if (this.contextMode !== 'barry') {
-        this.setContextControls('barry', [
-          ['ЗАПЛАТИТЬ БАРРИ', () => this.payBarry()],
-        ]);
-      }
+      this.clearContextControls();
+      this.barryOverlay?.show(this.state);
       this.showMessage(
         '09:00. Карта заблокирована до обязательной выплаты Барри.',
       );
@@ -1046,18 +1019,24 @@ export class BootstrapScene extends Phaser.Scene {
 
     if (
       this.state.terminalReason !== null ||
-      this.state.victory
+      this.state.victory ||
+      this.state.barryInterruptPending ||
+      this.activeAction !== null ||
+      this.selectedLocation !== null ||
+      this.state.pendingEventId !== null ||
+      this.runEndOverlay?.getMode() === 'principal-confirm'
     ) {
       this.tutorialCard.render(null);
+      this.messageText?.setVisible(true);
       return;
     }
 
     const step = deriveTutorialStep(
       loadTutorialProgress(),
     );
-    this.tutorialCard.render(
-      buildTutorialCard(step, 'map'),
-    );
+    const model = buildTutorialCard(step, 'map');
+    this.tutorialCard.render(model);
+    this.messageText?.setVisible(model === null);
   }
 
   private showCasinoPayoutToast(

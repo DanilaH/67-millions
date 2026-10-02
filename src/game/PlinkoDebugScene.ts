@@ -4,6 +4,8 @@ import { createPinTextures } from './casino/createPinTextures';
 import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
 import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 
+import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
+import { advanceRunTime } from '../core/time/runTime';
 import { balance } from '../config/balance';
 import {
   PlinkoAudio,
@@ -118,6 +120,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private mapText?: Phaser.GameObjects.Text;
   private mapMessageText?: Phaser.GameObjects.Text;
   private mapMode = false;
+  private leaving = false;
+  private readonly idleTime = new ActiveTimeAccumulator(balance.time.realSecondsPerGameMinute);
   private lastResultMessage = '';
   private betPanel?: CasinoBetPanel;
   private upgradePanel?: CasinoUpgradePanel;
@@ -135,6 +139,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public create(): void {
+    this.save = null;
+    this.mapMode = false;
+    this.leaving = false;
+    this.lastResultMessage = '';
+    this.visualSnapshot = null;
+    this.pocketLabels.length = 0;
+    this.physicsSaveQueued = false;
+    this.lastPersistedPhysicsTick = 0;
+    this.saveWriteChain = Promise.resolve();
+    this.cascadeMutationChain = Promise.resolve();
+
     this.casinoLayer = this.add.container(0, 0);
     // Draw the painted frame as four cropped strips rather than shading every board pixel.
     const frameSize = this.textures.get(productionArtKey('casino')).getSourceImage();
@@ -184,23 +199,23 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.infoText);
 
     this.statusText = this.add
-      .text(680, 28, '', {
+      .text(28, 605, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
         fontSize: '14px',
-        wordWrap: { width: 560 },
+        wordWrap: { width: 280 },
       })
       .setOrigin(0, 0);
     this.casinoLayer.add(this.statusText);
 
     this.resultText = this.add
-      .text(680, 92, '', {
+      .text(355, 20, '', {
         color: visualHex('mustard'),
         backgroundColor: visualHex('inkPanel'),
         fontFamily: VISUAL_FONT.mono,
         fontSize: '14px',
         padding: { x: 10, y: 8 },
-        wordWrap: { width: 545 },
+        wordWrap: { width: 550 },
       })
       .setOrigin(0, 0)
       .setVisible(false);
@@ -222,6 +237,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         acknowledgeCurrentTutorialInfo(step);
         this.renderTutorial();
       },
+      'casino',
     );
     void this.initialize();
 
@@ -231,7 +247,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         document.removeEventListener('visibilitychange', this.visibilityHandler);
         this.visibilityHandler = null;
       }
-      this.matter.world.off('collisionstart', this.handleAudioCollision);
+      this.matter.world?.off('collisionstart', this.handleAudioCollision);
       this.input.off('pointerdown', this.handleAudioPrime);
       this.game.events.off(
         GAME_AUDIO_BLOCKED_EVENT,
@@ -248,7 +264,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     });
   }
 
-  public update(): void {
+  public update(_time: number, deltaMs: number): void {
+    if (this.save && this.runtime && !this.leaving && !this.save.pendingDrop && !isPlinkoPerfMode()) {
+      if (this.save.game.barryInterruptPending || this.save.game.terminalReason !== null ||
+          this.save.game.victory || this.save.game.pendingEventId !== null) {
+        void this.leaveCasino();
+      } else {
+        const minutes = this.idleTime.consume(deltaMs / 1000, true);
+        if (minutes > 0) this.advanceCasinoTime(minutes);
+      }
+    }
     if (!this.staticBoardGraphics || this.mapMode) return;
 
     let index = 0;
@@ -291,7 +316,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         ? pendingAtLoad.rngStateAtCommit
         : this.save.game.rngState,
     );
-    this.runtime = createBarePlinko(this, balance, this.random, {
+    this.runtime = createBarePlinko(this, balance, { next: () => this.random!.next() }, {
       onPocket: (index, body) => {
         const multiplier =
           this.visualSnapshot?.pocketMultipliers[index] ??
@@ -309,6 +334,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
       },
       onFixedTick: (fixedTicksElapsed) => {
+        // Derive passive cascade minutes from saved solver ticks, so reload does
+        // not reset the minute phase or change the outcome. Barry freezes time.
+        if (this.save?.pendingDrop && !isPlinkoPerfMode()) {
+          const ticksPerMinute = 60 * balance.time.realSecondsPerGameMinute;
+          if (Math.floor(fixedTicksElapsed / ticksPerMinute) >
+              Math.floor((fixedTicksElapsed - 1) / ticksPerMinute)) this.advanceCasinoTime(1);
+        }
         const probe = window.__PLINKO_PERF__;
         if (probe?.phase === 'running') {
           probe.activeBallCount = this.balls.size;
@@ -428,7 +460,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
 
     const leaveButton = this.add
-      .text(690, 650, '[ НА КАРТУ ]', {
+      .text(1040, 640, '[ НА КАРТУ ]', {
         color: visualHex('textMain'),
         backgroundColor: visualHex('inkRaised'),
         fontFamily: VISUAL_FONT.sans,
@@ -440,8 +472,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(leaveButton);
   }
 
+  private advanceCasinoTime(minutes: number): void {
+    if (!this.save || this.save.game.barryInterruptPending || this.save.game.terminalReason !== null || this.save.game.victory) return;
+    const advanced = advanceRunTime(this.save.game, null, minutes, balance);
+    this.save = { ...this.save, game: advanced.state };
+    // Event checkpoints and Plinko share the authoritative RNG stream.
+    this.random = new SeededRandom(this.save.game.rngState);
+    void this.enqueueSave(false);
+    this.renderAll();
+  }
+
   private installMapLayer(): void {
     if (!this.mapLayer) return;
+    this.mapLayer.add(addProductionImage(this, 'map', 640, 360, 1280, 720).setAlpha(0.28));
 
     const title = this.add
       .text(40, 36, 'КАРТА · DROP РАЗРЕШАЕТСЯ', {
@@ -483,10 +526,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.mapLayer.add([title, this.mapText, this.mapMessageText, returnButton]);
   }
 
-  private leaveCasino(): void {
-    if (!this.save) return;
+  private async leaveCasino(): Promise<void> {
+    if (!this.save || this.leaving) return;
 
     if (!this.save.pendingDrop) {
+      this.leaving = true;
+      await this.enqueueSave(true);
       this.scene.start('bootstrap');
       return;
     }
@@ -495,7 +540,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer?.setVisible(false);
     this.mapLayer?.setVisible(true);
     this.lastResultMessage =
-      'Drop is still physically resolving off-screen. All gameplay/cash actions are intentionally unavailable.';
+      'Бросок продолжается. После выплаты откроется карта. Можно вернуться и досмотреть.';
     this.renderMap();
     this.renderTutorial();
   }
@@ -511,7 +556,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private async purchaseUpgrade(
     id: CasinoUpgradeId,
   ): Promise<void> {
-    if (!this.save || !this.repository) return;
+    if (!this.save || !this.repository || this.leaving) return;
 
     try {
       let game = this.save.game;
@@ -575,7 +620,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private async commitAndSpawn(fraction: BetFraction): Promise<void> {
-    if (!this.save || !this.repository || !this.runtime || !this.random) return;
+    if (!this.save || !this.repository || !this.runtime || !this.random || this.leaving) return;
     if (this.save.activeAction) {
       this.showStatus('Finish the active non-Plinko action first.');
       return;
@@ -584,6 +629,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     try {
       const dropId =
         `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
+      this.random = new SeededRandom(this.save.game.rngState);
       const committed = commitBareDrop(
         this.save.game,
         this.save.pendingDrop,
@@ -874,7 +920,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       insuranceTopUp: result.insuranceTopUp,
     });
 
-    this.showStatus(this.lastResultMessage);
+    this.showStatus('');
     this.resultText
       ?.setText(this.lastResultMessage)
       .setColor(
@@ -1104,14 +1150,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
         : `L${snapshot.insuranceLevel}${snapshot.insuranceArmed ? ' · ВЗВЕДЕНА' : ''}`;
 
     this.infoText.setText([
-      'КАЗИНО / PLINKO',
+      `ДЕНЬ ${this.save.game.clock.gameDayIndex + 1} · ${Math.floor(this.save.game.clock.minuteOfDay / 60).toString().padStart(2, '0')}:${(this.save.game.clock.minuteOfDay % 60).toString().padStart(2, '0')}`,
       `Деньги: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
       `Макс. ставка: ${maxBet.toLocaleString('ru-RU')} ₽`,
       `Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake.toLocaleString('ru-RU')} ₽ · ИДЁТ` : 'готов'}`,
       `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
       special
-        ? `AMP L${special.amplifierLevel} · RETURN L${special.returnLevel} · SPLIT L${special.splitterLevel} · BIAS L${special.jackpotBiasLevel}`
-        : 'AMP L0 · RETURN L0 · SPLIT L0 · BIAS L0',
+        ? `AMP L${special.amplifierLevel} · RETURN L${special.returnLevel}\nSPLIT L${special.splitterLevel} · BIAS L${special.jackpotBiasLevel}`
+        : 'AMP L0 · RETURN L0\nSPLIT L0 · BIAS L0',
       `INSURANCE ${insurance}`,
     ]);
 
@@ -1141,13 +1187,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.mapText || !this.mapMessageText || !this.save) return;
 
     this.mapText.setText([
-      `Cash: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
-      `Principal: ${this.save.game.mainDebt.toLocaleString('ru-RU')} ₽`,
+      `Деньги: ${this.save.game.cash.toLocaleString('ru-RU')} ₽`,
+      `Основной долг: ${this.save.game.mainDebt.toLocaleString('ru-RU')} ₽`,
       `HP: ${this.save.game.needs.health.toFixed(1)}`,
-      `Satiety: ${this.save.game.needs.satiety.toFixed(1)}`,
-      `Energy: ${this.save.game.needs.energy.toFixed(1)}`,
-      `Happiness: ${this.save.game.needs.happiness.toFixed(1)}`,
-      `Pending Drop: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake} ₽ resolving` : 'none'}`,
+      `Сытость: ${this.save.game.needs.satiety.toFixed(1)}`,
+      `Энергия: ${this.save.game.needs.energy.toFixed(1)}`,
+      `Счастье: ${this.save.game.needs.happiness.toFixed(1)}`,
+      `Бросок: ${this.save.pendingDrop ? `${this.save.pendingDrop.originalStake} ₽ — в процессе` : 'завершён'}`,
     ]);
 
     this.mapMessageText.setText(
@@ -1163,7 +1209,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     if (
       this.save.game.terminalReason !== null ||
-      this.save.game.victory
+      this.save.game.victory || this.mapMode || this.save.pendingDrop !== null
     ) {
       this.tutorialCard.render(null);
       return;

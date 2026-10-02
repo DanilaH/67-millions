@@ -18,6 +18,7 @@ export const createActionPanel = (
     .container(0, 0)
     .setDepth(200)
     .setVisible(false);
+  let lastSignature = '';
   const dynamic: Phaser.GameObjects.GameObject[] = [];
 
   const backdrop = scene.add.rectangle(
@@ -65,6 +66,9 @@ export const createActionPanel = (
     title: string,
     actions: ActionPreview[],
   ): void => {
+    const signature = JSON.stringify([title, actions]);
+    if (signature === lastSignature && container.visible) return;
+    lastSignature = signature;
     clearDynamic();
     titleText.setText(title);
 
@@ -111,7 +115,7 @@ export const createActionPanel = (
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
-          fontSize: '11px',
+          fontSize: '13px',
           wordWrap: { width: width - 24 },
         },
       );

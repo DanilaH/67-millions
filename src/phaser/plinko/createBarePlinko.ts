@@ -56,6 +56,8 @@ export const createBarePlinko = (
   callbacks: BarePlinkoCallbacks = {},
 ): BarePlinkoRuntime => {
   const matter = scene.matter;
+  // The Matter plugin nulls its world before user SHUTDOWN listeners run.
+  const world = matter.world;
   const layout = deriveBarePlinkoLayout(config);
   const geometry = config.plinko.geometry;
   const physics = config.plinko.physicsSeed;
@@ -65,7 +67,7 @@ export const createBarePlinko = (
   let fixedTicksElapsed = 0;
 
   matter.set60Hz();
-  matter.world.setGravity(0, physics.gravityY);
+  world.setGravity(0, physics.gravityY);
 
   const addCreated = (body: MatterJS.BodyType): MatterJS.BodyType => {
     createdBodies.add(body);
@@ -237,7 +239,7 @@ export const createBarePlinko = (
 
   const setJackpotBiasLevel = (level: number): void => {
     for (const body of jackpotBiasBodies) {
-      matter.world.remove(body);
+      world.remove(body);
       createdBodies.delete(body);
     }
     jackpotBiasBodies.clear();
@@ -267,13 +269,13 @@ export const createBarePlinko = (
   };
 
   const removeBall = (body: MatterJS.BodyType): void => {
-    matter.world.remove(body);
+    world.remove(body);
     createdBodies.delete(body);
     ballStationaryTicks.delete(body);
   };
 
-  matter.world.on('collisionstart', handleCollision);
-  matter.world.on('afterupdate', handleAfterUpdate);
+  world.on('collisionstart', handleCollision);
+  world.on('afterupdate', handleAfterUpdate);
 
   return {
     layout,
@@ -341,8 +343,8 @@ export const createBarePlinko = (
         ballStationaryTicks.get(body) ?? 0,
     }),
     getFixedTicksElapsed: () => fixedTicksElapsed,
-    snapshotSolver: balls => snapshotSolver(matter.world.engine, matter.world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId]))),
-    restoreSolver: (snapshot, balls) => restoreSolver(matter.world.engine, matter.world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId])), snapshot),
+    snapshotSolver: balls => snapshotSolver(world.engine, world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId]))),
+    restoreSolver: (snapshot, balls) => restoreSolver(world.engine, world.getAllBodies(), new Map([...balls].map(([body, state]) => [body, state.ballId])), snapshot),
     setFixedTicksElapsed: (ticks) => {
       if (!Number.isInteger(ticks) || ticks < 0) {
         throw new RangeError(
@@ -352,10 +354,10 @@ export const createBarePlinko = (
       fixedTicksElapsed = ticks;
     },
     destroy: () => {
-      matter.world.off('collisionstart', handleCollision);
-      matter.world.off('afterupdate', handleAfterUpdate);
+      world.off('collisionstart', handleCollision);
+      world.off('afterupdate', handleAfterUpdate);
       for (const body of createdBodies) {
-        matter.world.remove(body);
+        world.remove(body);
       }
       createdBodies.clear();
       jackpotBiasBodies.clear();

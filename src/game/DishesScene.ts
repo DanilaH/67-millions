@@ -20,6 +20,7 @@ import type { WorkActiveAction } from '../core/actions/ActiveAction';
 import {
   advanceDishesSession,
   createDishesSession,
+  DISHES_INTERACTION,
   getDishesCleanPercent,
   getDishesRemainingMs,
   scrubDishes,
@@ -46,11 +47,14 @@ export class DishesScene extends Phaser.Scene {
   private pointerDown = false;
   private completionInFlight = false;
   private saveWriteChain: Promise<void> = Promise.resolve();
-  private readonly minigameClock = new WorkMinigameClock(balance);
+  private minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
   private plateImages: Phaser.GameObjects.Image[] = [];
+
+  private dirtTexture?: Phaser.Textures.CanvasTexture;
+  private renderedSpots: DishesSession['spots'] | null = null;
 
   public constructor() {
     super('dishes');
@@ -61,7 +65,19 @@ export class DishesScene extends Phaser.Scene {
   }
 
   public create(): void {
+    this.save = null;
+    this.session = null;
+    this.completionInFlight = false;
+    this.saveWriteChain = Promise.resolve();
+    this.minigameClock = new WorkMinigameClock(balance);
+    this.pointerDown = false;
+    this.lastPointer = null;
     this.plateImages = [];
+    this.renderedSpots = null;
+    const dirtKey = '67m:dishes-dirt';
+    if (this.textures.exists(dirtKey)) this.textures.remove(dirtKey);
+    this.dirtTexture = this.textures.createCanvas(dirtKey, 1280, 720)!;
+    this.add.image(0, 0, dirtKey).setOrigin(0).setDepth(1);
     addProductionImage(this, 'dishes', 640, 375, 1080, 525);
     const { width } = this.scale;
 
@@ -80,7 +96,7 @@ export class DishesScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Зажми и води губкой по грязным точкам. Нужно очистить минимум 90%.',
+        'Зажми и води губкой по слою грязи. Нужно очистить минимум 90%.',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
@@ -113,7 +129,7 @@ export class DishesScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 0);
 
-    this.graphics = this.add.graphics().setDepth(1);
+    this.graphics = this.add.graphics().setDepth(2);
     this.barryOverlay = createBarryMinigameOverlay(
       this,
       balance,
@@ -452,12 +468,21 @@ export class DishesScene extends Phaser.Scene {
       image.setPosition(plate.x, plate.y);
     });
 
-    for (const spot of this.session.spots) {
-      if (spot.cleaned) continue;
-      graphics.fillStyle(visualColor('rust'), 0.95);
-      graphics.fillCircle(spot.x, spot.y, 9);
-      graphics.fillStyle(visualColor('inkDeep'), 0.72);
-      graphics.fillCircle(spot.x + 2, spot.y - 2, 4);
+    if (this.dirtTexture && this.renderedSpots !== this.session.spots) {
+      const context = this.dirtTexture.context;
+      context.clearRect(0, 0, 1280, 720);
+      const size = DISHES_INTERACTION.dirtCellSize;
+      for (const spot of this.session.spots) {
+        if (spot.cleaned) continue;
+        // Continuous greasy film with deterministic mottling and fine grain.
+        const grain = Math.sin(spot.x * 12.9898 + spot.y * 78.233) * 43758.5453;
+        const noise = grain - Math.floor(grain);
+        const stain = (Math.sin(spot.x * 0.073) * Math.cos(spot.y * 0.097) + 1) / 2;
+        context.fillStyle = `rgba(${75 + Math.floor(noise * 28)}, ${43 + Math.floor(stain * 27)}, 24, ${0.72 + stain * 0.24})`;
+        context.fillRect(spot.x - size / 2, spot.y - size / 2, size, size);
+      }
+      this.dirtTexture.refresh();
+      this.renderedSpots = this.session.spots;
     }
 
     if (this.pointerDown && this.lastPointer) {

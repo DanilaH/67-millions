@@ -72,10 +72,11 @@ try {
   await page.reload({waitUntil:'networkidle'});await ready();await page.waitForTimeout(300);inputRect=await page.locator('canvas').boundingBox();
   await page.screenshot({path:`${output}/${job}.png`});
   if(job==='dishes') {
-   const spots=createDishesSession(balance).spots;
-   await move(spots[0].x,spots[0].y);await down();
-   for(const spot of spots){await move(spot.x,spot.y);await page.waitForTimeout(17);}
-   await up();
+   for (const plate of createDishesSession(balance).plates) {
+    await move(plate.x-65,plate.y-45);await down();
+    for(const [row,offset] of [-45,0,45].entries()){await move(plate.x+(row%2===0?65:-65),plate.y+offset,{steps:6});await page.waitForTimeout(25);}
+    await up();
+   }
   } else if(job==='trash') {
    const session=createTrashSession(balance);
    for(const bag of session.bags){await move(bag.x,bag.y);await down();await move(session.target.x+150,session.target.y+150,{steps:6});await up();await page.waitForTimeout(30);}

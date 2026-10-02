@@ -186,7 +186,12 @@ export const createMainMapView = (
       )
       .setOrigin(0.5)
       .setDepth(2)
-      .setInteractive({ useHandCursor: true })
+      .setInteractive({
+        hitArea: new Phaser.Geom.Rectangle(0, 0, 184, 108),
+        hitAreaCallback: (_area: unknown, x: number, y: number) =>
+          Math.abs(x - button.width / 2) <= 92 && Math.abs(y - button.height / 2 - 18) <= 54,
+        useHandCursor: true,
+      })
       .on('pointerup', () => {
         if (!enabled) return;
         selected = location.id;
@@ -235,7 +240,7 @@ export const createMainMapView = (
       enabled = value;
       for (const button of buttons.values()) {
         if (enabled) {
-          button.setInteractive({ useHandCursor: true });
+          if (button.input) button.input.enabled = true;
         } else {
           button.disableInteractive();
         }

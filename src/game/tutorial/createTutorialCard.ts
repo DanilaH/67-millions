@@ -10,7 +10,13 @@ export interface TutorialCard {
 export const createTutorialCard = (
   scene: Phaser.Scene,
   onAcknowledge: (step: 'BARRY' | 'NEEDS') => void,
+  surface: 'map' | 'casino' = 'map',
 ): TutorialCard => {
+  const casino = surface === 'casino';
+  const x = casino ? 20 : 260;
+  const y = casino ? 420 : 612;
+  const width = casino ? 300 : 1006;
+  const height = casino ? 176 : 96;
   const container = scene.add
     .container(0, 0)
     .setDepth(1_500)
@@ -18,17 +24,17 @@ export const createTutorialCard = (
 
   const panel = scene.add
     .rectangle(
-      620,
-      545,
-      650,
-      118,
+      x + width / 2,
+      y + height / 2,
+      width,
+      height,
       visualColor('inkPanel'),
       0.97,
     )
     .setStrokeStyle(2, visualColor('paperOld'), 1);
 
   const title = scene.add
-    .text(315, 500, '', {
+    .text(x + 16, y + 10, '', {
       color: visualHex('mustard'),
       fontFamily: VISUAL_FONT.sans,
       fontSize: '16px',
@@ -37,23 +43,23 @@ export const createTutorialCard = (
     .setOrigin(0, 0);
 
   const body = scene.add
-    .text(315, 526, '', {
+    .text(x + 16, y + 34, '', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.sans,
       fontSize: '14px',
-      wordWrap: { width: 500 },
+      wordWrap: { width: casino ? width - 32 : width - 170 },
       lineSpacing: 3,
     })
     .setOrigin(0, 0);
 
   const acknowledge = scene.add
-    .text(925, 564, '[ ПОНЯТНО ]', {
+    .text(x + width - 16, y + height - 48, '[ ПОНЯТНО ]', {
       color: visualHex('inkDeep'),
       backgroundColor: visualHex('mustard'),
       fontFamily: VISUAL_FONT.sans,
       fontSize: '13px',
       fontStyle: 'bold',
-      padding: { x: 9, y: 6 },
+      padding: { x: 9, y: 13 },
     })
     .setOrigin(1, 0)
     .setInteractive({ useHandCursor: true });

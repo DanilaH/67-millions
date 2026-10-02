@@ -22,7 +22,8 @@ import {
   canBeginCourierRoute,
   createCourierSession,
   redrawCourierRoute,
-  resolveCourierRoute,
+  startCourierDelivery,
+  advanceCourierSession,
   type CourierPoint,
   type CourierSession,
 } from '../minigames/courier/courierModel';
@@ -62,10 +63,11 @@ export class CourierScene extends Phaser.Scene {
   private graphics?: Phaser.GameObjects.Graphics;
   private statusText?: Phaser.GameObjects.Text;
   private redrawText?: Phaser.GameObjects.Text;
+  private startText?: Phaser.GameObjects.Text;
   private drawing = false;
   private completionInFlight = false;
   private saveWriteChain: Promise<void> = Promise.resolve();
-  private readonly minigameClock = new WorkMinigameClock(balance);
+  private minigameClock = new WorkMinigameClock(balance);
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
@@ -81,6 +83,12 @@ export class CourierScene extends Phaser.Scene {
   }
 
   public create(): void {
+    this.save = null;
+    this.session = null;
+    this.completionInFlight = false;
+    this.saveWriteChain = Promise.resolve();
+    this.minigameClock = new WorkMinigameClock(balance);
+    this.drawing = false;
     this.obstacleImages = [];
     this.courierImage = undefined;
     addProductionImage(this, 'courier', 640, 375, 1080, 525);
@@ -120,10 +128,12 @@ export class CourierScene extends Phaser.Scene {
     );
 
     this.statusText = this.add
-      .text(width / 2, 660, '', {
+      .text(width / 2, 646, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
-        fontSize: '19px',
+        fontSize: '17px',
+        wordWrap: { width: 640 },
+        align: 'center',
       })
       .setOrigin(0.5, 0);
 
@@ -133,18 +143,18 @@ export class CourierScene extends Phaser.Scene {
         backgroundColor: visualHex('inkRaised'),
         fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
-        padding: { x: 10, y: 8 },
+        padding: { x: 10, y: 13 },
       })
       .setInteractive({ useHandCursor: true })
       .on('pointerup', () => this.redraw());
 
-    this.add
+    this.startText = this.add
       .text(width - 36, 650, '[ СТАРТ ]', {
         color: visualHex('textMain'),
         backgroundColor: visualHex('mold'),
         fontFamily: VISUAL_FONT.sans,
         fontSize: '17px',
-        padding: { x: 10, y: 8 },
+        padding: { x: 10, y: 13 },
       })
       .setOrigin(1, 0)
       .setInteractive({ useHandCursor: true })
@@ -224,6 +234,11 @@ export class CourierScene extends Phaser.Scene {
     }
 
     this.barryOverlay?.hide();
+    if (this.session.started) {
+      this.session = advanceCourierSession(this.session, deltaMs);
+      this.render();
+      if (this.session.result !== null) void this.completeDelivery();
+    }
   }
 
   private async initialize(): Promise<void> {
@@ -419,9 +434,13 @@ export class CourierScene extends Phaser.Scene {
     }
 
     this.drawing = false;
-    this.session = resolveCourierRoute(this.session);
+    this.session = startCourierDelivery(this.session);
+    this.render();
+  }
 
-    if (this.session.result === null) return;
+  private async completeDelivery(): Promise<void> {
+    if (!this.session || this.session.result === null || this.completionInFlight ||
+        !this.save || !isCourierAction(this.save.activeAction)) return;
 
     this.completionInFlight = true;
     const skillResult = this.session.result;
@@ -461,7 +480,7 @@ export class CourierScene extends Phaser.Scene {
 
     const message =
       skillResult === 'SUCCESS'
-        ? 'УСПЕХ — маршрут проходим.'
+        ? 'УСПЕХ — заказ доставлен.'
         : `ПРОВАЛ — ${this.session.failureReason ?? 'маршрут не прошёл проверку'}.`;
     const shift =
       completion.shiftCompleted
@@ -511,7 +530,7 @@ export class CourierScene extends Phaser.Scene {
     }
 
     this.courierImage ??= addProductionImage(this, 'courier-icon', this.session.start.x, this.session.start.y, 58, 58, 2);
-    this.courierImage.setPosition(this.session.start.x, this.session.start.y);
+    this.courierImage.setPosition(this.session.position.x, this.session.position.y);
     graphics.fillStyle(visualColor('good'), 1);
     graphics.fillCircle(
       this.session.start.x,
@@ -569,11 +588,17 @@ export class CourierScene extends Phaser.Scene {
       `[ ПЕРЕРИСОВАТЬ (${this.session.redrawsRemaining}) ]`,
     );
 
+    const editable = !this.session.started && !this.completionInFlight;
+    this.redrawText?.setAlpha(editable && this.session.route.length > 0 && this.session.redrawsRemaining > 0 ? 1 : 0.45);
+    this.startText?.setAlpha(editable && this.session.route.length >= 2 ? 1 : 0.45);
+
     if (!this.completionInFlight) {
       const suffix =
-        this.session.route.length === 0
+        this.session.started
+          ? 'Курьер в пути…'
+          : this.session.route.length === 0
           ? 'Начни в зелёной зоне.'
-          : 'Нажми СТАРТ для проверки маршрута.';
+          : 'Нажми СТАРТ, чтобы отправить курьера.';
       this.statusText?.setText(suffix);
     }
   }

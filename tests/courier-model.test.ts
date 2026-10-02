@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { balance } from '../src/config/balance';
 import {
   appendCourierRoutePoint,
+  startCourierDelivery,
+  advanceCourierSession,
   createCourierSession,
   getCourierRules,
   redrawCourierRoute,
@@ -96,7 +98,7 @@ describe('Courier minigame model', () => {
     const resolved = resolveCourierRoute(session);
     expect(resolved.result).toBe('FAILURE');
     expect(resolved.failureReason).toBe(
-      'Route intersects an obstacle',
+      'Курьер врезался в препятствие',
     );
   });
 
@@ -114,7 +116,7 @@ describe('Courier minigame model', () => {
     const resolved = resolveCourierRoute(session);
     expect(resolved.result).toBe('FAILURE');
     expect(resolved.failureReason).toBe(
-      'Route does not reach destination',
+      'Маршрут закончился до точки доставки',
     );
   });
 
@@ -143,5 +145,55 @@ describe('Courier minigame model', () => {
       ).route,
     ).toEqual(routeBefore);
     expect(redrawCourierRoute(resolved).route).toEqual(routeBefore);
+  });
+});
+
+describe('Courier physical traversal regressions', () => {
+  it('starts at pickup and reaches the delivery point only after travelling', () => {
+    let session = createCourierSession(balance, 905);
+    for (const p of [session.start, { x: 180, y: 600 }, { x: 1100, y: 600 }, session.finish]) session = appendCourierRoutePoint(session, p);
+    session = startCourierDelivery(session);
+    expect(session.result).toBeNull();
+    expect(session.position).toEqual(session.start);
+    session = advanceCourierSession(session, 500);
+    expect(session.result).toBeNull();
+    expect(session.position.y).toBeGreaterThan(session.start.y);
+    session = advanceCourierSession(session, 10_000);
+    expect(session.result).toBe('SUCCESS');
+    expect(session.position).toEqual(session.finish);
+  });
+
+  it('fails at first sprite contact, not at START or beyond the obstacle', () => {
+    let session = createCourierSession(balance, 905);
+    session = { ...session, obstacles: [{ id: 'wall', x: 600, y: 365, width: 120, height: 115 }], route: [session.start, session.finish] };
+    const started = startCourierDelivery(session);
+    const before = advanceCourierSession(started, 1000);
+    expect(before.result).toBeNull();
+    expect(before.position.x).toBe(420);
+    const collided = advanceCourierSession(before, 1000);
+    expect(collided.result).toBe('FAILURE');
+    expect(collided.position.x).toBe(511); // box edge 540 minus sprite half-size 29
+    const giantFrame = advanceCourierSession(started, 10_000);
+    expect(giantFrame.position).toEqual(collided.position);
+    expect(advanceCourierSession(collided, 1000)).toBe(collided);
+  });
+
+  it('does not treat collinear but disjoint box edges as a collision', () => {
+    let session = createCourierSession(balance, 905);
+    session = { ...session, obstacles: [{ id: 'far', x: 900, y: 278.5, width: 120, height: 115 }], route: [session.start, { x: 300, y: 365 }] };
+    const ended = advanceCourierSession(startCourierDelivery(session), 1000);
+    expect(ended.position.x).toBe(300);
+    expect(ended.failureReason).toBe('Маршрут закончился до точки доставки');
+  });
+
+  it('anchors a near-pickup stroke to the character and ignores invalid input', () => {
+    const empty = createCourierSession(balance, 905);
+    expect(redrawCourierRoute(empty)).toBe(empty);
+    expect(startCourierDelivery(empty)).toBe(empty);
+    expect(appendCourierRoutePoint(empty, { x: NaN, y: 365 })).toBe(empty);
+    const drawn = appendCourierRoutePoint(empty, { x: 200, y: 365 });
+    expect(drawn.route[0]).toEqual(empty.start);
+    expect(drawn.route[1]).toEqual({ x: 200, y: 365 });
+    expect(() => advanceCourierSession(drawn, -1)).toThrow();
   });
 });

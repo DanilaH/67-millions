@@ -20,7 +20,7 @@ describe('Dishes minigame model', () => {
     const session = createDishesSession(balance);
     expect(session.durationMs).toBe(20_000);
     expect(session.successCleanPercent).toBe(0.9);
-    expect(session.spots).toHaveLength(60);
+    expect(session.spots.length).toBeGreaterThan(5000);
     expect(getDishesCleanPercent(session)).toBe(0);
   });
 
@@ -89,5 +89,29 @@ describe('Dishes minigame model', () => {
     );
 
     expect(afterScrub).toEqual(session);
+  });
+});
+
+describe('Dishes surface eraser regressions', () => {
+  it('clears only the touched area and keeps the original session immutable', () => {
+    const initial = createDishesSession(balance);
+    const plate = initial.plates[0]!;
+    const scrubbed = scrubDishes(initial, plate, plate);
+    expect(getDishesCleanPercent(initial)).toBe(0);
+    // One central brush footprint is about 6% of five whole dirty surfaces.
+    expect(getDishesCleanPercent(scrubbed)).toBeGreaterThan(0.05);
+    expect(getDishesCleanPercent(scrubbed)).toBeLessThan(0.08);
+    expect(scrubDishes(scrubbed, plate, plate)).toBe(scrubbed);
+    expect(scrubDishes(initial, { x: NaN, y: 0 }, plate)).toBe(initial);
+  });
+
+  it('erases the same continuous strip for sparse and dense pointer events', () => {
+    const initial = createDishesSession(balance);
+    const start = { x: 250, y: 250 }, end = { x: 420, y: 250 };
+    const sparse = scrubDishes(initial, start, end);
+    let dense = initial;
+    for (let x = start.x; x < end.x; x += 10) dense = scrubDishes(dense, { x, y: 250 }, { x: x + 10, y: 250 });
+    expect(dense.spots).toEqual(sparse.spots);
+    expect(dense.result).toBeNull();
   });
 });

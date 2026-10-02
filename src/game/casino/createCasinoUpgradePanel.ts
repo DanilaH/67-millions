@@ -20,6 +20,7 @@ export const createCasinoUpgradePanel = (
     .container(0, 0)
     .setDepth(20);
   parent?.add(container);
+  let lastSignature = '';
   const dynamic: Phaser.GameObjects.GameObject[] = [];
 
   const background = scene.add
@@ -46,6 +47,9 @@ export const createCasinoUpgradePanel = (
 
   return {
     render: (previews) => {
+      const signature = JSON.stringify(previews);
+      if (signature === lastSignature && container.visible) return;
+      lastSignature = signature;
       clearDynamic();
 
       previews.forEach((preview, index) => {
@@ -73,7 +77,7 @@ export const createCasinoUpgradePanel = (
           {
             color: locked ? visualHex('textMuted') : visualHex('textMain'),
             fontFamily: VISUAL_FONT.sans,
-            fontSize: '12px',
+            fontSize: '14px',
             fontStyle: 'bold',
           },
         );
@@ -85,14 +89,14 @@ export const createCasinoUpgradePanel = (
           {
             color: visualHex('textMuted'),
             fontFamily: VISUAL_FONT.sans,
-            fontSize: '10px',
+            fontSize: '12px',
           },
         );
 
         const action = scene.add
           .text(
             1242,
-            y + 8,
+            y + 25,
             preview.maxed
               ? 'MAX'
               : locked
@@ -101,9 +105,9 @@ export const createCasinoUpgradePanel = (
             {
               color: locked ? visualHex('warning') : visualHex('mustard'),
               fontFamily: VISUAL_FONT.mono,
-              fontSize: '10px',
+              fontSize: '12px',
               align: 'right',
-              wordWrap: { width: 126 },
+              wordWrap: { width: 190 },
             },
           )
           .setOrigin(1, 0);

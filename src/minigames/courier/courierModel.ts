@@ -18,6 +18,8 @@ export interface CourierObstacle {
 
 export interface CourierSession {
   seed: number;
+  position: CourierPoint;
+  nextRouteIndex: number;
   start: CourierPoint;
   finish: CourierPoint;
   startRadius: number;
@@ -43,6 +45,8 @@ export const COURIER_INTERACTION = {
   startRadius: 62,
   finishRadius: 72,
   routeThickness: 18,
+  courierHalfSize: 29,
+  speedPixelsPerSecond: 240,
   obstacleWidth: 120,
   obstacleHeight: 115,
   obstacleColumns: [390, 610, 830],
@@ -127,11 +131,19 @@ const createObstacles = (
   for (let index = 0; index < count; index += 1) {
     const columnIndex = index % columns.length;
     const x = columns[columnIndex]!;
-    const y =
+    let y =
       COURIER_INTERACTION.obstacleYMin +
       rng.next() *
         (COURIER_INTERACTION.obstacleYMax -
           COURIER_INTERACTION.obstacleYMin);
+
+    const previousInColumn = obstacles.find(obstacle => obstacle.x === x);
+    if (previousInColumn && Math.abs(y - previousInColumn.y) < COURIER_INTERACTION.obstacleHeight + 16) {
+      // Keep the optional fourth crate distinct instead of stacking two sprites.
+      const gap = COURIER_INTERACTION.obstacleHeight + 16;
+      y = previousInColumn.y + gap <= COURIER_INTERACTION.obstacleYMax
+        ? previousInColumn.y + gap : previousInColumn.y - gap;
+    }
 
     obstacles.push({
       id: `courier-obstacle-${index}`,
@@ -159,6 +171,8 @@ export const createCourierSession = (
 
   return {
     seed,
+    position: { ...COURIER_INTERACTION.start },
+    nextRouteIndex: 1,
     start: { ...COURIER_INTERACTION.start },
     finish: { ...COURIER_INTERACTION.finish },
     startRadius: COURIER_INTERACTION.startRadius,
@@ -198,6 +212,7 @@ export const appendCourierRoutePoint = (
   if (session.started || session.result !== null) return session;
 
   if (
+    !Number.isFinite(point.x) || !Number.isFinite(point.y) ||
     point.x < COURIER_INTERACTION.map.left ||
     point.x > COURIER_INTERACTION.map.right ||
     point.y < COURIER_INTERACTION.map.top ||
@@ -223,7 +238,11 @@ export const appendCourierRoutePoint = (
 
   return {
     ...session,
-    route: [...session.route, { ...point }],
+    route: session.route.length === 0
+      ? distanceSquared(session.start, point) < 9
+        ? [{ ...session.start }]
+        : [{ ...session.start }, { ...point }]
+      : [...session.route, { ...point }],
   };
 };
 
@@ -233,7 +252,8 @@ export const redrawCourierRoute = (
   if (
     session.started ||
     session.result !== null ||
-    session.redrawsRemaining <= 0
+    session.redrawsRemaining <= 0 ||
+    session.route.length === 0
   ) {
     return session;
   }
@@ -245,142 +265,82 @@ export const redrawCourierRoute = (
   };
 };
 
-const pointInsideExpandedObstacle = (
-  point: CourierPoint,
-  obstacle: CourierObstacle,
-  padding: number,
-): boolean =>
-  point.x >= obstacle.x - obstacle.width / 2 - padding &&
-  point.x <= obstacle.x + obstacle.width / 2 + padding &&
-  point.y >= obstacle.y - obstacle.height / 2 - padding &&
-  point.y <= obstacle.y + obstacle.height / 2 + padding;
-
-const segmentIntersectsExpandedRect = (
-  start: CourierPoint,
-  end: CourierPoint,
-  obstacle: CourierObstacle,
-  padding: number,
-): boolean => {
-  if (
-    pointInsideExpandedObstacle(start, obstacle, padding) ||
-    pointInsideExpandedObstacle(end, obstacle, padding)
-  ) {
-    return true;
-  }
-
-  const left =
-    obstacle.x - obstacle.width / 2 - padding;
-  const right =
-    obstacle.x + obstacle.width / 2 + padding;
-  const top =
-    obstacle.y - obstacle.height / 2 - padding;
-  const bottom =
-    obstacle.y + obstacle.height / 2 + padding;
-
-  const edges: Array<[CourierPoint, CourierPoint]> = [
-    [{ x: left, y: top }, { x: right, y: top }],
-    [{ x: right, y: top }, { x: right, y: bottom }],
-    [{ x: right, y: bottom }, { x: left, y: bottom }],
-    [{ x: left, y: bottom }, { x: left, y: top }],
-  ];
-
-  const orientation = (
-    a: CourierPoint,
-    b: CourierPoint,
-    c: CourierPoint,
-  ): number =>
-    (b.x - a.x) * (c.y - a.y) -
-    (b.y - a.y) * (c.x - a.x);
-
-  const intersects = (
-    a: CourierPoint,
-    b: CourierPoint,
-    c: CourierPoint,
-    d: CourierPoint,
-  ): boolean => {
-    const o1 = orientation(a, b, c);
-    const o2 = orientation(a, b, d);
-    const o3 = orientation(c, d, a);
-    const o4 = orientation(c, d, b);
-
-    return (
-      ((o1 >= 0 && o2 <= 0) || (o1 <= 0 && o2 >= 0)) &&
-      ((o3 >= 0 && o4 <= 0) || (o3 <= 0 && o4 >= 0))
-    );
-  };
-
-  return edges.some(([a, b]) =>
-    intersects(start, end, a, b),
-  );
-};
-
-export const resolveCourierRoute = (
-  session: CourierSession,
-): CourierSession => {
-  if (session.started || session.result !== null) return session;
-
-  const route = session.route;
-  if (route.length < 2) {
-    return {
-      ...session,
-      started: true,
-      result: 'FAILURE',
-      failureReason: 'Route is missing',
-    };
-  }
-
-  const first = route[0]!;
-  const last = route.at(-1)!;
-
-  if (!canBeginCourierRoute(session, first)) {
-    return {
-      ...session,
-      started: true,
-      result: 'FAILURE',
-      failureReason: 'Route does not start at pickup',
-    };
-  }
-
-  if (
-    distanceSquared(last, session.finish) >
-    session.finishRadius * session.finishRadius
-  ) {
-    return {
-      ...session,
-      started: true,
-      result: 'FAILURE',
-      failureReason: 'Route does not reach destination',
-    };
-  }
-
-  const padding = session.routeThickness / 2;
-  for (let index = 1; index < route.length; index += 1) {
-    const start = route[index - 1]!;
-    const end = route[index]!;
-
-    if (
-      session.obstacles.some((obstacle) =>
-        segmentIntersectsExpandedRect(
-          start,
-          end,
-          obstacle,
-          padding,
-        ),
-      )
-    ) {
-      return {
-        ...session,
-        started: true,
-        result: 'FAILURE',
-        failureReason: 'Route intersects an obstacle',
-      };
+// Swept square collider matches the 58 × 58 courier sprite. Slab clipping
+// returns the first contact, including at low FPS; disjoint collinear edges
+// cannot produce the false collisions of the previous orientation test.
+const contactFraction = (
+  start: CourierPoint, end: CourierPoint, obstacle: CourierObstacle,
+): number | null => {
+  let enter = 0;
+  let exit = 1;
+  for (const axis of ['x', 'y'] as const) {
+    const half = (axis === 'x' ? obstacle.width : obstacle.height) / 2
+      + COURIER_INTERACTION.courierHalfSize;
+    const low = obstacle[axis] - half;
+    const high = obstacle[axis] + half;
+    const delta = end[axis] - start[axis];
+    if (delta === 0) {
+      if (start[axis] < low || start[axis] > high) return null;
+    } else {
+      const a = (low - start[axis]) / delta;
+      const b = (high - start[axis]) / delta;
+      enter = Math.max(enter, Math.min(a, b));
+      exit = Math.min(exit, Math.max(a, b));
+      if (enter > exit) return null;
     }
   }
-
-  return {
-    ...session,
-    started: true,
-    result: 'SUCCESS',
-    failureReason: null,
-  };
+  return enter;
 };
+
+export const startCourierDelivery = (session: CourierSession): CourierSession => {
+  if (session.started || session.result !== null || session.route.length < 2) return session;
+  const route = [...session.route];
+  const last = route.at(-1)!;
+  // Snap a route ending in the delivery zone to its visible destination.
+  if (distanceSquared(last, session.finish) <= session.finishRadius ** 2 &&
+      distanceSquared(last, session.finish) > 0) route.push({ ...session.finish });
+  return { ...session, started: true, route, position: { ...session.start }, nextRouteIndex: 1 };
+};
+
+export const advanceCourierSession = (
+  session: CourierSession, deltaMs: number,
+): CourierSession => {
+  if (!Number.isFinite(deltaMs) || deltaMs < 0) throw new RangeError('Courier deltaMs must be finite and non-negative');
+  if (!session.started || session.result !== null || deltaMs === 0) return session;
+  let remaining = deltaMs * COURIER_INTERACTION.speedPixelsPerSecond / 1000;
+  let position = { ...session.position };
+  let index = session.nextRouteIndex;
+  while (index < session.route.length) {
+    const target = session.route[index]!;
+    const distance = Math.sqrt(distanceSquared(position, target));
+    const travel = Math.min(distance, remaining);
+    const end = distance === 0 ? target : {
+      x: position.x + (target.x - position.x) * travel / distance,
+      y: position.y + (target.y - position.y) * travel / distance,
+    };
+    let contact: number | null = null;
+    for (const obstacle of session.obstacles) {
+      const t = contactFraction(position, end, obstacle);
+      if (t !== null && (contact === null || t < contact)) contact = t;
+    }
+    if (contact !== null) return {
+      ...session, nextRouteIndex: index,
+      position: { x: position.x + (end.x - position.x) * contact, y: position.y + (end.y - position.y) * contact },
+      result: 'FAILURE', failureReason: 'Курьер врезался в препятствие',
+    };
+    position = { ...end };
+    remaining -= travel;
+    if (travel < distance) break;
+    index += 1;
+    if (remaining <= 0 && index < session.route.length) break;
+  }
+  const next = { ...session, position, nextRouteIndex: index };
+  if (index < session.route.length) return next;
+  const arrived = distanceSquared(position, session.finish) < 0.000001;
+  return { ...next, result: arrived ? 'SUCCESS' : 'FAILURE',
+    failureReason: arrived ? null : 'Маршрут закончился до точки доставки' };
+};
+
+// Offline simulation for deterministic balance/integration tests only.
+export const resolveCourierRoute = (session: CourierSession): CourierSession =>
+  advanceCourierSession(startCourierDelivery(session), Number.MAX_SAFE_INTEGER);

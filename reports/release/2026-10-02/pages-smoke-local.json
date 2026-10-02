@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "url": "http://127.0.0.1:37601/67-millions/",
+  "publishedVersion": null,
+  "platform": "mock/localStorage; no SDK stubs",
+  "inputs": [
+    "mouse 1280x720",
+    "CDP touch 640x360"
+  ],
+  "checks": [
+    "fresh startup and reload",
+    "subpath assets without failed requests",
+    "debug/perf disabled",
+    "three jobs twice each without reload and payouts",
+    "casino exit/re-entry three times and map action",
+    "casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart",
+    "exit and return during pending Drop",
+    "courier remains unresolved while travelling",
+    "cold/mid-Drop exact payout and RNG restore",
+    "no duplicate settled payout",
+    "restart without ads",
+    "portrait blocker and logical canvas"
+  ],
+  "errors": [],
+  "failures": [],
+  "serviceRequests": []
+}

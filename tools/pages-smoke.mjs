@@ -83,16 +83,24 @@ try {
       await page.waitForTimeout(300);
       rect = await page.locator('canvas').boundingBox(); assert.ok(rect);
     };
+    const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
-    for (const [job, minute] of [['dishes', 1080], ['trash', 60], ['courier', 600]]) {
+    for (const [job, minute] of [['dishes', 960], ['trash', 60], ['courier', 545]]) {
       const work = structuredClone(fixture); work.game.clock.minuteOfDay = minute;
       const reserved = startWork(work.game, balance, job, 1); work.game = reserved.state; work.activeAction = reserved.action;
       await loadSave(work);
+      const playJob = async () => {
+      await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-${job}-start.png` });
       if (job === 'dishes') {
-        const spots = createDishesSession(balance).spots;
-        await move(spots[0].x, spots[0].y); await down();
-        for (const spot of spots) { await move(spot.x, spot.y); await page.waitForTimeout(17); }
-        await up();
+        for (const plate of createDishesSession(balance).plates) {
+          await move(plate.x - 65, plate.y - 45); await down();
+          for (const [row, offset] of [-45, 0, 45].entries()) {
+            await move(plate.x + (row % 2 === 0 ? 65 : -65), plate.y + offset, { steps: 6 });
+            await page.waitForTimeout(25);
+          }
+          await up();
+          if (plate.x === 330) await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-dishes-erased.png` });
+        }
       } else if (job === 'trash') {
         const session = createTrashSession(balance);
         for (const bag of session.bags) { await move(bag.x, bag.y); await down(); await move(session.target.x + 150, session.target.y + 150, { steps: 6 }); await up(); await page.waitForTimeout(30); }
@@ -100,13 +108,48 @@ try {
         await move(180, 365); await down();
         for (const point of [[180, 600], [1100, 600], [1100, 365]]) { await move(...point, { steps: 8 }); await page.waitForTimeout(25); }
         await up(); await move(1180, 670); await down(); await up();
+        await page.waitForTimeout(600);
+        assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction?.result, null, 'courier still travelling, no instant result');
+        await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-courier-moving.png` });
       }
-      await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 12000 });
-      assert.ok((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash > work.game.cash, `${job}: real input credits payout`);
+      try { await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 12000 }); } catch (error) {
+        await page.screenshot({ path: `${output}/failed-${job}.png` });
+        console.error(job, await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save'))), errors); throw error;
+      }
+      };
+      await playJob();
+      const first = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+      assert.ok(first.game.cash > work.game.cash, `${job}: real input credits payout`);
+      assert.equal(first.game.pendingEventId, null, `${job}: fixture leaves a safe point for repeat-entry test`);
+      await page.waitForTimeout(1100);
+      // Re-enter the same Scene instance through the map, without a page reload.
+      await click(430, 220); await page.waitForTimeout(100);
+      await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-panel.png` });
+      await click(job === 'trash' ? 985 : 515, job === 'courier' ? 307 : 225);
+      await page.waitForFunction(job => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === job, job);
+      await page.waitForTimeout(300);
+      await playJob();
+      assert.ok((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash > first.game.cash, `${job}: second shift in same scene pays out`);
     }
+    // Real map → casino → map transitions, including the same casino instance.
+    await loadSave(fixture);
+    for (let cycle = 0; cycle < 3; cycle++) {
+      await click(1080, 325); await page.waitForTimeout(250);
+      await click(1100, 660); await page.waitForTimeout(250);
+    }
+    // A working map after exit must be able to launch a real action.
+    await click(430, 220); await page.waitForTimeout(100); await click(515, 307);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
+    await loadSave(fixture); await click(1080, 325);
+    const idleMinute = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.clock.minuteOfDay;
+    await page.waitForFunction(minute => JSON.parse(localStorage.getItem('67m.save')).game.clock.minuteOfDay > minute, idleMinute, { timeout: 6000 });
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-idle.png` });
     const committed = commitBareDrop(fixture.game, null, balance, 'pages-restore', 1);
     await loadSave({ ...fixture, game: committed.state, pendingDrop: committed.pendingDrop });
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop?.physics?.fixedTicksElapsed >= 15, null, { timeout: 12000 });
+    await click(1100, 660); await page.waitForTimeout(100);
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-pending-map.png` });
+    await click(150, 637); await page.waitForTimeout(100);
     const checkpoint = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.ok(checkpoint.pendingDrop.physics.solver);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-plinko.png` });
@@ -119,6 +162,19 @@ try {
     assert.equal(restored.game.rngState, uninterrupted.game.rngState);
     await page.reload({ waitUntil: 'networkidle' }); await ready();
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, restored.game.cash);
+    const due = structuredClone(fixture); due.game.clock.minuteOfDay = 539;
+    await loadSave(due); await click(1080, 325);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.barryInterruptPending, null, { timeout: 6000 });
+    await page.waitForTimeout(300);
+    const frozen = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    await click(430, 220); await page.waitForTimeout(100);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction, null, 'Barry modal blocks map actions');
+    assert.equal(frozen.game.clock.minuteOfDay, 540, 'casino clock stops exactly at Barry');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-barry.png` });
+    await click(640, 432);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.terminalReason === 'BARRY_PAYMENT_FAILED');
+    await page.waitForTimeout(100); await click(640, 606);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.terminalReason === null);
     const terminal = structuredClone(fixture); terminal.game.terminalReason = 'HEALTH_ZERO'; terminal.game.needs.health = 0;
     await loadSave(terminal); await move(640, 606); await down(); await up();
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.terminalReason === null);
@@ -133,7 +189,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs and payouts', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

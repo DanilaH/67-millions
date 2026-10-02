@@ -32,7 +32,8 @@ export interface DishesSession {
 export const DISHES_INTERACTION = {
   plateRadius: 74,
   scrubRadius: 34,
-  spotsPerPlate: 12,
+  dirtCellSize: 3,
+  dirtRadiusRatio: 0.82,
   plates: [
     { x: 330, y: 250 },
     { x: 640, y: 250 },
@@ -85,26 +86,16 @@ const createSpotsForPlate = (
   plateIndex: number,
 ): DishesDirtSpot[] => {
   const spots: DishesDirtSpot[] = [];
-  const count = DISHES_INTERACTION.spotsPerPlate;
-
-  for (let index = 0; index < count; index += 1) {
-    const angle =
-      (Math.PI * 2 * index) / count +
-      (plateIndex % 2 === 0 ? 0 : Math.PI / count);
-    const ring =
-      index % 3 === 0
-        ? plate.radius * 0.25
-        : index % 3 === 1
-          ? plate.radius * 0.48
-          : plate.radius * 0.68;
-
-    spots.push({
-      id: `plate-${plateIndex}-spot-${index}`,
-      plateIndex,
-      x: plate.x + Math.cos(angle) * ring,
-      y: plate.y + Math.sin(angle) * ring,
-      cleaned: false,
-    });
+  const size = DISHES_INTERACTION.dirtCellSize;
+  const radius = Math.floor(plate.radius * DISHES_INTERACTION.dirtRadiusRatio);
+  // Uniform area samples, also used as the rendered alpha mask. Coverage is
+  // erased surface area, not a count of scattered dirt targets.
+  for (let y = -radius + size / 2; y < radius; y += size) {
+    for (let x = -radius + size / 2; x < radius; x += size) {
+      if (x * x + y * y > radius * radius) continue;
+      spots.push({ id: `plate-${plateIndex}-cell-${spots.length}`, plateIndex,
+        x: plate.x + x, y: plate.y + y, cleaned: false });
+    }
   }
 
   return spots;
@@ -191,6 +182,7 @@ export const scrubDishes = (
   end: DishesPoint,
 ): DishesSession => {
   if (session.result !== null) return session;
+  if (![start.x, start.y, end.x, end.y].every(Number.isFinite)) return session;
 
   const radiusSquared = session.scrubRadius * session.scrubRadius;
   let changed = false;
