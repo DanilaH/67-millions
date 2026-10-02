@@ -25,6 +25,14 @@ Config SHA-256: `efc0e32a1e328ee2f453022ea344475531f16d1acbd343c8c229aa21d880b99
 
 ## Publication and limits
 
-Pages workflow now gates deployment on both browser suites, then runs the existing live smoke against the exact published revision. Deployment result is to be recorded after the workflow finishes.
+Published code revision: `0c864dfc69acebf903e20447a481b65da0fd78ed` (feature commit `5988060d3220e422e879de62acf726efbb144954`, followed by the small-screen debug-dock fix).
+
+- [CI 37029829282](https://github.com/DanilaH/67-millions/actions/runs/37029829282): success; verify job `110913575214`.
+- [Pages 37029829313](https://github.com/DanilaH/67-millions/actions/runs/37029829313): build `110914025669`, deploy `110917291615`, live verification `110917417816` all succeeded.
+- Prepublication browser evidence artifact: `11237437244` (`pages-smoke`, includes the dedicated playtest suite).
+- Live evidence artifact: `11237531664` (`pages-live-smoke`). Its result confirms the exact published SHA above; `errors`, `failures` and `serviceRequests` are all empty.
+- [Play](https://danilah.github.io/67-millions/) · [Preview debug](https://danilah.github.io/67-millions/?debug=1).
+
+The Pages workflow gates deployment on both browser suites and runs the full existing suite against the published site. This report-only follow-up does not change the deployed code.
 
 This is a playtest build, not an accepted RC. No real-device performance claim, new RTP/EV result or 30-minute pacing claim. Existing raster art has not been repainted; the rendering and framing are improved. Debug commands intentionally do not modify an in-flight job or paid cascade; finish it and return to the map first. Reset replaces the run while retaining tutorial preferences.
