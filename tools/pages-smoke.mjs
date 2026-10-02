@@ -87,6 +87,45 @@ try {
     const jobLabels = { dishes: 'Мойка посуды', trash: 'Вынос мусора', courier: 'Курьерский маршрут' };
     const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    // A failed action checkpoint stays pending: retry bytes, never the command.
+    await loadSave(fixture);
+    await click(675, 470); await sceneReady('ПОМОЙКА');
+    await page.evaluate(() => {
+      const original = Storage.prototype.setItem;
+      let remainingFailures = 2;
+      Storage.prototype.setItem = function(key, value) {
+        if (key === '67m.save' && JSON.parse(value).activeAction?.kind === 'DUMPSTER' && remainingFailures-- > 0) {
+          throw new DOMException('Injected write failure', 'QuotaExceededError');
+        }
+        return original.call(this, key, value);
+      };
+    });
+    await click(515, 225);
+    const recovery = page.locator('#save-recovery');
+    await recovery.waitFor({ state: 'visible' });
+    const beforeRetry = await page.evaluate(() => localStorage.getItem('67m.save'));
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(1200);
+    assert.equal(await recovery.isVisible(), true, 'Escape cannot dismiss save failure');
+    assert.equal(await page.evaluate(() => localStorage.getItem('67m.save')), beforeRetry, 'failed write pauses game and keeps durable save');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-save-recovery.png` });
+    await recovery.getByRole('button').click();
+    await page.waitForFunction(() => document.querySelector('#save-recovery button')?.textContent === 'Повторить сохранение');
+    assert.equal(await recovery.isVisible(), true, 'second failure remains recoverable');
+    await recovery.getByRole('button').click();
+    await recovery.waitFor({ state: 'hidden' });
+    const reservedSearch = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(reservedSearch.activeAction.kind, 'DUMPSTER');
+    assert.equal(reservedSearch.game.needs.energy, fixture.game.needs.energy - balance.dumpster.energyCost, 'retry charges search once');
+    await page.reload({ waitUntil: 'networkidle' }); await ready();
+    await sceneReady('Поиск в помойке');
+    const resumedSearch = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.deepEqual(resumedSearch, reservedSearch, 'reload resumes reserved search without charge or reroll');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-rummage.png` });
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 10000 });
+    const searched = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(searched.game.clock.minuteOfDay, reservedSearch.game.clock.minuteOfDay + balance.dumpster.durationMinutes, 'rummage adds only normative 45 minutes');
+    assert.equal(searched.game.dumpsterSearchStreak, 1, 'search settled once');
     for (const [job, minute] of [['dishes', 960], ['trash', 60], ['courier', 545]]) {
       const work = structuredClone(fixture); work.game.clock.minuteOfDay = minute;
       const reserved = startWork(work.game, balance, job, 1); work.game = reserved.state; work.activeAction = reserved.action;
@@ -195,7 +234,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

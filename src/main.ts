@@ -5,6 +5,8 @@ import { GameAnalytics, GAME_ANALYTICS_KEY } from './app/analytics/GameAnalytics
 import { createStartupPreloadDomView, StartupPreloadController } from '@danilah/mini-games-kit/startup';
 
 import './style.css';
+import { createSaveRecovery } from './app/saveRecovery';
+import { withSaveRetry } from './core/save/retryStorage';
 import { installDebugPanel } from './app/debug';
 import { GAME_AUDIO_BLOCKED_EVENT } from './audio/audioLifecycle';
 import { disposeSceneAudioRuntime } from './audio/SceneAudio';
@@ -41,8 +43,9 @@ try {
   const [platform, runtimeImageFormat] = await Promise.all([platformTask, artFormatTask]);
   const initialSize = getInitialGameSize();
   const analytics = new GameAnalytics(platform.analytics, balance);
+  const saveRecovery = createSaveRecovery(platform.activity);
   const saveRepository = createSaveRepository(
-    platform.storage,
+    withSaveRetry(platform.storage, saveRecovery),
     () =>
       createInitialGameState(
         balance,
@@ -119,6 +122,7 @@ try {
     disposeSceneAudioRuntime();
     debug.destroy();
     viewport.destroy();
+    saveRecovery.destroy();
     preload.destroy();
     platform.destroy();
     game.destroy(true);

@@ -122,6 +122,11 @@ export class BootstrapScene extends Phaser.Scene {
   private eventOverlay?: EventOverlay;
   private audio: SceneAudio | null = null;
   private contextMode = 'none';
+  private rummageElapsedMs = 0;
+  private rummageView?: Phaser.GameObjects.Container;
+  private rummageProgress?: Phaser.GameObjects.Graphics;
+  private rummagePaper?: Phaser.GameObjects.Rectangle;
+  private static readonly RUMMAGE_DURATION_MS = 3000;
 
   public constructor() {
     super('bootstrap');
@@ -137,6 +142,7 @@ export class BootstrapScene extends Phaser.Scene {
     this.pendingDrop = null;
     this.selectedLocation = null;
     this.contextMode = 'none';
+    this.rummageElapsedMs = 0;
 
     const { height } = this.scale;
     this.barryOverlay = createBarryMinigameOverlay(this, balance, () => this.guard(() => this.payBarry()));
@@ -221,6 +227,21 @@ export class BootstrapScene extends Phaser.Scene {
         ),
     );
 
+    this.rummageProgress = this.add.graphics();
+    this.rummagePaper = this.add.rectangle(0, 3, 44, 26, 0xb8aa8b).setAngle(-12);
+    this.rummageView = this.add.container(640, 350, [
+      this.add.rectangle(0, 0, 420, 230, 0x181b20).setStrokeStyle(2, 0x85744f),
+      this.add.text(0, -82, 'Ищем в помойке…', {
+        fontFamily: VISUAL_FONT.sans, fontSize: '26px', color: '#f4f6f8',
+      }).setOrigin(0.5),
+      this.rummagePaper,
+      this.add.rectangle(0, 30, 90, 46, 0x58634a).setStrokeStyle(3, 0x98a182),
+      this.add.text(0, 72, 'Может попасться что-нибудь полезное', {
+        fontFamily: VISUAL_FONT.sans, fontSize: '17px', color: '#c3c5bd',
+      }).setOrigin(0.5),
+      this.rummageProgress,
+    ]).setDepth(850).setVisible(false);
+
     void this.initialize();
   }
 
@@ -231,6 +252,24 @@ export class BootstrapScene extends Phaser.Scene {
       this.state.terminalReason !== null ||
       this.state.victory
     ) {
+      return;
+    }
+
+    if (this.activeAction?.kind === 'DUMPSTER') {
+      // Presentation delays an already-reserved action; only the scheduler owns
+      // its 45 minutes, interruption, RNG and loot. Reload restarts presentation.
+      this.rummageElapsedMs += deltaMs;
+      const progress = Math.min(1, this.rummageElapsedMs / BootstrapScene.RUMMAGE_DURATION_MS);
+      this.rummageView?.setVisible(true);
+      this.rummagePaper?.setPosition(Math.sin(this.rummageElapsedMs / 85) * 20, -Math.abs(Math.sin(this.rummageElapsedMs / 150)) * 22);
+      this.rummageProgress?.clear().fillStyle(0x98a182).fillRect(-180, 98, 360 * progress, 5);
+      this.game.canvas.setAttribute('aria-label', 'Поиск в помойке');
+      if (progress >= 1) {
+        this.rummageView?.setVisible(false);
+        this.rummageElapsedMs = 0;
+        this.game.canvas.setAttribute('aria-label', 'Карта города');
+        this.advance(this.activeAction.remainingMinutes);
+      }
       return;
     }
 
@@ -704,7 +743,8 @@ export class BootstrapScene extends Phaser.Scene {
       `Помойка: энергия -${started.energySpent}, счастье -${started.happinessSpent.toFixed(1)}, HP -${started.healthSpent.toFixed(1)}.`,
     );
     void this.persist();
-    this.advance(started.action.remainingMinutes);
+    this.rummageElapsedMs = 0;
+    this.render();
   }
 
   private startShowerAction(): void {

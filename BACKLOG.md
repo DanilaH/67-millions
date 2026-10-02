@@ -46,6 +46,7 @@ Acceptance: money integer; needs/HP clamp; terminal state emitted once.
 ## E02 — Save core
 
 ### T009 [P0] Versioned SaveState + local adapter
+Status: 2026-10-02 follow-up: storage write recovery pauses gameplay and retries identical serialized bytes inside the existing ordered repository queue. Repeated/ambiguous failures covered; hosted Yandex cloud receipt remains T068.
 Acceptance: serialize/restore core run; version field; atomic replacement.
 
 ### T010 [P0] ActiveAction persistence
@@ -218,6 +219,7 @@ Acceptance: exact minigame state pauses in runtime; work transaction remains cor
 Acceptance: time, cash, next Barry, 67m, countdown, four needs, statuses; navigation costs zero time.
 
 ### T056 [P0] Work/food/sleep/entertainment/dumpster flows
+Status: 2026-10-02 follow-up: three-second active-time dumpster rummage with progress; reload resumes reserved search without duplicate cost; completion still uses the authoritative 45-minute scheduler.
 Acceptance: pre-action cost/time/effect visible; lock reason readable.
 
 ### T057 [P0] Casino upgrade/bet/result UI
