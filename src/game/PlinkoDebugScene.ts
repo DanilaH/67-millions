@@ -340,7 +340,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         if (this.save?.pendingDrop && !isPlinkoPerfMode()) {
           const ticksPerMinute = 60 * balance.time.realSecondsPerGameMinute;
           if (Math.floor(fixedTicksElapsed / ticksPerMinute) >
-              Math.floor((fixedTicksElapsed - 1) / ticksPerMinute)) this.advanceCasinoTime(1);
+              Math.floor((fixedTicksElapsed - 1) / ticksPerMinute)) this.advanceCasinoTime(1, false);
         }
         const probe = window.__PLINKO_PERF__;
         if (probe?.phase === 'running') {
@@ -474,13 +474,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(leaveButton);
   }
 
-  private advanceCasinoTime(minutes: number): void {
+  private advanceCasinoTime(minutes: number, persist = true): void {
     if (!this.save || this.save.game.barryInterruptPending || this.save.game.terminalReason !== null || this.save.game.victory) return;
     const advanced = advanceRunTime(this.save.game, null, minutes, balance);
     this.save = { ...this.save, game: advanced.state };
     // Event checkpoints and Plinko share the authoritative RNG stream.
     this.random = new SeededRandom(this.save.game.rngState);
-    void this.enqueueSave(false);
+    // A pending cascade writes time together with the matching solver tick in
+    // persistPendingPhysics below. An intermediate old-tick/new-clock save
+    // would charge the same minute again after a crash at the boundary.
+    if (persist) void this.enqueueSave(false);
     this.renderAll();
   }
 

@@ -165,6 +165,7 @@ try {
     const restored = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(restored.game.cash, uninterrupted.game.cash);
     assert.equal(restored.game.rngState, uninterrupted.game.rngState);
+    assert.deepEqual(restored.game.clock, uninterrupted.game.clock, 'passive cascade clock restores without charging an extra minute');
     await page.reload({ waitUntil: 'networkidle' }); await ready();
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, restored.game.cash);
     const due = structuredClone(fixture); due.game.clock.minuteOfDay = 539;
