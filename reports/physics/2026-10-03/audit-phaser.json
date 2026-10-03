@@ -1,0 +1,109 @@
+{
+  "engineKind": "phaser",
+  "revision": "4063c4f0ad2334b06be85e9bec41505682fdd684",
+  "configSha256": "efc0e32a1e328ee2f453022ea344475531f16d1acbd343c8c229aa21d880b994",
+  "seed": 67043000,
+  "model": "existing Matter cascade runner; no economy changes; conservative swept peg test v1",
+  "results": [
+    {
+      "name": "bare",
+      "runs": 2000,
+      "totalTerminalBalls": 2000,
+      "pockets": [
+        11,
+        31,
+        105,
+        351,
+        533,
+        519,
+        322,
+        80,
+        32,
+        16
+      ],
+      "edgeBallRate": 0.0135,
+      "dropWithEdgeRate": 0.0135,
+      "stuck": 0,
+      "maxStep": 9.07463276161247,
+      "maxPegZoneStep": 5.381857598261852,
+      "sweptMisses": 0,
+      "ballSteps": 594583,
+      "examples": []
+    },
+    {
+      "name": "biasOnly",
+      "runs": 2000,
+      "totalTerminalBalls": 2000,
+      "pockets": [
+        55,
+        19,
+        68,
+        353,
+        538,
+        516,
+        294,
+        68,
+        23,
+        66
+      ],
+      "edgeBallRate": 0.0605,
+      "dropWithEdgeRate": 0.0605,
+      "stuck": 0,
+      "maxStep": 9.247875592067306,
+      "maxPegZoneStep": 6.218903508108504,
+      "sweptMisses": 0,
+      "ballSteps": 585387,
+      "examples": []
+    },
+    {
+      "name": "specialsWithoutBias",
+      "runs": 2000,
+      "totalTerminalBalls": 2754,
+      "pockets": [
+        59,
+        35,
+        27,
+        231,
+        1029,
+        1057,
+        211,
+        19,
+        32,
+        54
+      ],
+      "edgeBallRate": 0.04103122730573711,
+      "dropWithEdgeRate": 0.0565,
+      "stuck": 0,
+      "maxStep": 9.416751554111952,
+      "maxPegZoneStep": 6.735641265677554,
+      "sweptMisses": 0,
+      "ballSteps": 658279,
+      "examples": []
+    },
+    {
+      "name": "max",
+      "runs": 2000,
+      "totalTerminalBalls": 2783,
+      "pockets": [
+        98,
+        19,
+        12,
+        241,
+        1032,
+        1038,
+        204,
+        12,
+        23,
+        104
+      ],
+      "edgeBallRate": 0.07258354293927416,
+      "dropWithEdgeRate": 0.101,
+      "stuck": 0,
+      "maxStep": 9.270474219716851,
+      "maxPegZoneStep": 6.368350562617357,
+      "sweptMisses": 0,
+      "ballSteps": 649626,
+      "examples": []
+    }
+  ]
+}
