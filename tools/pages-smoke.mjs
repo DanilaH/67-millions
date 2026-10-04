@@ -81,8 +81,17 @@ try {
     const down = async () => { if (touch) { touching = true; await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [point] }); } else await page.mouse.down(); };
     const up = async () => { if (touch) { touching = false; await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); } else await page.mouse.up(); };
     const loadSave = async save => {
-      await page.evaluate(save => localStorage.setItem('67m.save', JSON.stringify(save)), save);
-      await page.reload({ waitUntil: 'networkidle' }); await ready();
+      // Stop the previous game before injecting a fixture: its queued writes or
+      // shutdown flush can otherwise overwrite a save installed in the live page.
+      await page.goto('about:blank');
+      const { identifier } = await cdp.send('Page.addScriptToEvaluateOnNewDocument', {
+        source: `if (location.origin === ${JSON.stringify(new URL(url).origin)}) localStorage.setItem('67m.save', ${JSON.stringify(JSON.stringify(save))});`,
+      });
+      try {
+        await page.goto(url, { waitUntil: 'networkidle' }); await ready();
+      } finally {
+        await cdp.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
+      }
       await page.waitForTimeout(300);
       rect = await page.locator('canvas').boundingBox(); assert.ok(rect);
     };
@@ -197,6 +206,7 @@ try {
     assert.equal(afterFood.game.cash, rich.game.cash - balance.food[0].price, 'food action charges advertised price once');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-result.png` });
     await loadSave(rich);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'casino fixture starts with the requested balance');
     await click(1080, 325); await sceneReady('Казино Plinko');
     for (let number = 1; number <= 6; number++) {
       await click(1215, 602);
