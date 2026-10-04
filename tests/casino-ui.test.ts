@@ -157,7 +157,7 @@ describe('T057 casino UI model', () => {
     expect(
       upgrades.find((upgrade) => upgrade.id === 'maxBet')
         ?.lockedReason,
-    ).toBe('НЕ ХВАТАЕТ ДЕНЕГ');
+    ).toBe('Не хватает 500 ₽');
   });
 
   it('publishes a payout toast exactly once for the Main Map', () => {

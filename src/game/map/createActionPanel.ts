@@ -12,6 +12,7 @@ export const createActionPanel = (
   scene: Phaser.Scene,
   onBack: () => void,
   onAction: (action: ActionPreview) => void,
+  onPreview: (action: ActionPreview | null) => void = () => {},
 ): ActionPanel => {
   const container = scene.add.container(0, 0).setDepth(200).setVisible(false);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
@@ -19,6 +20,7 @@ export const createActionPanel = (
   let currentTitle = '';
   let currentActions: ActionPreview[] = [];
   let page = 0;
+  let previewId: string | null = null;
   const pageSize = 3;
   const background = scene.add.rectangle(763, 380, 1006, 520, visualColor('inkDeep'), 0.985)
     .setStrokeStyle(2, visualColor('lineDirty')).setInteractive();
@@ -39,6 +41,7 @@ export const createActionPanel = (
 
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
+    onPreview(currentActions.slice(page * pageSize, (page + 1) * pageSize).find(action => action.id === previewId) ?? null);
     const single = currentActions.length === 1;
     const width = single ? 740 : 906;
     const left = 763 - width / 2;
@@ -64,23 +67,32 @@ export const createActionPanel = (
       const lock = text(left + width - 36, y + 12, action.lockedReason ?? action.cta ?? 'ВЫБРАТЬ →', 20, locked ? 'warning' : 'mustard')
         .setOrigin(1, 0).setWordWrapWidth(single ? 320 : 480).setAlign('right');
       const summary = text(left + 36, y + 47, (currentActions.length === 1 ? action.summary : action.summary.slice(0, 2)).join('\n'), 19, 'textMuted')
-        .setWordWrapWidth(width - 72).setLineSpacing(2);
+        .setWordWrapWidth(width - (action.forecast && !single ? 240 : 72)).setLineSpacing(2);
       if (!locked) card.setInteractive({ useHandCursor: true }).on('pointerup', () => onAction(action));
+      let previewButton: Phaser.GameObjects.Text | undefined;
+      if (action.forecast) {
+        const preview = text(left + width - 36, single ? y + height - 52 : y + 72, previewId === action.id ? 'Скрыть прогноз' : 'Прогноз', 16)
+          .setOrigin(1, 0).setPadding(12, 12).setBackgroundColor(visualHex('inkPanel'))
+          .setInteractive({ useHandCursor: true }).on('pointerup', () => { previewId = previewId === action.id ? null : action.id; draw(); });
+        previewButton = preview; container.add(preview); dynamic.push(preview);
+        if (!locked) card.on('pointerover', () => { if (!previewId) onPreview(action); }).on('pointerout', () => { if (!previewId) onPreview(null); });
+      }
       container.add([card, name, lock, summary]);
       dynamic.push(card, name, lock, summary);
+      if (previewButton) container.bringToTop(previewButton);
     });
   };
   return {
     show: (heading, actions, navigation) => {
       navigationAction = navigation;
       section.setText(navigation?.title ?? '').setVisible(navigation !== undefined);
-      if (heading !== currentTitle || !container.visible) page = 0;
+      if (heading !== currentTitle || !container.visible) { page = 0; previewId = null; }
       const signature = JSON.stringify([heading, actions]);
       if (signature === lastSignature && container.visible) return;
       currentTitle = heading; currentActions = actions; lastSignature = signature;
       draw(); container.setVisible(true);
     },
-    hide: () => { container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); },
+    hide: () => { previewId = null; onPreview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); },
     isVisible: () => container.visible,
   };
 };

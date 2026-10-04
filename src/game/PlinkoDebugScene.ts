@@ -108,6 +108,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private effects?: PlinkoEffects;
   private mapHud?: PersistentHud;
   private casinoHud?: PersistentHud;
+  private upgradeHighlight?: Phaser.GameObjects.Graphics;
+  private upgradeTween?: Phaser.Tweens.Tween;
   private runtime: BarePlinkoRuntime | null = null;
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
@@ -586,6 +588,42 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderTutorial();
   }
 
+  private highlightUpgrade(id: CasinoUpgradeId): void {
+    if (!this.runtime || !this.visualSnapshot || !this.casinoLayer) return;
+    this.upgradeTween?.stop();
+    this.upgradeHighlight?.destroy();
+    const g = this.add.graphics();
+    this.upgradeHighlight = g;
+    this.casinoLayer.add(g);
+    g.lineStyle(3, visualColor('mustard'), 1);
+    const snapshot = this.visualSnapshot;
+    if (id === 'center' || id === 'mid' || id === 'jackpot') {
+      const family = this.boardConfig.plinko.pocketFamilies[id === 'jackpot' ? 'edge' : id];
+      const indices = id === 'jackpot' ? family : [...family, ...this.boardConfig.plinko.pocketFamilies.inner];
+      for (const index of indices) {
+        const label = this.pocketLabels[index];
+        if (label) g.strokeRoundedRect(label.x - 21, label.y - 5, 42, 32, 5);
+      }
+    } else if (id === 'amplifier' || id === 'return' || id === 'splitter') {
+      for (const peg of this.runtime.layout.pegs) {
+        if (snapshot.pegRoles[peg.id] === id) g.strokeCircle(peg.x, peg.y, 13);
+      }
+    } else if (id === 'jackpotBias') {
+      for (const bar of deriveJackpotBiasGeometry(this.boardConfig, snapshot.specialLevels.jackpotBiasLevel)) {
+        const dx = Math.cos(bar.angleRadians) * bar.length / 2;
+        const dy = Math.sin(bar.angleRadians) * bar.length / 2;
+        g.lineStyle(bar.thickness + 5, visualColor('mustard'), 0.65);
+        g.lineBetween(bar.x - dx, bar.y - dy, bar.x + dx, bar.y + dy);
+      }
+    } else {
+      g.strokeRoundedRect(22, id === 'maxBet' ? 256 : 600, 296, id === 'maxBet' ? 163 : 65, 8);
+      if (id === 'insurance') this.showStatus('Страховка улучшена. Сработает после серии проигрышей.');
+    }
+    this.game.canvas.setAttribute('data-upgrade-highlight', id);
+    this.upgradeTween = this.tweens.add({ targets: g, alpha: 0, duration: 1000,
+      onComplete: () => { g.clear(); this.game.canvas.removeAttribute('data-upgrade-highlight'); } });
+  }
+
   private async purchaseUpgrade(
     id: CasinoUpgradeId,
   ): Promise<void> {
@@ -642,8 +680,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
       await this.enqueueSave(true);
       recordTutorialMilestone('UPGRADE_BOUGHT');
-      this.showStatus('Апгрейд куплен.');
+      this.showStatus('Улучшение куплено — изменение подсвечено.');
       this.renderAll();
+      this.highlightUpgrade(id);
     } catch (error: unknown) {
       this.showStatus(
         error instanceof Error ? error.message : String(error),

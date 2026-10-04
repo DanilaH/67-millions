@@ -334,6 +334,7 @@ export const buildCasinoUpgradePreviews = (
     );
     const maxed = next === undefined;
 
+    const locked = maxed ? 'МАКСИМУМ' : validate(() => spec.validate(state, pendingDrop, config));
     return {
       id: spec.id,
       title: spec.title,
@@ -343,10 +344,6 @@ export const buildCasinoUpgradePreviews = (
       detail: spec.detail(state, config),
       nextEffect: maxed ? 'Максимальный уровень' : describeNextEffect(spec.id, state, config, currentLevel + 1),
       maxed,
-      lockedReason: maxed
-        ? 'МАКСИМУМ'
-        : validate(() => {
-            spec.validate(state, pendingDrop, config);
-          }),
+      lockedReason: locked === 'НЕ ХВАТАЕТ ДЕНЕГ' && next ? `Не хватает ${(next.price - state.cash).toLocaleString('ru-RU')} ₽` : locked,
     };
   });

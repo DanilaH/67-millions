@@ -175,6 +175,7 @@ export class BootstrapScene extends Phaser.Scene {
       this,
       () => this.closeActionPanel(),
       (action) => this.guard(() => this.executeAction(action)),
+      (action) => this.hud?.setForecast(action?.forecast ?? null),
     );
 
     this.messageText = this.add.text(280, height - 67, 'Загрузка…', {

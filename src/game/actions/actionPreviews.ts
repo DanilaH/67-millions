@@ -1,3 +1,4 @@
+import { forecastRecovery, type NeedsForecast } from './needsForecast';
 import { advanceNeeds } from '../../core/needs/needs';
 import { formatClockTime, minutesUntilClockTime } from '../../core/time/GameClock';
 import { roundMoney } from '../../core/economy/money';
@@ -33,6 +34,7 @@ export interface ActionPreview {
   id: string;
   title: string;
   cta?: string;
+  forecast?: NeedsForecast;
   summary: string[];
   lockedReason: string | null;
 }
@@ -201,6 +203,7 @@ export const buildFoodPreviews = (
 
     return {
       id: `food:${entry.id}`,
+      forecast: forecastRecovery(state, definition, config),
       title: content.title,
       summary: [
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
@@ -238,6 +241,7 @@ export const buildEntertainmentPreviews = (
 
     return {
       id: `entertainment:${entry.id}`,
+      forecast: forecastRecovery(state, definition, config),
       title: content.title,
       summary: [
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
@@ -278,11 +282,12 @@ export const buildSleepPreviews = (
   return [{
     id: 'sleep',
     title: 'СОН',
+    forecast: { needs: { ...delta }, caption: forecast.state.terminalReason ? 'Опасно: здоровье закончится во сне' : 'После сна · прогноз без случайных событий' },
     summary: [
       `Бесплатно · проснёшься в ${formatClockTime((state.clock.minuteOfDay + duration) % 1440)}`,
       `Энергия ${Math.round(state.needs.energy)} → ${Math.round(delta.energy)} · здоровье ${Math.round(state.needs.health)} → ${Math.round(delta.health)}`,
       `Сытость ${Math.round(state.needs.satiety)} → ${Math.round(delta.satiety)} · сон до ${duration} мин`,
-      forecast.state.terminalReason ? 'ОПАСНО: здоровье закончится во сне' : 'Барри в 09:00 разбудит. Недосып снижает доход работ.',
+      forecast.state.terminalReason ? 'ОПАСНО: здоровье закончится во сне' : duration < config.sleep.fullSleepHours * 60 ? 'Барри прервёт сон в 09:00. Недосып снижает доход работ.' : 'Полный сон. После пробуждения можно вернуться к делам.',
     ],
     lockedReason: lock,
   }];

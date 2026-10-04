@@ -51,6 +51,7 @@ try {
   for (const touch of [false, true]) {
     const context = await browser.newContext({ viewport: touch ? { width: 640, height: 360 } : { width: 1280, height: 720 }, hasTouch: touch });
     const page = await context.newPage();
+    page.setDefaultTimeout(30000);
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) failures.push(`${response.status()} ${response.url()}`); });
     page.on('requestfailed', request => failures.push(`${request.url()} ${request.failure()?.errorText}`));
@@ -167,6 +168,16 @@ try {
     const rich = structuredClone(fixture); rich.game.cash = 100000;
     await loadSave(rich);
     await click(675, 190); await sceneReady('ЕДА');
+    const beforeForecast = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    await click(1140, 285);
+    await page.waitForFunction(() => !!document.querySelector('canvas')?.getAttribute('data-needs-forecast'));
+    const afterForecast = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    assert.equal(afterForecast.game.cash, beforeForecast.game.cash, 'forecast does not charge money');
+    assert.equal(afterForecast.game.rngState, beforeForecast.game.rngState, 'forecast does not consume RNG');
+    assert.equal(afterForecast.activeAction, null, 'forecast does not start an action');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-forecast.png` });
+    await click(1140, 285);
+    await page.waitForFunction(() => !document.querySelector('canvas')?.getAttribute('data-needs-forecast'));
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page1.png` });
     for (let number = 2; number <= 4; number++) {
       await click(1170, 612);
@@ -205,6 +216,7 @@ try {
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'upgrade title does not purchase');
     await click(1205, 273);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoMaxBetLevel === 1);
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-upgrade-feedback.png` });
     const upgraded = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(upgraded.game.cash, rich.game.cash - balance.plinko.maxBetLevels[1].price, 'dedicated upgrade button buys once');
     await click(170, 390);

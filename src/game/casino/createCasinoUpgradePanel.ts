@@ -48,7 +48,7 @@ export const createCasinoUpgradePanel = (
         .setOrigin(1, 0).setPadding(12, 12).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
       if (preview.lockedReason === null) buy.setInteractive({ useHandCursor: true }).on('pointerup', () => onPurchase(preview.id));
-      const hint = text(958, y + 94, preview.maxed ? 'Улучшено полностью' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.includes('НЕ ХВАТАЕТ') ? 'Не хватает денег' : 'Недоступно', 13).setColor(visualHex('textMuted'));
+      const hint = text(958, y + 94, preview.maxed ? 'Улучшено полностью' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', 13).setWordWrapWidth(145).setColor(visualHex('textMuted'));
       container.add([card, name, level, effect, buy, hint]);
       dynamic.push(card, name, level, effect, buy, hint);
     });
