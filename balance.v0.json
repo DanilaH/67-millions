@@ -706,7 +706,7 @@
         "price": 4000,
         "deflectorPairs": [
           {
-            "deflectorOffsetX": 174,
+            "deflectorOffsetX": 182,
             "deflectorY": 320,
             "length": 36,
             "thickness": 5,
@@ -720,7 +720,7 @@
         "price": 22500,
         "deflectorPairs": [
           {
-            "deflectorOffsetX": 174,
+            "deflectorOffsetX": 182,
             "deflectorY": 320,
             "length": 36,
             "thickness": 5,
@@ -728,7 +728,7 @@
             "restitution": 0.75
           },
           {
-            "deflectorOffsetX": 150,
+            "deflectorOffsetX": 158,
             "deflectorY": 293,
             "length": 36,
             "thickness": 5,
@@ -742,7 +742,7 @@
         "price": 90000,
         "deflectorPairs": [
           {
-            "deflectorOffsetX": 174,
+            "deflectorOffsetX": 182,
             "deflectorY": 320,
             "length": 36,
             "thickness": 5,
@@ -750,7 +750,7 @@
             "restitution": 0.75
           },
           {
-            "deflectorOffsetX": 150,
+            "deflectorOffsetX": 158,
             "deflectorY": 293,
             "length": 36,
             "thickness": 5,
@@ -758,7 +758,7 @@
             "restitution": 0.75
           },
           {
-            "deflectorOffsetX": 126,
+            "deflectorOffsetX": 134,
             "deflectorY": 266,
             "length": 36,
             "thickness": 5,
@@ -772,7 +772,7 @@
         "price": 350000,
         "deflectorPairs": [
           {
-            "deflectorOffsetX": 174,
+            "deflectorOffsetX": 182,
             "deflectorY": 320,
             "length": 36,
             "thickness": 5,
@@ -780,7 +780,7 @@
             "restitution": 0.75
           },
           {
-            "deflectorOffsetX": 150,
+            "deflectorOffsetX": 158,
             "deflectorY": 293,
             "length": 36,
             "thickness": 5,
@@ -788,7 +788,7 @@
             "restitution": 0.75
           },
           {
-            "deflectorOffsetX": 126,
+            "deflectorOffsetX": 134,
             "deflectorY": 266,
             "length": 36,
             "thickness": 5,
@@ -796,7 +796,7 @@
             "restitution": 0.75
           },
           {
-            "deflectorOffsetX": 110,
+            "deflectorOffsetX": 110.5,
             "deflectorY": 239,
             "length": 36,
             "thickness": 5,

@@ -1,0 +1,168 @@
+{
+  "runs": 5000,
+  "seed": 67043101,
+  "sourceRevision": "9cee0e8fdde82230204030ab906697000fa6c79e",
+  "sourceConfigHash": "efc0e32a1e328ee2f453022ea344475531f16d1acbd343c8c229aa21d880b994",
+  "results": [
+    {
+      "restitution": 0.75,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0962,
+      "stuck": 0
+    },
+    {
+      "restitution": 0.6,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0962,
+      "stuck": 0
+    },
+    {
+      "restitution": 0.45,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0962,
+      "stuck": 0
+    },
+    {
+      "restitution": 0.3,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0962,
+      "stuck": 0
+    },
+    {
+      "restitution": 0.155,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0962,
+      "stuck": 0
+    }
+  ]
+}

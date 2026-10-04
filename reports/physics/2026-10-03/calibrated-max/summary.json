@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "generatedAt": "2026-10-03T12:51:32.721Z",
+    "configVersion": "0.8-candidate-price0.5-payout1.5",
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "codeRevision": "9cee0e8fdde82230204030ab906697000fa6c79e",
+    "runs": 100000,
+    "seed": 67043202,
+    "stake": 100000,
+    "boardHash": "a2693868a04e7cd8fc6530ebd384a051729f4f07593fbacf44ff173288590abe",
+    "pocketLevels": {
+      "centerLevel": 2,
+      "midLevel": 3,
+      "jackpotLevel": 3
+    },
+    "specialLevels": {
+      "amplifierLevel": 5,
+      "returnLevel": 4,
+      "splitterLevel": 5,
+      "jackpotBiasLevel": 4
+    },
+    "pocketMultipliers": [
+      100,
+      4,
+      2.8,
+      1.4,
+      0.4,
+      0.4,
+      1.4,
+      2.8,
+      4,
+      100
+    ],
+    "ballBallCollisions": false,
+    "batchSize": 64,
+    "initialBallCount": 1,
+    "maxActiveBallsCap": 24,
+    "maxSplitDepth": 2
+  },
+  "metrics": {
+    "runs": 100000,
+    "resolvedRuns": 100000,
+    "stuckRuns": 0,
+    "stuckRate": 0,
+    "ev": 11.129152336000468,
+    "medianMultiplier": 0.7424,
+    "standardDeviation": 37.47870141858238,
+    "probabilityBelow1x": 0.63979,
+    "probabilityAtLeast2x": 0.21984,
+    "probabilityAtLeast5x": 0.07369,
+    "probabilityAtLeast10x": 0.06981,
+    "meanTerminalBalls": 1.37646,
+    "maxTerminalBalls": 2,
+    "meanChildBalls": 0.75292,
+    "meanReturns": 0.15887,
+    "meanAmplifierProcs": 0.61381,
+    "meanMaxActiveBalls": 1.37646,
+    "maxActiveBalls": 2,
+    "meanCascadeSeconds": 5.060793500000254,
+    "p95CascadeSeconds": 6.2,
+    "maxCascadeSeconds": 8.233333333333333,
+    "terminalPocketCounts": [
+      3500,
+      943,
+      552,
+      12410,
+      52012,
+      51367,
+      11855,
+      557,
+      969,
+      3481
+    ]
+  },
+  "performance": {
+    "wallElapsedMs": 63677.984153000005,
+    "wallMsPerDrop": 0.63677984153,
+    "wallMsPerTerminalBall": 0.46262139221626497,
+    "dropsPerSecond": 1570.401471248345,
+    "terminalBallsPerSecond": 2161.594809114497
+  },
+  "stuckDiagnostics": []
+}

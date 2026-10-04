@@ -1,0 +1,168 @@
+{
+  "runs": 5000,
+  "seed": 67043101,
+  "sourceRevision": "9cee0e8fdde82230204030ab906697000fa6c79e",
+  "sourceConfigHash": "efc0e32a1e328ee2f453022ea344475531f16d1acbd343c8c229aa21d880b994",
+  "results": [
+    {
+      "offset": 2,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.012,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0362,
+      "stuck": 0
+    },
+    {
+      "offset": 4,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0018,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0116,
+      "stuck": 0
+    },
+    {
+      "offset": 6,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0194,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0252,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0444,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0004,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0044,
+      "stuck": 0
+    },
+    {
+      "offset": 8,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0132,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0214,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0268,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.001,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.003,
+      "stuck": 0
+    },
+    {
+      "offset": 12,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0068,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0078,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0,
+          "stuck": 224
+        }
+      ],
+      "maxDropEdge": 0.0006,
+      "stuck": 280
+    }
+  ]
+}

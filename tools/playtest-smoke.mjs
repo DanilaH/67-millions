@@ -3,6 +3,8 @@ import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, extname } from 'node:path';
 import assert from 'node:assert/strict';
+import legacyPairs from '../src/config/plinko-deflectors-2026-10-02.json' with { type: 'json' };
+import { commitBareDrop, createBoardFingerprint } from '../src/core/plinko-rules/drop.ts';
 import { balance } from '../src/config/balance.ts';
 import { createInitialGameState } from '../src/core/state/GameState.ts';
 import { createSaveState } from '../src/core/save/SaveState.ts';
@@ -88,6 +90,25 @@ try {
   assert.equal(specialReplay.game.cash, specialResult.game.cash, 'special cascades restore exact independently aggregated payouts');
   assert.equal(specialReplay.game.rngState, specialResult.game.rngState, 'special cascades restore RNG');
   assert.deepEqual(specialReplay.game.clock, specialResult.game.clock, 'special cascades restore clock');
+  // A pre-calibration paid board must keep its old geometry through reload.
+  const legacyBalance = structuredClone(balance);
+  legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
+  const oldCommit = commitBareDrop({ ...fixture.game, plinkoJackpotBiasLevel: 4 }, null, legacyBalance, 'legacy-geometry', 1);
+  await load({ ...createSaveState(oldCommit.state), pendingDrop: oldCommit.pendingDrop });
+  await page.waitForFunction(() => !!JSON.parse(localStorage.getItem('67m.save')).pendingDrop?.physics?.solver);
+  const oldCheckpoint = await save();
+  assert.equal(oldCheckpoint.pendingDrop.boardFingerprint, oldCommit.pendingDrop.boardFingerprint);
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 30000 });
+  const oldResult = await save();
+  await load(oldCheckpoint);
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 30000 });
+  assert.equal((await save()).game.cash, oldResult.game.cash, 'legacy geometry restores exact payout');
+  await ready('Казино Plinko');
+  await click(170, 390);
+  await page.waitForFunction(() => !!JSON.parse(localStorage.getItem('67m.save')).pendingDrop);
+  const newShot = (await save()).pendingDrop;
+  assert.equal(newShot.boardFingerprint, createBoardFingerprint(balance, newShot.pocketLevelsAtCommit, newShot.specialLevelsAtCommit), 'next paid launch switches to calibrated geometry');
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 30000 });
   // High-density input is transformed back into logical map/minigame space.
   await load(fixture); await click(430, 220); await ready('РАБОТА');
   await click(760, 510); await ready('Курьерский маршрут');
@@ -124,7 +145,7 @@ try {
   await click(1080, 325); await ready('Казино Plinko');
   await click(1100, 660); await ready('Карта города');
   assert.deepEqual(errors, []);
-  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360'], errors }, null, 2));
+  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360'], errors }, null, 2));
   console.log('Playtest smoke passed');
 } catch (error) { writeFileSync(`${output}/failure.json`, JSON.stringify({ error: String(error), errors }, null, 2)); throw error; }
 finally { await browser.close(); server.close(); }

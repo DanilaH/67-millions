@@ -10,20 +10,22 @@ export const createPinTextures = (scene: Phaser.Scene, radius: number): void => 
     const stamp = scene.add.graphics();
     const special = role !== 'regular';
     stamp.fillStyle(special ? SPECIAL_PIN_STYLE[role].color : visualColor('lineDirty'), 1);
-    stamp.fillCircle(center, center, radius + (role === 'amplifier' ? 4 : special ? 3 : 0));
+    // The opaque body matches the collider; role colour and glyph identify
+    // special pins without suggesting a larger collision surface.
+    stamp.fillCircle(center, center, radius);
     if (role === 'amplifier') {
       stamp.fillStyle(visualColor('inkDeep'), 1);
-      stamp.fillCircle(center, center, Math.max(2, radius - 1));
+      stamp.fillCircle(center, center, Math.max(2, radius - 2));
     } else if (role === 'return' || role === 'splitter') {
       stamp.lineStyle(2, visualColor('inkDeep'), 1);
       if (role === 'return') {
-        stamp.lineBetween(center, center + 4, center, center - 5);
-        stamp.lineBetween(center, center - 5, center - 4, center - 1);
-        stamp.lineBetween(center, center - 5, center + 4, center - 1);
+        stamp.lineBetween(center, center + 3, center, center - 3);
+        stamp.lineBetween(center, center - 3, center - 3, center);
+        stamp.lineBetween(center, center - 3, center + 3, center);
       } else {
-        stamp.lineBetween(center, center + 4, center, center);
-        stamp.lineBetween(center, center, center - 4, center - 4);
-        stamp.lineBetween(center, center, center + 4, center - 4);
+        stamp.lineBetween(center, center + 3, center, center);
+        stamp.lineBetween(center, center, center - 3, center - 3);
+        stamp.lineBetween(center, center, center + 3, center - 3);
       }
     }
     stamp.generateTexture(key, size, size); stamp.destroy();

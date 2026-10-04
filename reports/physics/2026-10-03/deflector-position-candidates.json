@@ -1,0 +1,198 @@
+{
+  "runs": 5000,
+  "seed": 67043101,
+  "results": [
+    {
+      "outerOffset": 8,
+      "topOffset": 110,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0132,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0214,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0268,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 8,
+      "topOffset": 110.5,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0378,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 8,
+      "topOffset": 111,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0262,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 8,
+      "topOffset": 111.5,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0166,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 12,
+      "topOffset": 110,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0068,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0078,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 12,
+      "topOffset": 110.5,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0378,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 12,
+      "topOffset": 111,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0262,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 12,
+      "topOffset": 111.5,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0166,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 16,
+      "topOffset": 110,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0034,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.006,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.005,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0562,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 16,
+      "topOffset": 110.5,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0378,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 16,
+      "topOffset": 111,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0262,
+          "stuck": 0
+        }
+      ]
+    },
+    {
+      "outerOffset": 16,
+      "topOffset": 111.5,
+      "levels": [
+        {
+          "level": 4,
+          "edge": 0.0166,
+          "stuck": 0
+        }
+      ]
+    }
+  ]
+}

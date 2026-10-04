@@ -127,7 +127,15 @@ Automatic side geometry that alters real physics toward outer pockets. No fake h
 
 V0 uses cumulative mirrored angled deflector pairs derived from `balance.v0.json`: L1 adds one pair and each later level adds one additional outer-row pair. The geometry is visible in the board presentation and is part of the committed Drop fingerprint, so reload cannot silently change an in-flight trajectory.
 
-Final 100k physical evidence is recorded in `reports/plinko/T036_JACKPOT_BIAS.md`. In the accepted seed, edge-pocket probability rises monotonically from **1.102% at L0** to **1.982% / 2.627% / 4.867% / 5.589%** at L1–L4, with **0 stuck outcomes at every level**. The corresponding bare-board EV rises to **1.310413x at L4**. This validates the physical effect only; prices and full-game economy remain TUNABLE until E13/E21.
+Historical pre-2026-10-03 100k physical evidence is recorded in `reports/plinko/T036_JACKPOT_BIAS.md`. In the accepted seed, edge-pocket probability rises monotonically from **1.102% at L0** to **1.982% / 2.627% / 4.867% / 5.589%** at L1–L4, with **0 stuck outcomes at every level**. The corresponding bare-board EV rises to **1.310413x at L4**. This validates the historical physical effect only; prices and full-game economy remain TUNABLE until E13/E21.
+
+2026-10-03 user-authorized calibration moves the first three deflector pairs 8 logical pixels outward and the top pair 0.5 px outward. Current 100k-per-level sample (seed 67043202) measures edge probability **1.061% / 1.289% / 2.039% / 2.574% / 3.682%** for L0–L4, zero stuck at every level, and L4 bare EV **1.096945x**. Full physical upgrades also resolve 100k/100k. See `reports/physics/2026-10-03/CALIBRATION.md`. This is not a validation of full-game pacing.
+
+Already-paid pre-calibration cascades retain their historical deflector geometry, fingerprint and solver checkpoint. The scene switches to the current geometry only after the old paid world is durably empty; unknown fingerprints still fail validation. No stake refunds or rerolls.
+
+Special pins have the same opaque radius as the configured physical peg radius. Role glyphs fit inside that footprint.
+
+Implementation caveat confirmed during calibration: Matter resets restitution to zero and friction to one when constructing static bodies. Existing static-body restitution config fields are historical constructor inputs, not effective coefficients. The current calibration preserves that behavior in both runtime and simulators; do not enable those coefficients without a separate physical recalibration.
 
 ### Max Bet
 Independent global progression; it controls allowed stake, not board EV.

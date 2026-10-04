@@ -1,0 +1,90 @@
+[
+  [
+    {
+      "deflectorOffsetX": 174,
+      "deflectorY": 320,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    }
+  ],
+  [
+    {
+      "deflectorOffsetX": 174,
+      "deflectorY": 320,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    },
+    {
+      "deflectorOffsetX": 150,
+      "deflectorY": 293,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    }
+  ],
+  [
+    {
+      "deflectorOffsetX": 174,
+      "deflectorY": 320,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    },
+    {
+      "deflectorOffsetX": 150,
+      "deflectorY": 293,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    },
+    {
+      "deflectorOffsetX": 126,
+      "deflectorY": 266,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    }
+  ],
+  [
+    {
+      "deflectorOffsetX": 174,
+      "deflectorY": 320,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    },
+    {
+      "deflectorOffsetX": 150,
+      "deflectorY": 293,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    },
+    {
+      "deflectorOffsetX": 126,
+      "deflectorY": 266,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    },
+    {
+      "deflectorOffsetX": 110,
+      "deflectorY": 239,
+      "length": 36,
+      "thickness": 5,
+      "angleDegrees": 25,
+      "restitution": 0.75
+    }
+  ]
+]

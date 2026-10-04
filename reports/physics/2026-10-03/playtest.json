@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "checks": [
+    "1080p backing and map input",
+    "six free launches, mixed stakes and cap",
+    "mid-world exact payout, RNG, clock replay",
+    "no duplicate payout",
+    "six max-special cascades exact replay",
+    "legacy paid geometry resumes then switches to current board",
+    "1080p courier path reaches destination",
+    "debug add/remove/time/reset",
+    "collapsed debug does not cover casino exit at 640x360"
+  ],
+  "errors": []
+}

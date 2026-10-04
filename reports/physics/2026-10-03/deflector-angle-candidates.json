@@ -1,0 +1,136 @@
+{
+  "runs": 5000,
+  "seed": 67043101,
+  "sourceRevision": "9cee0e8fdde82230204030ab906697000fa6c79e",
+  "sourceConfigHash": "efc0e32a1e328ee2f453022ea344475531f16d1acbd343c8c229aa21d880b994",
+  "results": [
+    {
+      "angle": 15,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0172,
+          "stuck": 16
+        },
+        {
+          "level": 2,
+          "edge": 0.0242,
+          "stuck": 11
+        },
+        {
+          "level": 3,
+          "edge": 0.0414,
+          "stuck": 31
+        },
+        {
+          "level": 4,
+          "edge": 0.0892,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.1462,
+      "stuck": 0
+    },
+    {
+      "angle": 20,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0194,
+          "stuck": 5
+        },
+        {
+          "level": 2,
+          "edge": 0.0254,
+          "stuck": 5
+        },
+        {
+          "level": 3,
+          "edge": 0.0464,
+          "stuck": 6
+        },
+        {
+          "level": 4,
+          "edge": 0.0858,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.1234,
+      "stuck": 0
+    },
+    {
+      "angle": 30,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.017,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0454,
+      "stuck": 0
+    },
+    {
+      "angle": 35,
+      "levels": [
+        {
+          "level": 0,
+          "edge": 0.0102,
+          "stuck": 0
+        },
+        {
+          "level": 1,
+          "edge": 0.0204,
+          "stuck": 0
+        },
+        {
+          "level": 2,
+          "edge": 0.0264,
+          "stuck": 0
+        },
+        {
+          "level": 3,
+          "edge": 0.0476,
+          "stuck": 0
+        },
+        {
+          "level": 4,
+          "edge": 0.0072,
+          "stuck": 0
+        }
+      ],
+      "maxDropEdge": 0.0346,
+      "stuck": 0
+    }
+  ]
+}

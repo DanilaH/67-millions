@@ -64,3 +64,5 @@ The 2026-10-02 user revision adds free concurrent launches and changes the confi
 - inventory;
 - offline progression;
 - отдельный medication/antidepressant consumable.
+
+Current physics revision (2026-10-03): [deflector calibration and save compatibility](reports/physics/2026-10-03/CALIBRATION.md). Config SHA-256 `7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c`; older distribution/pacing reports remain historical.

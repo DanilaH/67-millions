@@ -13,6 +13,7 @@ import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAna
 import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
 import { advanceRunTime } from '../core/time/runTime';
 import { balance } from '../config/balance';
+import { resolvePendingBoardConfig } from '../core/plinko-rules/restoreBoardConfig';
 import {
   PlinkoAudio,
   shouldUseBigJackpotStinger,
@@ -103,6 +104,7 @@ import {
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
 
 export class PlinkoDebugScene extends Phaser.Scene {
+  private boardConfig = balance;
   private effects?: PlinkoEffects;
   private mapHud?: PersistentHud;
   private runtime: BarePlinkoRuntime | null = null;
@@ -129,7 +131,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private mapMessageText?: Phaser.GameObjects.Text;
   private mapMode = false;
   private leaving = false;
-  private readonly idleTime = new ActiveTimeAccumulator(balance.time.realSecondsPerGameMinute);
+  private readonly idleTime = new ActiveTimeAccumulator(this.boardConfig.time.realSecondsPerGameMinute);
   private lastResultMessage = '';
   private betPanel?: CasinoBetPanel;
   private upgradePanel?: CasinoUpgradePanel;
@@ -178,8 +180,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.effects = new PlinkoEffects(this, this.casinoLayer);
     this.ballImages = [];
     this.pegImages = [];
-    createPinTextures(this, balance.plinko.geometry.pegRadius);
-    const radius = balance.plinko.geometry.ballRadius;
+    createPinTextures(this, this.boardConfig.plinko.geometry.pegRadius);
+    const radius = this.boardConfig.plinko.geometry.ballRadius;
     const size = (radius + 4) * 2;
     for (const kind of ['normal', 'amplified', 'split'] as const) {
       const key = `67m:ball:${kind}`;
@@ -194,7 +196,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       stamp.generateTexture(key, size, size);
       stamp.destroy();
     }
-    for (let index = 0; index < balance.plinko.maxActiveBalls; index += 1) {
+    for (let index = 0; index < this.boardConfig.plinko.maxActiveBalls; index += 1) {
       const image = this.add.image(0, 0, '67m:ball:normal').setVisible(false);
       this.ballImages.push(image);
       this.casinoLayer.add(image);
@@ -303,9 +305,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private async initialize(): Promise<void> {
     this.repository = getSceneSaveRepository(this);
     this.save = await this.repository.load();
+    this.boardConfig = resolvePendingBoardConfig(balance, this.save.pendingDrop);
     if (isPlinkoPerfMode() && new URLSearchParams(window.location.search).get('stress') === '24') {
       this.save = { version: SAVE_VERSION, activeAction: null, pendingDrop: null, game: {
-        ...createInitialGameState(balance, 67072000), cash: 50_000_000,
+        ...createInitialGameState(this.boardConfig, 67072000), cash: 50_000_000,
         plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3,
         plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5,
         plinkoJackpotBiasLevel: 4,
@@ -328,15 +331,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
         ? pendingAtLoad.rngStateAtCommit
         : this.save.game.rngState,
     );
-    this.runtime = createBarePlinko(this, balance, { next: () => this.random!.next() }, {
+    this.runtime = createBarePlinko(this, this.boardConfig, { next: () => this.random!.next() }, {
       onPocket: (index, body) => {
         const multiplier =
           this.visualSnapshot?.pocketMultipliers[index] ??
-          balance.plinko.basePockets[index] ??
+          this.boardConfig.plinko.basePockets[index] ??
           1;
         this.audio?.pocket(
           multiplier,
-          getPocketVisualRole(index, balance) === 'jackpot',
+          getPocketVisualRole(index, this.boardConfig) === 'jackpot',
         );
         this.enqueueCascadeMutation(() =>
           this.resolvePocket(index, body),
@@ -350,7 +353,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         // Derive passive cascade minutes from saved solver ticks, so reload does
         // not reset the minute phase or change the outcome. Barry freezes time.
         if (this.save?.pendingDrop && !isPlinkoPerfMode()) {
-          const ticksPerMinute = 60 * balance.time.realSecondsPerGameMinute;
+          const ticksPerMinute = 60 * this.boardConfig.time.realSecondsPerGameMinute;
           if (Math.floor(fixedTicksElapsed / ticksPerMinute) >
               Math.floor((fixedTicksElapsed - 1) / ticksPerMinute)) this.advanceCasinoTime(1, false);
         }
@@ -384,7 +387,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.installCasinoControls();
 
     if (pendingAtLoad) {
-      assertDropBoardCompatible(pendingAtLoad, balance, this.save.game);
+      assertDropBoardCompatible(pendingAtLoad, this.boardConfig, this.save.game);
       this.runtime.setJackpotBiasLevel(
         pendingAtLoad.specialLevelsAtCommit.jackpotBiasLevel,
       );
@@ -406,7 +409,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         const timed = advancePendingDropTime(
           this.save.game,
           pendingAtLoad,
-          balance,
+          this.boardConfig,
         );
         this.save = {
           ...this.save,
@@ -488,7 +491,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private advanceCasinoTime(minutes: number, persist = true): void {
     if (!this.save || this.save.game.barryInterruptPending || this.save.game.terminalReason !== null || this.save.game.victory) return;
-    const advanced = advanceRunTime(this.save.game, null, minutes, balance);
+    const advanced = advanceRunTime(this.save.game, null, minutes, this.boardConfig);
     this.save = { ...this.save, game: advanced.state };
     // Event checkpoints and Plinko share the authoritative RNG stream.
     this.random = new SeededRandom(this.save.game.rngState);
@@ -507,7 +510,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     map.setDisplaySize(source.width * cover, source.height * cover);
     this.mapLayer.add(map);
     const beforeHud = this.children.list.length;
-    this.mapHud = new PersistentHud(this, balance);
+    this.mapHud = new PersistentHud(this, this.boardConfig);
     this.mapLayer.add(this.children.list.slice(beforeHud));
 
     const title = this.add
@@ -591,7 +594,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game = purchaseMaxBetUpgrade(
           game,
           this.save.pendingDrop,
-          balance,
+          this.boardConfig,
         );
       } else if (
         id === 'center' ||
@@ -601,7 +604,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game = purchasePocketUpgrade(
           game,
           this.save.pendingDrop,
-          balance,
+          this.boardConfig,
           id,
         );
       } else if (
@@ -613,14 +616,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
         game = purchaseSpecialUpgrade(
           game,
           this.save.pendingDrop,
-          balance,
+          this.boardConfig,
           id,
         );
       } else {
         game = purchaseInsuranceUpgrade(
           game,
           this.save.pendingDrop,
-          balance,
+          this.boardConfig,
         );
       }
 
@@ -653,11 +656,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     try {
-      if (!canLaunchDrop(this.save.pendingDrop, balance)) return;
+      if (!canLaunchDrop(this.save.pendingDrop, this.boardConfig)) return;
       const previous = this.save.pendingDrop;
       const dropId = `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
-      const committed = commitBareDrop(this.save.game, null, balance, dropId, fraction);
-      const timed = advancePendingDropTime(committed.state, committed.pendingDrop, balance);
+      const committed = commitBareDrop(this.save.game, null, this.boardConfig, dropId, fraction);
+      const timed = advancePendingDropTime(committed.state, committed.pendingDrop, this.boardConfig);
       this.save = { ...this.save, game: timed.state, pendingDrop: appendDrop(previous, timed.pendingDrop) };
       // Debit, scheduler, RNG and the spawned body become durable in one checkpoint.
       // Before that write a crash restores the previous world, without charging this click.
@@ -703,7 +706,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const pending = this.save.pendingDrop;
     const active = deriveActiveSpecialPins(
-      balance,
+      this.boardConfig,
       pending.specialLevelsAtCommit,
     );
     let ball = this.balls.get(body);
@@ -769,7 +772,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (
       active.splitter &&
       active.splitter.pegIds.includes(pegId) &&
-      canSplitAt(ball, pegId, this.balls.size, balance)
+      canSplitAt(ball, pegId, this.balls.size, this.boardConfig)
     ) {
       const [leftState, rightState] = createSplitChildren(
         ball,
@@ -811,7 +814,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       pending,
       metadata.currentValue,
       index,
-      balance,
+      this.boardConfig,
     );
     const aggregatePayout = priorPayout + ballPayout;
     this.effects?.payout(body.position.x, this.runtime.layout.pocketTopY - 12, ballPayout);
@@ -831,8 +834,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const previousBarryPaymentIndex = this.save.game.barryPaymentIndex;
     const remaining = removeSettledDrop(this.save.pendingDrop, pending.dropId);
     const result = remaining
-      ? settleAggregateDrop(this.save.game, pending, aggregatePayout, balance)
-      : settleAggregatePendingDropAndResumeTime(this.save.game, pending, aggregatePayout, balance);
+      ? settleAggregateDrop(this.save.game, pending, aggregatePayout, this.boardConfig)
+      : settleAggregatePendingDropAndResumeTime(this.save.game, pending, aggregatePayout, this.boardConfig);
     this.save = { ...this.save, game: result.state, pendingDrop: remaining };
     this.capturePendingPhysics();
     this.refreshVisualSnapshot();
@@ -864,7 +867,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       result.losing,
       shouldUseBigJackpotStinger(
         result.multiplier,
-        Math.max(...balance.plinko.basePockets),
+        Math.max(...this.boardConfig.plinko.basePockets),
       ),
     );
     this.lastResultMessage = formatCasinoResult({
@@ -898,6 +901,12 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+
+    if (!this.save.pendingDrop && this.boardConfig !== balance && !this.mapMode) {
+      // The old paid world is now durably empty; new launches use current geometry.
+      this.scene.restart();
+      return;
+    }
 
     if (this.mapMode && !this.save.pendingDrop) {
       this.time.delayedCall(250, () => {
@@ -935,7 +944,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           }
           if (this.runtime && this.save?.pendingDrop && new URLSearchParams(window.location.search).get('stress') === '24') {
             // Performance build only: synthetic cap concurrency, preserving the original total stake.
-            const roots = balance.plinko.maxActiveBalls;
+            const roots = this.boardConfig.plinko.maxActiveBalls;
             for (const metadata of this.balls.values()) metadata.currentValue = 1 / roots;
             for (let index = this.balls.size; index < roots; index += 1) {
               const body = this.runtime.spawnBall();
@@ -1074,7 +1083,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         : derivePlinkoVisualSnapshot(
             this.save.game,
             this.save.pendingDrop,
-            balance,
+            this.boardConfig,
           );
 
     if (this.runtime) {
@@ -1094,7 +1103,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       );
       this.worldAudio?.syncNeeds(
         this.save.game.needs,
-        balance.needs.lowThreshold,
+        this.boardConfig.needs.lowThreshold,
       );
     }
   }
@@ -1103,28 +1112,28 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.infoText || !this.save) return;
 
     const snapshot = this.visualSnapshot;
-    const hud = deriveHudSnapshot(this.save.game, balance);
+    const hud = deriveHudSnapshot(this.save.game, this.boardConfig);
     this.infoText.setText([
       `ДЕНЬ ${hud.day} · ${hud.time}`,
       `Деньги ${hud.cash.toLocaleString('ru-RU')} ₽`,
       `Барри ${hud.nextBarry.toLocaleString('ru-RU')} ₽`,
       `До выплаты ${formatBarryCountdown(hud.minutesUntilBarry)}`,
       ...(snapshot?.insuranceArmed ? ['Щит готов'] : []),
-      this.save.pendingDrop ? `На доске: ${activeDrops(this.save.pendingDrop).length} / ${balance.plinko.maxConcurrentDrops}` : 'Бросок готов',
+      this.save.pendingDrop ? `На доске: ${activeDrops(this.save.pendingDrop).length} / ${this.boardConfig.plinko.maxConcurrentDrops}` : 'Бросок готов',
     ]);
 
     this.betPanel?.render(
       buildCasinoQuickBets(
         this.save.game,
         this.save.pendingDrop,
-        balance,
+        this.boardConfig,
       ),
     );
     this.upgradePanel?.render(
       buildCasinoUpgradePreviews(
         this.save.game,
         this.save.pendingDrop,
-        balance,
+        this.boardConfig,
       ),
     );
 
@@ -1212,7 +1221,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.pocketLabels.forEach((label, index) => {
-      const role = getPocketVisualRole(index, balance);
+      const role = getPocketVisualRole(index, this.boardConfig);
       const upgraded =
         (role === 'jackpot' &&
           snapshot.pocketLevels.jackpotLevel > 0) ||
@@ -1254,7 +1263,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     const graphics = this.staticBoardGraphics;
     graphics.clear();
-    const geometry = balance.plinko.geometry;
+    const geometry = this.boardConfig.plinko.geometry;
     const layout = this.runtime.layout;
     const snapshot = this.visualSnapshot;
 
@@ -1268,7 +1277,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     const biasGeometry = deriveJackpotBiasGeometry(
-      balance,
+      this.boardConfig,
       snapshot.specialLevels.jackpotBiasLevel,
     );
 

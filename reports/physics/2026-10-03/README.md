@@ -17,8 +17,8 @@ Max displacement per solver tick within the peg region: 5.66 / 6.29 / 6.84 / 6.7
 
 ## What explains the observation
 
-- Jackpot Bias adds four pairs of real angled deflectors at maximum level; restitution 0.75. This intentionally promotes outward trajectories. It is not hidden pocket reassignment.
-- Peg restitution is 0.6. Matter uses the larger restitution of a colliding pair, so the ball's 0.155 does not make a peg impact use 0.155. A ball retains tangential motion; it is not supposed to stop on every peg.
+- Jackpot Bias adds four pairs of real angled deflectors at maximum level; configured restitution 0.75 (reset to 0 by Matter). This geometry intentionally promotes outward trajectories. It is not hidden pocket reassignment.
+- Correction from subsequent calibration: Matter resets static-body restitution to 0 and friction to 1 during construction. Configured peg restitution 0.6 and deflector restitution 0.75 are therefore NOT their effective runtime values. The collision uses ball restitution 0.155; changing static restitution options alone has no effect. A ball retains tangential motion; it is not supposed to stop on every peg.
 - Return preserves lateral X while moving the ball to the upper spawn Y and zeroing velocity. A returned ball can fall down the side of the triangular peg layout before its next contact. Amplifier changes value, not velocity. Splitter introduces a configured horizontal velocity delta of 0.8.
 - Special pin art has opaque radius 9 (return/splitter) or 10 (amplifier), but every physical peg has radius 6. This is a confirmed visual/contact mismatch and can look like penetration of the painted outer part. It does not establish the user's exact observed trajectory.
 - Multiple paid balls do not collide with or accelerate one another.
