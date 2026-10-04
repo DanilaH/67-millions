@@ -1,0 +1,212 @@
+{
+  "metadata": {
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "codeRevision": "855ed436078e60130671ed79dce9f63fdd0a3bc4",
+    "perPolicy": 20,
+    "seedStart": 67104000,
+    "model": "matter-cascade-direct-v1+ux-ticks-v1",
+    "caveat": "Sequential economic diagnostic. Does not model concurrent launches, player deliberation or passive real-time during skill games/cascades. Physics seconds are summed fixed ticks, not measured session duration."
+  },
+  "strategies": [
+    {
+      "name": "CAUTIOUS",
+      "outcomes": {
+        "BARRY_LOSS": 20
+      },
+      "all": {
+        "runs": 20,
+        "medianCounters": {
+          "decisions": 183.5,
+          "gameMinutesAdvanced": 25915.0,
+          "workShifts": 77.5,
+          "plinkoDrops": 0.0,
+          "foodActions": 42.0,
+          "entertainmentActions": 21.0,
+          "dumpsterSearches": 0.0,
+          "showers": 0.0,
+          "sleeps": 27.5,
+          "eventsResolved": 9.0,
+          "purchases": 6.0
+        },
+        "medianRecoveryActions": 91.0,
+        "medianWorkBeforeFirstDrop": null,
+        "medianDropsBetweenPlinkoPurchases": null,
+        "medianLongestDropGapBetweenPurchases": null,
+        "maxConsecutivePlinkoPurchases": 0,
+        "medianSummedPhysicsMinutes": 0.0,
+        "medianGameDays": 18.0
+      }
+    },
+    {
+      "name": "BASELINE_GROWTH",
+      "outcomes": {
+        "BARRY_LOSS": 14,
+        "VICTORY": 6
+      },
+      "all": {
+        "runs": 20,
+        "medianCounters": {
+          "decisions": 268.0,
+          "gameMinutesAdvanced": 23035.0,
+          "workShifts": 72.0,
+          "plinkoDrops": 104.5,
+          "foodActions": 33.0,
+          "entertainmentActions": 5.0,
+          "dumpsterSearches": 0.0,
+          "showers": 0.0,
+          "sleeps": 21.0,
+          "eventsResolved": 9.0,
+          "purchases": 32.0
+        },
+        "medianRecoveryActions": 60.0,
+        "medianWorkBeforeFirstDrop": 2.0,
+        "medianDropsBetweenPlinkoPurchases": 1.0,
+        "medianLongestDropGapBetweenPurchases": 25.0,
+        "maxConsecutivePlinkoPurchases": 7,
+        "medianSummedPhysicsMinutes": 8.73,
+        "medianGameDays": 16.0
+      },
+      "wins": {
+        "runs": 6,
+        "medianCounters": {
+          "decisions": 204.5,
+          "gameMinutesAdvanced": 11650.0,
+          "workShifts": 34.0,
+          "plinkoDrops": 104.5,
+          "foodActions": 16.5,
+          "entertainmentActions": 2.5,
+          "dumpsterSearches": 0.0,
+          "showers": 0.0,
+          "sleeps": 11.0,
+          "eventsResolved": 5.0,
+          "purchases": 33.0
+        },
+        "medianRecoveryActions": 30.5,
+        "medianWorkBeforeFirstDrop": 2.0,
+        "medianDropsBetweenPlinkoPurchases": 0.0,
+        "medianLongestDropGapBetweenPurchases": 23.5,
+        "maxConsecutivePlinkoPurchases": 7,
+        "medianSummedPhysicsMinutes": 8.73,
+        "medianGameDays": 8.09
+      }
+    },
+    {
+      "name": "AGGRESSIVE",
+      "outcomes": {
+        "BARRY_LOSS": 20
+      },
+      "all": {
+        "runs": 20,
+        "medianCounters": {
+          "decisions": 234.0,
+          "gameMinutesAdvanced": 15835.0,
+          "workShifts": 50.0,
+          "plinkoDrops": 77.0,
+          "foodActions": 49.0,
+          "entertainmentActions": 19.0,
+          "dumpsterSearches": 0.0,
+          "showers": 0.0,
+          "sleeps": 16.0,
+          "eventsResolved": 7.0,
+          "purchases": 10.5
+        },
+        "medianRecoveryActions": 83.0,
+        "medianWorkBeforeFirstDrop": 1.0,
+        "medianDropsBetweenPlinkoPurchases": 2,
+        "medianLongestDropGapBetweenPurchases": 27.5,
+        "maxConsecutivePlinkoPurchases": 5,
+        "medianSummedPhysicsMinutes": 6.43,
+        "medianGameDays": 11.0
+      }
+    },
+    {
+      "name": "WORKER",
+      "outcomes": {
+        "BARRY_LOSS": 20
+      },
+      "all": {
+        "runs": 20,
+        "medianCounters": {
+          "decisions": 183.0,
+          "gameMinutesAdvanced": 25915.0,
+          "workShifts": 77.5,
+          "plinkoDrops": 0.0,
+          "foodActions": 42.0,
+          "entertainmentActions": 22.0,
+          "dumpsterSearches": 0.0,
+          "showers": 0.0,
+          "sleeps": 27.0,
+          "eventsResolved": 10.5,
+          "purchases": 6.0
+        },
+        "medianRecoveryActions": 90.0,
+        "medianWorkBeforeFirstDrop": null,
+        "medianDropsBetweenPlinkoPurchases": null,
+        "medianLongestDropGapBetweenPurchases": null,
+        "maxConsecutivePlinkoPurchases": 0,
+        "medianSummedPhysicsMinutes": 0.0,
+        "medianGameDays": 18.0
+      }
+    },
+    {
+      "name": "DEGENERATE",
+      "outcomes": {
+        "HP_DEATH": 15,
+        "BARRY_LOSS": 5
+      },
+      "all": {
+        "runs": 20,
+        "medianCounters": {
+          "decisions": 60.0,
+          "gameMinutesAdvanced": 3336.5,
+          "workShifts": 10.5,
+          "plinkoDrops": 28.5,
+          "foodActions": 5.0,
+          "entertainmentActions": 0.0,
+          "dumpsterSearches": 1.5,
+          "showers": 0.0,
+          "sleeps": 4.0,
+          "eventsResolved": 1.0,
+          "purchases": 5.0
+        },
+        "medianRecoveryActions": 8.0,
+        "medianWorkBeforeFirstDrop": 1.0,
+        "medianDropsBetweenPlinkoPurchases": 4.0,
+        "medianLongestDropGapBetweenPurchases": 10.5,
+        "maxConsecutivePlinkoPurchases": 3,
+        "medianSummedPhysicsMinutes": 2.35,
+        "medianGameDays": 2.32
+      }
+    },
+    {
+      "name": "RECKLESS_NEEDS",
+      "outcomes": {
+        "HP_DEATH": 18,
+        "BARRY_LOSS": 2
+      },
+      "all": {
+        "runs": 20,
+        "medianCounters": {
+          "decisions": 35.0,
+          "gameMinutesAdvanced": 2594.0,
+          "workShifts": 6.0,
+          "plinkoDrops": 12.0,
+          "foodActions": 0.0,
+          "entertainmentActions": 0.0,
+          "dumpsterSearches": 6.0,
+          "showers": 0.0,
+          "sleeps": 3.0,
+          "eventsResolved": 1.0,
+          "purchases": 3.0
+        },
+        "medianRecoveryActions": 3.0,
+        "medianWorkBeforeFirstDrop": 1.0,
+        "medianDropsBetweenPlinkoPurchases": 3.0,
+        "medianLongestDropGapBetweenPurchases": 6.0,
+        "maxConsecutivePlinkoPurchases": 2,
+        "medianSummedPhysicsMinutes": 1.04,
+        "medianGameDays": 1.8
+      }
+    }
+  ]
+}

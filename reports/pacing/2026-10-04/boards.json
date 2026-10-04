@@ -1,0 +1,73 @@
+{
+  "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+  "seed": 67105000,
+  "model": "canonical Matter cascade; 5000 single-root runs per stage, no insurance",
+  "rows": [
+    {
+      "stage": "base",
+      "specialLevels": {
+        "amplifierLevel": 0,
+        "returnLevel": 0,
+        "splitterLevel": 0,
+        "jackpotBiasLevel": 0
+      },
+      "pocketLevels": {
+        "centerLevel": 0,
+        "midLevel": 0,
+        "jackpotLevel": 0
+      },
+      "runs": 5000,
+      "stuck": 0,
+      "meanMultiplier": 0.84325,
+      "medianMultiplier": 0.25,
+      "lossShare": 0.5282,
+      "topOnePercentPayoutShare": 0.14040913133708866,
+      "medianSeconds": 4.966666666666667,
+      "p95Seconds": 5.733333333333333
+    },
+    {
+      "stage": "pockets-max",
+      "specialLevels": {
+        "amplifierLevel": 0,
+        "returnLevel": 0,
+        "splitterLevel": 0,
+        "jackpotBiasLevel": 0
+      },
+      "pocketLevels": {
+        "centerLevel": 2,
+        "midLevel": 3,
+        "jackpotLevel": 3
+      },
+      "runs": 5000,
+      "stuck": 0,
+      "meanMultiplier": 2.038360000000041,
+      "medianMultiplier": 0.4,
+      "lossShare": 0.5282,
+      "topOnePercentPayoutShare": 0.48117113758118313,
+      "medianSeconds": 4.966666666666667,
+      "p95Seconds": 5.733333333333333
+    },
+    {
+      "stage": "all-max",
+      "specialLevels": {
+        "amplifierLevel": 5,
+        "returnLevel": 4,
+        "splitterLevel": 5,
+        "jackpotBiasLevel": 4
+      },
+      "pocketLevels": {
+        "centerLevel": 2,
+        "midLevel": 3,
+        "jackpotLevel": 3
+      },
+      "runs": 5000,
+      "stuck": 0,
+      "meanMultiplier": 10.969324399999971,
+      "medianMultiplier": 0.742,
+      "lossShare": 0.6466,
+      "topOnePercentPayoutShare": 0.14586130755691792,
+      "medianSeconds": 5.033333333333333,
+      "p95Seconds": 6.166666666666667
+    }
+  ]
+}
