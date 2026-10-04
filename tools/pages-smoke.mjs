@@ -95,7 +95,14 @@ try {
       await page.waitForTimeout(300);
       rect = await page.locator('canvas').boundingBox(); assert.ok(rect);
     };
-    const sceneReady = async label => page.waitForFunction(label => document.querySelector('canvas')?.getAttribute('aria-label') === label, label);
+    const sceneReady = async label => {
+      try { await page.waitForFunction(label => document.querySelector('canvas')?.getAttribute('aria-label') === label, label); }
+      catch (error) {
+        await page.screenshot({ path: `${output}/failed-scene.png` });
+        console.error('scene transition', label, await page.locator('canvas').getAttribute('aria-label'), errors);
+        throw error;
+      }
+    };
     const jobLabels = { dishes: 'Мойка посуды', trash: 'Вынос мусора', courier: 'Курьерский маршрут' };
     const click = async (x, y) => { await move(x, y); await down(); await up(); };
     const clickMap = async id => {
@@ -344,9 +351,15 @@ try {
     // A working map after exit must be able to launch a real action.
     await clickMap('work'); await sceneReady('РАБОТА'); await click(760, 510);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
-    await loadSave(fixture); await clickMap('casino');
+    await loadSave(fixture); await clickMap('casino'); await sceneReady('Казино Plinko');
     const idleMinute = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.clock.minuteOfDay;
-    await page.waitForFunction(minute => JSON.parse(localStorage.getItem('67m.save')).game.clock.minuteOfDay > minute, idleMinute, { timeout: 6000 });
+    try {
+      await page.waitForFunction(minute => JSON.parse(localStorage.getItem('67m.save')).game.clock.minuteOfDay > minute, idleMinute, { timeout: 6000 });
+    } catch (error) {
+      await page.screenshot({ path: `${output}/failed-casino-idle.png` });
+      console.error('casino idle', await page.locator('canvas').getAttribute('aria-label'), await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save'))), errors);
+      throw error;
+    }
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-idle.png` });
     const committed = commitBareDrop(fixture.game, null, balance, 'pages-restore', 1);
     await loadSave({ ...fixture, game: committed.state, pendingDrop: committed.pendingDrop });

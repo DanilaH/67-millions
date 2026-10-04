@@ -28,8 +28,6 @@ export const createCasinoUpgradePanel = (
   const title = text(950, 111, 'ПРОКАЧКА АВТОМАТА', 20);
   const status = text(950, 142, '', 14).setColor(visualHex('textMuted'));
   const track = scene.add.graphics();
-  const clip = scene.add.graphics().setVisible(false);
-  const mask = clip.createGeometryMask();
   container.add([background, title, status, track]);
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
@@ -43,7 +41,8 @@ export const createCasinoUpgradePanel = (
     previews.forEach((preview, index) => {
       const y = top + index * rowHeight - offset;
       if (y + rowHeight <= top || y >= bottom) return;
-      const card = scene.add.rectangle(1096, y + 48, 296, 94, visualColor('inkRaised'));
+      const cardTop = Math.max(top, y + 1), cardBottom = Math.min(bottom, y + 95);
+      const card = scene.add.rectangle(1096, (cardTop + cardBottom) / 2, 296, cardBottom - cardTop, visualColor('inkRaised'));
       const name = text(958, y + 6, preview.title, 17).setFontStyle('bold');
       const level = text(1234, y + 7, `${preview.currentLevel}/${preview.maxLevel}`, 14).setOrigin(1, 0).setColor(visualHex('textMuted'));
       const effect = text(958, y + 29, preview.nextEffect, 15).setWordWrapWidth(276);
@@ -51,7 +50,9 @@ export const createCasinoUpgradePanel = (
         .setOrigin(1, 0).setPadding(12, 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
       const hint = text(958, y + 68, preview.maxed ? '' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', 12).setWordWrapWidth(145).setColor(visualHex('textMuted'));
-      for (const object of [card, name, level, effect, buy, hint]) object.setMask(mask);
+      // Text must not escape the scroll window even on renderers that do not
+      // support nested container masks. Partial rows keep their clipped backing.
+      for (const object of [name, level, effect, buy, hint]) object.setVisible(object.y >= top && object.y + object.height <= bottom);
       container.add([card, name, level, effect, buy, hint]);
       dynamic.push(card, name, level, effect, buy, hint);
     });
@@ -91,14 +92,13 @@ export const createCasinoUpgradePanel = (
   const layout = () => {
     const view = sceneViewport(scene);
     container.x = view.left + view.width - 1280;
-    clip.clear().fillStyle(0xffffff).fillRect(944 + container.x, top, 300, bottom - top);
     draw();
   };
   scene.input.on('pointermove', move); scene.input.on('pointerup', up); scene.input.on('gameout', cancel); scene.input.on('wheel', wheel);
   scene.scale.on('resize', layout); layout();
   scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
     scene.input.off('pointermove', move); scene.input.off('pointerup', up); scene.input.off('gameout', cancel); scene.input.off('wheel', wheel);
-    scene.scale.off('resize', layout); mask.destroy(); clip.destroy();
+    scene.scale.off('resize', layout);
   });
   return { render: nextPreviews => {
     const nextSignature = JSON.stringify(nextPreviews);

@@ -1233,7 +1233,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           const label = this.add
             .text(
               pocket.x,
-              this.runtime!.layout.pocketBottomY + 18,
+              this.runtime!.layout.pocketBottomY - 16,
               `${pockets[index]}x`,
               {
                 color: visualHex('textMuted'),
