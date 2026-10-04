@@ -37,3 +37,13 @@ it('adds active skill time without replacing the shift action cost', async () =>
   expect(timed.counters.gameMinutesAdvanced - original.counters.gameMinutesAdvanced).toBe(10);
   expect(timed.diagnostics.activeSeconds?.work).toBe(30);
 });
+
+it('captures an immutable solver checkpoint while its source world keeps running', () => {
+  const world = createSharedWorld({ ...createInitialGameState(balance, 123), cash: 100000 }, balance);
+  world.launch(1);
+  for (let i=0;i<60;i++) world.step();
+  const checkpoint = world.snapshot(); const encoded = JSON.stringify(checkpoint);
+  for (let i=0;i<120;i++) world.step();
+  expect(JSON.stringify(checkpoint)).toBe(encoded);
+  world.destroy();
+});

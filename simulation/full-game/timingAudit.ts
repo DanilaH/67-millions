@@ -34,7 +34,7 @@ for (const batch of [1,6]) for (const order of ['original','cheapest'] as const)
       seed, configHash,maxDecisions:20000,maxGameMinutes:35*1440,
       execution: {
         decisionSeconds:decisionDelay,
-        workSeconds:job=>job==='courier'?30:config.work.jobs[job].minigame.timerRealSeconds,
+        workSeconds:job=>job==='courier'?30:Number(config.work.jobs[job].minigame.timerRealSeconds),
         plinko(state,fraction){
           const world=createSharedWorld(state,config);
           try {

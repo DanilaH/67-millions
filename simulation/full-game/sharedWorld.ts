@@ -95,7 +95,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig) => 
     step() { elapsedTicks++; M.Engine.update(engine, 1000 / 60); while (mutations.length) mutations.shift()!(); },
     snapshot() {
       const checkpoint = pending ? { ...pending, physics: { fixedTicksElapsed: runtime.getFixedTicksElapsed(), alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0, balls: [...balls].map(([b,m])=>runtime.snapshotBall(b,m)), solver: runtime.snapshotSolver(balls) } } : null;
-      return { state: structuredClone(state), pending: checkpoint, advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements) };
+      return { state: structuredClone(state), pending: structuredClone(checkpoint), advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements) };
     },
     get active() { return pending !== null; },
     destroy() { runtime.destroy(); M.Engine.clear(engine); },
