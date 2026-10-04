@@ -13,7 +13,8 @@ it('caps a shared world at six independently charged and settled launches', () =
   const result = world.snapshot();
   expect(result.pending).toBeNull(); expect(result.settlements).toHaveLength(6);
   expect(result.state.cash).toBe(97000 + result.settlements.reduce((sum,r)=>sum+r.payout,0));
-  expect(result.advancedMinutes).toBe(91); // six 15-minute action costs + one shared passive minute
+  expect(result.advancedMinutes).toBe(6 * 15 + Math.floor(result.elapsedTicks / 180)); // shared passive clock, not per ball
+  expect(result.advancedMinutes).toBe(92); // Phaser's resolver defaults give two passive minutes for this seed
   expect(state.cash).toBe(100000);
   world.destroy();
 });

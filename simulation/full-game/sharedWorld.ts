@@ -23,6 +23,13 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
   const settlements: { stake: number; payout: number; tick: number }[] = [];
   const balls = new Map<MatterJS.BodyType, DropBallState>();
   const mutations: (() => void)[] = [];
+  // MatterPhysics' constructor overrides the raw Matter defaults (Phaser 4.2.1,
+  // src/physics/matter-js/MatterPhysics.js). Loading CustomMain alone skips it.
+  // These are integration defaults, not a new physics/balance configuration.
+  Object.assign(M.Resolver, {
+    _restingThresh: 4, _restingThreshTangent: 6,
+    _positionDampen: 0.9, _positionWarming: 0.8, _frictionNormalMultiplier: 5,
+  });
   const engine = M.Engine.create();
   const listeners = new Map<(...args: never[]) => void, (event: Matter.IEvent<Matter.Engine>) => void>();
   const adapter = {

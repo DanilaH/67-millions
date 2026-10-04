@@ -179,6 +179,7 @@ try {
     writeFileSync(`${output}/node-parity-${special ? 'special' : 'base'}.json`, JSON.stringify({ checkpoint, actual, expected, trajectory, browserSaves }));
     const divergences = browserSaves.flatMap(saved => {
       const tick = saved.pendingDrop?.physics?.fixedTicksElapsed;
+      if (tick === undefined) return [];
       const frame = trajectory.find(frame => frame.pending?.physics?.fixedTicksElapsed === tick);
       if (!frame) return [];
       const a = saved.pendingDrop.physics.balls, b = frame.pending.physics.balls;
