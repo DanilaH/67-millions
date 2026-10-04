@@ -274,13 +274,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
     });
   }
 
-  public update(_time: number, deltaMs: number): void {
+  public update(_time: number, _deltaMs: number): void {
     if (this.save && this.runtime && !this.leaving && !this.save.pendingDrop && !isPlinkoPerfMode()) {
       if (this.save.game.barryInterruptPending || this.save.game.terminalReason !== null ||
           this.save.game.victory || this.save.game.pendingEventId !== null) {
         void this.leaveCasino();
       } else {
-        const minutes = this.idleTime.consume(deltaMs / 1000, true);
+        const minutes = this.idleTime.consume(this.game.loop.rawDelta / 1000, true);
         if (minutes > 0) this.advanceCasinoTime(minutes);
       }
     }

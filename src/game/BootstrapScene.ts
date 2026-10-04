@@ -287,7 +287,7 @@ export class BootstrapScene extends Phaser.Scene {
       return;
     }
 
-    const minutes = this.activeTime.consume(deltaMs / 1000, true);
+    const minutes = this.activeTime.consume(this.game.loop.rawDelta / 1000, true);
     if (minutes > 0) this.advance(minutes);
   }
 

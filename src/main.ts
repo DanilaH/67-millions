@@ -101,7 +101,11 @@ try {
     game.sound.mute = blocked;
     game.events.emit(GAME_AUDIO_BLOCKED_EVENT, blocked);
     if (blocked) game.loop.sleep();
-    else game.loop.wake();
+    else {
+      // Sleeping time must never enter the next active raw delta.
+      game.loop.resetDelta();
+      game.loop.wake();
+    }
   });
   const debug = installDebugPanel(
     () => getStartupSnapshot(runtimeImageFormat),
