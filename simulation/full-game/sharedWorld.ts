@@ -16,7 +16,7 @@ import { createRootBallState, deriveActiveSpecialPins, clearSplitterBlockAfterPe
 const require = createRequire(import.meta.url);
 const M = require(resolve(dirname(require.resolve('phaser')), '../src/physics/matter-js/CustomMain.js')) as typeof Matter;
 
-export const createSharedWorld = (initial: GameState, config: BalanceConfig) => {
+export const createSharedWorld = (initial: GameState, config: BalanceConfig, checkpoint: PendingDrop | null = null) => {
   let state = structuredClone(initial);
   let pending: PendingDrop | null = null;
   let advancedMinutes = 0, launches = 0, elapsedTicks = 0;
@@ -81,6 +81,14 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig) => 
       else { const result = settleAggregatePendingDropAndResumeTime(state, shot, payout, config); state = result.state; advancedMinutes += result.remainingMinutesAdvancedAfterBarry; settlements.push({ stake: shot.originalStake, payout: result.payout, tick: elapsedTicks }); }
     }); },
   });
+  if (checkpoint) {
+    pending = structuredClone(checkpoint);
+    if (!pending.physics?.solver) throw new Error('Shared-world restore requires a solver checkpoint');
+    runtime.setJackpotBiasLevel(pending.specialLevelsAtCommit.jackpotBiasLevel);
+    runtime.setFixedTicksElapsed(pending.physics.fixedTicksElapsed);
+    for (const snapshot of pending.physics.balls) balls.set(runtime.restoreBall(snapshot), snapshot);
+    runtime.restoreSolver(pending.physics.solver, balls);
+  }
   return {
     launch(fraction: BetFraction): boolean {
       if (activeDrops(pending).length >= config.plinko.maxConcurrentDrops || balls.size >= config.plinko.maxActiveBalls || state.barryInterruptPending || state.terminalReason || state.cash <= 0) return false;

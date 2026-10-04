@@ -47,3 +47,20 @@ it('captures an immutable solver checkpoint while its source world keeps running
   expect(JSON.stringify(checkpoint)).toBe(encoded);
   world.destroy();
 });
+
+
+it.each([false, true])('replays a shared checkpoint exactly (specials: %s)', special => {
+  const initial = { ...createInitialGameState(balance, 67105001), cash: 100000 };
+  if (special) Object.assign(initial, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3, plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
+  const original = createSharedWorld(initial, balance);
+  for (let i=0;i<6;i++) { original.launch(i%2 ? 1 : 0.25); for(let tick=0;tick<15;tick++) original.step(); }
+  const checkpoint = JSON.parse(JSON.stringify(original.snapshot()));
+  const restored = createSharedWorld(checkpoint.state, balance, checkpoint.pending);
+  for(let tick=0;tick<3600 && (original.active || restored.active);tick++) {
+    original.step(); restored.step();
+    expect(restored.snapshot().pending).toEqual(original.snapshot().pending);
+    expect(restored.snapshot().state).toEqual(original.snapshot().state);
+  }
+  expect(original.active).toBe(false);
+  original.destroy(); restored.destroy();
+});
