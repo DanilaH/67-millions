@@ -83,15 +83,15 @@ try {
     const loadSave = async save => {
       // Stop the previous game before injecting a fixture: its queued writes or
       // shutdown flush can otherwise overwrite a save installed in the live page.
-      await page.goto('about:blank');
-      const { identifier } = await cdp.send('Page.addScriptToEvaluateOnNewDocument', {
-        source: `if (location.origin === ${JSON.stringify(new URL(url).origin)}) localStorage.setItem('67m.save', ${JSON.stringify(JSON.stringify(save))});`,
-      });
+      const emptyDocument = route => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Save fixture</title>' });
+      await page.route(url, emptyDocument);
       try {
-        await page.goto(url, { waitUntil: 'networkidle' }); await ready();
+        await page.goto(url, { waitUntil: 'load' });
+        await page.evaluate(save => localStorage.setItem('67m.save', JSON.stringify(save)), save);
       } finally {
-        await cdp.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
+        await page.unroute(url, emptyDocument);
       }
+      await page.reload({ waitUntil: 'networkidle' }); await ready();
       await page.waitForTimeout(300);
       rect = await page.locator('canvas').boundingBox(); assert.ok(rect);
     };
