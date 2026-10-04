@@ -56,7 +56,7 @@ describe('T056 action previews', () => {
     )!;
 
     expect(courier.lockedReason).toBe(
-      'Сначала смой статус ВОНЮЧИЙ',
+      'Сначала прими душ — работа недоступна из-за запаха',
     );
   });
 

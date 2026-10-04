@@ -129,6 +129,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private ballImages: Phaser.GameObjects.Image[] = [];
   private pegImages: Phaser.GameObjects.Image[] = [];
   private mapLayer?: Phaser.GameObjects.Container;
+  private visitResultText?: Phaser.GameObjects.Text;
+  private visitDetails = false;
+  private visitStake = 0;
+  private visitPayout = 0;
+  private visitDrops = 0;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
   private mapText?: Phaser.GameObjects.Text;
@@ -158,6 +163,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.mapMode = false;
     this.leaving = false;
     this.lastResultMessage = '';
+    this.visitDetails = false;
+    this.visitStake = 0; this.visitPayout = 0; this.visitDrops = 0;
     this.visualSnapshot = null;
     this.pocketLabels.length = 0;
     this.physicsSaveQueued = false;
@@ -207,6 +214,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
       lineSpacing: 4,
     });
     this.casinoLayer.add(this.infoText);
+    this.visitResultText = this.add.text(28, 386, '', {
+      color: visualHex('textMain'), backgroundColor: visualHex('inkPanel'),
+      fontFamily: VISUAL_FONT.sans, fontSize: '17px', padding: { x: 8, y: 6 },
+      wordWrap: { width: 268 },
+    });
+    this.visitResultText.setInteractive({ useHandCursor: true }).on('pointerup', () => {
+      this.visitDetails = !this.visitDetails; this.renderCasino();
+    });
+    this.casinoLayer.add(this.visitResultText);
 
     this.statusText = this.add
       .text(28, 605, '', {
@@ -903,6 +919,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         Math.max(...this.boardConfig.plinko.basePockets),
       ),
     );
+    this.visitStake += pending.originalStake;
+    this.visitPayout += result.payout;
+    this.visitDrops += 1;
     this.lastResultMessage = formatCasinoResult({
       stake: pending.originalStake, payout: result.payout, multiplier: result.multiplier,
       losing: result.losing, insuranceApplied: result.insuranceApplied, insuranceTopUp: result.insuranceTopUp,
@@ -1144,6 +1163,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderCasino(): void {
     if (!this.infoText || !this.save) return;
 
+    const net = this.visitPayout - this.visitStake;
+    this.visitResultText?.setVisible(deriveTutorialStep(loadTutorialProgress()) === 'DONE');
+    this.visitResultText?.setText(this.visitDrops === 0 ? 'Итог появится после броска' : [
+      `За заход: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
+      ...(this.visitDetails ? [
+        `Ставки: ${this.visitStake.toLocaleString('ru-RU')} ₽`,
+        `Выплаты: ${this.visitPayout.toLocaleString('ru-RU')} ₽`,
+      ] : [`Завершено: ${this.visitDrops} · подробнее ›`]),
+    ]);
     const snapshot = this.visualSnapshot;
     this.casinoHud?.render(this.save.game);
     this.infoText.setText([

@@ -59,13 +59,13 @@ const translateLockReason = (error: unknown): string => {
     return 'Работа временно заблокирована событием';
   }
   if (message.includes('blocked by SMELLY')) {
-    return 'Сначала смой статус ВОНЮЧИЙ';
+    return 'Сначала прими душ — работа недоступна из-за запаха';
   }
   if (message.includes('outside its start window')) {
     return 'Сейчас работа закрыта';
   }
   if (message.includes('Not enough Energy')) {
-    return 'Недостаточно энергии';
+    return 'Недостаточно энергии — поспи дома';
   }
   if (message.includes('not owned')) {
     return 'Этот уровень работы ещё не куплен';

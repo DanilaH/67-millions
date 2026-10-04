@@ -36,3 +36,11 @@ Validation adds viewport geometry cases, drag/wheel/no-spend checks and 844×390
 Browser validation exposed idle clock lag on the software renderer: Phaser smoothDelta clamps slow frames during startup, so 3 real seconds no longer meant one idle game minute. Map and idle casino now consume loop.rawDelta; the activity coordinator resets that delta before waking the loop, excluding background/advertising/orientation pauses. Paid cascade timing remains fixed-tick based and unchanged. The static room is baked into one texture per viewport size.
 
 The painted cabinet plus room are composited once into the canvas CSS backdrop on entry/resize. The transparent WebGL foreground retains the board and interface; this avoids shading static full-screen art during every paid physics tick on software renderers. Other scene entry clears the backdrop, and pending-map art covers it while balls continue.
+
+## Context and visit results follow-up
+
+Advances E16/T056–T057: map captions show effective food prices (including event modifiers), shower price and free recovery options. The existing single need highlight now explains hunger, low energy, smell or low happiness beside its destination. Work lock copy points to sleep or shower instead of naming only the missing resource/status.
+
+Casino shows a compact net total for completed drops during the current visit. Tap reveals stakes and payouts; pending drops are excluded until settled. This is transient presentation: resets on scene re-entry/reload, includes restored drops when they complete, excludes upgrade purchases and Barry payments. It is not lifetime profit or a change to saved economic state.
+
+Local verification: 371 tests passed, Pages build passed. Tests cover event-adjusted map prices and single-need priority without state mutation. Browser/deployment verification is recorded by the commit's Pages workflow. No physics/config/economy changes.

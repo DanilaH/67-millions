@@ -1,3 +1,5 @@
+import type { GameState } from '../../core/state/GameState';
+import { getFoodActionDefinition } from '../../core/actions/foodEntertainment';
 import type { BalanceConfig } from '../../config/balance.schema';
 import { LOCATION_CONTENT } from '../content/contentCatalog';
 
@@ -78,3 +80,29 @@ export const deriveMainMapLocations = (
     ...location,
     timeCostMinutes: config.time.navigationTimeMinutes,
   }));
+
+/** Presentation only: prices come from the same definitions as purchases. */
+export const deriveMainMapHints = (state: GameState, config: BalanceConfig): {
+  labels: Record<MainMapLocationId, string>;
+  suggested: MainMapLocationId | null;
+} => {
+  const foodPrice = Math.min(...config.food.map(entry => getFoodActionDefinition(state, entry).price));
+  const money = (value: number) => value.toLocaleString('ru-RU');
+  const labels: Record<MainMapLocationId, string> = {
+    work: 'Выбрать смену', food: `Еда от ${money(foodPrice)} ₽`,
+    home: 'Сон · бесплатно', entertainment: 'Есть бесплатный отдых',
+    dumpster: 'Поиск · риск для здоровья', shower: `Душ · ${money(config.shower.price)} ₽`,
+    casino: state.eventModifiers.plinkoLockRemainingMinutes > 0 ? 'Временно закрыто' : 'Ставки и улучшения',
+  };
+  let suggested: MainMapLocationId | null = null;
+  if (state.needs.satiety <= config.needs.lowThreshold) {
+    suggested = 'food'; labels.food = `Голод · еда от ${money(foodPrice)} ₽`;
+  } else if (state.needs.energy <= config.needs.lowThreshold) {
+    suggested = 'home'; labels.home = 'Мало сил · пора поспать';
+  } else if (state.statuses.SMELLY) {
+    suggested = 'shower'; labels.shower = `Смыть запах · ${money(config.shower.price)} ₽`;
+  } else if (state.needs.happiness <= config.needs.lowThreshold) {
+    suggested = 'entertainment'; labels.entertainment = 'Мало счастья · отдохни';
+  }
+  return { labels, suggested };
+};

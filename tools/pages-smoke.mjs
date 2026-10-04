@@ -253,6 +253,7 @@ try {
     await click(1205, 250);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.plinkoMaxBetLevel, 1, 'upgrade locked during throw');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
+    await click(150, 401);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-result.png` });
     // A failed action checkpoint stays pending: retry bytes, never the command.
     await loadSave(fixture);

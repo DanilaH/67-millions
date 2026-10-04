@@ -12,6 +12,7 @@ import {
 } from '../visual/visualTheme';
 import {
   deriveMainMapLocations,
+  deriveMainMapHints,
   type MainMapLocation,
   type MainMapLocationId,
 } from './mainMapModel';
@@ -116,7 +117,7 @@ export const createMainMapView = (
     if (button.width > 164) button.setFontSize(Math.floor(Number.parseFloat(button.style.fontSize as string) * 164 / button.width));
     buttons.set(location.id, button);
     const labels: Record<MainMapLocationId, string> = { work: 'Заработать', food: 'Поесть', home: 'Поспать', entertainment: 'Отдохнуть', dumpster: 'Поискать деньги', shower: 'Принять душ', casino: 'Играть в Plinko' };
-    hints.set(location.id, scene.add.text(location.x, location.y + 47, labels[location.id], { fontFamily: VISUAL_FONT.sans, fontSize: '14px', color: visualHex('textMain'), backgroundColor: visualHex('inkPanel'), padding: { x: 6, y: 3 } }).setOrigin(0.5, 0).setDepth(2));
+    hints.set(location.id, scene.add.text(location.x, location.y + 47, labels[location.id], { fontFamily: VISUAL_FONT.sans, fontSize: '16px', color: visualHex('textMain'), backgroundColor: visualHex('inkPanel'), padding: { x: 6, y: 3 } }).setOrigin(0.5, 0).setDepth(2));
   }
 
   const layout = () => {
@@ -145,9 +146,11 @@ export const createMainMapView = (
 
   return {
     renderState: state => {
-      const next = state.needs.satiety <= config.needs.lowThreshold ? 'food' : state.needs.energy <= config.needs.lowThreshold ? 'home' : state.statuses.SMELLY ? 'shower' : state.needs.happiness <= config.needs.lowThreshold ? 'entertainment' : null;
-      if (suggested !== next) { suggested = next; draw(); }
-      for (const [id, hint] of hints) hint.setColor(visualHex(id === suggested ? 'mustard' : 'textMain'));
+      const model = deriveMainMapHints(state, config);
+      if (suggested !== model.suggested) { suggested = model.suggested; draw(); }
+      for (const [id, hint] of hints) {
+        hint.setText(model.labels[id]).setColor(visualHex(id === suggested ? 'mustard' : 'textMain'));
+      }
     },
     setEnabled: (value) => {
       enabled = value;
