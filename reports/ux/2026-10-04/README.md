@@ -24,3 +24,11 @@ Local validation: 365 unit tests, typecheck and release audit passed. Browser su
 ## Small-screen readability
 
 Increased recovery descriptions from 19 to 22 logical pixels with primary text contrast, forecast buttons from 16 to 22, expanded help from 16 to 22, and forecast values from 11 to 16. Forecast values use compact arrows and move the current-value bars below the numbers. Low-need labels are larger; the forecast caption has an opaque backing. Help stays open for six seconds to allow reading. Existing panel geometry, actions, and economy remain unchanged. Desktop/touch screenshots and the existing browser scenarios are the visual/interaction gate.
+
+## Full viewport and casino space
+
+User-authorized presentation revision: landscape now fills the available browser viewport by expanding the camera's visible world around the unchanged 1280×720 gameplay coordinates. Uniform scaling preserves board geometry and input transforms. Full-scene art covers the visible area; the map markers and entrance hit targets follow normalized coordinates in the same painted image, including after resizing. Labels connect to entrances and selected entrances receive an outline.
+
+The casino uses the complete painted machine surface within a separate dim room with wall panels, lamps, floor perspective and neighbouring cabinets. The betting controls sit below the board. Upgrades use one compact, continuously scrollable list with a visible scrollbar, wheel and touch/mouse dragging. Scroll gestures cannot buy; purchases still use authoritative validation. The list anchors to the right edge on wide screens. Shared HUD backing expands to the viewport edges.
+
+Validation adds viewport geometry cases, drag/wheel/no-spend checks and 844×390 map/casino screenshots with a real launch after resizing. Existing paid-drop restore, purchase locking and gameplay scenarios remain required.

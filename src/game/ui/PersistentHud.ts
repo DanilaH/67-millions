@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { sceneViewport } from '../visual/scenePresentation';
 import type { NeedsForecast } from '../actions/needsForecast';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { GameState } from '../../core/state/GameState';
@@ -27,6 +28,7 @@ const drawNeedIcon = (g: Phaser.GameObjects.Graphics, id: HudNeed['id'], x: numb
 export class PersistentHud {
   private readonly graphics: Phaser.GameObjects.Graphics;
   private readonly heading: Phaser.GameObjects.Text[];
+  private readonly needZones: Phaser.GameObjects.Zone[] = [];
   private readonly needTexts: Phaser.GameObjects.Text[];
   private readonly statusText: Phaser.GameObjects.Text;
   private readonly detail: Phaser.GameObjects.Text;
@@ -62,7 +64,7 @@ export class PersistentHud {
     this.heading[3]!.setInteractive({ useHandCursor: true }).on('pointerup', () => show('Основной долг: 67 000 000 ₽. Погашается целиком на карте.\nЕжедневные платежи Барри не уменьшают основной долг.'));
     this.statusText.on('pointerup', () => show('Запах: прими душ, чтобы снять статус.'));
     for (let index = 0; index < 4; index += 1) {
-      scene.add.zone(80 + index * 122, 99, 116, 52).setDepth(depth + 2)
+      const zone = scene.add.zone(80 + index * 122, 99, 116, 52).setDepth(depth + 2)
         .setInteractive({ useHandCursor: true }).on('pointerup', () => {
           const need = this.latestNeeds[index];
           if (need) {
@@ -70,7 +72,11 @@ export class PersistentHud {
             show(`${need.id === 'health' ? 'Здоровье' : need.label}: ${Math.round(need.value)} / ${this.config.needs.max}\n${help[need.id]}`);
           }
         });
+      this.needZones.push(zone);
     }
+    const resize = () => { if (this.latestState) this.render(this.latestState); };
+    scene.scale.on('resize', resize);
+    scene.events.once('shutdown', () => scene.scale.off('resize', resize));
   }
 
   public setForecast(forecast: NeedsForecast | null): void {
@@ -88,8 +94,13 @@ export class PersistentHud {
     this.latestState = state;
     const hud = deriveHudSnapshot(state, this.config);
     this.latestNeeds = hud.needs;
+    const view = sceneViewport(this.scene);
+    this.heading[0]!.setX(view.left + 30); this.heading[1]!.setX(view.left + 254);
+    this.heading[3]!.setX(view.left + view.width - 230);
+    this.statusText.setX(view.left + 534); this.forecastText.setX(view.left + 534);
+    this.detail.setX(view.left + 24);
     const g = this.graphics.clear();
-    g.fillStyle(visualColor('inkPanel'), 0.94); g.fillRoundedRect(14, 12, 1252, 48, 14);
+    g.fillStyle(visualColor('inkPanel'), 0.94); g.fillRoundedRect(view.left + 14, 12, view.width - 28, 48, 14);
     this.heading[0]!.setText(`День ${hud.day} · ${hud.time}`);
     this.heading[1]!.setText(`${hud.cash.toLocaleString('ru-RU')} ₽`);
     const due = hud.minutesUntilBarry === 0 ? 'сейчас' : hud.minutesUntilBarry <= 180 ? `через ${formatBarryCountdown(hud.minutesUntilBarry)}` : 'в 09:00';
@@ -106,7 +117,9 @@ export class PersistentHud {
     this.statusText.setText(hud.statuses.length ? 'Запах · нужен душ' : '').setVisible(hud.statuses.length > 0);
     this.forecastText.setText(this.forecast?.caption ?? '').setVisible(this.forecast !== null);
     hud.needs.forEach((need, index) => {
-      const x = 24 + index * 122;
+      const x = view.left + 24 + index * 122;
+      this.needTexts[index]!.setX(x + 42);
+      this.needZones[index]!.setX(view.left + 80 + index * 122);
       const low = need.value <= this.config.needs.lowThreshold;
       const color = visualColor(low ? 'warning' : 'good');
       g.fillStyle(visualColor('inkPanel'), 0.92); g.fillRoundedRect(x - 6, 74, 116, 49, 13);

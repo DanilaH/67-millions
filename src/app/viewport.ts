@@ -1,13 +1,14 @@
 import { resolveRenderPixelRatio } from '@danilah/mini-games-kit/core';
 import {
   BrowserViewportWatcher,
-  resolveLandscapeGameCssSize,
   resolveViewportState,
   type ViewportState,
 } from '@danilah/mini-games-kit/layout';
 import type { GameplayActivityCoordinator } from '@danilah/mini-games-kit/platform';
 import type Phaser from 'phaser';
 import { balance } from '../config/balance';
+
+import { resolveGameViewport } from './viewportLayout';
 
 const readSize = (width: number, height: number) => ({ width, height });
 
@@ -41,15 +42,14 @@ export const installViewportRuntime = (
       activity.setBlocked('orientation', viewport.portrait);
       if (viewport.portrait) return;
 
-      const logical = getInitialGameSize();
-      const size = resolveLandscapeGameCssSize(viewport, logical.width / logical.height);
-      const scale = Math.min(size.width / logical.width, size.height / logical.height);
+      const size = resolveGameViewport(viewport.width, viewport.height);
+      const scale = size.scale;
       const density = Math.max(1, resolveRenderPixelRatio(scale * window.devicePixelRatio, 2));
-      const backingWidth = Math.round(logical.width * density);
-      const backingHeight = Math.round(logical.height * density);
+      const backingWidth = Math.round(size.width * density);
+      const backingHeight = Math.round(size.height * density);
       if (game.scale.width !== backingWidth || game.scale.height !== backingHeight) game.scale.resize(backingWidth, backingHeight);
-      game.canvas.style.width = `${Math.round(logical.width * scale)}px`;
-      game.canvas.style.height = `${Math.round(logical.height * scale)}px`;
+      game.canvas.style.width = `${Math.round(size.width * scale)}px`;
+      game.canvas.style.height = `${Math.round(size.height * scale)}px`;
       game.scale.refresh();
     },
   });

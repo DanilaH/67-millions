@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { sceneViewport } from '../visual/scenePresentation';
 import type { GameState } from '../../core/state/GameState';
 import { addProductionImage } from '../visual/productionArt';
 
@@ -40,11 +41,15 @@ export const createMainMapView = (
   onSelect: (location: MainMapLocation) => void,
 ): MainMapView => {
   const map = addProductionImage(scene, 'map', 640, 360, 1280, 720);
-  const source = map.texture.getSourceImage();
-  const cover = Math.max(1280 / source.width, 720 / source.height);
-  map.setDisplaySize(source.width * cover, source.height * cover);
   const graphics = scene.add.graphics().setDepth(0);
   const locations = deriveMainMapLocations(config);
+  // Entrance coordinates on the painted map (normalized, independent of crop).
+  const entrances: Record<MainMapLocationId, [number, number]> = {
+    work: [0.20, 0.25], food: [0.52, 0.25], home: [0.82, 0.29],
+    entertainment: [0.15, 0.75], dumpster: [0.44, 0.79], shower: [0.85, 0.80], casino: [0.61, 0.51],
+  };
+  const anchors = new Map<MainMapLocationId, { x: number; y: number }>();
+  const buildingTargets = new Map<MainMapLocationId, Phaser.GameObjects.Zone>();
   const buttons = new Map<
     MainMapLocationId,
     Phaser.GameObjects.Text
@@ -64,12 +69,17 @@ export const createMainMapView = (
         LOCATION_ACCENT[location.id],
       );
 
+      const anchor = anchors.get(location.id)!;
+      graphics.lineStyle(isSelected ? 3 : 2, accent, enabled ? 1 : 0.4);
+      graphics.lineBetween(location.x, location.y + 28, anchor.x, anchor.y);
+      graphics.fillStyle(accent, 1); graphics.fillCircle(anchor.x, anchor.y, isSelected ? 8 : 5);
+      if (isSelected) { graphics.lineStyle(2, accent, 0.8); graphics.strokeRoundedRect(anchor.x - 45, anchor.y - 42, 90, 65, 8); }
       graphics.fillStyle(visualColor('inkPanel'), enabled ? 0.92 : 0.5);
       graphics.fillRoundedRect(location.x - 92, location.y - 27, 184, 54, 16);
       graphics.lineStyle(isSelected ? 3 : 1, accent, enabled ? 0.9 : 0.35);
       graphics.strokeRoundedRect(location.x - 92, location.y - 27, 184, 54, 16);
       graphics.fillStyle(accent, 1);
-      graphics.fillTriangle(location.x - 7, location.y + 28, location.x + 7, location.y + 28, location.x, location.y + 38);
+
 
     }
   };
@@ -109,7 +119,29 @@ export const createMainMapView = (
     hints.set(location.id, scene.add.text(location.x, location.y + 47, labels[location.id], { fontFamily: VISUAL_FONT.sans, fontSize: '14px', color: visualHex('textMain'), backgroundColor: visualHex('inkPanel'), padding: { x: 6, y: 3 } }).setOrigin(0.5, 0).setDepth(2));
   }
 
-  draw();
+  const layout = () => {
+    const view = sceneViewport(scene);
+    const targets: Record<string, { x: number; y: number }> = {};
+    for (const location of locations) {
+      const [u, v] = entrances[location.id];
+      const anchor = { x: map.x + (u - 0.5) * map.displayWidth, y: map.y + (v - 0.5) * map.displayHeight };
+      anchors.set(location.id, anchor);
+      location.x = Math.max(view.left + 110, Math.min(view.left + view.width - 110, anchor.x));
+      location.y = Math.max(175, anchor.y - 95);
+      buttons.get(location.id)!.setPosition(location.x, location.y);
+      hints.get(location.id)!.setPosition(location.x, location.y + 29);
+      buildingTargets.get(location.id)!.setPosition(anchor.x, anchor.y);
+      targets[location.id] = { x: location.x, y: location.y };
+    }
+    scene.game.canvas.setAttribute('data-map-targets', JSON.stringify(targets));
+    draw();
+  };
+  for (const location of locations) {
+    buildingTargets.set(location.id, scene.add.zone(0, 0, 90, 68).setDepth(1).setInteractive({ useHandCursor: true })
+      .on('pointerup', () => { if (enabled) { selected = location.id; draw(); onSelect(location); } }));
+  }
+  layout(); scene.scale.on('resize', layout);
+  scene.events.once('shutdown', () => scene.scale.off('resize', layout));
 
   return {
     renderState: state => {

@@ -1,3 +1,4 @@
+import { createCasinoRoom } from './casino/createCasinoRoom';
 import { PersistentHud } from './ui/PersistentHud';
 import { PlinkoEffects } from './casino/PlinkoEffects';
 import { installScenePresentation } from './visual/scenePresentation';
@@ -7,7 +8,7 @@ import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
 import { createPinTextures } from './casino/createPinTextures';
-import { preloadProductionArt, addProductionImage, productionArtKey } from './visual/productionArt';
+import { preloadProductionArt, addProductionImage } from './visual/productionArt';
 import { GAME_ANALYTICS_KEY, type GameAnalytics } from '../app/analytics/GameAnalytics';
 
 import { ActiveTimeAccumulator } from '../core/time/ActiveTimeAccumulator';
@@ -165,17 +166,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.cascadeMutationChain = Promise.resolve();
 
     this.casinoLayer = this.add.container(0, 0);
-    // Draw the painted frame as four cropped strips rather than shading every board pixel.
-    const frameSize = this.textures.get(productionArtKey('casino')).getSourceImage();
-    const border = 40;
-    for (const [x, y, width, height] of [
-      [0, 0, frameSize.width, border],
-      [0, frameSize.height - border, frameSize.width, border],
-      [0, border, border, frameSize.height - 2 * border],
-      [frameSize.width - border, border, border, frameSize.height - 2 * border],
-    ]) {
-      this.casinoLayer.add(addProductionImage(this, 'casino', 640, 400, 600, 590).setCrop(x, y, width, height));
-    }
+    createCasinoRoom(this, this.casinoLayer);
+    this.casinoLayer.add(addProductionImage(this, 'casino', 640, 380, 600, 590));
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
     this.staticBoardGraphics = this.add.graphics();
@@ -208,7 +200,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const hudStart = this.children.list.length;
     this.casinoHud = new PersistentHud(this, this.boardConfig);
     this.casinoLayer.add(this.children.list.slice(hudStart));
-    this.infoText = this.add.text(28, 155, '', {
+    this.infoText = this.add.text(28, 228, '', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.mono,
       fontSize: '21px',
@@ -511,9 +503,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private installMapLayer(): void {
     if (!this.mapLayer) return;
     const map = addProductionImage(this, 'map', 640, 360, 1280, 720);
-    const source = map.texture.getSourceImage();
-    const cover = Math.max(1280 / source.width, 720 / source.height);
-    map.setDisplaySize(source.width * cover, source.height * cover);
     this.mapLayer.add(map);
     const beforeHud = this.children.list.length;
     this.mapHud = new PersistentHud(this, this.boardConfig);
@@ -616,7 +605,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
         g.lineBetween(bar.x - dx, bar.y - dy, bar.x + dx, bar.y + dy);
       }
     } else {
-      g.strokeRoundedRect(22, id === 'maxBet' ? 256 : 600, 296, id === 'maxBet' ? 163 : 65, 8);
+      if (id === 'maxBet') g.strokeRoundedRect(352, 672, 577, 46, 8);
+      else g.strokeRoundedRect(22, 600, 296, 65, 8);
       if (id === 'insurance') this.showStatus('Страховка улучшена. Сработает после серии проигрышей.');
     }
     this.game.canvas.setAttribute('data-upgrade-highlight', id);
@@ -1311,7 +1301,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       const role = getPegVisualRole(peg.id, snapshot.pegRoles);
       const texture = `67m:pin:${role}`;
       const image = this.pegImages[index] ?? (this.pegImages[index] = this.add.image(peg.x, peg.y, texture));
-      if (!image.parentContainer) this.casinoLayer!.addAt(image, 4);
+      if (!image.parentContainer) this.casinoLayer!.addAt(image, 5);
       if (image.texture.key !== texture) image.setTexture(texture);
       image.setPosition(peg.x, peg.y);
     }

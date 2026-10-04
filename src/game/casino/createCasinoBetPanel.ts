@@ -13,21 +13,21 @@ export const createCasinoBetPanel = (
   parent?.add(container);
   let previews: CasinoQuickBetPreview[] = [];
   let selected: CasinoQuickBetPreview['fraction'] | null = null;
-  const title = scene.add.text(28, 233, 'ВЫБЕРИ СТАВКУ', {
+  const title = scene.add.text(28, 294, 'ВЫБЕРИ СТАВКУ', {
     fontFamily: VISUAL_FONT.sans, fontSize: '20px', color: visualHex('textMuted'),
   });
-  const amount = scene.add.text(28, 316, '', {
+  const amount = scene.add.text(28, 332, '', {
     fontFamily: VISUAL_FONT.sans, fontSize: '22px', color: visualHex('textMain'), wordWrap: { width: 284 },
   });
-  const drop = scene.add.text(28, 368, 'БРОСИТЬ', {
+  const drop = scene.add.text(706, 675, 'БРОСИТЬ', {
     fontFamily: VISUAL_FONT.sans, fontSize: '24px', fontStyle: 'bold', color: visualHex('inkDeep'),
-    backgroundColor: visualHex('mustard'), fixedWidth: 284, fixedHeight: 46, align: 'center', padding: { y: 7 },
+    backgroundColor: visualHex('mustard'), fixedWidth: 220, fixedHeight: 42, align: 'center', padding: { y: 7 },
   }).setInteractive({ useHandCursor: true }).on('pointerup', () => {
     const preview = previews.find(entry => entry.fraction === selected);
     if (preview && preview.lockedReason === null) onDrop(preview);
   });
-  const buttons = [0, 1, 2].map(index => scene.add.text(28 + index * 98, 263, '', {
-    fontFamily: VISUAL_FONT.sans, fontSize: '17px', fixedWidth: 88, fixedHeight: 44,
+  const buttons = [0, 1, 2].map(index => scene.add.text(356 + index * 114, 675, '', {
+    fontFamily: VISUAL_FONT.sans, fontSize: '17px', fixedWidth: 106, fixedHeight: 42,
     align: 'center', padding: { y: 7 },
   }).setInteractive({ useHandCursor: true }).on('pointerup', () => {
     const preview = previews[index];

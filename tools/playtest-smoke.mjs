@@ -38,16 +38,20 @@ try {
     const box = await page.locator('canvas').boundingBox(); assert.ok(box);
     await page.mouse.click(box.x + box.width * x / 1280, box.y + box.height * y / 720);
   };
+  const clickMap = async id => {
+    const target = await page.locator('canvas').evaluate((canvas, id) => JSON.parse(canvas.dataset.mapTargets)[id], id);
+    await click(target.x, target.y);
+  };
   await page.goto(url); await ready('Карта города');
   const fixture = createSaveState({ ...createInitialGameState(balance, 670123), cash: 100000 });
   await load(fixture);
   assert.equal(await page.locator('canvas').evaluate(c => c.width), 1920, '1080p uses a native 1920px backing store');
   await page.screenshot({ path: `${output}/map-1080p.png` });
   await click(42, 96); await page.screenshot({ path: `${output}/stat-detail.png` });
-  await click(1080, 325); await ready('Казино Plinko');
+  await clickMap('casino'); await ready('Казино Plinko');
   for (let i = 0; i < 6; i += 1) {
-    await click(i % 2 ? 262 : 65, 283);
-    await click(170, 390);
+    await click(i % 2 ? 625 : 400, 695);
+    await click(810, 695);
     await page.waitForFunction(n => {
       const p = JSON.parse(localStorage.getItem('67m.save')).pendingDrop;
       return p && 1 + (p.additionalDrops?.length ?? 0) === n;
@@ -55,7 +59,7 @@ try {
   }
   const six = await save();
   assert.equal(six.game.cash, fixture.game.cash - 3 * (125 + 500));
-  await click(170, 390);
+  await click(810, 695);
   assert.equal((await save()).game.cash, six.game.cash, 'seventh launch cannot charge at the cap');
   await page.screenshot({ path: `${output}/six-balls.png` });
   const checkpoint = await save();
@@ -73,8 +77,8 @@ try {
   const upgraded = structuredClone(fixture);
   Object.assign(upgraded.game, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3,
     plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
-  await load(upgraded); await click(1080, 325); await ready('Казино Plinko');
-  for (let i = 0; i < 6; i += 1) { await click(170, 390); }
+  await load(upgraded); await clickMap('casino'); await ready('Казино Plinko');
+  for (let i = 0; i < 6; i += 1) { await click(810, 695); }
   await page.waitForFunction(() => {
     const p = JSON.parse(localStorage.getItem('67m.save')).pendingDrop;
     return p?.physics?.balls.some(ball => ball.splitDepth > 0);
@@ -104,13 +108,13 @@ try {
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 30000 });
   assert.equal((await save()).game.cash, oldResult.game.cash, 'legacy geometry restores exact payout');
   await ready('Казино Plinko');
-  await click(170, 390);
+  await click(810, 695);
   await page.waitForFunction(() => !!JSON.parse(localStorage.getItem('67m.save')).pendingDrop);
   const newShot = (await save()).pendingDrop;
   assert.equal(newShot.boardFingerprint, createBoardFingerprint(balance, newShot.pocketLevelsAtCommit, newShot.specialLevelsAtCommit), 'next paid launch switches to calibrated geometry');
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 30000 });
   // High-density input is transformed back into logical map/minigame space.
-  await load(fixture); await click(430, 220); await ready('РАБОТА');
+  await load(fixture); await clickMap('work'); await ready('РАБОТА');
   await click(760, 510); await ready('Курьерский маршрут');
   await page.screenshot({ path: `${output}/courier-1080p.png` });
   const move = async (x, y) => {
@@ -142,7 +146,7 @@ try {
   await page.locator('#debug-root summary').click(); await ready('Карта города');
   await page.setViewportSize({ width: 640, height: 360 });
   await page.waitForTimeout(300);
-  await click(1080, 325); await ready('Казино Plinko');
+  await clickMap('casino'); await ready('Казино Plinko');
   await click(1100, 660); await ready('Карта города');
   assert.deepEqual(errors, []);
   writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360'], errors }, null, 2));
