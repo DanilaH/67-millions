@@ -66,3 +66,5 @@ The 2026-10-02 user revision adds free concurrent launches and changes the confi
 - отдельный medication/antidepressant consumable.
 
 Current physics revision (2026-10-03): [deflector calibration and save compatibility](reports/physics/2026-10-03/CALIBRATION.md). Config SHA-256 `7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c`; older distribution/pacing reports remain historical.
+
+Measurement correction: [shared-world pacing audit](reports/pacing/2026-10-05/README.md) applies Phaser’s resolver initialization, models active time and concurrent paid roots, and reruns 240 sessions. Older standalone-Matter edge/EV/pacing figures require remeasurement; matching the config hash alone does not establish production parity. No balance change accompanies this audit.

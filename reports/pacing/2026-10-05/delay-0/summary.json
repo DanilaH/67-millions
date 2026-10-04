@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "sourceRevision": "91cb46eb369e12ec8b2b5ef35ca4acde85488758",
+    "perVariant": 20,
+    "seedStart": 67104000,
+    "decisionSeconds": 0,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 19,
+        "BARRY_LOSS": 1
+      },
+      "wins": 19,
+      "medianWinMinutes": 11.6125,
+      "medianWinWork": 18,
+      "medianWinRecovery": 15,
+      "medianWinDrops": 42,
+      "medianAllMinutes": 12.212777777777777
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 9.163194444444443,
+      "medianWinWork": 11.5,
+      "medianWinRecovery": 8,
+      "medianWinDrops": 43,
+      "medianAllMinutes": 9.163194444444443
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 6.445555555555556,
+      "medianWinWork": 9.5,
+      "medianWinRecovery": 8,
+      "medianWinDrops": 73,
+      "medianAllMinutes": 6.445555555555556
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 4.967777777777778,
+      "medianWinWork": 6.5,
+      "medianWinRecovery": 5.5,
+      "medianWinDrops": 69.5,
+      "medianAllMinutes": 4.967777777777778
+    }
+  ]
+}

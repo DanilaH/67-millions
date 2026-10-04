@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "sourceRevision": "91cb46eb369e12ec8b2b5ef35ca4acde85488758",
+    "perVariant": 20,
+    "seedStart": 67104000,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 18,
+        "BARRY_LOSS": 2
+      },
+      "wins": 18,
+      "medianWinMinutes": 12.972083333333334,
+      "medianWinWork": 13.5,
+      "medianWinRecovery": 10,
+      "medianWinDrops": 44.5,
+      "medianAllMinutes": 13.891388888888889
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 10.990694444444445,
+      "medianWinWork": 10,
+      "medianWinRecovery": 8,
+      "medianWinDrops": 40,
+      "medianAllMinutes": 10.990694444444445
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 19,
+        "BARRY_LOSS": 1
+      },
+      "wins": 19,
+      "medianWinMinutes": 8.143333333333334,
+      "medianWinWork": 8,
+      "medianWinRecovery": 6,
+      "medianWinDrops": 66,
+      "medianAllMinutes": 8.147222222222222
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 7.680138888888889,
+      "medianWinWork": 6.5,
+      "medianWinRecovery": 6,
+      "medianWinDrops": 73,
+      "medianAllMinutes": 7.680138888888889
+    }
+  ]
+}

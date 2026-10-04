@@ -1,5 +1,7 @@
 # Pacing / UX diagnostic — 2026-10-04
 
+> Measurement correction — 2026-10-05: Follow-up found that the standalone Matter runner does not apply Phaser’s resolver overrides. The distributions and full-game outcomes below are historical simulator results, not validated production estimates. See [corrected shared-world audit](../2026-10-05/README.md).
+
 ## Scope and provenance
 
 Read-only audit; no gameplay/config changes. Advances E21 balance/playtest diagnostics, not release acceptance.

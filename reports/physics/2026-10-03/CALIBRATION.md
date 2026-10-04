@@ -1,5 +1,7 @@
 # Deflector calibration and visual collider correction
 
+> Measurement correction — 2026-10-05: The later cross-runtime audit found missing Phaser resolver overrides in the standalone Matter simulator. The numerical edge rates and EV below require remeasurement with the corrected adapter; they are not validated production distributions. Geometry changes and browser save/reload verification remain separate facts. See [follow-up](../../pacing/2026-10-05/README.md).
+
 User requested implementation after the edge-flight audit. Economic prices, payouts, free launches, Return and the bare board are unchanged.
 
 ## Calibrated candidate

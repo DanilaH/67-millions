@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "sourceRevision": "91cb46eb369e12ec8b2b5ef35ca4acde85488758",
+    "perVariant": 20,
+    "seedStart": 67104000,
+    "decisionSeconds": 5,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 17,
+        "BARRY_LOSS": 3
+      },
+      "wins": 17,
+      "medianWinMinutes": 18.173611111111107,
+      "medianWinWork": 13,
+      "medianWinRecovery": 11,
+      "medianWinDrops": 45,
+      "medianAllMinutes": 18.84861111111111
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 16.246111111111112,
+      "medianWinWork": 8.5,
+      "medianWinRecovery": 6,
+      "medianWinDrops": 43,
+      "medianAllMinutes": 16.246111111111112
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 12.639444444444443,
+      "medianWinWork": 9.5,
+      "medianWinRecovery": 8.5,
+      "medianWinDrops": 76.5,
+      "medianAllMinutes": 12.639444444444443
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 11.646805555555556,
+      "medianWinWork": 6,
+      "medianWinRecovery": 6,
+      "medianWinDrops": 77,
+      "medianAllMinutes": 11.646805555555556
+    }
+  ]
+}
