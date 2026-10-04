@@ -167,7 +167,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.casinoLayer = this.add.container(0, 0);
     createCasinoRoom(this, this.casinoLayer);
-    this.casinoLayer.add(addProductionImage(this, 'casino', 640, 380, 600, 590));
+    this.casinoLayer.add(addProductionImage(this, 'casino', 640, 380, 600, 590).setVisible(false));
     this.mapLayer = this.add.container(0, 0).setVisible(false);
 
     this.staticBoardGraphics = this.add.graphics();

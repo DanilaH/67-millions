@@ -34,3 +34,5 @@ The casino uses the complete painted machine surface within a separate dim room 
 Validation adds viewport geometry cases, drag/wheel/no-spend checks and 844×390 map/casino screenshots with a real launch after resizing. Existing paid-drop restore, purchase locking and gameplay scenarios remain required.
 
 Browser validation exposed idle clock lag on the software renderer: Phaser smoothDelta clamps slow frames during startup, so 3 real seconds no longer meant one idle game minute. Map and idle casino now consume loop.rawDelta; the activity coordinator resets that delta before waking the loop, excluding background/advertising/orientation pauses. Paid cascade timing remains fixed-tick based and unchanged. The static room is baked into one texture per viewport size.
+
+The painted cabinet plus room are composited once into the canvas CSS backdrop on entry/resize. The transparent WebGL foreground retains the board and interface; this avoids shading static full-screen art during every paid physics tick on software renderers. Other scene entry clears the backdrop, and pending-map art covers it while balls continue.

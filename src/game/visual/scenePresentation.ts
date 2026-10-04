@@ -4,6 +4,8 @@ import { resolveGameViewport } from '../../app/viewportLayout';
 
 /** Keep gameplay coordinates logical while rendering into a denser backing store. */
 export const installScenePresentation = (scene: Phaser.Scene): void => {
+  scene.game.canvas.style.backgroundImage = '';
+  scene.game.canvas.style.backgroundSize = '100% 100%';
   const sync = () => {
     const layout = resolveGameViewport(scene.scale.width, scene.scale.height);
     const ratio = layout.scale;

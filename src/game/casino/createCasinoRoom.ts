@@ -1,4 +1,6 @@
 import type Phaser from 'phaser';
+import { productionArtKey } from '../visual/productionArt';
+import { isPlinkoPerfMode } from '../../app/perfMode';
 import { sceneViewport } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualHex } from '../visual/visualTheme';
 
@@ -6,7 +8,7 @@ import { VISUAL_FONT, visualHex } from '../visual/visualTheme';
 export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects.Container): void => {
   const g = scene.add.graphics().setVisible(false);
   const key = '67m:casino-room';
-  const image = scene.add.image(0, 0, '__WHITE').setOrigin(0); parent.add(image);
+  const image = scene.add.image(0, 0, '__WHITE').setVisible(false); parent.add(image);
   const sign = scene.add.text(28, 145, 'ИГРОВОЙ ЗАЛ', {
     fontFamily: VISUAL_FONT.sans, fontSize: '29px', fontStyle: 'bold', color: visualHex('mustard'),
     stroke: '#211711', strokeThickness: 5,
@@ -50,7 +52,14 @@ export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects
     image.setTexture('__WHITE');
     if (scene.textures.exists(key)) scene.textures.remove(key);
     g.generateTexture(key, Math.ceil(v.width), Math.ceil(v.height));
-    image.setTexture(key).setPosition(v.left, v.top).setDisplaySize(v.width, v.height);
+    const canvas = scene.textures.get(key).getSourceImage() as HTMLCanvasElement;
+    const context = canvas.getContext('2d')!;
+    context.drawImage(scene.textures.get(productionArtKey('casino')).getSourceImage() as CanvasImageSource, 340 - v.left, 85 - v.top, 600, 590);
+    // Browser-composited static art avoids replaying a full-screen texture in
+    // the software WebGL renderer on every fixed physics frame.
+    scene.game.canvas.style.backgroundImage = isPlinkoPerfMode() && new URLSearchParams(location.search).get('art') === 'off'
+      ? '' : `url(${canvas.toDataURL('image/png')})`;
+    scene.textures.remove(key);
     g.clear();
   };
   draw(); scene.scale.on('resize', draw);

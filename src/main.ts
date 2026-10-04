@@ -64,6 +64,7 @@ try {
     width: Math.round(initialSize.width),
     height: Math.round(initialSize.height),
     backgroundColor: '#0b0d10',
+    transparent: true,
     physics: {
       default: 'matter',
       matter: {
