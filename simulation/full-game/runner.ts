@@ -1,3 +1,5 @@
+import { WorkMinigameClock } from '../../src/core/work/WorkMinigameClock';
+import { ActiveTimeAccumulator } from '../../src/core/time/ActiveTimeAccumulator';
 import type { BalanceConfig } from '../../src/config/balance.schema';
 import {
   type ActiveAction,
@@ -116,6 +118,7 @@ export interface FullGameDiagnostics {
   dumpsterHpDeaths: number;
   nearZeroCashRecoveries: number;
   upgradeOrder: string[];
+  activeSeconds?: { physics: number; work: number; decisions: number; idle: number };
 }
 
 export interface FullGamePolicyContext {
@@ -123,6 +126,7 @@ export interface FullGamePolicyContext {
   activeAction: ActiveAction | null;
   counters: Readonly<FullGameCounters>;
   decisionIndex: number;
+  activeSeconds?: number;
 }
 
 export interface FullGamePolicy {
@@ -152,6 +156,14 @@ export interface FullGameRunnerOptions {
   configHash: string;
   maxDecisions?: number;
   maxGameMinutes?: number;
+  execution?: {
+    decisionSeconds: number;
+    workSeconds: (jobId: JobId) => number;
+    plinko: (state: GameState, fraction: BetFraction) => {
+      state: GameState; advancedMinutes: number; launches: number; seconds: number;
+      settlements: { stake: number; payout: number }[];
+    };
+  };
 }
 
 export interface FullGameRunResult {
@@ -445,6 +457,9 @@ export const runFullGame = (
     stopped: false,
   };
   let dropIndex = 0;
+  const timing = options.execution ? { physics: 0, work: 0, decisions: 0, idle: 0 } : undefined;
+  if (timing) diagnostics.activeSeconds = timing;
+  const decisionClock = new ActiveTimeAccumulator(config.time.realSecondsPerGameMinute);
 
   while (true) {
     // Paying the principal is a successful exit, not a bankroll loss during play.
@@ -495,11 +510,19 @@ export const runFullGame = (
       continue;
     }
 
+    if (options.execution && timing && !runner.game.pendingEventId) {
+      const seconds = options.execution.decisionSeconds;
+      const minutes = decisionClock.consume(seconds, true);
+      timing.decisions += seconds;
+      if (minutes > 0) runner.game = advanceIdle(runner.game, minutes, config, counters, maxGameMinutes);
+      if (runner.game.terminalReason || runner.game.victory) continue;
+    }
     const decision = policy.decide({
       state: runner.game,
       activeAction: runner.activeAction,
       counters,
       decisionIndex: counters.decisions,
+      ...(timing ? { activeSeconds: timing.physics + timing.work + timing.decisions + timing.idle } : {}),
     });
     counters.decisions += 1;
     assertDecisionAllowed(runner.game, decision);
@@ -510,6 +533,7 @@ export const runFullGame = (
     }
 
     if (decision.type === 'WAIT') {
+      const beforeMinutes = counters.gameMinutesAdvanced;
       runner = {
         ...runner,
         game: advanceIdle(
@@ -520,6 +544,7 @@ export const runFullGame = (
           maxGameMinutes,
         ),
       };
+      if (timing) timing.idle += (counters.gameMinutesAdvanced - beforeMinutes) * config.time.realSecondsPerGameMinute;
       continue;
     }
 
@@ -563,9 +588,20 @@ export const runFullGame = (
         decision.level,
       );
       counters.workShifts += 1;
+      let workState = started.state;
+      if (options.execution && timing) {
+        const clock = new WorkMinigameClock(config);
+        const seconds = options.execution.workSeconds(decision.jobId);
+        for (let elapsed = 0; elapsed < seconds && !workState.terminalReason; elapsed++) {
+          const step = clock.advance(workState, Math.min(1, seconds - elapsed) * 1000, config);
+          workState = step.state; counters.gameMinutesAdvanced += step.advancedMinutes;
+          timing.work += Math.min(1, seconds - elapsed);
+          if (workState.barryInterruptPending) workState = resolveBarryPayment(workState, config);
+        }
+      }
       runner = {
         ...runner,
-        game: started.state,
+        game: workState,
         activeAction: setWorkResult(started.action, decision.result),
       };
       continue;
@@ -649,6 +685,18 @@ export const runFullGame = (
       continue;
     }
 
+    if (decision.type === 'PLINKO' && options.execution && timing) {
+      const session = options.execution.plinko(runner.game, decision.fraction ?? runner.game.plinkoSelectedBetFraction);
+      timing.physics += session.seconds;
+      counters.gameMinutesAdvanced += session.advancedMinutes;
+      counters.plinkoDrops += session.launches;
+      for (const result of session.settlements) {
+        diagnostics.income.plinko += result.payout;
+        diagnostics.largestPlinkoPayout = Math.max(diagnostics.largestPlinkoPayout, result.payout);
+      }
+      runner.game = session.state;
+      continue;
+    }
     if (decision.type === 'PLINKO') {
       const committed = commitBareDrop(
         runner.game,

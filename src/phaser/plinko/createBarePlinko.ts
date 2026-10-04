@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import { BALL_LABEL, PEG_LABEL_PREFIX, POCKET_SENSOR_LABEL_PREFIX, dispatchPlinkoCollisions } from './collisionEvents';
 import { snapshotSolver, restoreSolver } from './solverCheckpoint';
 import type { PhysicsCheckpoint } from '../../core/plinko-rules/physicsCheckpoint';

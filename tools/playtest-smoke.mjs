@@ -1,3 +1,4 @@
+import { createSharedWorld } from '../simulation/full-game/sharedWorld.ts';
 import { chromium } from 'playwright';
 import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -148,6 +149,29 @@ try {
   await page.waitForTimeout(300);
   await clickMap('casino'); await ready('Казино Plinko');
   await click(1100, 660); await ready('Карта города');
+  // Cross-check the node adapter against the actual Phaser scene from the same solver checkpoint.
+  for (const special of [false, true]) {
+    const initial = { ...createInitialGameState(balance, 67105001), cash: 100000 };
+    if (special) Object.assign(initial, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3, plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
+    const world = createSharedWorld(initial, balance);
+    for (let i = 0; i < 6; i++) { world.launch(i % 2 ? 1 : 0.25); for (let tick = 0; tick < 15; tick++) world.step(); }
+    const checkpoint = world.snapshot();
+    for (let tick = 0; tick < 3600 && world.active; tick++) world.step();
+    const expected = world.snapshot(); world.destroy();
+    assert.equal(expected.pending, null);
+    const saved = { ...createSaveState(checkpoint.state), pendingDrop: checkpoint.pending };
+    const inert = route => route.fulfill({ contentType: 'text/html', body: '<html></html>' });
+    await page.route(url, inert); await page.goto(url);
+    await page.evaluate(value => localStorage.setItem('67m.save', JSON.stringify(value)), saved);
+    await page.unroute(url, inert); await page.reload(); await ready('Казино Plinko');
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 45000 });
+    const actual = (await save()).game;
+    assert.equal(actual.cash, expected.state.cash, 'node/Phaser shared-world payout parity');
+    assert.equal(actual.rngState, expected.state.rngState, 'node/Phaser shared RNG parity');
+    assert.deepEqual(actual.clock, expected.state.clock, 'node/Phaser passive clock parity');
+    assert.deepEqual(actual.needs, expected.state.needs, 'node/Phaser needs parity');
+    writeFileSync(`${output}/node-parity-${special ? 'special' : 'base'}.json`, JSON.stringify({ actual, expected: expected.state, settlements: expected.settlements }, null, 2));
+  }
   assert.deepEqual(errors, []);
   writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360'], errors }, null, 2));
   console.log('Playtest smoke passed');
