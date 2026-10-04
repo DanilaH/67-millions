@@ -45,7 +45,7 @@ export const buildTutorialCard = (
       title: 'ПЕРВЫЙ БРОСОК',
       body:
         surface === 'casino'
-          ? 'Выбери 25%, 50% или 100%, проверь сумму и нажми БРОСИТЬ.'
+          ? 'Выбери сумму в рублях и нажми «Бросить». Каждый шар оплачивается отдельно.'
           : 'Теперь зайди в КАЗИНО и сделай первый бросок. Не трать запас на платёж Барри.',
       acknowledge: null,
     };
@@ -57,7 +57,7 @@ export const buildTutorialCard = (
       title: 'ПЕРВЫЙ АПГРЕЙД',
       body:
         surface === 'casino'
-          ? `Лимит ставки L1: ${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽. Центр L1: ${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽. Нажми нужную карточку улучшения.`
+          ? `Лимит ставки L1: ${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽. Центр L1: ${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽. Нажми кнопку с ценой нужного улучшения.`
           : 'Вернись в КАЗИНО и купи первый недорогой апгрейд.',
       acknowledge: null,
     };

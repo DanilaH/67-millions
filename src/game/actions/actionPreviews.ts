@@ -1,5 +1,5 @@
 import { advanceNeeds } from '../../core/needs/needs';
-import { minutesUntilClockTime } from '../../core/time/GameClock';
+import { formatClockTime, minutesUntilClockTime } from '../../core/time/GameClock';
 import { roundMoney } from '../../core/economy/money';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { ActiveAction } from '../../core/actions/ActiveAction';
@@ -279,9 +279,9 @@ export const buildSleepPreviews = (
     id: 'sleep',
     title: 'СОН',
     summary: [
-      `0 ₽ · до ${duration} мин · до Барри ${minutesUntilClockTime(state.clock, config.barry.time)} мин`,
-      `энергия ${formatSigned(delta.energy - state.needs.energy)} · HP ${formatSigned(delta.health - state.needs.health)}`,
-      `сытость ${formatSigned(delta.satiety - state.needs.satiety)} · счастье не меняется`,
+      `Бесплатно · проснёшься в ${formatClockTime((state.clock.minuteOfDay + duration) % 1440)}`,
+      `Энергия ${Math.round(state.needs.energy)} → ${Math.round(delta.energy)} · здоровье ${Math.round(state.needs.health)} → ${Math.round(delta.health)}`,
+      `Сытость ${Math.round(state.needs.satiety)} → ${Math.round(delta.satiety)} · сон до ${duration} мин`,
       forecast.state.terminalReason ? 'ОПАСНО: здоровье закончится во сне' : 'Барри в 09:00 разбудит. Недосып снижает доход работ.',
     ],
     lockedReason: lock,

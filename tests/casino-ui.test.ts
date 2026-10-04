@@ -38,6 +38,7 @@ describe('T057 casino UI model', () => {
       6_250,
       10_000,
     ]);
+    expect(bets.map(bet => bet.label)).toEqual(bets.map(bet => `${bet.amount!.toLocaleString('ru-RU')} ₽`));
     expect(
       bets.find((bet) => bet.selected)?.fraction,
     ).toBe(0.5);

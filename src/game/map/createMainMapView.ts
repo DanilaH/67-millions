@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import type { GameState } from '../../core/state/GameState';
 import { addProductionImage } from '../visual/productionArt';
 
 import type { BalanceConfig } from '../../config/balance.schema';
@@ -16,6 +17,7 @@ import {
 
 export interface MainMapView {
   setEnabled(enabled: boolean): void;
+  renderState(state: GameState): void;
   setSelected(id: MainMapLocationId | null): void;
 }
 
@@ -47,6 +49,8 @@ export const createMainMapView = (
     MainMapLocationId,
     Phaser.GameObjects.Text
   >();
+  const hints = new Map<MainMapLocationId, Phaser.GameObjects.Text>();
+  let suggested: MainMapLocationId | null = null;
   let enabled = true;
   let selected: MainMapLocationId | null = null;
 
@@ -55,7 +59,7 @@ export const createMainMapView = (
 
 
     for (const location of locations) {
-      const isSelected = location.id === selected;
+      const isSelected = location.id === selected || location.id === suggested;
       const accent = visualColor(
         LOCATION_ACCENT[location.id],
       );
@@ -101,11 +105,18 @@ export const createMainMapView = (
 
     if (button.width > 164) button.setFontSize(Math.floor(Number.parseFloat(button.style.fontSize as string) * 164 / button.width));
     buttons.set(location.id, button);
+    const labels: Record<MainMapLocationId, string> = { work: 'Заработать', food: 'Поесть', home: 'Поспать', entertainment: 'Отдохнуть', dumpster: 'Поискать деньги', shower: 'Принять душ', casino: 'Играть в Plinko' };
+    hints.set(location.id, scene.add.text(location.x, location.y + 47, labels[location.id], { fontFamily: VISUAL_FONT.sans, fontSize: '14px', color: visualHex('textMain'), backgroundColor: visualHex('inkPanel'), padding: { x: 6, y: 3 } }).setOrigin(0.5, 0).setDepth(2));
   }
 
   draw();
 
   return {
+    renderState: state => {
+      const next = state.needs.satiety <= config.needs.lowThreshold ? 'food' : state.needs.energy <= config.needs.lowThreshold ? 'home' : state.statuses.SMELLY ? 'shower' : state.needs.happiness <= config.needs.lowThreshold ? 'entertainment' : null;
+      if (suggested !== next) { suggested = next; draw(); }
+      for (const [id, hint] of hints) hint.setColor(visualHex(id === suggested ? 'mustard' : 'textMain'));
+    },
     setEnabled: (value) => {
       enabled = value;
       for (const button of buttons.values()) {

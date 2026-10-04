@@ -117,9 +117,9 @@ export const buildCasinoQuickBets = (
   return (config.plinko.quickBetFractions as BetFraction[]).map(
     (fraction) => ({
       fraction,
-      label: `${fraction * 100}%`,
+      label: state.cash > 0 ? `${calculateActualBet(state.cash, maxBet, fraction).toLocaleString('ru-RU')} ₽` : '0 ₽',
       amount:
-        lock === null
+        state.cash > 0
           ? calculateActualBet(
               state.cash,
               maxBet,
@@ -317,7 +317,7 @@ const describeNextEffect = (id: CasinoUpgradeId, state: GameState, config: Balan
     return `Пар направляющих: ${next.deflectorPairs.length}\nОтклоняют шары к краям`;
   }
   const next = config.plinko.insurance.find(entry => entry.level === nextLevel)!;
-  return `После ${next.lossesNeeded} проигрышей:\nследующий бросок вернёт\nот ${Math.round(next.floor * 100)}% ставки`;
+  return `После ${next.lossesNeeded} проигрышей:\nвозврат от ${Math.round(next.floor * 100)}% ставки`;
 };
 
 export const buildCasinoUpgradePreviews = (

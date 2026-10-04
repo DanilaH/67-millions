@@ -126,7 +126,7 @@ describe('T059 contextual tutorial progression', () => {
     ).toContain('КАЗИНО');
     expect(
       buildTutorialCard('FIRST_DROP', 'casino')?.body,
-    ).toContain('25%');
+    ).toContain('сумму в рублях');
     expect(
       buildTutorialCard('CHEAP_UPGRADE', 'casino')?.body,
     ).toContain('500 ₽');

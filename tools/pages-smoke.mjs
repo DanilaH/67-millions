@@ -187,30 +187,32 @@ try {
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-result.png` });
     await loadSave(rich);
     await click(1080, 325); await sceneReady('Казино Plinko');
-    for (let number = 2; number <= 5; number++) {
-      await click(1215, 566);
-      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.upgradePage === String(number), number);
+    for (let number = 1; number <= 6; number++) {
+      await click(1215, 602);
+      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.upgradeOffset === String(number), number);
     }
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-insurance.png` });
-    for (let number = 4; number >= 1; number--) {
-      await click(985, 566);
-      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.upgradePage === String(number), number);
+    for (let number = 5; number >= 0; number--) {
+      await click(985, 602);
+      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.upgradeOffset === String(number), number);
     }
     await click(65, 283);
     const selectedOnly = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
-    assert.equal(selectedOnly.game.cash, rich.game.cash, 'fraction selection and upgrade pagination do not spend');
+    assert.equal(selectedOnly.game.cash, rich.game.cash, 'fraction selection and upgrade scrolling do not spend');
     assert.equal(selectedOnly.pendingDrop, null, 'fraction selection alone does not throw');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-controls.png` });
-    await click(1100, 270);
+    await click(1000, 195);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'upgrade title does not purchase');
+    await click(1205, 273);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoMaxBetLevel === 1);
     const upgraded = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
-    assert.equal(upgraded.game.cash, rich.game.cash - balance.plinko.maxBetLevels[1].price, 'upgrade card buys once');
+    assert.equal(upgraded.game.cash, rich.game.cash - balance.plinko.maxBetLevels[1].price, 'dedicated upgrade button buys once');
     await click(170, 390);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop !== null);
     const thrown = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(thrown.pendingDrop.originalStake, 625, 'explicit throw uses selected fraction of new limit');
     assert.equal(thrown.game.cash, upgraded.game.cash - 625);
-    await click(1100, 270);
+    await click(1205, 273);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.plinkoMaxBetLevel, 1, 'upgrade locked during throw');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-result.png` });
@@ -361,7 +363,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade pages; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'debug/perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

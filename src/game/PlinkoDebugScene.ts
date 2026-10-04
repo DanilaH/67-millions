@@ -2,7 +2,7 @@ import { PersistentHud } from './ui/PersistentHud';
 import { PlinkoEffects } from './casino/PlinkoEffects';
 import { installScenePresentation } from './visual/scenePresentation';
 import { activeDrops, appendDrop, canLaunchDrop, findBallDrop, recordDropPayout, removeSettledDrop } from '../core/plinko-rules/concurrentDrops';
-import { deriveHudSnapshot, formatBarryCountdown } from './ui/hudModel';
+
 import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
 import { GAME_PRESENTABLE_EVENT } from '../app/presentable';
@@ -107,6 +107,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private boardConfig = balance;
   private effects?: PlinkoEffects;
   private mapHud?: PersistentHud;
+  private casinoHud?: PersistentHud;
   private runtime: BarePlinkoRuntime | null = null;
   private random: SeededRandom | null = null;
   private save: SaveState | null = null;
@@ -202,7 +203,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.casinoLayer.add(image);
     }
 
-    this.infoText = this.add.text(28, 20, 'Loading Plinko state…', {
+    const hudStart = this.children.list.length;
+    this.casinoHud = new PersistentHud(this, this.boardConfig);
+    this.casinoLayer.add(this.children.list.slice(hudStart));
+    this.infoText = this.add.text(28, 155, '', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.mono,
       fontSize: '21px',
@@ -221,13 +225,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.statusText);
 
     this.resultText = this.add
-      .text(355, 20, '', {
+      .text(28, 470, '', {
         color: visualHex('mustard'),
         backgroundColor: visualHex('inkPanel'),
         fontFamily: VISUAL_FONT.mono,
-        fontSize: '20px',
+        fontSize: '17px',
         padding: { x: 10, y: 8 },
-        wordWrap: { width: 535 },
+        wordWrap: { width: 264 },
       })
       .setOrigin(0, 0)
       .setVisible(false);
@@ -1112,14 +1116,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.infoText || !this.save) return;
 
     const snapshot = this.visualSnapshot;
-    const hud = deriveHudSnapshot(this.save.game, this.boardConfig);
+    this.casinoHud?.render(this.save.game);
     this.infoText.setText([
-      `ДЕНЬ ${hud.day} · ${hud.time}`,
-      `Деньги ${hud.cash.toLocaleString('ru-RU')} ₽`,
-      `Барри ${hud.nextBarry.toLocaleString('ru-RU')} ₽`,
-      `До выплаты ${formatBarryCountdown(hud.minutesUntilBarry)}`,
+      `На доске: ${activeDrops(this.save.pendingDrop).length} / ${this.boardConfig.plinko.maxConcurrentDrops}`,
       ...(snapshot?.insuranceArmed ? ['Щит готов'] : []),
-      this.save.pendingDrop ? `На доске: ${activeDrops(this.save.pendingDrop).length} / ${this.boardConfig.plinko.maxConcurrentDrops}` : 'Бросок готов',
     ]);
 
     this.betPanel?.render(
@@ -1173,6 +1173,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const step = deriveTutorialStep(
       loadTutorialProgress(),
     );
+    if (step !== 'DONE') this.resultText?.setVisible(false);
     this.tutorialCard.render(
       buildTutorialCard(
         step,

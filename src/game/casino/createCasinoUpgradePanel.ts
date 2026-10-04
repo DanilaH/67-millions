@@ -4,6 +4,7 @@ import type { CasinoUpgradeId, CasinoUpgradePreview } from './casinoUiModel';
 
 export interface CasinoUpgradePanel { render(previews: CasinoUpgradePreview[]): void; }
 
+/** Three compact rows, one-row scrolling, and separate purchase targets. */
 export const createCasinoUpgradePanel = (
   scene: Phaser.Scene,
   onPurchase: (id: CasinoUpgradeId) => void,
@@ -13,43 +14,59 @@ export const createCasinoUpgradePanel = (
   parent?.add(container);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
   let previews: CasinoUpgradePreview[] = [];
-  let lastSignature = '';
-  let page = 0;
-  const background = scene.add.rectangle(1100, 350, 330, 500, visualColor('inkPanel'), 0.98).setStrokeStyle(2, visualColor('cold'), 0.7);
-  const title = scene.add.text(950, 111, 'УЛУЧШЕНИЯ', { fontFamily: VISUAL_FONT.sans, fontSize: '24px', color: visualHex('textMain') });
-  const count = scene.add.text(1100, 568, '', { fontFamily: VISUAL_FONT.sans, fontSize: '22px', color: visualHex('textMain') }).setOrigin(0.5);
-  const previous = scene.add.text(950, 544, '←', { fontSize: '30px', backgroundColor: visualHex('inkRaised'), fixedWidth: 76, fixedHeight: 48, align: 'center' })
-    .setInteractive({ useHandCursor: true }).on('pointerup', () => { if (page > 0) { page--; draw(); } });
-  const next = scene.add.text(1178, 544, '→', { fontSize: '30px', backgroundColor: visualHex('inkRaised'), fixedWidth: 76, fixedHeight: 48, align: 'center' })
-    .setInteractive({ useHandCursor: true }).on('pointerup', () => { if ((page + 1) * 2 < previews.length) { page++; draw(); } });
-  container.add([background, title, count, previous, next]);
+  let signature = '';
+  let offset = 0;
+  const visibleRows = 3;
+  const text = (x: number, y: number, value: string, size = 17) => scene.add.text(x, y, value, {
+    fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, color: visualHex('textMain'),
+  });
+  const background = scene.add.rectangle(1100, 366, 330, 532, visualColor('inkPanel'), 0.98)
+    .setStrokeStyle(1, visualColor('lineDirty')).setInteractive();
+  const title = text(950, 111, 'Улучшения', 23);
+  const status = text(950, 142, '', 14).setColor(visualHex('textMuted'));
+  const count = text(1100, 605, '', 15).setOrigin(0.5);
+  const previous = text(950, 578, '↑', 25).setFixedSize(76, 48).setAlign('center')
+    .setBackgroundColor(visualHex('inkRaised')).setInteractive({ useHandCursor: true });
+  const next = text(1178, 578, '↓', 25).setFixedSize(76, 48).setAlign('center')
+    .setBackgroundColor(visualHex('inkRaised')).setInteractive({ useHandCursor: true });
+  container.add([background, title, status, count, previous, next]);
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
-    const pages = Math.ceil(previews.length / 2);
-    count.setText(`${page + 1} / ${pages}`);
-    previous.setAlpha(page > 0 ? 1 : 0.35); next.setAlpha(page + 1 < pages ? 1 : 0.35);
-    scene.game.canvas.setAttribute('data-upgrade-page', `${page + 1}`);
-    previews.slice(page * 2, page * 2 + 2).forEach((preview, index) => {
-      const y = 149 + index * 192;
-      const locked = preview.lockedReason !== null;
-      const card = scene.add.rectangle(1100, y + 90, 304, 180, visualColor(locked ? 'inkPanel' : 'inkRaised'))
-        .setStrokeStyle(2, visualColor(locked ? 'lineDirty' : 'cold'));
-      const name = scene.add.text(958, y + 8, preview.title, { fontFamily: VISUAL_FONT.sans, fontSize: '22px', fontStyle: 'bold', color: visualHex('textMain') });
-      const level = scene.add.text(958, y + 36, `Уровень ${preview.currentLevel} / ${preview.maxLevel}`, { fontFamily: VISUAL_FONT.sans, fontSize: '18px', color: visualHex('textMuted') });
-      const effect = scene.add.text(958, y + 62, preview.nextEffect, { fontFamily: VISUAL_FONT.sans, fontSize: '19px', color: visualHex('textMain'), wordWrap: { width: 280 } });
-      const price = scene.add.text(958, y + 130, preview.maxed ? 'Максимум' : `${locked ? 'Цена' : 'Купить за'} ${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, {
-        fontFamily: VISUAL_FONT.sans, fontSize: '21px', color: visualHex(locked ? 'textMuted' : 'mustard'),
-      });
-      const reason = scene.add.text(958, y + 157, preview.maxed ? '' : preview.lockedReason === null ? 'Нажми на карточку' : preview.lockedReason.includes('DROP') ? 'Дождись конца броска' : preview.lockedReason.toLocaleLowerCase('ru-RU'), {
-        fontFamily: VISUAL_FONT.sans, fontSize: '17px', color: visualHex(locked ? 'warning' : 'textMuted'), wordWrap: { width: 280 },
-      });
-      if (!locked) card.setInteractive({ useHandCursor: true }).on('pointerup', () => onPurchase(preview.id));
-      container.add([card, name, level, effect, price, reason]); dynamic.push(card, name, level, effect, price, reason);
+    const pending = previews.some(p => p.lockedReason?.includes('DROP'));
+    status.setText(pending ? 'Покупки — после завершения бросков' : 'Эффект следующего уровня');
+    count.setText(`${offset + 1}–${Math.min(offset + visibleRows, previews.length)} из ${previews.length}`);
+    previous.setAlpha(offset > 0 ? 1 : 0.3);
+    next.setAlpha(offset + visibleRows < previews.length ? 1 : 0.3);
+    scene.game.canvas.setAttribute('data-upgrade-offset', `${offset}`);
+    previews.slice(offset, offset + visibleRows).forEach((preview, index) => {
+      const y = 170 + index * 132;
+      const card = scene.add.rectangle(1100, y + 63, 306, 126, visualColor('inkRaised'));
+      const name = text(958, y + 6, preview.title, 17).setFontStyle('bold');
+      const level = text(1238, y + 7, `${preview.currentLevel}/${preview.maxLevel}`, 14).setOrigin(1, 0).setColor(visualHex('textMuted'));
+      const effect = text(958, y + 30, preview.nextEffect, 16).setWordWrapWidth(282);
+      const buy = text(1238, y + 80, preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, 16)
+        .setOrigin(1, 0).setPadding(12, 12).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
+        .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
+      if (preview.lockedReason === null) buy.setInteractive({ useHandCursor: true }).on('pointerup', () => onPurchase(preview.id));
+      const hint = text(958, y + 94, preview.maxed ? 'Улучшено полностью' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.includes('НЕ ХВАТАЕТ') ? 'Не хватает денег' : 'Недоступно', 13).setColor(visualHex('textMuted'));
+      container.add([card, name, level, effect, buy, hint]);
+      dynamic.push(card, name, level, effect, buy, hint);
     });
   };
-  return { render: (nextPreviews) => {
-    const signature = JSON.stringify(nextPreviews);
-    if (signature === lastSignature) return;
-    lastSignature = signature; previews = nextPreviews; draw();
+  const scroll = (direction: number): void => {
+    const nextOffset = Phaser.Math.Clamp(offset + direction, 0, Math.max(0, previews.length - visibleRows));
+    if (nextOffset !== offset) { offset = nextOffset; draw(); }
+  };
+  previous.on('pointerup', () => scroll(-1)); next.on('pointerup', () => scroll(1));
+  const wheel = (pointer: Phaser.Input.Pointer, _objects: Phaser.GameObjects.GameObject[], _dx: number, dy: number): void => {
+    if (parent && !parent.visible) return;
+    if (pointer.x >= 935 && pointer.x <= 1265 && pointer.y >= 100 && pointer.y <= 632) scroll(Math.sign(dy));
+  };
+  scene.input.on('wheel', wheel);
+  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => scene.input.off('wheel', wheel));
+  return { render: nextPreviews => {
+    const nextSignature = JSON.stringify(nextPreviews);
+    if (nextSignature === signature) return;
+    signature = nextSignature; previews = nextPreviews; draw();
   } };
 };

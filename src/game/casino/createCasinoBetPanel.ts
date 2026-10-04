@@ -27,7 +27,7 @@ export const createCasinoBetPanel = (
     if (preview && preview.lockedReason === null) onDrop(preview);
   });
   const buttons = [0, 1, 2].map(index => scene.add.text(28 + index * 98, 263, '', {
-    fontFamily: VISUAL_FONT.sans, fontSize: '24px', fixedWidth: 88, fixedHeight: 44,
+    fontFamily: VISUAL_FONT.sans, fontSize: '17px', fixedWidth: 88, fixedHeight: 44,
     align: 'center', padding: { y: 7 },
   }).setInteractive({ useHandCursor: true }).on('pointerup', () => {
     const preview = previews[index];
@@ -39,11 +39,13 @@ export const createCasinoBetPanel = (
     if (!preview) return;
     const locked = preview.lockedReason !== null;
     const reason = preview.lockedReason?.includes('DROP') ? 'Дождись конца броска' : preview.lockedReason?.includes('ВРЕМЕННО') ? 'Казино временно закрыто' : preview.lockedReason?.toLocaleLowerCase('ru-RU');
-    amount.setText(locked ? reason! : `Спишется ${preview.amount!.toLocaleString('ru-RU')} ₽`)
-      .setFontSize(locked ? 18 : 22).setColor(visualHex(locked ? 'warning' : 'textMain'));
+    amount.setText(locked ? reason! : 'За каждый шар — отдельная ставка')
+      .setFontSize(17).setColor(visualHex('textMuted'));
+    drop.setText(`Бросить · ${(preview.amount ?? 0).toLocaleString('ru-RU')} ₽`).setFontSize(20);
     drop.setAlpha(locked ? 0.4 : 1);
     buttons.forEach((button, index) => {
       const entry = previews[index];
+      button.setFontSize((entry?.label.length ?? 0) > 9 ? 12 : (entry?.label.length ?? 0) > 7 ? 14 : 17);
       button.setText(entry?.label ?? '').setAlpha(locked ? 0.4 : 1)
         .setBackgroundColor(visualHex(entry?.fraction === selected ? 'mustard' : 'inkRaised'))
         .setColor(visualHex(entry?.fraction === selected ? 'inkDeep' : 'textMain'));

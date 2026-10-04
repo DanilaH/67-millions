@@ -22,9 +22,9 @@ describe('readable action outcomes', () => {
   });
   it('subtracts stake from total return and does not count insurance twice', () => {
     const base = { stake: 500, payout: 375, multiplier: 0.75, losing: true, insuranceApplied: true, insuranceTopUp: 125 };
-    expect(formatCasinoResult(base)).toContain('итог −125 ₽');
+    expect(formatCasinoResult(base)).toContain('Итог −125 ₽');
     expect(formatCasinoResult(base)).toContain('уже включена');
-    expect(formatCasinoResult({ ...base, payout: 1000, multiplier: 2, insuranceApplied: false })).toContain('итог +500 ₽');
+    expect(formatCasinoResult({ ...base, payout: 1000, multiplier: 2, insuranceApplied: false })).toContain('Итог +500 ₽');
   });
   it('reports actual capped need changes and interruption instead of promised full restoration', () => {
     const before = createInitialGameState(balance, 1);

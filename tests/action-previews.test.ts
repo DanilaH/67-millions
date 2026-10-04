@@ -184,8 +184,8 @@ describe('work upgrade access and sleep forecasts', () => {
     state.needs = { health: 90, satiety: 50, energy: 0, happiness: 50 };
     const summary = buildSleepPreviews(state, null, null, balance)[0]!.summary.join(' ');
     expect(summary).toContain('до 30 мин');
-    expect(summary).toContain('энергия +7.1');
-    expect(summary).toContain('сытость -2');
+    expect(summary).toContain('Энергия 0 → 7');
+    expect(summary).toContain('Сытость 50 → 48');
     state.needs.health = 0.01; state.needs.satiety = 0;
     expect(buildSleepPreviews(state, null, null, balance)[0]!.summary.join(' ')).toContain('ОПАСНО');
   });

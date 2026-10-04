@@ -1027,6 +1027,7 @@ export class BootstrapScene extends Phaser.Scene {
       presentableEventId !== null;
 
     this.mapView.setEnabled(!navigationLocked);
+    this.mapView.renderState(this.state);
     this.principalButton?.setVisible(
       !navigationLocked &&
         canPayMainDebt(this.state),
