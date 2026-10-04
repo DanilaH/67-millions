@@ -1164,7 +1164,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.infoText || !this.save) return;
 
     const net = this.visitPayout - this.visitStake;
-    this.visitResultText?.setVisible(deriveTutorialStep(loadTutorialProgress()) === 'DONE');
+    this.visitResultText?.setPosition(28, deriveTutorialStep(loadTutorialProgress()) === 'DONE' ? 386 : 640);
     this.visitResultText?.setText(this.visitDrops === 0 ? 'Итог появится после броска' : [
       `За заход: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
       ...(this.visitDetails ? [
