@@ -216,7 +216,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer.add(this.infoText);
     this.visitResultText = this.add.text(28, 386, '', {
       color: visualHex('textMain'), backgroundColor: visualHex('inkPanel'),
-      fontFamily: VISUAL_FONT.sans, fontSize: '17px', padding: { x: 8, y: 6 },
+      fontFamily: VISUAL_FONT.sans, fontSize: '19px', padding: { x: 8, y: 6 },
       wordWrap: { width: 268 },
     });
     this.visitResultText.setInteractive({ useHandCursor: true }).on('pointerup', () => {
@@ -228,7 +228,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       .text(28, 605, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
-        fontSize: '14px',
+        fontSize: '18px',
         wordWrap: { width: 280 },
       })
       .setOrigin(0, 0);
@@ -623,10 +623,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
     } else {
       if (id === 'maxBet') g.strokeRoundedRect(352, 672, 577, 46, 8);
       else g.strokeRoundedRect(22, 600, 296, 65, 8);
-      if (id === 'insurance') this.showStatus('Страховка улучшена. Сработает после серии проигрышей.');
     }
     this.game.canvas.setAttribute('data-upgrade-highlight', id);
-    this.upgradeTween = this.tweens.add({ targets: g, alpha: 0, duration: 1000,
+    this.upgradeTween = this.tweens.add({ targets: g, alpha: 0, duration: 2200,
       onComplete: () => { g.clear(); this.game.canvas.removeAttribute('data-upgrade-highlight'); } });
   }
 
@@ -636,6 +635,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.save || !this.repository || this.leaving) return;
 
     try {
+      const purchased = buildCasinoUpgradePreviews(this.save.game, this.save.pendingDrop, this.boardConfig).find(preview => preview.id === id);
       let game = this.save.game;
 
       if (id === 'maxBet') {
@@ -686,7 +686,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
       await this.enqueueSave(true);
       recordTutorialMilestone('UPGRADE_BOUGHT');
-      this.showStatus('Улучшение куплено — изменение подсвечено.');
+      this.showStatus(purchased ? `${purchased.title}: ${purchased.nextEffect}` : 'Улучшение куплено');
       this.renderAll();
       this.highlightUpgrade(id);
     } catch (error: unknown) {
@@ -1164,9 +1164,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.infoText || !this.save) return;
 
     const net = this.visitPayout - this.visitStake;
-    this.visitResultText?.setPosition(28, deriveTutorialStep(loadTutorialProgress()) === 'DONE' ? 386 : 640);
+    this.visitResultText?.setPosition(28, buildTutorialCard(deriveTutorialStep(loadTutorialProgress()), 'casino') === null ? 386 : 640);
     this.visitResultText?.setText(this.visitDrops === 0 ? 'Итог появится после броска' : [
-      `За заход: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
+      `После входа: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
       ...(this.visitDetails ? [
         `Ставки: ${this.visitStake.toLocaleString('ru-RU')} ₽`,
         `Выплаты: ${this.visitPayout.toLocaleString('ru-RU')} ₽`,
@@ -1230,7 +1230,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const step = deriveTutorialStep(
       loadTutorialProgress(),
     );
-    if (step !== 'DONE') this.resultText?.setVisible(false);
+    if (buildTutorialCard(step, 'casino') !== null) this.resultText?.setVisible(false);
     this.tutorialCard.render(
       buildTutorialCard(
         step,

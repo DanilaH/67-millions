@@ -18,7 +18,7 @@ export const createCasinoUpgradePanel = (
   let signature = '';
   let offset = 0;
   let drag: { y: number; offset: number; moved: boolean; scrollbar: boolean } | null = null;
-  const top = 170, bottom = 620, rowHeight = 100;
+  const top = 170, bottom = 620, rowHeight = 116;
   const maxScroll = () => Math.max(0, previews.length * rowHeight - (bottom - top));
   const text = (x: number, y: number, value: string, size = 17) => scene.add.text(x, y, value, {
     fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, color: visualHex('textMain'),
@@ -26,13 +26,15 @@ export const createCasinoUpgradePanel = (
   const background = scene.add.rectangle(1100, 366, 330, 532, visualColor('inkPanel'), 0.96)
     .setStrokeStyle(1, visualColor('lineDirty')).setInteractive();
   const title = text(950, 111, 'ПРОКАЧКА АВТОМАТА', 20);
-  const status = text(950, 142, '', 14).setColor(visualHex('textMuted'));
+  const status = text(950, 142, '', 17).setColor(visualHex('textMuted'));
   const track = scene.add.graphics();
   container.add([background, title, status, track]);
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
     const pending = previews.some(p => p.lockedReason?.includes('DROP'));
-    status.setText(pending ? 'Покупки — после завершения бросков' : 'Прокрути, чтобы увидеть остальные');
+    const currentId = previews[Math.floor(offset / rowHeight)]?.id;
+    const group = currentId === 'insurance' ? 'Страховка' : ['amplifier', 'return', 'splitter', 'jackpotBias'].includes(currentId ?? '') ? 'Спецпины' : 'Ставки и выплаты';
+    status.setText(pending ? 'Покупки — после бросков' : `${group} · листай ↓`);
     offset = Phaser.Math.Clamp(offset, 0, maxScroll());
     scene.game.canvas.setAttribute('data-upgrade-scroll', `${Math.round(offset)}`);
     track.clear().fillStyle(visualColor('lineDirty')).fillRoundedRect(1250, top, 5, bottom - top, 2);
@@ -41,15 +43,17 @@ export const createCasinoUpgradePanel = (
     previews.forEach((preview, index) => {
       const y = top + index * rowHeight - offset;
       if (y + rowHeight <= top || y >= bottom) return;
-      const cardTop = Math.max(top, y + 1), cardBottom = Math.min(bottom, y + 95);
+      const cardTop = Math.max(top, y + 1), cardBottom = Math.min(bottom, y + 111);
       const card = scene.add.rectangle(1096, (cardTop + cardBottom) / 2, 296, cardBottom - cardTop, visualColor('inkRaised'));
-      const name = text(958, y + 6, preview.title, 17).setFontStyle('bold');
+      const groupColor = preview.id === 'insurance' ? 'bruise' : ['amplifier', 'return', 'splitter', 'jackpotBias'].includes(preview.id) ? 'cold' : 'mustard';
+      card.setStrokeStyle(1, visualColor(groupColor));
+      const name = text(958, y + 6, preview.title, 19).setFontStyle('bold');
       const level = text(1234, y + 7, `${preview.currentLevel}/${preview.maxLevel}`, 14).setOrigin(1, 0).setColor(visualHex('textMuted'));
-      const effect = text(958, y + 29, preview.nextEffect, 15).setWordWrapWidth(276);
-      const buy = text(1234, y + 62, preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, 17)
+      const effect = text(958, y + 29, preview.nextEffect, 18).setWordWrapWidth(276);
+      const buy = text(1234, y + 82, preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, 17)
         .setOrigin(1, 0).setPadding(12, 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
-      const hint = text(958, y + 68, preview.maxed ? '' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', 12).setWordWrapWidth(145).setColor(visualHex('textMuted'));
+      const hint = text(958, y + 82, preview.maxed ? '' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', 14).setWordWrapWidth(145).setColor(visualHex('textMuted'));
       // Text must not escape the scroll window even on renderers that do not
       // support nested container masks. Partial rows keep their clipped backing.
       for (const object of [name, level, effect, buy, hint]) object.setVisible(object.y >= top && object.y + object.height <= bottom);
@@ -81,7 +85,7 @@ export const createCasinoUpgradePanel = (
     if (p.y < top || p.y > bottom || p.x < 1138 || p.x > 1238) return;
     const position = p.y - top + offset;
     const preview = previews[Math.floor(position / rowHeight)];
-    if (position % rowHeight >= 62 && position % rowHeight <= 96 && preview?.lockedReason === null) onPurchase(preview.id);
+    if (position % rowHeight >= 82 && position % rowHeight <= 114 && preview?.lockedReason === null) onPurchase(preview.id);
   };
   const cancel = () => { drag = null; };
   const wheel = (pointer: Phaser.Input.Pointer, _objects: Phaser.GameObjects.GameObject[], _dx: number, dy: number) => {

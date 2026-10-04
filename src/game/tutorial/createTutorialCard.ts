@@ -37,7 +37,7 @@ export const createTutorialCard = (
     .text(x + 16, y + 10, '', {
       color: visualHex('mustard'),
       fontFamily: VISUAL_FONT.sans,
-      fontSize: '16px',
+      fontSize: '20px',
       fontStyle: 'bold',
     })
     .setOrigin(0, 0);
@@ -46,8 +46,8 @@ export const createTutorialCard = (
     .text(x + 16, y + 34, '', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.sans,
-      fontSize: '14px',
-      wordWrap: { width: casino ? width - 32 : width - 170 },
+      fontSize: '19px',
+      wordWrap: { width: casino ? width - 32 : width - 190 },
       lineSpacing: 3,
     })
     .setOrigin(0, 0);
@@ -57,7 +57,7 @@ export const createTutorialCard = (
       color: visualHex('inkDeep'),
       backgroundColor: visualHex('mustard'),
       fontFamily: VISUAL_FONT.sans,
-      fontSize: '13px',
+      fontSize: '17px',
       fontStyle: 'bold',
       padding: { x: 9, y: 13 },
     })

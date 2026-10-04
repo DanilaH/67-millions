@@ -240,7 +240,7 @@ try {
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-controls.png` });
     await click(1000, 195);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'upgrade title does not purchase');
-    await click(1205, 250);
+    await click(1205, 270);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoMaxBetLevel === 1);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-upgrade-feedback.png` });
     const upgraded = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
@@ -250,10 +250,10 @@ try {
     const thrown = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(thrown.pendingDrop.originalStake, 625, 'explicit throw uses selected fraction of new limit');
     assert.equal(thrown.game.cash, upgraded.game.cash - 625);
-    await click(1205, 250);
+    await click(1205, 270);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.plinkoMaxBetLevel, 1, 'upgrade locked during throw');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
-    await click(150, 655);
+    await click(150, 401);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-result.png` });
     // A failed action checkpoint stays pending: retry bytes, never the command.
     await loadSave(fixture);

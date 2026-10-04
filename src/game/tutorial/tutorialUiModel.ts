@@ -16,6 +16,8 @@ export const buildTutorialCard = (
   surface: TutorialSurface,
 ): TutorialCardModel | null => {
   if (step === 'DONE') return null;
+  // City obligations belong on the map; casino hints explain its controls.
+  if (surface === 'casino' && step !== 'FIRST_DROP' && step !== 'CHEAP_UPGRADE') return null;
 
   if (step === 'BARRY') {
     return {
@@ -45,7 +47,7 @@ export const buildTutorialCard = (
       title: 'ПЕРВЫЙ БРОСОК',
       body:
         surface === 'casino'
-          ? 'Выбери сумму в рублях и нажми «Бросить». Каждый шар оплачивается отдельно.'
+          ? 'Выбери ставку внизу и нажми «Бросить». Каждый запуск — отдельная ставка.'
           : 'Теперь зайди в КАЗИНО и сделай первый бросок. Не трать запас на платёж Барри.',
       acknowledge: null,
     };
@@ -57,7 +59,7 @@ export const buildTutorialCard = (
       title: 'ПЕРВЫЙ АПГРЕЙД',
       body:
         surface === 'casino'
-          ? `Лимит ставки L1: ${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽. Центр L1: ${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽. Нажми кнопку с ценой нужного улучшения.`
+          ? `Лимит ставки L1: ${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽. Центр L1: ${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽. Покупка — кнопкой с ценой.`
           : 'Вернись в КАЗИНО и купи первый недорогой апгрейд.',
       acknowledge: null,
     };

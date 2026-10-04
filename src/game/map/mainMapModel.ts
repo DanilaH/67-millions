@@ -1,3 +1,4 @@
+import { buildWorkPreviews } from '../actions/actionPreviews';
 import type { GameState } from '../../core/state/GameState';
 import { getFoodActionDefinition } from '../../core/actions/foodEntertainment';
 import type { BalanceConfig } from '../../config/balance.schema';
@@ -89,7 +90,7 @@ export const deriveMainMapHints = (state: GameState, config: BalanceConfig): {
   const foodPrice = Math.min(...config.food.map(entry => getFoodActionDefinition(state, entry).price));
   const money = (value: number) => value.toLocaleString('ru-RU');
   const labels: Record<MainMapLocationId, string> = {
-    work: 'Выбрать смену', food: `Еда от ${money(foodPrice)} ₽`,
+    work: buildWorkPreviews(state, null, null, config).some(preview => preview.lockedReason === null) ? 'Есть доступные смены' : 'Сейчас нет доступных смен', food: `Еда от ${money(foodPrice)} ₽`,
     home: 'Сон · бесплатно', entertainment: 'Есть бесплатный отдых',
     dumpster: 'Поиск · риск для здоровья', shower: `Душ · ${money(config.shower.price)} ₽`,
     casino: state.eventModifiers.plinkoLockRemainingMinutes > 0 ? 'Временно закрыто' : 'Ставки и улучшения',

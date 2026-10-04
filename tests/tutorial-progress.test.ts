@@ -115,6 +115,10 @@ describe('T059 contextual tutorial progression', () => {
     for (const surface of surfaces) {
       for (const step of steps) {
         const card = buildTutorialCard(step, surface);
+        if (surface === 'casino' && step !== 'FIRST_DROP' && step !== 'CHEAP_UPGRADE') {
+          expect(card).toBeNull();
+          continue;
+        }
         expect(card).not.toBeNull();
         expect(card!.title.length).toBeLessThanOrEqual(24);
         expect(card!.body.length).toBeLessThanOrEqual(180);
@@ -126,7 +130,7 @@ describe('T059 contextual tutorial progression', () => {
     ).toContain('КАЗИНО');
     expect(
       buildTutorialCard('FIRST_DROP', 'casino')?.body,
-    ).toContain('сумму в рублях');
+    ).toContain('Выбери ставку');
     expect(
       buildTutorialCard('CHEAP_UPGRADE', 'casino')?.body,
     ).toContain('500 ₽');
@@ -134,7 +138,7 @@ describe('T059 contextual tutorial progression', () => {
       buildTutorialCard('NEEDS', 'map')?.acknowledge,
     ).toBe('NEEDS');
     expect(
-      buildTutorialCard('NEEDS', 'casino')?.acknowledge,
+      buildTutorialCard('NEEDS', 'casino'),
     ).toBeNull();
     expect(buildTutorialCard('DONE', 'map')).toBeNull();
   });

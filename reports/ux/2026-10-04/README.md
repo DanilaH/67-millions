@@ -44,3 +44,9 @@ Advances E16/T056–T057: map captions show effective food prices (including eve
 Casino shows a compact net total for completed drops during the current visit. Tap reveals stakes and payouts; pending drops are excluded until settled. This is transient presentation: resets on scene re-entry/reload, includes restored drops when they complete, excludes upgrade purchases and Barry payments. It is not lifetime profit or a change to saved economic state.
 
 Local verification: 371 tests passed, Pages build passed. Tests cover event-adjusted map prices and single-need priority without state mutation. Browser/deployment verification is recorded by the commit's Pages workflow. No physics/config/economy changes.
+
+## Mobile readability and contextual guidance
+
+E16/T056–T057 and T059 follow-up: larger tutorial text and upgrade descriptions; taller scroll rows preserve touch targets. Upgrade family is named in the scroll caption, with matching card outlines. Casino tutorials now appear only for the first drop and first upgrade; Barry, work and recovery guidance stay on the map without auto-acknowledging their milestones. Existing board purchase highlights last 2.2 seconds, and feedback states the purchased effect. Map work caption reflects whether any shift is currently available; entry stays clickable. Visit-result wording explicitly scopes it to the current entry, preserving transient presentation semantics.
+
+Local unit and build validation performed; final browser screenshots and deployment outcomes belong to the accompanying Pages workflow. No balance, physics or save schema changes.
