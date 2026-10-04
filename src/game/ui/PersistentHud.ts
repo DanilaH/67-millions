@@ -45,13 +45,13 @@ export class PersistentHud {
       color: visualHex('textMain'), fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, fontStyle: 'bold',
     }).setDepth(depth + 1);
     this.heading = [text(30, 25, 16), text(254, 22, 23), text(574, 25, 17), text(1050, 25, 16)];
-    this.forecastText = text(534, 103, 13).setColor(visualHex('mustard')).setVisible(false);
+    this.forecastText = text(534, 103, 16).setColor(visualHex('mustard')).setBackgroundColor(visualHex('inkPanel')).setVisible(false);
     this.needTexts = Array.from({ length: 4 }, (_, index) => text(66 + index * 122, 82, 17));
     this.statusText = text(534, 80, 19).setInteractive({ useHandCursor: true });
-    this.detail = text(24, 136, 16).setPadding(12, 10).setBackgroundColor(visualHex('inkPanel')).setVisible(false);
+    this.detail = text(24, 136, 22).setPadding(12, 10).setBackgroundColor(visualHex('inkPanel')).setWordWrapWidth(1160).setVisible(false);
     const show = (message: string) => {
       this.detailTimer?.remove(); this.detail.setText(message).setVisible(true);
-      this.detailTimer = scene.time.delayedCall(3500, () => this.detail.setVisible(false));
+      this.detailTimer = scene.time.delayedCall(6000, () => this.detail.setVisible(false));
     };
     this.heading[2]!.setInteractive({ useHandCursor: true }).on('pointerup', () => {
       if (!this.latestState) return;
@@ -111,17 +111,17 @@ export class PersistentHud {
       const color = visualColor(low ? 'warning' : 'good');
       g.fillStyle(visualColor('inkPanel'), 0.92); g.fillRoundedRect(x - 6, 74, 116, 49, 13);
       drawNeedIcon(g, need.id, x + 17, 96, low ? color : visualColor('paperOld'));
-      this.needTexts[index]!.setText(low ? ({ health: 'Опасно', satiety: 'Голод', energy: 'Устал', happiness: 'Грусть' }[need.id]) : '').setFontSize(13).setColor(visualHex(low ? 'warning' : 'textMain'));
-      g.fillStyle(visualColor('inkRaised'), 1); g.fillRoundedRect(x + 41, low ? 108 : 92, 56, 8, 3);
+      this.needTexts[index]!.setText(low ? ({ health: 'Опасно', satiety: 'Голод', energy: 'Устал', happiness: 'Грусть' }[need.id]) : '').setFontSize(17).setColor(visualHex(low ? 'warning' : 'textMain'));
+      g.fillStyle(visualColor('inkRaised'), 1); g.fillRoundedRect(x + 41, low || this.forecast ? 108 : 92, 56, 8, 3);
       const width = 56 * Phaser.Math.Clamp(need.value / this.config.needs.max, 0, 1);
-      if (width > 0) { g.fillStyle(color, 1); g.fillRoundedRect(x + 41, low ? 108 : 92, width, 8, 3); }
+      if (width > 0) { g.fillStyle(color, 1); g.fillRoundedRect(x + 41, low || this.forecast ? 108 : 92, width, 8, 3); }
       if (this.forecast) {
         const value = this.forecast.needs[need.id];
         const projected = 56 * Phaser.Math.Clamp(value / this.config.needs.max, 0, 1);
         const from = Math.min(width, projected);
         g.fillStyle(visualColor(value >= need.value ? 'mustard' : 'warning'), this.forecastFade.value * 0.85);
         g.fillRect(x + 41 + from, 109, Math.max(2, Math.abs(projected - width)), 6);
-        this.needTexts[index]!.setText(`${Math.round(need.value)} → ${Math.round(value)}`).setFontSize(11);
+        this.needTexts[index]!.setText(`${Math.round(need.value)}→${Math.round(value)}`).setFontSize(16);
       }
     });
   }

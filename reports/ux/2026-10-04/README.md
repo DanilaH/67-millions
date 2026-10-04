@@ -20,3 +20,7 @@ Recovery cards expose a separate forecast button (also preview on mouse hover). 
 Successful, saved upgrade purchases briefly highlight the affected pocket labels, special pins, deflectors or stake controls. The bounded visual overlay does not alter the physics world. Unaffordable casino upgrades show the exact missing amount.
 
 Local validation: 365 unit tests, typecheck and release audit passed. Browser suite now checks that forecast toggling does not charge, start an action or consume RNG, and captures forecast/purchase feedback screenshots. Browser waits have a 30-second default timeout so a missing element cannot hang indefinitely.
+
+## Small-screen readability
+
+Increased recovery descriptions from 19 to 22 logical pixels with primary text contrast, forecast buttons from 16 to 22, expanded help from 16 to 22, and forecast values from 11 to 16. Forecast values use compact arrows and move the current-value bars below the numbers. Low-need labels are larger; the forecast caption has an opaque backing. Help stays open for six seconds to allow reading. Existing panel geometry, actions, and economy remain unchanged. Desktop/touch screenshots and the existing browser scenarios are the visual/interaction gate.
