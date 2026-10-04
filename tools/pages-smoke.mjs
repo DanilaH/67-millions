@@ -352,14 +352,21 @@ try {
     await clickMap('work'); await sceneReady('РАБОТА'); await click(760, 510);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
     await loadSave(fixture); await clickMap('casino'); await sceneReady('Казино Plinko');
+    await page.evaluate(() => {
+      window.__smokeFrames = { count: 0, start: performance.now(), running: true };
+      const tick = () => { if (window.__smokeFrames.running) { window.__smokeFrames.count++; requestAnimationFrame(tick); } };
+      requestAnimationFrame(tick);
+    });
     const idleMinute = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.clock.minuteOfDay;
     try {
       await page.waitForFunction(minute => JSON.parse(localStorage.getItem('67m.save')).game.clock.minuteOfDay > minute, idleMinute, { timeout: 6000 });
     } catch (error) {
       await page.screenshot({ path: `${output}/failed-casino-idle.png` });
+      console.error('casino frames', await page.evaluate(() => ({ ...window.__smokeFrames, elapsed: performance.now() - window.__smokeFrames.start })));
       console.error('casino idle', await page.locator('canvas').getAttribute('aria-label'), await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save'))), errors);
       throw error;
     }
+    await page.evaluate(() => { window.__smokeFrames.running = false; });
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-idle.png` });
     const committed = commitBareDrop(fixture.game, null, balance, 'pages-restore', 1);
     await loadSave({ ...fixture, game: committed.state, pendingDrop: committed.pendingDrop });

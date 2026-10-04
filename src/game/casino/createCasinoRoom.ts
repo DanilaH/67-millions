@@ -4,7 +4,9 @@ import { VISUAL_FONT, visualHex } from '../visual/visualTheme';
 
 /** A fixed-cost backdrop: walls, floor perspective, lamps and neighbouring machines. */
 export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects.Container): void => {
-  const g = scene.add.graphics(); parent.add(g);
+  const g = scene.add.graphics().setVisible(false);
+  const key = '67m:casino-room';
+  const image = scene.add.image(0, 0, '__WHITE').setOrigin(0); parent.add(image);
   const sign = scene.add.text(28, 145, 'ИГРОВОЙ ЗАЛ', {
     fontFamily: VISUAL_FONT.sans, fontSize: '29px', fontStyle: 'bold', color: visualHex('mustard'),
     stroke: '#211711', strokeThickness: 5,
@@ -13,7 +15,7 @@ export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects
   parent.add([sign, subtitle]);
   const draw = () => {
     const v = sceneViewport(scene), right = v.left + v.width, bottom = v.top + v.height;
-    g.clear();
+    g.clear().save().translateCanvas(-v.left, -v.top);
     g.fillStyle(0x241f1c).fillRect(v.left, v.top, v.width, v.height);
     g.fillStyle(0x342b26).fillRect(v.left, 110, v.width, 390);
     // Uneven plaster lines and dark wooden wall panels.
@@ -44,7 +46,13 @@ export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects
       for (let i = 0; i < 3; i++) g.fillStyle(0xc0ae7c, 0.5).fillRect(x + 15 + i * 20, 428, 14, 28);
       g.fillStyle(0xa27a42).fillCircle(x + 62, 495, 7);
     }
+    g.restore();
+    image.setTexture('__WHITE');
+    if (scene.textures.exists(key)) scene.textures.remove(key);
+    g.generateTexture(key, Math.ceil(v.width), Math.ceil(v.height));
+    image.setTexture(key).setPosition(v.left, v.top).setDisplaySize(v.width, v.height);
+    g.clear();
   };
   draw(); scene.scale.on('resize', draw);
-  scene.events.once('shutdown', () => scene.scale.off('resize', draw));
+  scene.events.once('shutdown', () => { scene.scale.off('resize', draw); if (scene.textures.exists(key)) scene.textures.remove(key); });
 };
