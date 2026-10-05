@@ -1,0 +1,4771 @@
+{
+  "metadata": {
+    "configHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+    "sourceRevision": "2b9df8ed71c31b2c8439455373043229511e942b",
+    "perVariant": 30,
+    "seedStart": 67112000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 4,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "burst",
+    "launchPolicy": "bounded bursts then drain",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "limitations": "Milestones observe decision-boundary cash, not transient cash within a burst. Medians condition on victory; compare survivor sets and per-seed rows before inferring causal pacing. Internal purchase gaps exclude initial/final waits; actionSeconds attributes time through the next decision (including its assumed delay) to the preceding action.",
+  "summaries": [
+    {
+      "key": "1/original",
+      "count": 30,
+      "wins": 27,
+      "successfulLastTwoLimitsCount": 27,
+      "successfulMedians": {
+        "minutes": 37.67805555555556,
+        "work": 20,
+        "firstPurchaseMinutes": 1.1,
+        "firstCasinoMinutes": 1.2,
+        "cash100kMinutes": 22.983611111111113,
+        "millionMinutes": 31.327777777777783,
+        "millionToEndMinutes": 7.341111111111108,
+        "maxPurchaseGapMinutes": 6.7588888888888805,
+        "lastTwoLimitsGapMinutes": 1.947777777777776,
+        "internalPurchaseGapMinutes": 6.7588888888888805,
+        "mid3GapMinutes": 2.602777777777775,
+        "plinkoPurchases": 27
+      }
+    },
+    {
+      "key": "1/cheapest",
+      "count": 30,
+      "wins": 30,
+      "successfulLastTwoLimitsCount": 30,
+      "successfulMedians": {
+        "minutes": 38.63125000000001,
+        "work": 14,
+        "firstPurchaseMinutes": 1.1,
+        "firstCasinoMinutes": 1.2333333333333334,
+        "cash100kMinutes": 26.29347222222222,
+        "millionMinutes": 30.218472222222225,
+        "millionToEndMinutes": 7.510277777777787,
+        "maxPurchaseGapMinutes": 7.903055555555559,
+        "lastTwoLimitsGapMinutes": 2.0766666666666636,
+        "internalPurchaseGapMinutes": 7.903055555555559,
+        "mid3GapMinutes": 0.2837499999999996,
+        "plinkoPurchases": 34
+      }
+    },
+    {
+      "key": "6/original",
+      "count": 30,
+      "wins": 27,
+      "successfulLastTwoLimitsCount": 27,
+      "successfulMedians": {
+        "minutes": 17.422222222222224,
+        "work": 16,
+        "firstPurchaseMinutes": 1.1,
+        "firstCasinoMinutes": 1.2,
+        "cash100kMinutes": 11.527222222222223,
+        "millionMinutes": 14.777777777777777,
+        "millionToEndMinutes": 2.237499999999998,
+        "maxPurchaseGapMinutes": 3.369166666666666,
+        "lastTwoLimitsGapMinutes": 0.5822222222222232,
+        "internalPurchaseGapMinutes": 3.369166666666666,
+        "mid3GapMinutes": 0.8969444444444444,
+        "plinkoPurchases": 27
+      }
+    },
+    {
+      "key": "6/cheapest",
+      "count": 30,
+      "wins": 26,
+      "successfulLastTwoLimitsCount": 26,
+      "successfulMedians": {
+        "minutes": 15.536805555555555,
+        "work": 13.5,
+        "firstPurchaseMinutes": 1.1,
+        "firstCasinoMinutes": 1.2333333333333334,
+        "cash100kMinutes": 12.005555555555556,
+        "millionMinutes": 13.204166666666666,
+        "millionToEndMinutes": 2.311388888888888,
+        "maxPurchaseGapMinutes": 3.192222222222222,
+        "lastTwoLimitsGapMinutes": 0.5580555555555557,
+        "internalPurchaseGapMinutes": 3.192222222222222,
+        "mid3GapMinutes": 0.03333333333333333,
+        "plinkoPurchases": 34
+      }
+    }
+  ],
+  "rows": [
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112000,
+      "outcome": "BARRY_LOSS",
+      "minutes": 16.139722222222225,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": null,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 5.996666666666667,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 5.996666666666667,
+      "longestInternalGap": {
+        "minutes": 5.996666666666667,
+        "startMinutes": 1.8752777777777778,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 288.8,
+          "SLEEP": 2,
+          "FOOD": 4,
+          "WORK": 58.99999999999994,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 9
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112001,
+      "outcome": "VICTORY",
+      "minutes": 37.67805555555556,
+      "work": 21,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 22.983611111111113,
+      "millionMinutes": 27.816666666666666,
+      "millionToEndMinutes": 9.86138888888889,
+      "maxPurchaseGapMinutes": 6.42083333333333,
+      "lastTwoLimitsGapMinutes": 1.9033333333333302,
+      "mid3GapMinutes": 5.113055555555563,
+      "internalPurchaseGapMinutes": 6.42083333333333,
+      "longestInternalGap": {
+        "minutes": 6.42083333333333,
+        "startMinutes": 11.383055555555556,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 309.2499999999998,
+          "SLEEP": 2,
+          "FOOD": 6,
+          "WORK": 62,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112002,
+      "outcome": "VICTORY",
+      "minutes": 61.38277777777777,
+      "work": 27,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 39.89861111111112,
+      "millionMinutes": 53.07972222222223,
+      "millionToEndMinutes": 8.303055555555542,
+      "maxPurchaseGapMinutes": 21.65583333333334,
+      "lastTwoLimitsGapMinutes": 2.8674999999999953,
+      "mid3GapMinutes": 1.6252777777777814,
+      "internalPurchaseGapMinutes": 21.65583333333334,
+      "longestInternalGap": {
+        "minutes": 21.65583333333334,
+        "startMinutes": 7.301944444444445,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 1093.3500000000008,
+          "WORK": 172,
+          "FOOD": 14,
+          "SLEEP": 6,
+          "EVENT_CHOICE": 10,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112003,
+      "outcome": "VICTORY",
+      "minutes": 39.948611111111134,
+      "work": 17,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 20.324166666666667,
+      "millionMinutes": 31.327777777777783,
+      "millionToEndMinutes": 8.620833333333348,
+      "maxPurchaseGapMinutes": 5.639999999999998,
+      "lastTwoLimitsGapMinutes": 1.7711111111111222,
+      "mid3GapMinutes": 1.7105555555555574,
+      "internalPurchaseGapMinutes": 5.639999999999998,
+      "longestInternalGap": {
+        "minutes": 5.639999999999998,
+        "startMinutes": 12.786666666666667,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "WORK": 86,
+          "PLINKO": 240.39999999999986,
+          "FOOD": 6,
+          "SLEEP": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112004,
+      "outcome": "VICTORY",
+      "minutes": 36.898055555555544,
+      "work": 29,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 24.998055555555553,
+      "millionMinutes": 31.9225,
+      "millionToEndMinutes": 4.975555555555547,
+      "maxPurchaseGapMinutes": 7.708333333333333,
+      "lastTwoLimitsGapMinutes": 0.7980555555555535,
+      "mid3GapMinutes": 0.9877777777777813,
+      "internalPurchaseGapMinutes": 7.708333333333333,
+      "longestInternalGap": {
+        "minutes": 7.708333333333333,
+        "startMinutes": 17.28972222222222,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "WORK": 241,
+          "PLINKO": 201.5,
+          "FOOD": 10,
+          "SLEEP": 6,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112005,
+      "outcome": "VICTORY",
+      "minutes": 22.136944444444445,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 13.531944444444447,
+      "millionMinutes": 18.77527777777778,
+      "millionToEndMinutes": 3.3616666666666637,
+      "maxPurchaseGapMinutes": 3.3544444444444443,
+      "lastTwoLimitsGapMinutes": 1.0650000000000015,
+      "mid3GapMinutes": 3.3544444444444443,
+      "internalPurchaseGapMinutes": 3.3544444444444443,
+      "longestInternalGap": {
+        "minutes": 3.3544444444444443,
+        "startMinutes": 13.565277777777782,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 159.26666666666665,
+          "FOOD": 4,
+          "EVENT_CHOICE": 2,
+          "WORK": 32,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112006,
+      "outcome": "VICTORY",
+      "minutes": 44.3425,
+      "work": 23,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 25.368611111111115,
+      "millionMinutes": 40.40583333333334,
+      "millionToEndMinutes": 3.9366666666666634,
+      "maxPurchaseGapMinutes": 9.387222222222224,
+      "lastTwoLimitsGapMinutes": 0.03333333333333333,
+      "mid3GapMinutes": 0.6700000000000007,
+      "internalPurchaseGapMinutes": 9.387222222222224,
+      "longestInternalGap": {
+        "minutes": 9.387222222222224,
+        "startMinutes": 11.485555555555555,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 460.23333333333403,
+          "ENTERTAINMENT": 2,
+          "FOOD": 4,
+          "WORK": 89,
+          "SLEEP": 2,
+          "EVENT_CHOICE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112007,
+      "outcome": "VICTORY",
+      "minutes": 28.28527777777777,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 15.591666666666667,
+      "millionMinutes": 21.871111111111116,
+      "millionToEndMinutes": 6.414166666666658,
+      "maxPurchaseGapMinutes": 4.51138888888889,
+      "lastTwoLimitsGapMinutes": 1.7877777777777737,
+      "mid3GapMinutes": 0.26638888888888723,
+      "internalPurchaseGapMinutes": 4.51138888888889,
+      "longestInternalGap": {
+        "minutes": 4.51138888888889,
+        "startMinutes": 7.816666666666666,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 201.6833333333334,
+          "WORK": 59,
+          "FOOD": 4,
+          "SLEEP": 2,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112008,
+      "outcome": "VICTORY",
+      "minutes": 36.72388888888887,
+      "work": 19,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7,
+      "cash100kMinutes": 25.86805555555555,
+      "millionMinutes": 31.73583333333333,
+      "millionToEndMinutes": 4.9880555555555475,
+      "maxPurchaseGapMinutes": 8.784999999999998,
+      "lastTwoLimitsGapMinutes": 1.947777777777776,
+      "mid3GapMinutes": 0.39444444444444193,
+      "internalPurchaseGapMinutes": 8.784999999999998,
+      "longestInternalGap": {
+        "minutes": 8.784999999999998,
+        "startMinutes": 16.68861111111111,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 315.0999999999999,
+          "WORK": 192,
+          "BUY_JOB_UPGRADE": 4,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112009,
+      "outcome": "VICTORY",
+      "minutes": 38.08138888888889,
+      "work": 21,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 32.36472222222222,
+      "millionMinutes": 33.16416666666667,
+      "millionToEndMinutes": 4.917222222222222,
+      "maxPurchaseGapMinutes": 10.729166666666666,
+      "lastTwoLimitsGapMinutes": 1.9302777777777769,
+      "mid3GapMinutes": 5.575277777777774,
+      "internalPurchaseGapMinutes": 10.729166666666666,
+      "longestInternalGap": {
+        "minutes": 10.729166666666666,
+        "startMinutes": 9.653055555555557,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 511.75000000000045,
+          "WORK": 116,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2,
+          "FOOD": 6,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112010,
+      "outcome": "VICTORY",
+      "minutes": 31.411111111111104,
+      "work": 17,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 17.54138888888889,
+      "millionMinutes": 24.190555555555548,
+      "millionToEndMinutes": 7.220555555555555,
+      "maxPurchaseGapMinutes": 5.905555555555556,
+      "lastTwoLimitsGapMinutes": 1.7516666666666652,
+      "mid3GapMinutes": 0.17999999999999924,
+      "internalPurchaseGapMinutes": 5.905555555555556,
+      "longestInternalGap": {
+        "minutes": 5.905555555555556,
+        "startMinutes": 10.626944444444442,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "WORK": 96,
+          "SLEEP": 2,
+          "FOOD": 4,
+          "PLINKO": 244.33333333333348,
+          "ENTERTAINMENT": 2,
+          "EVENT_CHOICE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112011,
+      "outcome": "VICTORY",
+      "minutes": 35.09166666666667,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 20.190277777777776,
+      "millionMinutes": 27.36083333333333,
+      "millionToEndMinutes": 7.730833333333339,
+      "maxPurchaseGapMinutes": 4.885555555555554,
+      "lastTwoLimitsGapMinutes": 2.917500000000003,
+      "mid3GapMinutes": 3.9072222222222193,
+      "internalPurchaseGapMinutes": 4.885555555555554,
+      "longestInternalGap": {
+        "minutes": 4.885555555555554,
+        "startMinutes": 6.308888888888888,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 289.1333333333331,
+          "FOOD": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112012,
+      "outcome": "BARRY_LOSS",
+      "minutes": 60.34555555555554,
+      "work": 60,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 35.1125,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 16.863055555555555,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 16.863055555555555,
+      "longestInternalGap": {
+        "minutes": 16.863055555555555,
+        "startMinutes": 18.249444444444446,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 465.78333333333285,
+          "WORK": 500,
+          "FOOD": 20,
+          "ENTERTAINMENT": 6,
+          "SLEEP": 10,
+          "EVENT_CHOICE": 4,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 13
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112013,
+      "outcome": "VICTORY",
+      "minutes": 29.994999999999997,
+      "work": 13,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 19.22972222222222,
+      "millionMinutes": 22.65388888888889,
+      "millionToEndMinutes": 7.341111111111108,
+      "maxPurchaseGapMinutes": 5.094444444444446,
+      "lastTwoLimitsGapMinutes": 2.507777777777778,
+      "mid3GapMinutes": 0.15166666666666895,
+      "internalPurchaseGapMinutes": 5.094444444444446,
+      "longestInternalGap": {
+        "minutes": 5.094444444444446,
+        "startMinutes": 12.163611111111114,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 214.66666666666652,
+          "WORK": 81,
+          "ENTERTAINMENT": 2,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112014,
+      "outcome": "VICTORY",
+      "minutes": 30.84861111111111,
+      "work": 23,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 10.331944444444444,
+      "millionMinutes": 22.267777777777777,
+      "millionToEndMinutes": 8.580833333333336,
+      "maxPurchaseGapMinutes": 6.9677777777777745,
+      "lastTwoLimitsGapMinutes": 2.4841666666666695,
+      "mid3GapMinutes": 2.602777777777775,
+      "internalPurchaseGapMinutes": 6.9677777777777745,
+      "longestInternalGap": {
+        "minutes": 6.9677777777777745,
+        "startMinutes": 10.39861111111111,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 6,
+          "PLINKO": 204.06666666666615,
+          "WORK": 190.0000000000001,
+          "EVENT_CHOICE": 2,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112015,
+      "outcome": "VICTORY",
+      "minutes": 34.8538888888889,
+      "work": 17,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 18.367222222222225,
+      "millionMinutes": 27.55055555555556,
+      "millionToEndMinutes": 7.303333333333338,
+      "maxPurchaseGapMinutes": 6.733611111111113,
+      "lastTwoLimitsGapMinutes": 2.304722222222222,
+      "mid3GapMinutes": 4.1447222222222235,
+      "internalPurchaseGapMinutes": 6.733611111111113,
+      "longestInternalGap": {
+        "minutes": 6.733611111111113,
+        "startMinutes": 7.48888888888889,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 243.01666666666688,
+          "WORK": 143,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112016,
+      "outcome": "VICTORY",
+      "minutes": 43.423055555555585,
+      "work": 19,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 24.733055555555552,
+      "millionMinutes": 35.68527777777778,
+      "millionToEndMinutes": 7.737777777777804,
+      "maxPurchaseGapMinutes": 6.09361111111111,
+      "lastTwoLimitsGapMinutes": 1.4575000000000045,
+      "mid3GapMinutes": 5.760555555555561,
+      "internalPurchaseGapMinutes": 6.09361111111111,
+      "longestInternalGap": {
+        "minutes": 6.09361111111111,
+        "startMinutes": 4.323055555555555,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "BUY_JOB_UPGRADE": 4,
+          "PLINKO": 287.61666666666656,
+          "WORK": 64,
+          "FOOD": 4,
+          "EVENT_CHOICE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112017,
+      "outcome": "VICTORY",
+      "minutes": 20.029166666666672,
+      "work": 8,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 12.609166666666669,
+      "millionMinutes": 15.934722222222222,
+      "millionToEndMinutes": 4.094444444444449,
+      "maxPurchaseGapMinutes": 3.911388888888889,
+      "lastTwoLimitsGapMinutes": 0.42638888888888765,
+      "mid3GapMinutes": 0.2533333333333322,
+      "internalPurchaseGapMinutes": 3.911388888888889,
+      "longestInternalGap": {
+        "minutes": 3.911388888888889,
+        "startMinutes": 5.156666666666667,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 204.6833333333334,
+          "FOOD": 2,
+          "WORK": 22,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112018,
+      "outcome": "VICTORY",
+      "minutes": 52.833055555555546,
+      "work": 32,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 25.936944444444446,
+      "millionMinutes": 44.975,
+      "millionToEndMinutes": 7.858055555555544,
+      "maxPurchaseGapMinutes": 11.526388888888883,
+      "lastTwoLimitsGapMinutes": 2.0316666666666605,
+      "mid3GapMinutes": 11.526388888888883,
+      "internalPurchaseGapMinutes": 11.526388888888883,
+      "longestInternalGap": {
+        "minutes": 11.526388888888883,
+        "startMinutes": 25.970277777777778,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 445.58333333333485,
+          "WORK": 222,
+          "FOOD": 10,
+          "SLEEP": 6,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112019,
+      "outcome": "VICTORY",
+      "minutes": 36.79666666666665,
+      "work": 19,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 28.118611111111104,
+      "millionMinutes": 32.113055555555555,
+      "millionToEndMinutes": 4.6836111111111,
+      "maxPurchaseGapMinutes": 9.783055555555556,
+      "lastTwoLimitsGapMinutes": 0.9033333333333303,
+      "mid3GapMinutes": 5.631944444444442,
+      "internalPurchaseGapMinutes": 9.783055555555556,
+      "longestInternalGap": {
+        "minutes": 9.783055555555556,
+        "startMinutes": 12.636944444444442,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 439.9833333333336,
+          "FOOD": 10,
+          "WORK": 123,
+          "SLEEP": 6,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112020,
+      "outcome": "VICTORY",
+      "minutes": 30.64027777777778,
+      "work": 23,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7,
+      "cash100kMinutes": 14.563055555555556,
+      "millionMinutes": 25.01833333333333,
+      "millionToEndMinutes": 5.6219444444444475,
+      "maxPurchaseGapMinutes": 5.0763888888888875,
+      "lastTwoLimitsGapMinutes": 2.8705555555555597,
+      "mid3GapMinutes": 4.227499999999997,
+      "internalPurchaseGapMinutes": 5.0763888888888875,
+      "longestInternalGap": {
+        "minutes": 5.0763888888888875,
+        "startMinutes": 14.629722222222222,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 6,
+          "PLINKO": 92.58333333333326,
+          "WORK": 190,
+          "FOOD": 6,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112021,
+      "outcome": "VICTORY",
+      "minutes": 40.99083333333333,
+      "work": 24,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 20.770555555555553,
+      "millionMinutes": 32.919999999999995,
+      "millionToEndMinutes": 8.070833333333333,
+      "maxPurchaseGapMinutes": 7.249444444444447,
+      "lastTwoLimitsGapMinutes": 2.4208333333333334,
+      "mid3GapMinutes": 4.639444444444447,
+      "internalPurchaseGapMinutes": 7.249444444444447,
+      "longestInternalGap": {
+        "minutes": 7.249444444444447,
+        "startMinutes": 10.066111111111109,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 262.96666666666624,
+          "FOOD": 8,
+          "WORK": 146.0000000000001,
+          "EVENT_CHOICE": 8,
+          "BUY_JOB_UPGRADE": 2,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112022,
+      "outcome": "VICTORY",
+      "minutes": 45.04972222222221,
+      "work": 26,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 18.30222222222222,
+      "millionMinutes": 29.063333333333325,
+      "millionToEndMinutes": 15.986388888888886,
+      "maxPurchaseGapMinutes": 6.7588888888888805,
+      "lastTwoLimitsGapMinutes": 2.5674999999999955,
+      "mid3GapMinutes": 0.6052777777777768,
+      "internalPurchaseGapMinutes": 6.7588888888888805,
+      "longestInternalGap": {
+        "minutes": 6.7588888888888805,
+        "startMinutes": 19.074166666666663,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 229.53333333333285,
+          "FOOD": 8,
+          "WORK": 160,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112023,
+      "outcome": "BARRY_LOSS",
+      "minutes": 55.32555555555556,
+      "work": 59,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 37.74833333333334,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 21.366388888888896,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": 4.468611111111113,
+      "internalPurchaseGapMinutes": 21.366388888888896,
+      "longestInternalGap": {
+        "minutes": 21.366388888888896,
+        "startMinutes": 16.381944444444446,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 503.9833333333345,
+          "WORK": 706,
+          "FOOD": 28,
+          "SLEEP": 20,
+          "ENTERTAINMENT": 6,
+          "EVENT_CHOICE": 14,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 14
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112024,
+      "outcome": "VICTORY",
+      "minutes": 27.423055555555553,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 11.226944444444447,
+      "millionMinutes": 19.45583333333333,
+      "millionToEndMinutes": 7.9672222222222215,
+      "maxPurchaseGapMinutes": 4.273888888888886,
+      "lastTwoLimitsGapMinutes": 3.2138888888888837,
+      "mid3GapMinutes": 4.273888888888886,
+      "internalPurchaseGapMinutes": 4.273888888888886,
+      "longestInternalGap": {
+        "minutes": 4.273888888888886,
+        "startMinutes": 11.293611111111113,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 83.43333333333317,
+          "BUY_JOB_UPGRADE": 4,
+          "WORK": 155,
+          "SLEEP": 4,
+          "FOOD": 6,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112025,
+      "outcome": "VICTORY",
+      "minutes": 45.51166666666665,
+      "work": 22,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 24.328055555555558,
+      "millionMinutes": 37.3375,
+      "millionToEndMinutes": 8.174166666666649,
+      "maxPurchaseGapMinutes": 7.295000000000001,
+      "lastTwoLimitsGapMinutes": 3.104444444444448,
+      "mid3GapMinutes": 0.14638888888888837,
+      "internalPurchaseGapMinutes": 7.295000000000001,
+      "longestInternalGap": {
+        "minutes": 7.295000000000001,
+        "startMinutes": 16.886666666666667,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 293.70000000000005,
+          "BUY_JOB_UPGRADE": 2,
+          "ENTERTAINMENT": 2,
+          "WORK": 128,
+          "SLEEP": 4,
+          "FOOD": 6
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112026,
+      "outcome": "VICTORY",
+      "minutes": 43.88972222222222,
+      "work": 20,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 28.701388888888882,
+      "millionMinutes": 39.28416666666667,
+      "millionToEndMinutes": 4.605555555555551,
+      "maxPurchaseGapMinutes": 11.796111111111106,
+      "lastTwoLimitsGapMinutes": 1.2211111111111146,
+      "mid3GapMinutes": 0.5011111111111101,
+      "internalPurchaseGapMinutes": 11.796111111111106,
+      "longestInternalGap": {
+        "minutes": 11.796111111111106,
+        "startMinutes": 8.881388888888889,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 516.7666666666657,
+          "FOOD": 10,
+          "WORK": 167,
+          "SLEEP": 6,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112027,
+      "outcome": "VICTORY",
+      "minutes": 52.180555555555564,
+      "work": 27,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 38.03583333333333,
+      "millionMinutes": 41.69722222222222,
+      "millionToEndMinutes": 10.483333333333341,
+      "maxPurchaseGapMinutes": 22.32833333333333,
+      "lastTwoLimitsGapMinutes": 3.278888888888893,
+      "mid3GapMinutes": 6.43861111111111,
+      "internalPurchaseGapMinutes": 22.32833333333333,
+      "longestInternalGap": {
+        "minutes": 22.32833333333333,
+        "startMinutes": 9.103333333333333,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 985.6999999999966,
+          "EVENT_CHOICE": 14,
+          "ENTERTAINMENT": 6,
+          "SLEEP": 8,
+          "FOOD": 18,
+          "WORK": 304,
+          "SHOWER": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112028,
+      "outcome": "VICTORY",
+      "minutes": 38.5186111111111,
+      "work": 21,
+      "firstPurchaseMinutes": 1.7,
+      "firstCasinoMinutes": 1.7666666666666666,
+      "cash100kMinutes": 24.736111111111107,
+      "millionMinutes": 29.98777777777777,
+      "millionToEndMinutes": 8.530833333333328,
+      "maxPurchaseGapMinutes": 5.442222222222221,
+      "lastTwoLimitsGapMinutes": 2.3819444444444455,
+      "mid3GapMinutes": 4.6805555555555545,
+      "internalPurchaseGapMinutes": 5.442222222222221,
+      "longestInternalGap": {
+        "minutes": 5.442222222222221,
+        "startMinutes": 5.3175,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 250.5333333333333,
+          "FOOD": 4,
+          "EVENT_CHOICE": 4,
+          "WORK": 64,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "original",
+      "seed": 67112029,
+      "outcome": "VICTORY",
+      "minutes": 51.533055555555556,
+      "work": 20,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 39.067777777777785,
+      "millionMinutes": 44.82527777777778,
+      "millionToEndMinutes": 6.707777777777778,
+      "maxPurchaseGapMinutes": 19.407777777777778,
+      "lastTwoLimitsGapMinutes": 1.699444444444445,
+      "mid3GapMinutes": 1.3736111111111087,
+      "internalPurchaseGapMinutes": 19.407777777777778,
+      "longestInternalGap": {
+        "minutes": 19.407777777777778,
+        "startMinutes": 1.1666666666666667,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 42.46666666666667,
+          "EVENT_CHOICE": 2,
+          "WAIT": 1092,
+          "WORK": 22,
+          "SLEEP": 2,
+          "FOOD": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112000,
+      "outcome": "VICTORY",
+      "minutes": 40.465277777777786,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 28.293055555555558,
+      "millionMinutes": 28.821944444444448,
+      "millionToEndMinutes": 11.643333333333336,
+      "maxPurchaseGapMinutes": 7.406944444444446,
+      "lastTwoLimitsGapMinutes": 4.696666666666662,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 7.406944444444446,
+      "longestInternalGap": {
+        "minutes": 7.406944444444446,
+        "startMinutes": 10.215833333333334,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "WORK": 91.00000000000011,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 339.4166666666672,
+          "ENTERTAINMENT": 2,
+          "FOOD": 4,
+          "SLEEP": 2,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112001,
+      "outcome": "VICTORY",
+      "minutes": 33.3075,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 20.850555555555555,
+      "millionMinutes": 28.729166666666668,
+      "millionToEndMinutes": 4.5783333333333305,
+      "maxPurchaseGapMinutes": 9.388333333333332,
+      "lastTwoLimitsGapMinutes": 2.3655555555555567,
+      "mid3GapMinutes": 1.8391666666666688,
+      "internalPurchaseGapMinutes": 9.388333333333332,
+      "longestInternalGap": {
+        "minutes": 9.388333333333332,
+        "startMinutes": 7.39638888888889,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 459.2999999999997,
+          "WORK": 86,
+          "FOOD": 6,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112002,
+      "outcome": "VICTORY",
+      "minutes": 46.98194444444446,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 30.1463888888889,
+      "millionMinutes": 39.98611111111113,
+      "millionToEndMinutes": 6.995833333333326,
+      "maxPurchaseGapMinutes": 11.672222222222224,
+      "lastTwoLimitsGapMinutes": 2.4858333333333347,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 11.672222222222224,
+      "longestInternalGap": {
+        "minutes": 11.672222222222224,
+        "startMinutes": 14.143333333333336,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 595.3333333333339,
+          "FOOD": 8,
+          "ENTERTAINMENT": 0,
+          "EVENT_CHOICE": 2,
+          "WORK": 91,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112003,
+      "outcome": "VICTORY",
+      "minutes": 31.29777777777779,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 17.14305555555556,
+      "millionMinutes": 21.11361111111112,
+      "millionToEndMinutes": 10.18416666666667,
+      "maxPurchaseGapMinutes": 3.9341666666666657,
+      "lastTwoLimitsGapMinutes": 4.701388888888891,
+      "mid3GapMinutes": 0.5661111111111116,
+      "internalPurchaseGapMinutes": 3.9341666666666657,
+      "longestInternalGap": {
+        "minutes": 3.9341666666666657,
+        "startMinutes": 9.5325,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 232.04999999999995,
+          "FOOD": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112004,
+      "outcome": "VICTORY",
+      "minutes": 50.7011111111111,
+      "work": 22,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 30.782499999999995,
+      "millionMinutes": 41.904999999999994,
+      "millionToEndMinutes": 8.796111111111108,
+      "maxPurchaseGapMinutes": 11.029722222222222,
+      "lastTwoLimitsGapMinutes": 4.854999999999995,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 11.029722222222222,
+      "longestInternalGap": {
+        "minutes": 11.029722222222222,
+        "startMinutes": 19.371111111111112,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 556.7833333333328,
+          "EVENT_CHOICE": 4,
+          "WORK": 89,
+          "FOOD": 6,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112005,
+      "outcome": "VICTORY",
+      "minutes": 18.67416666666667,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 9.70861111111111,
+      "millionMinutes": 14.006944444444446,
+      "millionToEndMinutes": 4.667222222222225,
+      "maxPurchaseGapMinutes": 2.3225,
+      "lastTwoLimitsGapMinutes": 0.43805555555555503,
+      "mid3GapMinutes": 2.098888888888888,
+      "internalPurchaseGapMinutes": 2.3225,
+      "longestInternalGap": {
+        "minutes": 2.3225,
+        "startMinutes": 2.9827777777777778,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 103.34999999999997,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112006,
+      "outcome": "VICTORY",
+      "minutes": 50.548888888888904,
+      "work": 25,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 41.13444444444446,
+      "millionMinutes": 43.34333333333334,
+      "millionToEndMinutes": 7.2055555555555655,
+      "maxPurchaseGapMinutes": 12.522500000000013,
+      "lastTwoLimitsGapMinutes": 2.11138888888889,
+      "mid3GapMinutes": 0.30833333333333335,
+      "internalPurchaseGapMinutes": 12.522500000000013,
+      "longestInternalGap": {
+        "minutes": 12.522500000000013,
+        "startMinutes": 28.611944444444443,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 472.3499999999999,
+          "WORK": 251,
+          "ENTERTAINMENT": 4,
+          "SLEEP": 6,
+          "FOOD": 10,
+          "EVENT_CHOICE": 2,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112007,
+      "outcome": "VICTORY",
+      "minutes": 37.249166666666646,
+      "work": 8,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 26.155277777777773,
+      "millionMinutes": 27.869444444444444,
+      "millionToEndMinutes": 9.379722222222206,
+      "maxPurchaseGapMinutes": 6.055555555555558,
+      "lastTwoLimitsGapMinutes": 2.1636111111111065,
+      "mid3GapMinutes": 1.6475000000000022,
+      "internalPurchaseGapMinutes": 6.055555555555558,
+      "longestInternalGap": {
+        "minutes": 6.055555555555558,
+        "startMinutes": 13.034444444444443,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 328.33333333333326,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2,
+          "FOOD": 2,
+          "WORK": 27
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112008,
+      "outcome": "VICTORY",
+      "minutes": 33.34305555555555,
+      "work": 13,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 24.789166666666663,
+      "millionMinutes": 28.75833333333333,
+      "millionToEndMinutes": 4.584722222222225,
+      "maxPurchaseGapMinutes": 6.421111111111105,
+      "lastTwoLimitsGapMinutes": 2.035277777777776,
+      "mid3GapMinutes": 1.2505555555555588,
+      "internalPurchaseGapMinutes": 6.421111111111105,
+      "longestInternalGap": {
+        "minutes": 6.421111111111105,
+        "startMinutes": 16.2825,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 343.2666666666662,
+          "SLEEP": 2,
+          "FOOD": 4,
+          "EVENT_CHOICE": 2,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112009,
+      "outcome": "VICTORY",
+      "minutes": 37.23055555555557,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 29.680833333333336,
+      "millionMinutes": 30.673055555555557,
+      "millionToEndMinutes": 6.557500000000008,
+      "maxPurchaseGapMinutes": 14.263888888888891,
+      "lastTwoLimitsGapMinutes": 1.879722222222214,
+      "mid3GapMinutes": 0.32555555555555504,
+      "internalPurchaseGapMinutes": 14.263888888888891,
+      "longestInternalGap": {
+        "minutes": 14.263888888888891,
+        "startMinutes": 8.613055555555555,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 714.8333333333333,
+          "FOOD": 10,
+          "WORK": 121,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112010,
+      "outcome": "VICTORY",
+      "minutes": 43.604722222222236,
+      "work": 18,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 2.2333333333333334,
+      "cash100kMinutes": 26.008333333333326,
+      "millionMinutes": 37.131666666666675,
+      "millionToEndMinutes": 6.473055555555561,
+      "maxPurchaseGapMinutes": 5.6180555555555545,
+      "lastTwoLimitsGapMinutes": 1.66138888888889,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 5.6180555555555545,
+      "longestInternalGap": {
+        "minutes": 5.6180555555555545,
+        "startMinutes": 12.059166666666666,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 181.08333333333326,
+          "FOOD": 8,
+          "WORK": 136,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112011,
+      "outcome": "VICTORY",
+      "minutes": 33.754166666666656,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 23.55999999999999,
+      "millionMinutes": 27.910833333333326,
+      "millionToEndMinutes": 5.843333333333328,
+      "maxPurchaseGapMinutes": 6.757777777777771,
+      "lastTwoLimitsGapMinutes": 2.5111111111111124,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 6.757777777777771,
+      "longestInternalGap": {
+        "minutes": 6.757777777777771,
+        "startMinutes": 15.10333333333333,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 365.46666666666624,
+          "FOOD": 4,
+          "ENTERTAINMENT": 0,
+          "EVENT_CHOICE": 2,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112012,
+      "outcome": "VICTORY",
+      "minutes": 50.08722222222221,
+      "work": 20,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 37.70666666666666,
+      "millionMinutes": 42.959166666666654,
+      "millionToEndMinutes": 7.128055555555557,
+      "maxPurchaseGapMinutes": 9.83694444444443,
+      "lastTwoLimitsGapMinutes": 1.1647222222222202,
+      "mid3GapMinutes": 0.41222222222221866,
+      "internalPurchaseGapMinutes": 9.83694444444443,
+      "longestInternalGap": {
+        "minutes": 9.83694444444443,
+        "startMinutes": 18.28083333333334,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 548.2166666666662,
+          "FOOD": 6,
+          "ENTERTAINMENT": 2,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112013,
+      "outcome": "VICTORY",
+      "minutes": 30.99444444444445,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 22.235,
+      "millionMinutes": 25.212222222222227,
+      "millionToEndMinutes": 5.782222222222223,
+      "maxPurchaseGapMinutes": 4.318611111111112,
+      "lastTwoLimitsGapMinutes": 0.6636111111111102,
+      "mid3GapMinutes": 1.1972222222222249,
+      "internalPurchaseGapMinutes": 4.318611111111112,
+      "longestInternalGap": {
+        "minutes": 4.318611111111112,
+        "startMinutes": 7.272499999999999,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 193.11666666666667,
+          "WORK": 52,
+          "EVENT_CHOICE": 6,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112014,
+      "outcome": "VICTORY",
+      "minutes": 35.3761111111111,
+      "work": 14,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 2.2333333333333334,
+      "cash100kMinutes": 23.862222222222222,
+      "millionMinutes": 24.895555555555553,
+      "millionToEndMinutes": 10.48055555555555,
+      "maxPurchaseGapMinutes": 9.803055555555552,
+      "lastTwoLimitsGapMinutes": 2.2394444444444463,
+      "mid3GapMinutes": 0.9333333333333296,
+      "internalPurchaseGapMinutes": 9.803055555555552,
+      "longestInternalGap": {
+        "minutes": 9.803055555555552,
+        "startMinutes": 2.2,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 437.18333333333294,
+          "WORK": 135,
+          "FOOD": 6,
+          "SLEEP": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112015,
+      "outcome": "VICTORY",
+      "minutes": 62.710277777777804,
+      "work": 27,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 42.2177777777778,
+      "millionMinutes": 56.1591666666667,
+      "millionToEndMinutes": 6.551111111111102,
+      "maxPurchaseGapMinutes": 10.696111111111112,
+      "lastTwoLimitsGapMinutes": 2.6930555555555507,
+      "mid3GapMinutes": 0.5088888888888959,
+      "internalPurchaseGapMinutes": 10.696111111111112,
+      "longestInternalGap": {
+        "minutes": 10.696111111111112,
+        "startMinutes": 7.7538888888888895,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 437.76666666666665,
+          "WORK": 182,
+          "FOOD": 10,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 4,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112016,
+      "outcome": "VICTORY",
+      "minutes": 40.93111111111112,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 26.43166666666667,
+      "millionMinutes": 36.01361111111112,
+      "millionToEndMinutes": 4.917500000000003,
+      "maxPurchaseGapMinutes": 8.399166666666671,
+      "lastTwoLimitsGapMinutes": 1.2013888888888915,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 8.399166666666671,
+      "longestInternalGap": {
+        "minutes": 8.399166666666671,
+        "startMinutes": 26.565,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 495.949999999998,
+          "SLEEP": 2,
+          "FOOD": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112017,
+      "outcome": "VICTORY",
+      "minutes": 36.31027777777777,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 26.445555555555547,
+      "millionMinutes": 29.269999999999992,
+      "millionToEndMinutes": 7.040277777777779,
+      "maxPurchaseGapMinutes": 5.206944444444438,
+      "lastTwoLimitsGapMinutes": 0.8649999999999978,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 5.206944444444438,
+      "longestInternalGap": {
+        "minutes": 5.206944444444438,
+        "startMinutes": 18.694999999999997,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 270.4166666666663,
+          "FOOD": 4,
+          "SLEEP": 2,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112018,
+      "outcome": "VICTORY",
+      "minutes": 40.86194444444444,
+      "work": 13,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 22.116944444444446,
+      "millionMinutes": 33.98722222222222,
+      "millionToEndMinutes": 6.874722222222215,
+      "maxPurchaseGapMinutes": 8.707777777777782,
+      "lastTwoLimitsGapMinutes": 3.0155555555555567,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 8.707777777777782,
+      "longestInternalGap": {
+        "minutes": 8.707777777777782,
+        "startMinutes": 7.670277777777778,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 456.4666666666674,
+          "WORK": 52,
+          "EVENT_CHOICE": 2,
+          "FOOD": 6,
+          "SLEEP": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112019,
+      "outcome": "VICTORY",
+      "minutes": 35.01916666666666,
+      "work": 13,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 27.63611111111111,
+      "millionMinutes": 28.840555555555554,
+      "millionToEndMinutes": 6.178611111111108,
+      "maxPurchaseGapMinutes": 13.986388888888886,
+      "lastTwoLimitsGapMinutes": 2.041944444444437,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 13.986388888888886,
+      "longestInternalGap": {
+        "minutes": 13.986388888888886,
+        "startMinutes": 8.038333333333332,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 696.1833333333329,
+          "FOOD": 10,
+          "EVENT_CHOICE": 2,
+          "WORK": 123,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112020,
+      "outcome": "VICTORY",
+      "minutes": 38.72972222222223,
+      "work": 16,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 29.96833333333333,
+      "millionMinutes": 30.26083333333333,
+      "millionToEndMinutes": 8.468888888888898,
+      "maxPurchaseGapMinutes": 4.221111111111115,
+      "lastTwoLimitsGapMinutes": 0.17638888888888762,
+      "mid3GapMinutes": 0.25916666666666593,
+      "internalPurchaseGapMinutes": 4.076111111111108,
+      "longestInternalGap": {
+        "minutes": 4.076111111111108,
+        "startMinutes": 15.31111111111111,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 208.56666666666638,
+          "FOOD": 2,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112021,
+      "outcome": "VICTORY",
+      "minutes": 20.210000000000004,
+      "work": 10,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 10.21,
+      "millionMinutes": 11.273333333333335,
+      "millionToEndMinutes": 8.936666666666671,
+      "maxPurchaseGapMinutes": 4.313611111111114,
+      "lastTwoLimitsGapMinutes": 1.6205555555555557,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 2.7594444444444446,
+      "longestInternalGap": {
+        "minutes": 2.7594444444444446,
+        "startMinutes": 7.450555555555556,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 55.566666666666606,
+          "BUY_JOB_UPGRADE": 6,
+          "WORK": 96,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112022,
+      "outcome": "VICTORY",
+      "minutes": 44.89416666666666,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 22.83416666666666,
+      "millionMinutes": 31.610555555555553,
+      "millionToEndMinutes": 13.283611111111107,
+      "maxPurchaseGapMinutes": 5.71472222222222,
+      "lastTwoLimitsGapMinutes": 1.561111111111101,
+      "mid3GapMinutes": 2.117222222222222,
+      "internalPurchaseGapMinutes": 5.71472222222222,
+      "longestInternalGap": {
+        "minutes": 5.71472222222222,
+        "startMinutes": 17.119444444444444,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 243.8833333333332,
+          "WORK": 91,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112023,
+      "outcome": "VICTORY",
+      "minutes": 51.64777777777778,
+      "work": 24,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 37.1725,
+      "millionMinutes": 43.83277777777777,
+      "millionToEndMinutes": 7.815000000000009,
+      "maxPurchaseGapMinutes": 9.587222222222227,
+      "lastTwoLimitsGapMinutes": 0.16972222222222325,
+      "mid3GapMinutes": 4.936944444444437,
+      "internalPurchaseGapMinutes": 9.587222222222227,
+      "longestInternalGap": {
+        "minutes": 9.587222222222227,
+        "startMinutes": 19.117500000000003,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 446.2333333333331,
+          "WORK": 113,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112024,
+      "outcome": "VICTORY",
+      "minutes": 31.800000000000008,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 18.27583333333333,
+      "millionMinutes": 23.516388888888894,
+      "millionToEndMinutes": 8.283611111111115,
+      "maxPurchaseGapMinutes": 5.563055555555555,
+      "lastTwoLimitsGapMinutes": 6.15638888888889,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 5.563055555555555,
+      "longestInternalGap": {
+        "minutes": 5.563055555555555,
+        "startMinutes": 24.880555555555556,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 4,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 327.78333333333285,
+          "ENTERTAINMENT": 2,
+          "FOOD": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112025,
+      "outcome": "VICTORY",
+      "minutes": 38.53277777777779,
+      "work": 8,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 21.611666666666668,
+      "millionMinutes": 30.176111111111116,
+      "millionToEndMinutes": 8.356666666666673,
+      "maxPurchaseGapMinutes": 7.154999999999999,
+      "lastTwoLimitsGapMinutes": 3.280833333333332,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 7.154999999999999,
+      "longestInternalGap": {
+        "minutes": 7.154999999999999,
+        "startMinutes": 14.055555555555559,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 385.29999999999995,
+          "FOOD": 4,
+          "ENTERTAINMENT": 2,
+          "WORK": 32,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112026,
+      "outcome": "VICTORY",
+      "minutes": 49.381944444444436,
+      "work": 17,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 29.31416666666666,
+      "millionMinutes": 38.14416666666666,
+      "millionToEndMinutes": 11.237777777777774,
+      "maxPurchaseGapMinutes": 9.959722222222217,
+      "lastTwoLimitsGapMinutes": 6.022222222222217,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 9.959722222222217,
+      "longestInternalGap": {
+        "minutes": 9.959722222222217,
+        "startMinutes": 12.203055555555556,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 489.5833333333328,
+          "ENTERTAINMENT": 2,
+          "FOOD": 6,
+          "WORK": 96,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112027,
+      "outcome": "VICTORY",
+      "minutes": 62.12472222222222,
+      "work": 26,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 34.94222222222221,
+      "millionMinutes": 51.44722222222223,
+      "millionToEndMinutes": 10.677499999999986,
+      "maxPurchaseGapMinutes": 19.07055555555555,
+      "lastTwoLimitsGapMinutes": 3.411111111111101,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 19.07055555555555,
+      "longestInternalGap": {
+        "minutes": 19.07055555555555,
+        "startMinutes": 9.855277777777777,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 1004.2333333333329,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 4,
+          "FOOD": 10,
+          "WORK": 116,
+          "SLEEP": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112028,
+      "outcome": "VICTORY",
+      "minutes": 48.27833333333338,
+      "work": 12,
+      "firstPurchaseMinutes": 1.7,
+      "firstCasinoMinutes": 1.8,
+      "cash100kMinutes": 30.835555555555572,
+      "millionMinutes": 36.0277777777778,
+      "millionToEndMinutes": 12.250555555555577,
+      "maxPurchaseGapMinutes": 9.078611111111126,
+      "lastTwoLimitsGapMinutes": 0.7633333333333364,
+      "mid3GapMinutes": 1.235000000000006,
+      "internalPurchaseGapMinutes": 9.078611111111126,
+      "longestInternalGap": {
+        "minutes": 9.078611111111126,
+        "startMinutes": 20.720277777777778,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 498.71666666666715,
+          "FOOD": 6,
+          "SLEEP": 4,
+          "WORK": 32,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "seed": 67112029,
+      "outcome": "VICTORY",
+      "minutes": 24.853888888888886,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 11.395277777777778,
+      "millionMinutes": 16.537222222222223,
+      "millionToEndMinutes": 8.316666666666663,
+      "maxPurchaseGapMinutes": 3.679444444444444,
+      "lastTwoLimitsGapMinutes": 0.6613888888888861,
+      "mid3GapMinutes": 1.1299999999999992,
+      "internalPurchaseGapMinutes": 3.679444444444444,
+      "longestInternalGap": {
+        "minutes": 3.679444444444444,
+        "startMinutes": 11.528611111111111,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 113.76666666666665,
+          "BUY_JOB_UPGRADE": 6,
+          "WORK": 89,
+          "FOOD": 4,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112000,
+      "outcome": "VICTORY",
+      "minutes": 14.66277777777778,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 10.954166666666667,
+      "millionMinutes": 12.225555555555557,
+      "millionToEndMinutes": 2.4372222222222226,
+      "maxPurchaseGapMinutes": 2.579444444444444,
+      "lastTwoLimitsGapMinutes": 0.6638888888888895,
+      "mid3GapMinutes": 0.17444444444444304,
+      "internalPurchaseGapMinutes": 2.579444444444444,
+      "longestInternalGap": {
+        "minutes": 2.579444444444444,
+        "startMinutes": 3.253888888888889,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 24.76666666666665,
+          "WORK": 116,
+          "EVENT_CHOICE": 2,
+          "SLEEP": 4,
+          "FOOD": 4,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112001,
+      "outcome": "VICTORY",
+      "minutes": 16.211388888888887,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 9.861666666666668,
+      "millionMinutes": 14.338888888888887,
+      "millionToEndMinutes": 1.8725000000000003,
+      "maxPurchaseGapMinutes": 3.236944444444445,
+      "lastTwoLimitsGapMinutes": 0.1850000000000004,
+      "mid3GapMinutes": 1.4452777777777763,
+      "internalPurchaseGapMinutes": 3.236944444444445,
+      "longestInternalGap": {
+        "minutes": 3.236944444444445,
+        "startMinutes": 2.0186111111111114,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 56.216666666666754,
+          "SLEEP": 4,
+          "FOOD": 8,
+          "WORK": 116,
+          "EVENT_CHOICE": 4,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112002,
+      "outcome": "VICTORY",
+      "minutes": 23.777777777777775,
+      "work": 23,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 20.44777777777778,
+      "millionMinutes": 21.561111111111114,
+      "millionToEndMinutes": 2.216666666666663,
+      "maxPurchaseGapMinutes": 5.490277777777777,
+      "lastTwoLimitsGapMinutes": 0.5786111111111116,
+      "mid3GapMinutes": 0.4911111111111116,
+      "internalPurchaseGapMinutes": 5.490277777777777,
+      "longestInternalGap": {
+        "minutes": 5.490277777777777,
+        "startMinutes": 7.086944444444445,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 66.41666666666663,
+          "WORK": 239,
+          "FOOD": 10,
+          "SLEEP": 6,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112003,
+      "outcome": "VICTORY",
+      "minutes": 18.079722222222223,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 12.104999999999999,
+      "millionMinutes": 16.12611111111111,
+      "millionToEndMinutes": 1.9536111111111116,
+      "maxPurchaseGapMinutes": 3.6919444444444443,
+      "lastTwoLimitsGapMinutes": 0.23250000000000076,
+      "mid3GapMinutes": 0.18361111111111086,
+      "internalPurchaseGapMinutes": 3.6919444444444443,
+      "longestInternalGap": {
+        "minutes": 3.6919444444444443,
+        "startMinutes": 8.413055555555555,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 109.51666666666665,
+          "FOOD": 6,
+          "BUY_JOB_UPGRADE": 2,
+          "WORK": 94,
+          "EVENT_CHOICE": 2,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112004,
+      "outcome": "VICTORY",
+      "minutes": 21.758055555555554,
+      "work": 22,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 17.055555555555554,
+      "millionMinutes": 19.827777777777776,
+      "millionToEndMinutes": 1.9302777777777806,
+      "maxPurchaseGapMinutes": 4.838055555555555,
+      "lastTwoLimitsGapMinutes": 1.1236111111111124,
+      "mid3GapMinutes": 1.936944444444445,
+      "internalPurchaseGapMinutes": 4.838055555555555,
+      "longestInternalGap": {
+        "minutes": 4.838055555555555,
+        "startMinutes": 12.2175,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 110.2833333333333,
+          "WORK": 156,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112005,
+      "outcome": "VICTORY",
+      "minutes": 19.146666666666665,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 13.555277777777777,
+      "millionMinutes": 17.558611111111112,
+      "millionToEndMinutes": 1.588055555555555,
+      "maxPurchaseGapMinutes": 4.209444444444443,
+      "lastTwoLimitsGapMinutes": 0.03333333333333333,
+      "mid3GapMinutes": 3.455555555555556,
+      "internalPurchaseGapMinutes": 4.209444444444443,
+      "longestInternalGap": {
+        "minutes": 4.209444444444443,
+        "startMinutes": 9.345833333333333,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 110.5666666666666,
+          "ENTERTAINMENT": 2,
+          "WORK": 128,
+          "FOOD": 6,
+          "SLEEP": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112006,
+      "outcome": "VICTORY",
+      "minutes": 16.005,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 11.527222222222223,
+      "millionMinutes": 13.796666666666665,
+      "millionToEndMinutes": 2.2083333333333335,
+      "maxPurchaseGapMinutes": 3.2736111111111104,
+      "lastTwoLimitsGapMinutes": 0.43583333333333485,
+      "mid3GapMinutes": 0.1691666666666663,
+      "internalPurchaseGapMinutes": 3.2736111111111104,
+      "longestInternalGap": {
+        "minutes": 3.2736111111111104,
+        "startMinutes": 6.287222222222223,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 59.41666666666663,
+          "ENTERTAINMENT": 2,
+          "FOOD": 6,
+          "WORK": 123,
+          "SLEEP": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112007,
+      "outcome": "BARRY_LOSS",
+      "minutes": 7.6497222222222225,
+      "work": 10,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": null,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 2.5308333333333337,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 2.5308333333333337,
+      "longestInternalGap": {
+        "minutes": 2.5308333333333337,
+        "startMinutes": 2.1038888888888887,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2.000000000000014,
+          "BUY_JOB_UPGRADE": 4,
+          "WORK": 123.00000000000003,
+          "SLEEP": 2,
+          "FOOD": 4,
+          "PLINKO": 14.849999999999994,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 9
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112008,
+      "outcome": "VICTORY",
+      "minutes": 15.858888888888888,
+      "work": 15,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7,
+      "cash100kMinutes": 10.655000000000001,
+      "millionMinutes": 13.5875,
+      "millionToEndMinutes": 2.2713888888888882,
+      "maxPurchaseGapMinutes": 2.9780555555555557,
+      "lastTwoLimitsGapMinutes": 0.36194444444444496,
+      "mid3GapMinutes": 1.3,
+      "internalPurchaseGapMinutes": 2.9780555555555557,
+      "longestInternalGap": {
+        "minutes": 2.9780555555555557,
+        "startMinutes": 3.8586111111111108,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 81.68333333333328,
+          "EVENT_CHOICE": 4,
+          "FOOD": 6,
+          "WORK": 79,
+          "SLEEP": 2,
+          "ENTERTAINMENT": 2,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112009,
+      "outcome": "VICTORY",
+      "minutes": 14.698333333333332,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 12.947222222222221,
+      "millionMinutes": 13.394166666666667,
+      "millionToEndMinutes": 1.3041666666666667,
+      "maxPurchaseGapMinutes": 5.449166666666667,
+      "lastTwoLimitsGapMinutes": 0.3869444444444449,
+      "mid3GapMinutes": 0.1669444444444442,
+      "internalPurchaseGapMinutes": 5.449166666666667,
+      "longestInternalGap": {
+        "minutes": 5.449166666666667,
+        "startMinutes": 4.0072222222222225,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 151.94999999999993,
+          "WORK": 155,
+          "SLEEP": 4,
+          "FOOD": 10,
+          "EVENT_CHOICE": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112010,
+      "outcome": "VICTORY",
+      "minutes": 14.74361111111111,
+      "work": 11,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 9.720277777777778,
+      "millionMinutes": 11.705,
+      "millionToEndMinutes": 3.03861111111111,
+      "maxPurchaseGapMinutes": 2.0927777777777785,
+      "lastTwoLimitsGapMinutes": 0.6166666666666667,
+      "mid3GapMinutes": 0.798333333333333,
+      "internalPurchaseGapMinutes": 2.0927777777777785,
+      "longestInternalGap": {
+        "minutes": 2.0927777777777785,
+        "startMinutes": 7.660833333333333,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 45.56666666666672,
+          "EVENT_CHOICE": 4,
+          "BUY_JOB_UPGRADE": 4,
+          "WORK": 64,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112011,
+      "outcome": "VICTORY",
+      "minutes": 12.737222222222222,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 6.9638888888888895,
+      "millionMinutes": 11.424444444444445,
+      "millionToEndMinutes": 1.3127777777777776,
+      "maxPurchaseGapMinutes": 2.045277777777778,
+      "lastTwoLimitsGapMinutes": 0.8758333333333345,
+      "mid3GapMinutes": 1.0024999999999997,
+      "internalPurchaseGapMinutes": 2.045277777777778,
+      "longestInternalGap": {
+        "minutes": 2.045277777777778,
+        "startMinutes": 8.099722222222223,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 46.7166666666667,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 4,
+          "WORK": 64,
+          "FOOD": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112012,
+      "outcome": "VICTORY",
+      "minutes": 21.498333333333335,
+      "work": 18,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 16.224722222222223,
+      "millionMinutes": 19.175555555555555,
+      "millionToEndMinutes": 2.32277777777778,
+      "maxPurchaseGapMinutes": 5.278055555555555,
+      "lastTwoLimitsGapMinutes": 0.4522222222222202,
+      "mid3GapMinutes": 3.1036111111111118,
+      "internalPurchaseGapMinutes": 5.278055555555555,
+      "longestInternalGap": {
+        "minutes": 5.278055555555555,
+        "startMinutes": 5.536666666666667,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 130.68333333333317,
+          "FOOD": 10,
+          "WORK": 158,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 8,
+          "ENTERTAINMENT": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112013,
+      "outcome": "VICTORY",
+      "minutes": 11.506666666666666,
+      "work": 10,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 8.846944444444443,
+      "millionMinutes": 9.356388888888889,
+      "millionToEndMinutes": 2.1502777777777777,
+      "maxPurchaseGapMinutes": 2.586666666666667,
+      "lastTwoLimitsGapMinutes": 0.38027777777777677,
+      "mid3GapMinutes": 0.20388888888888915,
+      "internalPurchaseGapMinutes": 2.586666666666667,
+      "longestInternalGap": {
+        "minutes": 2.586666666666667,
+        "startMinutes": 4.213055555555555,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 1.9999999999999716,
+          "WORK": 96.00000000000006,
+          "SLEEP": 2,
+          "FOOD": 4,
+          "PLINKO": 49.19999999999999
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112014,
+      "outcome": "VICTORY",
+      "minutes": 17.422222222222224,
+      "work": 16,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 10.128055555555557,
+      "millionMinutes": 14.777777777777777,
+      "millionToEndMinutes": 2.6444444444444475,
+      "maxPurchaseGapMinutes": 2.554444444444444,
+      "lastTwoLimitsGapMinutes": 0.9241666666666656,
+      "mid3GapMinutes": 1.8155555555555565,
+      "internalPurchaseGapMinutes": 2.554444444444444,
+      "longestInternalGap": {
+        "minutes": 2.554444444444444,
+        "startMinutes": 4.934444444444444,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 84.26666666666665,
+          "FOOD": 4,
+          "WORK": 59,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112015,
+      "outcome": "VICTORY",
+      "minutes": 23.325277777777778,
+      "work": 24,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 15.028055555555556,
+      "millionMinutes": 20.323333333333334,
+      "millionToEndMinutes": 3.0019444444444425,
+      "maxPurchaseGapMinutes": 5.083611111111111,
+      "lastTwoLimitsGapMinutes": 0.7019444444444427,
+      "mid3GapMinutes": 2.906944444444446,
+      "internalPurchaseGapMinutes": 5.083611111111111,
+      "longestInternalGap": {
+        "minutes": 5.083611111111111,
+        "startMinutes": 9.977777777777778,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 67.01666666666665,
+          "EVENT_CHOICE": 6,
+          "BUY_JOB_UPGRADE": 2,
+          "WORK": 214,
+          "ENTERTAINMENT": 2,
+          "FOOD": 8,
+          "SLEEP": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112016,
+      "outcome": "VICTORY",
+      "minutes": 26.389722222222222,
+      "work": 29,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 10.750833333333333,
+      "millionMinutes": 24.080277777777777,
+      "millionToEndMinutes": 2.3094444444444435,
+      "maxPurchaseGapMinutes": 4.254444444444444,
+      "lastTwoLimitsGapMinutes": 0.03333333333333333,
+      "mid3GapMinutes": 2.0105555555555554,
+      "internalPurchaseGapMinutes": 4.254444444444444,
+      "longestInternalGap": {
+        "minutes": 4.254444444444444,
+        "startMinutes": 13.834166666666667,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 79.26666666666665,
+          "WORK": 156.0000000000001,
+          "EVENT_CHOICE": 4,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112017,
+      "outcome": "VICTORY",
+      "minutes": 9.219722222222224,
+      "work": 8,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 6.731388888888889,
+      "millionMinutes": 7.158055555555555,
+      "millionToEndMinutes": 2.0616666666666674,
+      "maxPurchaseGapMinutes": 1.5105555555555554,
+      "lastTwoLimitsGapMinutes": 0.413611111111112,
+      "mid3GapMinutes": 0.8969444444444444,
+      "internalPurchaseGapMinutes": 1.5105555555555554,
+      "longestInternalGap": {
+        "minutes": 1.5105555555555554,
+        "startMinutes": 3.954444444444444,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "BUY_JOB_UPGRADE": 4,
+          "PLINKO": 14.633333333333326,
+          "WORK": 64,
+          "EVENT_CHOICE": 2,
+          "FOOD": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112018,
+      "outcome": "VICTORY",
+      "minutes": 16.407222222222224,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 12.898888888888889,
+      "millionMinutes": 14.804166666666667,
+      "millionToEndMinutes": 1.6030555555555566,
+      "maxPurchaseGapMinutes": 2.722777777777778,
+      "lastTwoLimitsGapMinutes": 0.798333333333333,
+      "mid3GapMinutes": 0.17944444444444418,
+      "internalPurchaseGapMinutes": 2.722777777777778,
+      "longestInternalGap": {
+        "minutes": 2.722777777777778,
+        "startMinutes": 5.9127777777777775,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 92.36666666666667,
+          "FOOD": 6,
+          "WORK": 59,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112019,
+      "outcome": "VICTORY",
+      "minutes": 13.945555555555554,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 10.760833333333332,
+      "millionMinutes": 11.708055555555555,
+      "millionToEndMinutes": 2.237499999999998,
+      "maxPurchaseGapMinutes": 3.369166666666666,
+      "lastTwoLimitsGapMinutes": 0.18027777777777867,
+      "mid3GapMinutes": 0.6316666666666682,
+      "internalPurchaseGapMinutes": 3.369166666666666,
+      "longestInternalGap": {
+        "minutes": 3.369166666666666,
+        "startMinutes": 2.8530555555555557,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 4,
+          "PLINKO": 123.14999999999998,
+          "FOOD": 8,
+          "EVENT_CHOICE": 4,
+          "WORK": 57,
+          "SLEEP": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112020,
+      "outcome": "VICTORY",
+      "minutes": 20.017222222222223,
+      "work": 19,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7,
+      "cash100kMinutes": 14.910277777777777,
+      "millionMinutes": 17.32111111111111,
+      "millionToEndMinutes": 2.6961111111111107,
+      "maxPurchaseGapMinutes": 3.488055555555555,
+      "lastTwoLimitsGapMinutes": 0.5822222222222232,
+      "mid3GapMinutes": 1.8202777777777783,
+      "internalPurchaseGapMinutes": 3.488055555555555,
+      "longestInternalGap": {
+        "minutes": 3.488055555555555,
+        "startMinutes": 6.241944444444444,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 75.2833333333333,
+          "WORK": 118,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112021,
+      "outcome": "VICTORY",
+      "minutes": 17.873333333333335,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 13.303611111111111,
+      "millionMinutes": 13.772777777777778,
+      "millionToEndMinutes": 4.100555555555557,
+      "maxPurchaseGapMinutes": 2.6788888888888893,
+      "lastTwoLimitsGapMinutes": 0.7083333333333334,
+      "mid3GapMinutes": 0.18611111111111048,
+      "internalPurchaseGapMinutes": 2.6788888888888893,
+      "longestInternalGap": {
+        "minutes": 2.6788888888888893,
+        "startMinutes": 4.418055555555555,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 48.73333333333335,
+          "WORK": 96,
+          "FOOD": 6,
+          "SLEEP": 2,
+          "BUY_JOB_UPGRADE": 4,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112022,
+      "outcome": "VICTORY",
+      "minutes": 16.260555555555555,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 6.952777777777778,
+      "millionMinutes": 12.495000000000001,
+      "millionToEndMinutes": 3.765555555555555,
+      "maxPurchaseGapMinutes": 2.4969444444444444,
+      "lastTwoLimitsGapMinutes": 1.0091666666666659,
+      "mid3GapMinutes": 0.16527777777777714,
+      "internalPurchaseGapMinutes": 2.4969444444444444,
+      "longestInternalGap": {
+        "minutes": 2.4969444444444444,
+        "startMinutes": 6.952777777777778,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 39.81666666666672,
+          "ENTERTAINMENT": 2,
+          "WORK": 92,
+          "EVENT_CHOICE": 4,
+          "SLEEP": 4,
+          "FOOD": 4
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112023,
+      "outcome": "BARRY_LOSS",
+      "minutes": 39.2625,
+      "work": 58,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 18.43027777777778,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 13.168888888888887,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": 1.474444444444445,
+      "internalPurchaseGapMinutes": 9.961944444444443,
+      "longestInternalGap": {
+        "minutes": 9.961944444444443,
+        "startMinutes": 8.468333333333334,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 146.71666666666647,
+          "WORK": 409,
+          "FOOD": 16,
+          "ENTERTAINMENT": 4,
+          "SLEEP": 10,
+          "EVENT_CHOICE": 8,
+          "SHOWER": 2
+        }
+      },
+      "plinkoPurchases": 16
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112024,
+      "outcome": "VICTORY",
+      "minutes": 13.653055555555556,
+      "work": 10,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 6.606944444444443,
+      "millionMinutes": 10.240555555555556,
+      "millionToEndMinutes": 3.4124999999999983,
+      "maxPurchaseGapMinutes": 1.777777777777779,
+      "lastTwoLimitsGapMinutes": 0.398888888888888,
+      "mid3GapMinutes": 0.5588888888888884,
+      "internalPurchaseGapMinutes": 1.777777777777779,
+      "longestInternalGap": {
+        "minutes": 1.777777777777779,
+        "startMinutes": 6.606944444444443,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 60.66666666666674,
+          "BUY_JOB_UPGRADE": 2,
+          "ENTERTAINMENT": 2,
+          "FOOD": 4,
+          "EVENT_CHOICE": 2,
+          "WORK": 32,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112025,
+      "outcome": "VICTORY",
+      "minutes": 17.709444444444443,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 15.217222222222222,
+      "millionMinutes": 15.759444444444444,
+      "millionToEndMinutes": 1.95,
+      "maxPurchaseGapMinutes": 3.734722222222222,
+      "lastTwoLimitsGapMinutes": 0.7105555555555573,
+      "mid3GapMinutes": 1.776111111111112,
+      "internalPurchaseGapMinutes": 3.734722222222222,
+      "longestInternalGap": {
+        "minutes": 3.734722222222222,
+        "startMinutes": 6.522222222222222,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 122.08333333333326,
+          "EVENT_CHOICE": 4,
+          "WORK": 84,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 4,
+          "FOOD": 6
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112026,
+      "outcome": "VICTORY",
+      "minutes": 20.09277777777778,
+      "work": 18,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 10.937777777777777,
+      "millionMinutes": 18.015,
+      "millionToEndMinutes": 2.077777777777779,
+      "maxPurchaseGapMinutes": 3.4375,
+      "lastTwoLimitsGapMinutes": 0.6872222222222225,
+      "mid3GapMinutes": 0.32694444444444265,
+      "internalPurchaseGapMinutes": 3.4375,
+      "longestInternalGap": {
+        "minutes": 3.4375,
+        "startMinutes": 13.130555555555556,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 66.25,
+          "WORK": 126,
+          "SLEEP": 4,
+          "FOOD": 6,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112027,
+      "outcome": "BARRY_LOSS",
+      "minutes": 28.345277777777774,
+      "work": 32,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 20.05083333333333,
+      "millionMinutes": 25.536388888888887,
+      "millionToEndMinutes": 2.8088888888888883,
+      "maxPurchaseGapMinutes": 9.254444444444447,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": 2.6302777777777804,
+      "internalPurchaseGapMinutes": 9.254444444444447,
+      "longestInternalGap": {
+        "minutes": 9.254444444444447,
+        "startMinutes": 3.9983333333333335,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 226.26666666666665,
+          "WORK": 292.9999999999998,
+          "SLEEP": 8,
+          "FOOD": 18,
+          "ENTERTAINMENT": 2,
+          "EVENT_CHOICE": 6
+        }
+      },
+      "plinkoPurchases": 20
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112028,
+      "outcome": "VICTORY",
+      "minutes": 27.903333333333332,
+      "work": 29,
+      "firstPurchaseMinutes": 1.7,
+      "firstCasinoMinutes": 1.7666666666666666,
+      "cash100kMinutes": 22.689166666666665,
+      "millionMinutes": 25.279444444444444,
+      "millionToEndMinutes": 2.62388888888889,
+      "maxPurchaseGapMinutes": 5.244722222222221,
+      "lastTwoLimitsGapMinutes": 0.7416666666666667,
+      "mid3GapMinutes": 5.038055555555555,
+      "internalPurchaseGapMinutes": 5.244722222222221,
+      "longestInternalGap": {
+        "minutes": 5.244722222222221,
+        "startMinutes": 8.625277777777777,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 107.68333333333328,
+          "WORK": 187,
+          "FOOD": 10,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "seed": 67112029,
+      "outcome": "VICTORY",
+      "minutes": 23.232222222222223,
+      "work": 21,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2,
+      "cash100kMinutes": 19.587777777777777,
+      "millionMinutes": 20.779722222222222,
+      "millionToEndMinutes": 2.4525000000000015,
+      "maxPurchaseGapMinutes": 4.156388888888887,
+      "lastTwoLimitsGapMinutes": 0.7144444444444464,
+      "mid3GapMinutes": 4.156388888888887,
+      "internalPurchaseGapMinutes": 4.156388888888887,
+      "longestInternalGap": {
+        "minutes": 4.156388888888887,
+        "startMinutes": 15.841111111111111,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "WORK": 126,
+          "EVENT_CHOICE": 2,
+          "FOOD": 8,
+          "SLEEP": 4,
+          "PLINKO": 105.38333333333321,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 27
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112000,
+      "outcome": "VICTORY",
+      "minutes": 13.275277777777777,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 9.463611111111112,
+      "millionMinutes": 10.345555555555556,
+      "millionToEndMinutes": 2.929722222222222,
+      "maxPurchaseGapMinutes": 2.0872222222222216,
+      "lastTwoLimitsGapMinutes": 1.1544444444444442,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 2.0872222222222216,
+      "longestInternalGap": {
+        "minutes": 2.0872222222222216,
+        "startMinutes": 4.6947222222222225,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 79.23333333333329,
+          "FOOD": 4,
+          "EVENT_CHOICE": 6,
+          "SLEEP": 2,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112001,
+      "outcome": "VICTORY",
+      "minutes": 14.370000000000001,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 11.341111111111111,
+      "millionMinutes": 12.628055555555557,
+      "millionToEndMinutes": 1.7419444444444443,
+      "maxPurchaseGapMinutes": 1.8491666666666664,
+      "lastTwoLimitsGapMinutes": 0.23472222222222097,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 1.8491666666666664,
+      "longestInternalGap": {
+        "minutes": 1.8491666666666664,
+        "startMinutes": 4.035555555555556,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 41.94999999999999,
+          "FOOD": 4,
+          "WORK": 59,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112002,
+      "outcome": "VICTORY",
+      "minutes": 19.683611111111112,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 16.348055555555554,
+      "millionMinutes": 17.327777777777776,
+      "millionToEndMinutes": 2.3558333333333357,
+      "maxPurchaseGapMinutes": 7.004444444444444,
+      "lastTwoLimitsGapMinutes": 0.5677777777777806,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 7.004444444444444,
+      "longestInternalGap": {
+        "minutes": 7.004444444444444,
+        "startMinutes": 4.3711111111111105,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 187.26666666666654,
+          "EVENT_CHOICE": 8,
+          "FOOD": 12,
+          "SLEEP": 8,
+          "ENTERTAINMENT": 4,
+          "WORK": 199
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112003,
+      "outcome": "VICTORY",
+      "minutes": 16.42361111111111,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 13.428333333333335,
+      "millionMinutes": 15.297499999999998,
+      "millionToEndMinutes": 1.126111111111114,
+      "maxPurchaseGapMinutes": 2.505,
+      "lastTwoLimitsGapMinutes": 0.19972222222222247,
+      "mid3GapMinutes": 0.325,
+      "internalPurchaseGapMinutes": 2.505,
+      "longestInternalGap": {
+        "minutes": 2.505,
+        "startMinutes": 2.616111111111111,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 59.30000000000001,
+          "WORK": 81,
+          "FOOD": 4,
+          "BUY_JOB_UPGRADE": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 32
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112004,
+      "outcome": "VICTORY",
+      "minutes": 19.04111111111111,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 12.049444444444445,
+      "millionMinutes": 16.659444444444446,
+      "millionToEndMinutes": 2.3816666666666664,
+      "maxPurchaseGapMinutes": 5.21361111111111,
+      "lastTwoLimitsGapMinutes": 0.5636111111111101,
+      "mid3GapMinutes": 0.9102777777777779,
+      "internalPurchaseGapMinutes": 5.21361111111111,
+      "longestInternalGap": {
+        "minutes": 5.21361111111111,
+        "startMinutes": 4.524444444444445,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 144.8166666666666,
+          "FOOD": 8,
+          "WORK": 148,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112005,
+      "outcome": "VICTORY",
+      "minutes": 10.402222222222225,
+      "work": 6,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 7.973333333333334,
+      "millionMinutes": 8.787222222222223,
+      "millionToEndMinutes": 1.6150000000000015,
+      "maxPurchaseGapMinutes": 1.1230555555555555,
+      "lastTwoLimitsGapMinutes": 0.4341666666666678,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 1.1230555555555555,
+      "longestInternalGap": {
+        "minutes": 1.1230555555555555,
+        "startMinutes": 5.612777777777778,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "BUY_JOB_UPGRADE": 2,
+          "PLINKO": 25.383333333333326,
+          "FOOD": 4,
+          "WORK": 32,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112006,
+      "outcome": "VICTORY",
+      "minutes": 17.458611111111107,
+      "work": 15,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 14.702499999999999,
+      "millionMinutes": 15.425555555555555,
+      "millionToEndMinutes": 2.033055555555552,
+      "maxPurchaseGapMinutes": 4.8438888888888885,
+      "lastTwoLimitsGapMinutes": 0.5822222222222232,
+      "mid3GapMinutes": 0.22444444444444495,
+      "internalPurchaseGapMinutes": 4.8438888888888885,
+      "longestInternalGap": {
+        "minutes": 4.8438888888888885,
+        "startMinutes": 1.2,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 135.63333333333333,
+          "FOOD": 8,
+          "WORK": 135,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112007,
+      "outcome": "VICTORY",
+      "minutes": 13.285833333333334,
+      "work": 11,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 6.565833333333333,
+      "millionMinutes": 10.664166666666667,
+      "millionToEndMinutes": 2.621666666666668,
+      "maxPurchaseGapMinutes": 2.319444444444444,
+      "lastTwoLimitsGapMinutes": 0.6958333333333333,
+      "mid3GapMinutes": 0.3274999999999996,
+      "internalPurchaseGapMinutes": 2.319444444444444,
+      "longestInternalGap": {
+        "minutes": 2.319444444444444,
+        "startMinutes": 2.7266666666666666,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "to": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 34.166666666666686,
+          "WORK": 89,
+          "FOOD": 2,
+          "BUY_JOB_UPGRADE": 4,
+          "EVENT_CHOICE": 4,
+          "SHOWER": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112008,
+      "outcome": "VICTORY",
+      "minutes": 14.927777777777775,
+      "work": 12,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 10.405,
+      "millionMinutes": 12.42611111111111,
+      "millionToEndMinutes": 2.501666666666665,
+      "maxPurchaseGapMinutes": 2.6652777777777783,
+      "lastTwoLimitsGapMinutes": 0.3838888888888884,
+      "mid3GapMinutes": 0.47194444444444533,
+      "internalPurchaseGapMinutes": 2.6652777777777783,
+      "longestInternalGap": {
+        "minutes": 2.6652777777777783,
+        "startMinutes": 5.409166666666667,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 81.91666666666674,
+          "WORK": 64,
+          "FOOD": 6,
+          "ENTERTAINMENT": 2,
+          "EVENT_CHOICE": 2,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112009,
+      "outcome": "VICTORY",
+      "minutes": 14.592222222222222,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 11.868611111111113,
+      "millionMinutes": 12.730555555555556,
+      "millionToEndMinutes": 1.8616666666666655,
+      "maxPurchaseGapMinutes": 4.424166666666667,
+      "lastTwoLimitsGapMinutes": 0.5525000000000015,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 4.424166666666667,
+      "longestInternalGap": {
+        "minutes": 4.424166666666667,
+        "startMinutes": 5.020833333333333,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 124.45000000000005,
+          "WORK": 123,
+          "FOOD": 8,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 4,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112010,
+      "outcome": "VICTORY",
+      "minutes": 29.28638888888889,
+      "work": 24,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 2.2333333333333334,
+      "cash100kMinutes": 21.929166666666667,
+      "millionMinutes": 26.535555555555558,
+      "millionToEndMinutes": 2.7508333333333326,
+      "maxPurchaseGapMinutes": 5.764722222222221,
+      "lastTwoLimitsGapMinutes": 0.6355555555555535,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 5.764722222222221,
+      "longestInternalGap": {
+        "minutes": 5.764722222222221,
+        "startMinutes": 7.788333333333333,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 221.8833333333332,
+          "FOOD": 12,
+          "EVENT_CHOICE": 6,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 4,
+          "WORK": 96
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112011,
+      "outcome": "VICTORY",
+      "minutes": 15.615555555555554,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 12.644444444444444,
+      "millionMinutes": 14.191666666666666,
+      "millionToEndMinutes": 1.423888888888888,
+      "maxPurchaseGapMinutes": 2.917777777777778,
+      "lastTwoLimitsGapMinutes": 0.20861111111111086,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 2.917777777777778,
+      "longestInternalGap": {
+        "minutes": 2.917777777777778,
+        "startMinutes": 4.5225,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 76.06666666666672,
+          "WORK": 91,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112012,
+      "outcome": "VICTORY",
+      "minutes": 24.406111111111112,
+      "work": 24,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 19.44222222222222,
+      "millionMinutes": 23.056388888888886,
+      "millionToEndMinutes": 1.3497222222222263,
+      "maxPurchaseGapMinutes": 7.8486111111111105,
+      "lastTwoLimitsGapMinutes": 0.2,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 7.8486111111111105,
+      "longestInternalGap": {
+        "minutes": 7.8486111111111105,
+        "startMinutes": 11.59361111111111,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "WORK": 308.0000000000002,
+          "PLINKO": 130.91666666666674,
+          "FOOD": 14,
+          "ENTERTAINMENT": 4,
+          "SLEEP": 6,
+          "EVENT_CHOICE": 2,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112013,
+      "outcome": "VICTORY",
+      "minutes": 12.799166666666668,
+      "work": 8,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 8.809722222222224,
+      "millionMinutes": 11.031666666666666,
+      "millionToEndMinutes": 1.7675000000000012,
+      "maxPurchaseGapMinutes": 2.2774999999999994,
+      "lastTwoLimitsGapMinutes": 0.9441666666666663,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 2.2774999999999994,
+      "longestInternalGap": {
+        "minutes": 2.2774999999999994,
+        "startMinutes": 3.852222222222222,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 3,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 67.64999999999998,
+          "EVENT_CHOICE": 6,
+          "WORK": 55,
+          "FOOD": 4,
+          "SLEEP": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112014,
+      "outcome": "VICTORY",
+      "minutes": 15.458055555555555,
+      "work": 15,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 2.2333333333333334,
+      "cash100kMinutes": 11.405833333333334,
+      "millionMinutes": 11.854999999999999,
+      "millionToEndMinutes": 3.6030555555555566,
+      "maxPurchaseGapMinutes": 4.265833333333334,
+      "lastTwoLimitsGapMinutes": 0.786944444444445,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 4.265833333333334,
+      "longestInternalGap": {
+        "minutes": 4.265833333333334,
+        "startMinutes": 5.100555555555555,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "WORK": 173,
+          "FOOD": 8,
+          "PLINKO": 58.9500000000001,
+          "ENTERTAINMENT": 2,
+          "EVENT_CHOICE": 4,
+          "SLEEP": 4,
+          "BUY_JOB_UPGRADE": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112015,
+      "outcome": "HP_DEATH",
+      "minutes": 8.33388888888889,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": null,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 1.2994444444444448,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 1.2269444444444444,
+      "longestInternalGap": {
+        "minutes": 1.2269444444444444,
+        "startMinutes": 1.7388888888888887,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 14.616666666666674,
+          "EVENT_CHOICE": 2,
+          "WORK": 49,
+          "SLEEP": 2,
+          "FOOD": 2,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 14
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112016,
+      "outcome": "BARRY_LOSS",
+      "minutes": 33.955,
+      "work": 52,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": null,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 21.503055555555555,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 6.80138888888889,
+      "longestInternalGap": {
+        "minutes": 6.80138888888889,
+        "startMinutes": 1.2,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 124.08333333333337,
+          "WORK": 254.0000000000001,
+          "EVENT_CHOICE": 8,
+          "FOOD": 10,
+          "SLEEP": 6,
+          "BUY_JOB_UPGRADE": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 9
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112017,
+      "outcome": "VICTORY",
+      "minutes": 16.523611111111112,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 13.578888888888889,
+      "millionMinutes": 14.918333333333335,
+      "millionToEndMinutes": 1.6052777777777767,
+      "maxPurchaseGapMinutes": 2.7425,
+      "lastTwoLimitsGapMinutes": 0.21861111111111314,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 2.7425,
+      "longestInternalGap": {
+        "minutes": 2.7425,
+        "startMinutes": 1.2,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 118.55000000000004,
+          "BUY_JOB_UPGRADE": 2,
+          "FOOD": 6,
+          "SLEEP": 4,
+          "WORK": 32
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112018,
+      "outcome": "VICTORY",
+      "minutes": 14.882777777777777,
+      "work": 13,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 11.961666666666666,
+      "millionMinutes": 12.245277777777776,
+      "millionToEndMinutes": 2.6375,
+      "maxPurchaseGapMinutes": 2.1663888888888883,
+      "lastTwoLimitsGapMinutes": 1.0491666666666675,
+      "mid3GapMinutes": 0.18361111111111086,
+      "internalPurchaseGapMinutes": 2.1663888888888883,
+      "longestInternalGap": {
+        "minutes": 2.1663888888888883,
+        "startMinutes": 7.1930555555555555,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 55.983333333333235,
+          "WORK": 64.00000000000006,
+          "FOOD": 4,
+          "SLEEP": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112019,
+      "outcome": "VICTORY",
+      "minutes": 15.988055555555555,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 13.359166666666665,
+      "millionMinutes": 13.626666666666667,
+      "millionToEndMinutes": 2.361388888888888,
+      "maxPurchaseGapMinutes": 4.224444444444444,
+      "lastTwoLimitsGapMinutes": 0.41083333333333294,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 4.224444444444444,
+      "longestInternalGap": {
+        "minutes": 4.224444444444444,
+        "startMinutes": 5.051111111111111,
+        "from": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "to": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "jackpot"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_SPECIAL": 2,
+          "PLINKO": 58.4666666666667,
+          "FOOD": 8,
+          "WORK": 173,
+          "ENTERTAINMENT": 2,
+          "EVENT_CHOICE": 4,
+          "SLEEP": 4,
+          "BUY_JOB_UPGRADE": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112020,
+      "outcome": "VICTORY",
+      "minutes": 18.05388888888889,
+      "work": 17,
+      "firstPurchaseMinutes": 1.6333333333333333,
+      "firstCasinoMinutes": 1.7333333333333334,
+      "cash100kMinutes": 14.389444444444445,
+      "millionMinutes": 15.20861111111111,
+      "millionToEndMinutes": 2.8452777777777785,
+      "maxPurchaseGapMinutes": 3.158055555555555,
+      "lastTwoLimitsGapMinutes": 0.24222222222222173,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 3.158055555555555,
+      "longestInternalGap": {
+        "minutes": 3.158055555555555,
+        "startMinutes": 3.421666666666667,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 48.48333333333335,
+          "EVENT_CHOICE": 2,
+          "FOOD": 6,
+          "WORK": 123,
+          "SLEEP": 4,
+          "BUY_JOB_UPGRADE": 2,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112021,
+      "outcome": "VICTORY",
+      "minutes": 20.293333333333333,
+      "work": 16,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 16.601111111111113,
+      "millionMinutes": 18.026388888888892,
+      "millionToEndMinutes": 2.2669444444444404,
+      "maxPurchaseGapMinutes": 3.2263888888888888,
+      "lastTwoLimitsGapMinutes": 1.3516666666666652,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 3.2263888888888888,
+      "longestInternalGap": {
+        "minutes": 3.2263888888888888,
+        "startMinutes": 7.811388888888889,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 113.58333333333337,
+          "EVENT_CHOICE": 4,
+          "FOOD": 6,
+          "ENTERTAINMENT": 2,
+          "SLEEP": 2,
+          "WORK": 64
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112022,
+      "outcome": "VICTORY",
+      "minutes": 15.353055555555557,
+      "work": 12,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 10.042222222222222,
+      "millionMinutes": 12.284166666666666,
+      "millionToEndMinutes": 3.0688888888888908,
+      "maxPurchaseGapMinutes": 3.0180555555555553,
+      "lastTwoLimitsGapMinutes": 0.8769444444444445,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 3.0180555555555553,
+      "longestInternalGap": {
+        "minutes": 3.0180555555555553,
+        "startMinutes": 7.024166666666667,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 69.08333333333326,
+          "ENTERTAINMENT": 2,
+          "WORK": 94,
+          "BUY_JOB_UPGRADE": 4,
+          "SLEEP": 2,
+          "FOOD": 4,
+          "EVENT_CHOICE": 4
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112023,
+      "outcome": "VICTORY",
+      "minutes": 20.054166666666667,
+      "work": 21,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 15.175555555555556,
+      "millionMinutes": 17.81722222222222,
+      "millionToEndMinutes": 2.236944444444445,
+      "maxPurchaseGapMinutes": 7.9813888888888895,
+      "lastTwoLimitsGapMinutes": 0.20777777777777828,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 7.9813888888888895,
+      "longestInternalGap": {
+        "minutes": 7.9813888888888895,
+        "startMinutes": 5.595,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "splitter"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 173.88333333333344,
+          "WORK": 273,
+          "EVENT_CHOICE": 6,
+          "ENTERTAINMENT": 4,
+          "FOOD": 14,
+          "SLEEP": 6
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112024,
+      "outcome": "VICTORY",
+      "minutes": 13.006388888888887,
+      "work": 8,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 8.804722222222223,
+      "millionMinutes": 9.809444444444445,
+      "millionToEndMinutes": 3.1969444444444415,
+      "maxPurchaseGapMinutes": 2.001388888888889,
+      "lastTwoLimitsGapMinutes": 0.611388888888888,
+      "mid3GapMinutes": 0.7305555555555543,
+      "internalPurchaseGapMinutes": 2.001388888888889,
+      "longestInternalGap": {
+        "minutes": 2.001388888888889,
+        "startMinutes": 1.2,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 34.083333333333314,
+          "WORK": 76.00000000000003,
+          "BUY_JOB_UPGRADE": 4,
+          "SLEEP": 2,
+          "FOOD": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112025,
+      "outcome": "BARRY_LOSS",
+      "minutes": 7.9863888888888885,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": null,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 1.702777777777777,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 1.702777777777777,
+      "longestInternalGap": {
+        "minutes": 1.702777777777777,
+        "startMinutes": 4.631111111111111,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 33.16666666666663,
+          "FOOD": 4,
+          "WORK": 59,
+          "SLEEP": 2,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 15
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112026,
+      "outcome": "VICTORY",
+      "minutes": 21.949444444444442,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 14.760555555555555,
+      "millionMinutes": 19.006944444444443,
+      "millionToEndMinutes": 2.9424999999999994,
+      "maxPurchaseGapMinutes": 3.778333333333334,
+      "lastTwoLimitsGapMinutes": 0.41555555555555657,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 3.778333333333334,
+      "longestInternalGap": {
+        "minutes": 3.778333333333334,
+        "startMinutes": 8.663333333333332,
+        "from": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "return"
+        },
+        "toLevel": 1,
+        "actionSeconds": {
+          "BUY_PLINKO_INSURANCE": 2,
+          "PLINKO": 147.70000000000005,
+          "WORK": 59,
+          "SLEEP": 4,
+          "FOOD": 8,
+          "EVENT_CHOICE": 4,
+          "ENTERTAINMENT": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112027,
+      "outcome": "BARRY_LOSS",
+      "minutes": 6.758611111111111,
+      "work": 9,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": null,
+      "millionMinutes": null,
+      "millionToEndMinutes": null,
+      "maxPurchaseGapMinutes": 2.4877777777777776,
+      "lastTwoLimitsGapMinutes": null,
+      "mid3GapMinutes": null,
+      "internalPurchaseGapMinutes": 1.8525,
+      "longestInternalGap": {
+        "minutes": 1.8525,
+        "startMinutes": 1.2,
+        "from": {
+          "type": "BUY_PLINKO_POCKET",
+          "track": "mid"
+        },
+        "to": {
+          "type": "BUY_PLINKO_INSURANCE"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_POCKET": 2,
+          "PLINKO": 25.150000000000006,
+          "WORK": 76,
+          "BUY_JOB_UPGRADE": 4,
+          "SLEEP": 2,
+          "FOOD": 2
+        }
+      },
+      "plinkoPurchases": 8
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112028,
+      "outcome": "VICTORY",
+      "minutes": 13.679166666666667,
+      "work": 12,
+      "firstPurchaseMinutes": 1.7,
+      "firstCasinoMinutes": 1.8,
+      "cash100kMinutes": 10.567499999999999,
+      "millionMinutes": 11.523055555555555,
+      "millionToEndMinutes": 2.156111111111111,
+      "maxPurchaseGapMinutes": 4.05611111111111,
+      "lastTwoLimitsGapMinutes": 1.047222222222223,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 4.05611111111111,
+      "longestInternalGap": {
+        "minutes": 4.05611111111111,
+        "startMinutes": 6.511388888888889,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "amplifier"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 61.36666666666656,
+          "BUY_JOB_UPGRADE": 6,
+          "FOOD": 8,
+          "WORK": 158,
+          "SLEEP": 4,
+          "ENTERTAINMENT": 2,
+          "EVENT_CHOICE": 2
+        }
+      },
+      "plinkoPurchases": 34
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "seed": 67112029,
+      "outcome": "VICTORY",
+      "minutes": 14.21388888888889,
+      "work": 14,
+      "firstPurchaseMinutes": 1.1,
+      "firstCasinoMinutes": 1.2333333333333334,
+      "cash100kMinutes": 11.885833333333332,
+      "millionMinutes": 12.781666666666666,
+      "millionToEndMinutes": 1.4322222222222232,
+      "maxPurchaseGapMinutes": 4.609999999999999,
+      "lastTwoLimitsGapMinutes": 0.5458333333333333,
+      "mid3GapMinutes": 0.03333333333333333,
+      "internalPurchaseGapMinutes": 4.609999999999999,
+      "longestInternalGap": {
+        "minutes": 4.609999999999999,
+        "startMinutes": 7.275833333333334,
+        "from": {
+          "type": "BUY_PLINKO_MAX_BET"
+        },
+        "to": {
+          "type": "BUY_PLINKO_SPECIAL",
+          "track": "jackpotBias"
+        },
+        "toLevel": 2,
+        "actionSeconds": {
+          "BUY_PLINKO_MAX_BET": 2,
+          "PLINKO": 92.60000000000002,
+          "ENTERTAINMENT": 4,
+          "BUY_JOB_UPGRADE": 4,
+          "WORK": 156,
+          "EVENT_CHOICE": 6,
+          "SLEEP": 4,
+          "FOOD": 6,
+          "SHOWER": 2
+        }
+      },
+      "plinkoPurchases": 34
+    }
+  ]
+}

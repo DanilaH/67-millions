@@ -8,7 +8,8 @@ import { createHighVariancePolicy, type HighVarianceArchetype } from './highVari
 import type { FullGamePolicy, FullGameDecision, FullGamePolicyContext } from './runner';
 
 /** Additional T070 search policy. Original v1 reference policies stay unchanged. */
-export const createLiquidityPolicy = (config: BalanceConfig, archetype: BaselineArchetype | HighVarianceArchetype, seed: number): FullGamePolicy => {
+export const createLiquidityPolicy = (config: BalanceConfig, archetype: BaselineArchetype | HighVarianceArchetype, seed: number, maxBetReserveBets = 1): FullGamePolicy => {
+  if (!Number.isFinite(maxBetReserveBets) || maxBetReserveBets < 1) throw Error('Invalid max-bet bankroll buffer');
   const base = archetype === 'DEGENERATE' || archetype === 'RECKLESS_NEEDS'
     ? createHighVariancePolicy(config, archetype, seed) : createBaselinePolicy(config, archetype, seed);
   const profile = base.profile;
@@ -27,12 +28,12 @@ export const createLiquidityPolicy = (config: BalanceConfig, archetype: Baseline
     }
     return {type:'WAIT',minutes:60};
   };
-  return {id:`${base.id}+liquidity-v1`,decide:context=>{
+  return {id:`${base.id}+liquidity-v1${maxBetReserveBets===1?'':`+limit-buffer${maxBetReserveBets}`}`,decide:context=>{
     const original=base.decide(context);const {state}=context;const reserve=reserveFor(context);
     // Avoid buying a max-bet tier whose smallest quick bet cannot retain the policy's reserve.
     if(original.type==='BUY_PLINKO_MAX_BET'){
       const next=config.plinko.maxBetLevels.find(level=>level.level===state.plinkoMaxBetLevel+1)!;
-      if(state.cash-next.price<reserve+Math.round(next.maxBet*0.25))return earning(context);
+      if(state.cash-next.price<reserve+Math.round(next.maxBet*0.25)*maxBetReserveBets)return earning(context);
     }
     // The aggressive search variant invests in a positive-EV path as well as raising limits.
     if(archetype==='AGGRESSIVE' && ['PLINKO','WORK','BUY_PLINKO_MAX_BET'].includes(original.type) && state.eventModifiers.plinkoLockRemainingMinutes===0){

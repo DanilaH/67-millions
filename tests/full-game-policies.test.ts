@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
+import { createLiquidityPolicy } from '../simulation/full-game/liquidityPolicy';
+import { getBarryPaymentDue } from '../src/core/barry/barry';
 import { balance } from '../src/config/balance';
 import { createInitialGameState } from '../src/core/state/GameState';
 import {
@@ -350,4 +352,21 @@ describe('baseline full-game policies', () => {
       expect(result.counters.decisions).toBeGreaterThan(0);
     },
   );
+});
+
+
+it('can defer a cap purchase for a larger bankroll without changing the default policy', () => {
+  const state = { ...createInitialGameState(balance, 67112000),
+    jobLevels:{dishes:3,trash:3,courier:3},
+    plinkoCenterLevel:2,plinkoMidLevel:3,plinkoJackpotLevel:3,
+    plinkoAmplifierLevel:5,plinkoReturnLevel:4,plinkoSplitterLevel:5,plinkoJackpotBiasLevel:4 };
+  const next=balance.plinko.maxBetLevels[1]!;
+  const profile=getBaselinePolicyProfile('BASELINE_GROWTH');
+  const reserve=Math.round(getBarryPaymentDue(state,balance)*profile.reserveMultiplier+profile.reserveFlat);
+  state.cash=reserve+next.price+Math.round(next.maxBet*.25)*2;
+  const ctx={state,activeAction:null,counters:zeroCounters(),decisionIndex:0};
+  expect(createLiquidityPolicy(balance,'BASELINE_GROWTH',67112000).decide(ctx).type).toBe('BUY_PLINKO_MAX_BET');
+  expect(createLiquidityPolicy(balance,'BASELINE_GROWTH',67112000,4).decide(ctx).type).toBe('PLINKO');
+  state.cash=reserve+next.price+Math.round(next.maxBet*.25)*4;
+  expect(createLiquidityPolicy(balance,'BASELINE_GROWTH',67112000,4).decide(ctx).type).toBe('BUY_PLINKO_MAX_BET');
 });

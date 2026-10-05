@@ -1,0 +1,982 @@
+{
+  "meta": {
+    "version": "0.8-candidate-price0.5-payout1.5",
+    "date": "2026-09-27",
+    "sourceOfTruth": true,
+    "targetMedianSuccessfulRealMinutes": 30,
+    "balanceEvidence": "Bare Plinko V0 physically calibrated with Matter runner at 100,000 Drops: EV 0.870225x, combined center 52.188%, symmetry delta 0.613%, zero stuck. Reproducible report is required after any gameplay-affecting geometry/physics change. Full-game balance report pending. BOARD_LAYOUT_V0 special-pin seed positions are based on 100,000-drop unique peg-hit probe seed 67034000; effect-level EV remains pending T035. Splitter child spawn physics is an explicit TUNABLE V0 seed pending T035 physical cascade reports. Return upper-board horizontalRetention=1 is the T035 paired-sweep seed: same-X re-entry, no extra RNG; final acceptance still requires 100k cascade milestones. T035 Return sweep selected horizontalRetention=1.0 (preserve hit X at upper-board re-entry): 3k L1 EV~0.903, L4 EV~1.246, 0 stuck; requires final 100k milestone reports. T035 diagnostics showed that clearance alone cannot remove Splitter-child rests on flat divider caps; pocket dividers are being calibrated as continuous extensions of the bottom peg instead. Plinko stuck-body watchdog is deterministic and only nudges near-zero-speed equilibrium bodies; it never assigns a pocket or truncates payout. T036 Jackpot Bias starts from a symmetric two-bumper physical seed; geometry remains TUNABLE until paired physical reports. Initial T036 circular-bumper seed rejected: L1/L3 produced severe stuck rates and L2/L4 did not increase edge probability. T036 now probes symmetric angled side-deflectors. T036 single-pair probes found a stable physical redirect zone; offset/length/angle/restitution mostly behaved as threshold controls, so progression now uses cumulative symmetric outer-row deflector pairs pending 10k/100k measurement. T036 cumulative probe showed the row8 pair added no measurable edge uplift, so the candidate ladder now climbs outer rows 7→6→5→4. T036 L4 micro-sweep selected row4 deflectorOffsetX=110: offset 109 jumped to ~1.67x bare EV, while 110 produced a moderate ~1.32x candidate with zero stuck.",
+    "moneyRounding": "nearestInteger"
+  },
+  "time": {
+    "realSecondsPerGameMinute": 3,
+    "gameDayBoundary": "09:00",
+    "offlineProgression": false,
+    "navigationTimeMinutes": 0,
+    "plinkoDropTimeMinutes": 15,
+    "eventCheckpoints": [
+      "13:00",
+      "17:00",
+      "21:00",
+      "01:00",
+      "05:00"
+    ],
+    "eventChecksDuringSleep": false
+  },
+  "game": {
+    "mainDebt": 67000000,
+    "startCash": 500,
+    "startTime": "09:05",
+    "startHealth": 100,
+    "startSatiety": 100,
+    "startEnergy": 100,
+    "startHappiness": 100,
+    "restartResetsEverything": true,
+    "permanentMetaprogression": false
+  },
+  "barry": {
+    "time": "09:00",
+    "payments": [
+      3000,
+      3600,
+      4300,
+      5200,
+      6200,
+      8100,
+      10500,
+      13600,
+      17700,
+      23000,
+      34500,
+      51800,
+      77700,
+      116600,
+      174900,
+      314800,
+      566600,
+      1020000,
+      1840000,
+      3300000,
+      5950000,
+      10700000,
+      19300000,
+      34700000,
+      62400000
+    ],
+    "afterLastMultiplier": 2,
+    "mainDebtPaymentsReducePrincipal": false
+  },
+  "needs": {
+    "min": 0,
+    "max": 100,
+    "satietyPerHour": -4,
+    "energyAwakePerHour": -1.5,
+    "happinessAwakePerHour": -0.3,
+    "lowThreshold": 20,
+    "hpLossPerLowNeedPerHour": 1.5,
+    "extraHpLossPerZeroNeedPerHour": 8,
+    "plinkoLosingDropHappiness": -1
+  },
+  "sleep": {
+    "fullSleepHours": 7,
+    "fullSleepHealthRestore": 20,
+    "workPenaltyPerMissingHour": 0.05,
+    "workPayoutFloorMultiplier": 0.65,
+    "barryStopsSleep": true
+  },
+  "work": {
+    "requiresEnergyAtLeastCost": true,
+    "windowChecksStartOnly": true,
+    "failure": {
+      "payoutMultiplier": 0,
+      "fineAsPotentialPayout": 0.25,
+      "extraHappiness": -8
+    },
+    "jobs": {
+      "dishes": {
+        "minigame": {
+          "timerRealSeconds": 20,
+          "successCleanPercent": 0.9
+        },
+        "levels": [
+          {
+            "level": 1,
+            "payout": 4500,
+            "durationMinutes": 120,
+            "energyCost": 12,
+            "happinessCost": 3,
+            "window": "16:00-00:00",
+            "upgradePrice": 0
+          },
+          {
+            "level": 2,
+            "payout": 9750,
+            "durationMinutes": 120,
+            "energyCost": 12,
+            "happinessCost": 3,
+            "window": "13:00-03:00",
+            "upgradePrice": 2500
+          },
+          {
+            "level": 3,
+            "payout": 18000,
+            "durationMinutes": 120,
+            "energyCost": 12,
+            "happinessCost": 3,
+            "window": "24/7",
+            "upgradePrice": 20000
+          }
+        ]
+      },
+      "trash": {
+        "minigame": {
+          "timerRealSeconds": 25,
+          "bagCount": 5
+        },
+        "levels": [
+          {
+            "level": 1,
+            "payout": 5400,
+            "durationMinutes": 150,
+            "energyCost": 18,
+            "happinessCost": 5,
+            "window": "00:00-08:00",
+            "upgradePrice": 0
+          },
+          {
+            "level": 2,
+            "payout": 11400,
+            "durationMinutes": 150,
+            "energyCost": 18,
+            "happinessCost": 5,
+            "window": "21:00-11:00",
+            "upgradePrice": 3000
+          },
+          {
+            "level": 3,
+            "payout": 21750,
+            "durationMinutes": 150,
+            "energyCost": 18,
+            "happinessCost": 5,
+            "window": "24/7",
+            "upgradePrice": 25000
+          }
+        ]
+      },
+      "courier": {
+        "minigame": {
+          "obstacleCountMin": 2,
+          "obstacleCountMax": 4,
+          "redrawsBeforeStart": 1
+        },
+        "levels": [
+          {
+            "level": 1,
+            "payout": 6300,
+            "durationMinutes": 180,
+            "energyCost": 15,
+            "happinessCost": 4,
+            "window": "08:00-16:00",
+            "upgradePrice": 0
+          },
+          {
+            "level": 2,
+            "payout": 12750,
+            "durationMinutes": 180,
+            "energyCost": 15,
+            "happinessCost": 4,
+            "window": "05:00-19:00",
+            "upgradePrice": 3500
+          },
+          {
+            "level": 3,
+            "payout": 25500,
+            "durationMinutes": 180,
+            "energyCost": 15,
+            "happinessCost": 4,
+            "window": "24/7",
+            "upgradePrice": 30000
+          }
+        ]
+      }
+    }
+  },
+  "food": [
+    {
+      "id": "FOOD_01",
+      "price": 150,
+      "satiety": 30,
+      "happiness": -2,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 45
+    },
+    {
+      "id": "FOOD_02",
+      "price": 250,
+      "satiety": 20,
+      "happiness": 0,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 10
+    },
+    {
+      "id": "FOOD_03",
+      "price": 350,
+      "satiety": 40,
+      "happiness": 1,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 25
+    },
+    {
+      "id": "FOOD_04",
+      "price": 500,
+      "satiety": 45,
+      "happiness": 6,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 15
+    },
+    {
+      "id": "FOOD_05",
+      "price": 700,
+      "satiety": 60,
+      "happiness": 8,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 20
+    },
+    {
+      "id": "FOOD_06",
+      "price": 900,
+      "satiety": 75,
+      "happiness": 10,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 25
+    },
+    {
+      "id": "FOOD_07",
+      "price": 1200,
+      "satiety": 90,
+      "happiness": 12,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 30
+    },
+    {
+      "id": "FOOD_08",
+      "price": 1800,
+      "satiety": 100,
+      "happiness": 20,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 45
+    },
+    {
+      "id": "FOOD_09",
+      "price": 350,
+      "satiety": 5,
+      "happiness": -2,
+      "energy": 25,
+      "hp": -3,
+      "durationMinutes": 5
+    },
+    {
+      "id": "FOOD_10",
+      "price": 1100,
+      "satiety": 60,
+      "happiness": 25,
+      "energy": 0,
+      "hp": 0,
+      "durationMinutes": 60
+    }
+  ],
+  "entertainment": [
+    {
+      "id": "FREE_FUN",
+      "price": 0,
+      "happiness": 15,
+      "durationMinutes": 60
+    },
+    {
+      "id": "PC_CLUB",
+      "price": 500,
+      "happiness": 40,
+      "durationMinutes": 90
+    },
+    {
+      "id": "CINEMA",
+      "price": 900,
+      "happiness": 70,
+      "durationMinutes": 120
+    }
+  ],
+  "statuses": {
+    "SMELLY": {
+      "blocksJobs": [
+        "courier"
+      ],
+      "paidEntertainmentMultiplier": 0.5
+    }
+  },
+  "shower": {
+    "price": 300,
+    "durationMinutes": 30,
+    "removes": [
+      "SMELLY"
+    ]
+  },
+  "dumpster": {
+    "durationMinutes": 45,
+    "energyCost": 20,
+    "energyShortfallToHappiness": 0.75,
+    "happinessShortfallToHp": 0.5,
+    "emptyChanceByConsecutiveSearch": [
+      0.55,
+      0.62,
+      0.7,
+      0.78
+    ],
+    "emptyChanceCap": 0.78,
+    "resetStreakAtGameDayBoundary": true,
+    "resetStreakAfterSleep": true,
+    "appliesStatus": "SMELLY",
+    "inventoryEnabled": false,
+    "loot": {
+      "cheapFood": {
+        "conditionalWeight": 25,
+        "resolution": "immediateStats",
+        "satiety": 30,
+        "happiness": -2,
+        "energy": 0,
+        "hp": 0
+      },
+      "cash": {
+        "conditionalWeight": 12,
+        "resolution": "immediateCashUniformInteger",
+        "min": 200,
+        "max": 800
+      },
+      "sellableObject": {
+        "conditionalWeight": 6,
+        "resolution": "autoSellUniformInteger",
+        "min": 1000,
+        "max": 3000
+      },
+      "rareFind": {
+        "conditionalWeight": 2,
+        "resolution": "immediateCashUniformInteger",
+        "min": 3000,
+        "max": 7000
+      }
+    },
+    "lootRollMode": "rollEmptyFirstThenNormalizeNonEmptyWeights"
+  },
+  "events": {
+    "chancePerCheckpoint": 0.2,
+    "maxPerGameDay": 2,
+    "noImmediateRepeat": true,
+    "sameModifierStacks": false,
+    "definitions": [
+      {
+        "id": "EVENT_01",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.25
+        },
+        "b": {
+          "happiness": -20,
+          "durationMinutes": 120
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_02",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.2
+        },
+        "b": {
+          "type": "nextWorksPayoutMultiplier",
+          "count": 2,
+          "multiplier": 0.7
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_03",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.35
+        },
+        "b": {
+          "type": "nextBarryMultiplier",
+          "multiplier": 1.15,
+          "count": 1
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_04",
+        "a": {
+          "energy": -25
+        },
+        "b": {
+          "hp": -10
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_05",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.15
+        },
+        "b": {
+          "durationMinutes": 180
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_06",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.2
+        },
+        "b": {
+          "hp": -15
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_07",
+        "a": {
+          "type": "payMax",
+          "fixed": 300,
+          "barryFraction": 0.05
+        },
+        "b": {
+          "status": "SMELLY"
+        },
+        "eligibility": "NOT_SMELLY"
+      },
+      {
+        "id": "EVENT_08",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.25
+        },
+        "b": {
+          "type": "lockPlinko",
+          "durationMinutes": 180
+        },
+        "eligibility": "ALWAYS"
+      },
+      {
+        "id": "EVENT_09",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.15
+        },
+        "b": {
+          "type": "lockRandomJob",
+          "durationMinutes": 360
+        },
+        "eligibility": "AT_LEAST_ONE_JOB_NOT_EVENT_LOCKED"
+      },
+      {
+        "id": "EVENT_10",
+        "a": {
+          "type": "payBarryFraction",
+          "value": 0.1
+        },
+        "b": {
+          "type": "foodPriceMultiplier",
+          "multiplier": 1.3,
+          "durationMinutes": 720
+        },
+        "eligibility": "ALWAYS"
+      }
+    ],
+    "pendingLimit": 1,
+    "suppressRollsWhilePending": true,
+    "payChoiceRequiresCash": true
+  },
+  "plinko": {
+    "casinoAlwaysOpen": true,
+    "rows": 9,
+    "basePockets": [
+      12,
+      4,
+      1.5,
+      1,
+      0.25,
+      0.25,
+      1,
+      1.5,
+      4,
+      12
+    ],
+    "targetBareEV": 0.85,
+    "payoutMultiplierMeansTotalReturn": true,
+    "spawn": {
+      "mode": "centerWithSeededJitter",
+      "manualAim": false
+    },
+    "quickBetFractions": [
+      0.25,
+      0.5,
+      1
+    ],
+    "maxActiveBalls": 24,
+    "maxConcurrentDrops": 6,
+    "maxSplitDepth": 2,
+    "maxBetLevels": [
+      {
+        "level": 0,
+        "maxBet": 500,
+        "price": 0
+      },
+      {
+        "level": 1,
+        "maxBet": 2500,
+        "price": 500
+      },
+      {
+        "level": 2,
+        "maxBet": 12500,
+        "price": 1800
+      },
+      {
+        "level": 3,
+        "maxBet": 30000,
+        "price": 7000
+      },
+      {
+        "level": 4,
+        "maxBet": 60000,
+        "price": 250000
+      },
+      {
+        "level": 5,
+        "maxBet": 120000,
+        "price": 1500000
+      },
+      {
+        "level": 6,
+        "maxBet": 240000,
+        "price": 6000000
+      }
+    ],
+    "centerUpgrades": [
+      {
+        "level": 1,
+        "price": 500,
+        "center": 0.35
+      },
+      {
+        "level": 2,
+        "price": 1250,
+        "center": 0.4,
+        "inner": 1.05
+      }
+    ],
+    "midUpgrades": [
+      {
+        "level": 1,
+        "price": 2500,
+        "mid": 1.8,
+        "inner": 1.1
+      },
+      {
+        "level": 2,
+        "price": 30000,
+        "mid": 2.2,
+        "inner": 1.25
+      },
+      {
+        "level": 3,
+        "price": 150000,
+        "mid": 2.8,
+        "inner": 1.4
+      }
+    ],
+    "jackpotUpgrades": [
+      {
+        "level": 1,
+        "price": 5000,
+        "edge": 25
+      },
+      {
+        "level": 2,
+        "price": 50000,
+        "edge": 50
+      },
+      {
+        "level": 3,
+        "price": 500000,
+        "edge": 100
+      }
+    ],
+    "amplifier": [
+      {
+        "level": 1,
+        "price": 5000,
+        "count": 1,
+        "multiplier": 1.25
+      },
+      {
+        "level": 2,
+        "price": 45000,
+        "count": 2,
+        "multiplier": 1.25
+      },
+      {
+        "level": 3,
+        "price": 200000,
+        "count": 2,
+        "multiplier": 1.4
+      },
+      {
+        "level": 4,
+        "price": 2000000,
+        "count": 3,
+        "multiplier": 1.4
+      },
+      {
+        "level": 5,
+        "price": 9000000,
+        "count": 3,
+        "multiplier": 1.6
+      }
+    ],
+    "return": [
+      {
+        "level": 1,
+        "price": 15000,
+        "targetFrequency": 0.07
+      },
+      {
+        "level": 2,
+        "price": 100000,
+        "targetFrequency": 0.2
+      },
+      {
+        "level": 3,
+        "price": 1200000,
+        "targetFrequency": 0.3
+      },
+      {
+        "level": 4,
+        "price": 8000000,
+        "targetFrequency": 0.43
+      }
+    ],
+    "splitter": [
+      {
+        "level": 1,
+        "price": 7500,
+        "childValue": 0.7
+      },
+      {
+        "level": 2,
+        "price": 90000,
+        "childValue": 0.75
+      },
+      {
+        "level": 3,
+        "price": 450000,
+        "childValue": 0.8
+      },
+      {
+        "level": 4,
+        "price": 4000000,
+        "childValue": 0.85
+      },
+      {
+        "level": 5,
+        "price": 18000000,
+        "childValue": 0.9
+      }
+    ],
+    "jackpotBias": [
+      {
+        "level": 1,
+        "price": 4000,
+        "deflectorPairs": [
+          {
+            "deflectorOffsetX": 182,
+            "deflectorY": 320,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          }
+        ]
+      },
+      {
+        "level": 2,
+        "price": 45000,
+        "deflectorPairs": [
+          {
+            "deflectorOffsetX": 182,
+            "deflectorY": 320,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          },
+          {
+            "deflectorOffsetX": 158,
+            "deflectorY": 293,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          }
+        ]
+      },
+      {
+        "level": 3,
+        "price": 360000,
+        "deflectorPairs": [
+          {
+            "deflectorOffsetX": 182,
+            "deflectorY": 320,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          },
+          {
+            "deflectorOffsetX": 158,
+            "deflectorY": 293,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          },
+          {
+            "deflectorOffsetX": 134,
+            "deflectorY": 266,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          }
+        ]
+      },
+      {
+        "level": 4,
+        "price": 2800000,
+        "deflectorPairs": [
+          {
+            "deflectorOffsetX": 182,
+            "deflectorY": 320,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          },
+          {
+            "deflectorOffsetX": 158,
+            "deflectorY": 293,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          },
+          {
+            "deflectorOffsetX": 134,
+            "deflectorY": 266,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          },
+          {
+            "deflectorOffsetX": 110.5,
+            "deflectorY": 239,
+            "length": 36,
+            "thickness": 5,
+            "angleDegrees": 25,
+            "restitution": 0.75
+          }
+        ]
+      }
+    ],
+    "insurance": [
+      {
+        "level": 1,
+        "price": 500,
+        "lossesNeeded": 3,
+        "floor": 0.75
+      },
+      {
+        "level": 2,
+        "price": 2500,
+        "lossesNeeded": 2,
+        "floor": 0.9
+      },
+      {
+        "level": 3,
+        "price": 12500,
+        "lossesNeeded": 1,
+        "floor": 1
+      }
+    ],
+    "boardChangesLockedWhileDropActive": true,
+    "maxBetPriceStatus": "latestKnownTunedDiscussionValue; rerun canonical simulator before freeze",
+    "otherUpgradePriceStatus": "provisional V0 seed; not validated by a reproducible report for this exact config",
+    "pendingDropLocksAllOtherCashMutations": true,
+    "clockFreezesAtBarryBoundaryUntilActiveCascadeResolves": true,
+    "geometry": {
+      "logicalViewportWidth": 1280,
+      "logicalViewportHeight": 720,
+      "boardAreaWidth": 560,
+      "boardAreaHeight": 540,
+      "centerX": 640,
+      "topPegY": 130,
+      "horizontalPegSpacing": 48,
+      "verticalPegSpacing": 27,
+      "ballRadius": 10,
+      "pegRadius": 6,
+      "pocketCenterSpacing": 48,
+      "fixedTimestepHz": 60,
+      "spawnHorizontalJitterPx": 4,
+      "pocketDividerPegOverlapPx": 0
+    },
+    "physicsSeed": {
+      "gravityY": 1,
+      "ballRestitution": 0.155,
+      "pegRestitution": 0.6,
+      "friction": 0,
+      "frictionAir": 0.026,
+      "wallRestitution": 0.2
+    },
+    "pocketFamilies": {
+      "edge": [
+        0,
+        9
+      ],
+      "outerStatic": [
+        1,
+        8
+      ],
+      "mid": [
+        2,
+        7
+      ],
+      "inner": [
+        3,
+        6
+      ],
+      "center": [
+        4,
+        5
+      ]
+    },
+    "specialPinLayout": {
+      "id": "BOARD_LAYOUT_V1",
+      "calibrationSeed": 67108200,
+      "calibrationRuns": 100000,
+      "amplifierByCount": {
+        "1": [
+          "r6c3"
+        ],
+        "2": [
+          "r3c0",
+          "r3c3"
+        ],
+        "3": [
+          "r6c3",
+          "r3c0",
+          "r3c3"
+        ]
+      },
+      "returnByLevel": [
+        {
+          "level": 1,
+          "pegIds": [
+            "r8c1",
+            "r8c7"
+          ],
+          "targetFrequency": 0.07,
+          "measuredBareHitRate": 0.06939
+        },
+        {
+          "level": 2,
+          "pegIds": [
+            "r8c2",
+            "r8c6"
+          ],
+          "targetFrequency": 0.2,
+          "measuredBareHitRate": 0.19653
+        },
+        {
+          "level": 3,
+          "pegIds": [
+            "r5c1",
+            "r5c4"
+          ],
+          "targetFrequency": 0.3,
+          "measuredBareHitRate": 0.30409
+        },
+        {
+          "level": 4,
+          "pegIds": [
+            "r6c2",
+            "r6c4"
+          ],
+          "targetFrequency": 0.43,
+          "measuredBareHitRate": 0.42899
+        }
+      ],
+      "splitterPegIds": [
+        "r4c2"
+      ]
+    },
+    "splitterPhysics": {
+      "childHorizontalOffsetPx": 4,
+      "childHorizontalVelocityDelta": 0.8,
+      "childVerticalVelocityMultiplier": 0.9
+    },
+    "ballBallCollisions": false,
+    "returnPhysics": {
+      "horizontalRetention": 1,
+      "resetVelocity": true
+    },
+    "stuckWatchdog": {
+      "speedEpsilon": 0.001,
+      "stationaryTicks": 120,
+      "horizontalVelocity": 0.35,
+      "downwardVelocity": 0.35
+    }
+  },
+  "ads": {
+    "interstitialRequired": true,
+    "v0SafePlacements": [
+      "afterGameOverBeforeRestart",
+      "afterVictorySummary"
+    ],
+    "rewardedCoreBalance": false
+  },
+  "actions": {
+    "timedPaidAction": {
+      "cashCostTiming": "START",
+      "effectTiming": "COMPLETION"
+    },
+    "work": {
+      "stateCostTiming": "START",
+      "payoutFineTiming": "COMPLETION"
+    },
+    "dumpster": {
+      "stateCostTiming": "START",
+      "lootTiming": "COMPLETION"
+    },
+    "sleep": {
+      "restoreMode": "LINEAR_OVER_SLEPT_GAME_TIME"
+    }
+  }
+}

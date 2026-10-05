@@ -1,0 +1,158 @@
+[
+  {
+    "comparison": "burst",
+    "batch": 1,
+    "order": "cheapest",
+    "commonWins": 29,
+    "medianPairedDelta": {
+      "minutes": -0.201666666666668,
+      "work": 0,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": 0.0
+    }
+  },
+  {
+    "comparison": "burst",
+    "batch": 1,
+    "order": "original",
+    "commonWins": 27,
+    "medianPairedDelta": {
+      "minutes": 0.9944444444444329,
+      "work": -1,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": 1.130555555555559
+    }
+  },
+  {
+    "comparison": "burst",
+    "batch": 6,
+    "order": "cheapest",
+    "commonWins": 30,
+    "medianPairedDelta": {
+      "minutes": 0.11416666666666764,
+      "work": 0.0,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": 0.12041666666666706
+    }
+  },
+  {
+    "comparison": "burst",
+    "batch": 6,
+    "order": "original",
+    "commonWins": 26,
+    "medianPairedDelta": {
+      "minutes": -0.3743055555555559,
+      "work": 0.0,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": -0.028611111111112475
+    }
+  },
+  {
+    "comparison": "continuous",
+    "batch": 6,
+    "order": "cheapest",
+    "commonWins": 28,
+    "medianPairedDelta": {
+      "minutes": 0.04944444444444507,
+      "work": 0.0,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": -0.011805555555554292
+    }
+  },
+  {
+    "comparison": "continuous",
+    "batch": 6,
+    "order": "original",
+    "commonWins": 25,
+    "medianPairedDelta": {
+      "minutes": -0.19833333333333059,
+      "work": 0,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": 0.09000000000000163
+    }
+  },
+  {
+    "comparison": "continuous-spend",
+    "batch": 6,
+    "order": "cheapest",
+    "commonWins": 22,
+    "medianPairedDelta": {
+      "minutes": -0.022499999999999076,
+      "work": 0.0,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": -0.07736111111111099
+    }
+  },
+  {
+    "comparison": "continuous-spend",
+    "batch": 6,
+    "order": "original",
+    "commonWins": 16,
+    "medianPairedDelta": {
+      "minutes": -0.42444444444444684,
+      "work": -0.5,
+      "internalPurchaseGapMinutes": 0.0,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": -0.10236111111111279
+    }
+  },
+  {
+    "comparison": "policy-buffer4",
+    "batch": 1,
+    "order": "cheapest",
+    "commonWins": 29,
+    "medianPairedDelta": {
+      "minutes": 8.065555555555552,
+      "work": -4,
+      "internalPurchaseGapMinutes": 1.847500000000002,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": 0.9483333333333395
+    }
+  },
+  {
+    "comparison": "policy-buffer4",
+    "batch": 1,
+    "order": "original",
+    "commonWins": 26,
+    "medianPairedDelta": {
+      "minutes": 3.704305555555555,
+      "work": -6.5,
+      "internalPurchaseGapMinutes": -0.26388888888889017,
+      "mid3GapMinutes": -1.1101388888888861,
+      "millionToEndMinutes": -0.450277777777782
+    }
+  },
+  {
+    "comparison": "policy-buffer4",
+    "batch": 6,
+    "order": "cheapest",
+    "commonWins": 26,
+    "medianPairedDelta": {
+      "minutes": -0.9215277777777784,
+      "work": -5.0,
+      "internalPurchaseGapMinutes": -0.14430555555555635,
+      "mid3GapMinutes": 0.0,
+      "millionToEndMinutes": 0.29986111111111124
+    }
+  },
+  {
+    "comparison": "policy-buffer4",
+    "batch": 6,
+    "order": "original",
+    "commonWins": 25,
+    "medianPairedDelta": {
+      "minutes": -1.6005555555555553,
+      "work": -5,
+      "internalPurchaseGapMinutes": -1.5294444444444437,
+      "mid3GapMinutes": -0.2947222222222232,
+      "millionToEndMinutes": -0.12222222222221912
+    }
+  }
+]
