@@ -1,0 +1,1004 @@
+{
+  "metadata": {
+    "sourceRevision": "b5aebb98c5b66643eb4bdf3675d921702efae0db",
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "seedStart": 67106554,
+    "rootSeedSampling": "consecutive states of xorshift32 stream, not adjacent integer seeds",
+    "runsPerVariant": 2000,
+    "model": "shared-world Phaser resolver v1; single roots; full core settlement",
+    "limitations": "No insurance or upgraded max bet; no interaction with purchasing policy; gross return includes stake. Paired seeds. Means can be dominated by rare tails. Not human win probabilities."
+  },
+  "rows": [
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "base",
+      "levels": {},
+      "runs": 2000,
+      "meanGrossReturn": 1.912125,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07067019708169259
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-center-1",
+      "levels": {
+        "plinkoCenterLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9541749999999998,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07018239411639816
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-center-2",
+      "levels": {
+        "plinkoCenterLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9881999999999918,
+      "medianGrossReturn": 1.05,
+      "lossShare": 0.4205,
+      "standardError": 0.0698547437373533
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-mid-1",
+      "levels": {
+        "plinkoMidLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9831249999999987,
+      "medianGrossReturn": 1.1,
+      "lossShare": 0.4205,
+      "standardError": 0.07040970817785239
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-mid-2",
+      "levels": {
+        "plinkoMidLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.0821250000000067,
+      "medianGrossReturn": 1.25,
+      "lossShare": 0.4205,
+      "standardError": 0.07015771104730555
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-mid-3",
+      "levels": {
+        "plinkoMidLevel": 3
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.2111249999999876,
+      "medianGrossReturn": 1.4,
+      "lossShare": 0.4205,
+      "standardError": 0.0701560024126573
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpot-1",
+      "levels": {
+        "plinkoJackpotLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.958625,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.1476967055763487
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpot-2",
+      "levels": {
+        "plinkoJackpotLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 4.971125,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.2988938231227573
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpot-3",
+      "levels": {
+        "plinkoJackpotLevel": 3
+      },
+      "runs": 2000,
+      "meanGrossReturn": 8.996125,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.6026942660307456
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0.2705,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-amplifier-1",
+      "levels": {
+        "plinkoAmplifierLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9349120000000022,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07045271705760102
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0.269,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-amplifier-2",
+      "levels": {
+        "plinkoAmplifierLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.2356889999999985,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.08843959826859481
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0.269,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-amplifier-3",
+      "levels": {
+        "plinkoAmplifierLevel": 3
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.429725000000003,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.09920115559721766
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0.537,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-amplifier-4",
+      "levels": {
+        "plinkoAmplifierLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.4665350000000013,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.09886112953711504
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        437,
+        404,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0.537,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-amplifier-5",
+      "levels": {
+        "plinkoAmplifierLevel": 5
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.7438599999999935,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.11312379345886228
+    },
+    {
+      "pockets": [
+        135,
+        32,
+        39,
+        273,
+        550,
+        525,
+        205,
+        52,
+        25,
+        164
+      ],
+      "edgeRootShare": 0.1495,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0.192,
+      "splitterRootShare": 0,
+      "name": "only-return-1",
+      "levels": {
+        "plinkoReturnLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.349625,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.5375,
+      "standardError": 0.091778686078504
+    },
+    {
+      "pockets": [
+        84,
+        72,
+        68,
+        247,
+        548,
+        529,
+        178,
+        95,
+        78,
+        101
+      ],
+      "edgeRootShare": 0.0925,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0.2405,
+      "splitterRootShare": 0,
+      "name": "only-return-2",
+      "levels": {
+        "plinkoReturnLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.879375,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.5385,
+      "standardError": 0.07557510322719661
+    },
+    {
+      "pockets": [
+        178,
+        41,
+        39,
+        202,
+        590,
+        530,
+        136,
+        64,
+        39,
+        181
+      ],
+      "edgeRootShare": 0.1795,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0.2575,
+      "splitterRootShare": 0,
+      "name": "only-return-3",
+      "levels": {
+        "plinkoReturnLevel": 3
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.70025,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.56,
+      "standardError": 0.09880862331178618
+    },
+    {
+      "pockets": [
+        157,
+        92,
+        41,
+        179,
+        552,
+        530,
+        123,
+        53,
+        93,
+        180
+      ],
+      "edgeRootShare": 0.1685,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0.2125,
+      "splitterRootShare": 0,
+      "name": "only-return-4",
+      "levels": {
+        "plinkoReturnLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.74875,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.541,
+      "standardError": 0.0961461908437191
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        676,
+        664,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0.2495,
+      "name": "only-splitter-1",
+      "levels": {
+        "plinkoSplitterLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9096299999999995,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07069961243988246
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        676,
+        664,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0.2495,
+      "name": "only-splitter-2",
+      "levels": {
+        "plinkoSplitterLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9126240000000012,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07066432844773615
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        676,
+        664,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0.2495,
+      "name": "only-splitter-3",
+      "levels": {
+        "plinkoSplitterLevel": 3
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9146199999999989,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.0706409020775018
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        676,
+        664,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0.2495,
+      "name": "only-splitter-4",
+      "levels": {
+        "plinkoSplitterLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9186120000000015,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07059428078086404
+    },
+    {
+      "pockets": [
+        80,
+        88,
+        129,
+        295,
+        676,
+        664,
+        225,
+        171,
+        90,
+        81
+      ],
+      "edgeRootShare": 0.0805,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0.2495,
+      "name": "only-splitter-5",
+      "levels": {
+        "plinkoSplitterLevel": 5
+      },
+      "runs": 2000,
+      "meanGrossReturn": 1.9226040000000002,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07054796858540842
+    },
+    {
+      "pockets": [
+        94,
+        72,
+        131,
+        295,
+        437,
+        404,
+        225,
+        170,
+        82,
+        90
+      ],
+      "edgeRootShare": 0.092,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpotBias-1",
+      "levels": {
+        "plinkoJackpotBiasLevel": 1
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.002875,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07449478994568687
+    },
+    {
+      "pockets": [
+        105,
+        60,
+        132,
+        295,
+        437,
+        404,
+        228,
+        166,
+        60,
+        113
+      ],
+      "edgeRootShare": 0.109,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpotBias-2",
+      "levels": {
+        "plinkoJackpotBiasLevel": 2
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.138125,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4205,
+      "standardError": 0.07973020017281612
+    },
+    {
+      "pockets": [
+        134,
+        54,
+        102,
+        294,
+        445,
+        408,
+        223,
+        135,
+        54,
+        151
+      ],
+      "edgeRootShare": 0.1425,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpotBias-3",
+      "levels": {
+        "plinkoJackpotBiasLevel": 3
+      },
+      "runs": 2000,
+      "meanGrossReturn": 2.468875,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4265,
+      "standardError": 0.08901786805245228
+    },
+    {
+      "pockets": [
+        187,
+        53,
+        75,
+        270,
+        452,
+        409,
+        193,
+        96,
+        53,
+        212
+      ],
+      "edgeRootShare": 0.1995,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0,
+      "splitterRootShare": 0,
+      "name": "only-jackpotBias-4",
+      "levels": {
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 3.073375,
+      "medianGrossReturn": 1,
+      "lossShare": 0.4305,
+      "standardError": 0.10146783500428974
+    },
+    {
+      "pockets": [
+        217,
+        53,
+        22,
+        179,
+        883,
+        878,
+        124,
+        18,
+        53,
+        268
+      ],
+      "edgeRootShare": 0.2425,
+      "amplifierRootShare": 0.545,
+      "returnRootShare": 0.1455,
+      "splitterRootShare": 0.3475,
+      "name": "maximum",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 37.126442000000004,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.5305,
+      "standardError": 1.4453795876552724
+    },
+    {
+      "pockets": [
+        217,
+        53,
+        22,
+        179,
+        883,
+        878,
+        124,
+        18,
+        53,
+        268
+      ],
+      "edgeRootShare": 0.2425,
+      "amplifierRootShare": 0.545,
+      "returnRootShare": 0.1455,
+      "splitterRootShare": 0.3475,
+      "name": "maximum-without-center",
+      "levels": {
+        "plinkoCenterLevel": 0,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 37.007909,
+      "medianGrossReturn": 0.464,
+      "lossShare": 0.533,
+      "standardError": 1.4468782816117474
+    },
+    {
+      "pockets": [
+        217,
+        53,
+        22,
+        179,
+        883,
+        878,
+        124,
+        18,
+        53,
+        268
+      ],
+      "edgeRootShare": 0.2425,
+      "amplifierRootShare": 0.545,
+      "returnRootShare": 0.1455,
+      "splitterRootShare": 0.3475,
+      "name": "maximum-without-mid",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 37.036328999999995,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.5305,
+      "standardError": 1.4464815134170212
+    },
+    {
+      "pockets": [
+        217,
+        53,
+        22,
+        179,
+        883,
+        878,
+        124,
+        18,
+        53,
+        268
+      ],
+      "edgeRootShare": 0.2425,
+      "amplifierRootShare": 0.545,
+      "returnRootShare": 0.1455,
+      "splitterRootShare": 0.3475,
+      "name": "maximum-without-jackpot",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 0,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 5.20004200000002,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.5305,
+      "standardError": 0.16534070732238668
+    },
+    {
+      "pockets": [
+        217,
+        53,
+        22,
+        179,
+        883,
+        878,
+        124,
+        18,
+        53,
+        268
+      ],
+      "edgeRootShare": 0.2425,
+      "amplifierRootShare": 0,
+      "returnRootShare": 0.1455,
+      "splitterRootShare": 0.3475,
+      "name": "maximum-without-amplifier",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 24.965539999999994,
+      "medianGrossReturn": 0.464,
+      "lossShare": 0.533,
+      "standardError": 0.9497447190955636
+    },
+    {
+      "pockets": [
+        187,
+        53,
+        75,
+        270,
+        696,
+        681,
+        193,
+        96,
+        53,
+        212
+      ],
+      "edgeRootShare": 0.1995,
+      "amplifierRootShare": 0.537,
+      "returnRootShare": 0,
+      "splitterRootShare": 0.258,
+      "name": "maximum-without-return",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 33.030812,
+      "medianGrossReturn": 1.4,
+      "lossShare": 0.4285,
+      "standardError": 1.4178636417299129
+    },
+    {
+      "pockets": [
+        217,
+        53,
+        22,
+        179,
+        550,
+        516,
+        124,
+        18,
+        53,
+        268
+      ],
+      "edgeRootShare": 0.2425,
+      "amplifierRootShare": 0.545,
+      "returnRootShare": 0.1455,
+      "splitterRootShare": 0,
+      "name": "maximum-without-splitter",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 2000,
+      "meanGrossReturn": 37.09421199999999,
+      "medianGrossReturn": 0.64,
+      "lossShare": 0.5305,
+      "standardError": 1.4457862989545316
+    },
+    {
+      "pockets": [
+        157,
+        92,
+        41,
+        179,
+        848,
+        869,
+        123,
+        53,
+        93,
+        180
+      ],
+      "edgeRootShare": 0.1685,
+      "amplifierRootShare": 0.537,
+      "returnRootShare": 0.2125,
+      "splitterRootShare": 0.3175,
+      "name": "maximum-without-jackpotBias",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 0
+      },
+      "runs": 2000,
+      "meanGrossReturn": 25.895480000000006,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.539,
+      "standardError": 1.236041506843567
+    }
+  ]
+}

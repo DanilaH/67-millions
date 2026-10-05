@@ -1,0 +1,394 @@
+{
+  "revision": "409ef544501573c953a865707727659eb812e87f",
+  "seed": 67107100,
+  "count": 500,
+  "rows": [
+    {
+      "name": "baseline",
+      "count": 500,
+      "failed": 0,
+      "mean": 1.6935,
+      "se": 0.12498146062516632,
+      "edge": 0.06,
+      "center": 0.41,
+      "pockets": [
+        14,
+        18,
+        42,
+        66,
+        89,
+        116,
+        68,
+        47,
+        24,
+        16
+      ],
+      "meanSeconds": 4.6913,
+      "configHash": "67e507a9599eb6d9118e64b9ea906c98a5bc7797dafca707a116cc4a58bbb90f"
+    },
+    {
+      "name": "air-0.035",
+      "physics": {
+        "frictionAir": 0.035
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 0.312,
+      "se": 0.009503262597655606,
+      "edge": 0,
+      "center": 0.92,
+      "pockets": [
+        0,
+        0,
+        1,
+        17,
+        224,
+        236,
+        21,
+        1,
+        0,
+        0
+      ],
+      "meanSeconds": 5.053233333333334,
+      "configHash": "46acf81141874c0d8d2f1537ebf3b90ac92801dad8040b0cadef3957ecffc9fc"
+    },
+    {
+      "name": "air-0.05",
+      "physics": {
+        "frictionAir": 0.05
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 0.25,
+      "se": 0,
+      "edge": 0,
+      "center": 1,
+      "pockets": [
+        0,
+        0,
+        0,
+        0,
+        240,
+        260,
+        0,
+        0,
+        0,
+        0
+      ],
+      "meanSeconds": 4.9447,
+      "configHash": "564ce9a746f3cf365e237dc43dadc61c986291916739f97bc74ed5ee6b05a8b2"
+    },
+    {
+      "name": "air-0.07",
+      "physics": {
+        "frictionAir": 0.07
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 0.25,
+      "se": 0,
+      "edge": 0,
+      "center": 1,
+      "pockets": [
+        0,
+        0,
+        0,
+        0,
+        240,
+        260,
+        0,
+        0,
+        0,
+        0
+      ],
+      "meanSeconds": 5.252866666666667,
+      "configHash": "d0c6bdb88a2c5f63f0bebb486e51a19a3c4c14f4960500fe9b60af189b5bce16"
+    },
+    {
+      "name": "air-0.1",
+      "physics": {
+        "frictionAir": 0.1
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 0.25,
+      "se": 0,
+      "edge": 0,
+      "center": 1,
+      "pockets": [
+        0,
+        0,
+        0,
+        0,
+        240,
+        260,
+        0,
+        0,
+        0,
+        0
+      ],
+      "meanSeconds": 5.609666666666667,
+      "configHash": "d9575d8725913dfa080f767ce7e6b24d8d1a144463b379f9780fb64d370ea097"
+    },
+    {
+      "name": "rest-0",
+      "physics": {
+        "ballRestitution": 0
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 2.0635,
+      "se": 0.15406227799172645,
+      "edge": 0.1,
+      "center": 0.434,
+      "pockets": [
+        23,
+        14,
+        38,
+        56,
+        99,
+        118,
+        58,
+        47,
+        20,
+        27
+      ],
+      "meanSeconds": 4.6636,
+      "configHash": "3f1e58e7aad08cd0d5f5671cf2377670d1f0d20f073357455625680dabeb278e"
+    },
+    {
+      "name": "rest-0.05",
+      "physics": {
+        "ballRestitution": 0.05
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 1.881,
+      "se": 0.14329228171817213,
+      "edge": 0.084,
+      "center": 0.432,
+      "pockets": [
+        17,
+        17,
+        33,
+        65,
+        112,
+        104,
+        61,
+        50,
+        16,
+        25
+      ],
+      "meanSeconds": 4.636866666666666,
+      "configHash": "36d164bf11084ff26477ba48fc8d877e7a51d5b136d0216654b466420cf1e31a"
+    },
+    {
+      "name": "rest-0.25",
+      "physics": {
+        "ballRestitution": 0.25
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 1.6175,
+      "se": 0.12222780984702294,
+      "edge": 0.056,
+      "center": 0.458,
+      "pockets": [
+        13,
+        22,
+        41,
+        53,
+        123,
+        106,
+        60,
+        46,
+        21,
+        15
+      ],
+      "meanSeconds": 4.742766666666666,
+      "configHash": "051a36ab757a49b358a80fafdcf6e03d00d638de6e00fae3df41bc667b3a4f5f"
+    },
+    {
+      "name": "rest-0.4",
+      "physics": {
+        "ballRestitution": 0.4
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 1.906,
+      "se": 0.14171918712722,
+      "edge": 0.08,
+      "center": 0.464,
+      "pockets": [
+        20,
+        21,
+        39,
+        48,
+        111,
+        121,
+        51,
+        41,
+        28,
+        20
+      ],
+      "meanSeconds": 4.7076,
+      "configHash": "db7672af5cc6be2f2731f517bedfe9c7ed3307e73452a6dc77eced32cdac043e"
+    },
+    {
+      "name": "rest-0.6",
+      "physics": {
+        "ballRestitution": 0.6
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 1.4785,
+      "se": 0.13085421468183592,
+      "edge": 0.066,
+      "center": 0.59,
+      "pockets": [
+        15,
+        11,
+        20,
+        37,
+        154,
+        141,
+        65,
+        25,
+        14,
+        18
+      ],
+      "meanSeconds": 4.852866666666667,
+      "configHash": "83367a667fea597a0c1ae4151c09d04cc62f918a4905ec0d247d8e149a14f0fa"
+    },
+    {
+      "name": "height-30",
+      "geometry": {
+        "verticalPegSpacing": 30
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 2.528,
+      "se": 0.15507234440737652,
+      "edge": 0.104,
+      "center": 0.312,
+      "pockets": [
+        23,
+        49,
+        47,
+        54,
+        77,
+        79,
+        50,
+        55,
+        37,
+        29
+      ],
+      "meanSeconds": 4.4063,
+      "configHash": "e7d4366df50f26c82070defd7303a93d37364ada5d2c539d7f38b070043244f5"
+    },
+    {
+      "name": "height-34",
+      "geometry": {
+        "verticalPegSpacing": 34
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 7.168,
+      "se": 0.23374462988483816,
+      "edge": 0.532,
+      "center": 0.088,
+      "pockets": [
+        130,
+        18,
+        42,
+        31,
+        29,
+        15,
+        27,
+        40,
+        32,
+        136
+      ],
+      "meanSeconds": 3.591666666666667,
+      "configHash": "abd13b238edb5b67adece609495407d1b70f682c16add329cdca2b282804bf80"
+    },
+    {
+      "name": "height-38",
+      "geometry": {
+        "verticalPegSpacing": 38
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 9.484,
+      "se": 0.19572554253341587,
+      "edge": 0.746,
+      "center": 0.04,
+      "pockets": [
+        179,
+        23,
+        17,
+        13,
+        7,
+        13,
+        16,
+        15,
+        23,
+        194
+      ],
+      "meanSeconds": 3.0496666666666665,
+      "configHash": "e2aab94f8b999e2e2899ee49f02a8c3c2f063ca9b1ebd060e80e892963fd3442"
+    },
+    {
+      "name": "height-42",
+      "geometry": {
+        "verticalPegSpacing": 42
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 11.531,
+      "se": 0.09664925245442917,
+      "edge": 0.954,
+      "center": 0.016,
+      "pockets": [
+        227,
+        5,
+        3,
+        0,
+        5,
+        3,
+        1,
+        4,
+        2,
+        250
+      ],
+      "meanSeconds": 2.533333333333333,
+      "configHash": "ea43da0a4f49a4c5396b268eaf9edfd27a40cb0d8e2a9ed8b3ad76d225bda2cd"
+    },
+    {
+      "name": "height-48",
+      "geometry": {
+        "verticalPegSpacing": 48
+      },
+      "count": 500,
+      "failed": 0,
+      "mean": 11.027,
+      "se": 0.1377081769540213,
+      "edge": 0.908,
+      "center": 0.016,
+      "pockets": [
+        220,
+        4,
+        2,
+        11,
+        4,
+        4,
+        16,
+        1,
+        4,
+        234
+      ],
+      "meanSeconds": 2.640433333333333,
+      "configHash": "c067d036f3de842ab5039c58f859377fed610dd46f7c8ec2192b8744b3450c57"
+    }
+  ]
+}

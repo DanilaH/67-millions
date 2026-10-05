@@ -1,0 +1,241 @@
+{
+  "revision": "409ef544501573c953a865707727659eb812e87f",
+  "seed": 67107200,
+  "count": 1000,
+  "rows": [
+    {
+      "name": "air-0.024",
+      "physics": {
+        "frictionAir": 0.024
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 1.6235,
+      "se": 0.08704236181308501,
+      "edge": 0.058,
+      "center": 0.426,
+      "pockets": [
+        34,
+        30,
+        90,
+        135,
+        213,
+        213,
+        141,
+        76,
+        44,
+        24
+      ],
+      "meanSeconds": 4.714583333333334,
+      "configHash": "5af60ef2fd5a61ad6ac67c3e1614bbd4f0907cb4e9fa931b9ea4361e2fa62829"
+    },
+    {
+      "name": "air-0.025",
+      "physics": {
+        "frictionAir": 0.025
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 1.27625,
+      "se": 0.06641440685197754,
+      "edge": 0.03,
+      "center": 0.431,
+      "pockets": [
+        16,
+        33,
+        68,
+        162,
+        227,
+        204,
+        158,
+        87,
+        31,
+        14
+      ],
+      "meanSeconds": 4.861633333333333,
+      "configHash": "a6383ae687b724ddeee0d7ece2557490b60d3c3cd8f7ebc38d2ee110423a0961"
+    },
+    {
+      "name": "air-0.026",
+      "physics": {
+        "frictionAir": 0.026
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.838,
+      "se": 0.042576472376184483,
+      "edge": 0.01,
+      "center": 0.568,
+      "pockets": [
+        5,
+        15,
+        63,
+        138,
+        276,
+        292,
+        131,
+        59,
+        16,
+        5
+      ],
+      "meanSeconds": 4.98125,
+      "configHash": "9c9402e52f9fb82861133905e333b61f9f25d39347467eaa800aed1b7d42a134"
+    },
+    {
+      "name": "air-0.027",
+      "physics": {
+        "frictionAir": 0.027
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.75375,
+      "se": 0.03581443057623561,
+      "edge": 0.006,
+      "center": 0.593,
+      "pockets": [
+        5,
+        20,
+        43,
+        137,
+        285,
+        308,
+        144,
+        48,
+        9,
+        1
+      ],
+      "meanSeconds": 5.0240833333333335,
+      "configHash": "3645286c0d1d7af12a8c2f94c1baa5c55bb6beebb837042412eefdbce0412344"
+    },
+    {
+      "name": "air-0.028",
+      "physics": {
+        "frictionAir": 0.028
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.708,
+      "se": 0.04168316206815409,
+      "edge": 0.01,
+      "center": 0.676,
+      "pockets": [
+        4,
+        10,
+        30,
+        110,
+        331,
+        345,
+        114,
+        36,
+        14,
+        6
+      ],
+      "meanSeconds": 5.081816666666667,
+      "configHash": "83bf65c4b4a04229576e072ce2717a9122a45c9788dd90ab24b3bdbc382987bb"
+    },
+    {
+      "name": "air-0.029",
+      "physics": {
+        "frictionAir": 0.029
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.576,
+      "se": 0.028210795805861277,
+      "edge": 0.004,
+      "center": 0.694,
+      "pockets": [
+        0,
+        5,
+        23,
+        126,
+        358,
+        336,
+        121,
+        22,
+        5,
+        4
+      ],
+      "meanSeconds": 5.083166666666667,
+      "configHash": "317b7c2856b5f9b5b4730139a557f08b7ba375a6ee75adb034d37e856ffd0bf2"
+    },
+    {
+      "name": "air-0.03",
+      "physics": {
+        "frictionAir": 0.03
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.443,
+      "se": 0.017352982452592983,
+      "edge": 0.001,
+      "center": 0.794,
+      "pockets": [
+        1,
+        2,
+        19,
+        87,
+        373,
+        421,
+        83,
+        12,
+        2,
+        0
+      ],
+      "meanSeconds": 5.119033333333333,
+      "configHash": "4539022f6172ac0ad10aec823fd87cacf2a9ea3f739876be092bc048aad25b02"
+    },
+    {
+      "name": "air-0.031",
+      "physics": {
+        "frictionAir": 0.031
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.45225,
+      "se": 0.018063289775121255,
+      "edge": 0.001,
+      "center": 0.797,
+      "pockets": [
+        1,
+        3,
+        23,
+        73,
+        394,
+        403,
+        76,
+        25,
+        2,
+        0
+      ],
+      "meanSeconds": 5.1448833333333335,
+      "configHash": "c9c798003013f832a37d25dcb680bbc438507c3ac857677f25c99598cd83983d"
+    },
+    {
+      "name": "air-0.032",
+      "physics": {
+        "frictionAir": 0.032
+      },
+      "count": 1000,
+      "failed": 0,
+      "mean": 0.526,
+      "se": 0.03569592413707761,
+      "edge": 0.008,
+      "center": 0.802,
+      "pockets": [
+        3,
+        1,
+        19,
+        73,
+        395,
+        407,
+        78,
+        12,
+        7,
+        5
+      ],
+      "meanSeconds": 5.1,
+      "configHash": "2f4a288814285f7be7ba8adf76da24ac98a5c4648bfd872ca3236603ff794007"
+    }
+  ]
+}

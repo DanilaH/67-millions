@@ -14,7 +14,8 @@ const config = parseBalanceConfig(JSON.parse(raw));
 const count = Number(process.argv[2] ?? 1000);
 if (!Number.isInteger(count) || count < 1) throw Error('runs must be a positive integer');
 const output = process.argv[3] ?? 'reports/pacing/2026-10-05-upgrades';
-const seedStart = 67106000;
+const seedStart = Number(process.argv[4] ?? 67106000);
+if (!Number.isInteger(seedStart) || seedStart < 1 || seedStart > 0xffffffff) throw Error('seed must be a nonzero uint32');
 // Adjacent xorshift seeds have correlated first draws. Sample one reproducible
 // stream instead, and reuse those root seeds for every upgrade variant.
 const seedStream = new SeededRandom(seedStart);
@@ -37,6 +38,8 @@ const samples: { variant: string; seed: number; payout: number; stake: number; t
 const rows=[];
 for(const variant of variants) {
   const values=[];
+  const pockets=Array<number>(config.plinko.basePockets.length).fill(0);
+  let edgeRoots=0, amplifierRoots=0, returnRoots=0, splitterRoots=0;
   for(let i=0;i<count;i++) {
     const world=createSharedWorld({...createInitialGameState(config,seeds[i]!),cash:100000,...variant.levels},config);
     try {
@@ -44,14 +47,21 @@ for(const variant of variants) {
       let ticks=0;
       while(world.active && ticks<3600){world.step();ticks++;}
       if(world.active)throw Error(`unresolved ${variant.name} seed ${seeds[i]!}`);
-      const result=world.snapshot().settlements[0]!;
+      const snapshot=world.snapshot();
+      const result=snapshot.settlements[0]!;
+      const d=snapshot.diagnostics;
+      d.pockets.forEach((n,i)=>{pockets[i]!+=n;});
+      if(d.pockets[0]!+d.pockets.at(-1)!>0)edgeRoots++;
+      if(d.amplifierProcs)amplifierRoots++;
+      if(d.returnProcs)returnRoots++;
+      if(d.splitterProcs)splitterRoots++;
       samples.push({variant:variant.name,seed:seeds[i]!,payout:result.payout,stake:result.stake,ticks});
       values.push(result.payout/result.stake);
     } finally {world.destroy();}
   }
   values.sort((a,b)=>a-b);
   const mean=values.reduce((a,b)=>a+b,0)/count;
-  rows.push({name:variant.name,levels:variant.levels,runs:count,meanGrossReturn:mean,medianGrossReturn:(values[Math.floor((count-1)/2)]!+values[Math.floor(count/2)]!)/2,lossShare:values.filter(v=>v<1).length/count,standardError:count>1?Math.sqrt(values.reduce((s,v)=>s+(v-mean)**2,0)/(count-1)/count):null});
+  rows.push({pockets,edgeRootShare:edgeRoots/count,amplifierRootShare:amplifierRoots/count,returnRootShare:returnRoots/count,splitterRootShare:splitterRoots/count,name:variant.name,levels:variant.levels,runs:count,meanGrossReturn:mean,medianGrossReturn:(values[Math.floor((count-1)/2)]!+values[Math.floor(count/2)]!)/2,lossShare:values.filter(v=>v<1).length/count,standardError:count>1?Math.sqrt(values.reduce((s,v)=>s+(v-mean)**2,0)/(count-1)/count):null});
   process.stderr.write(`${variant.name}: ${mean.toFixed(3)}x\n`);
 }
 mkdirSync(output,{recursive:true});

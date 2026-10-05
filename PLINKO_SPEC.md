@@ -22,11 +22,15 @@ Bare pockets:
 
 `12x | 4x | 1.5x | 1x | 0.25x | 0.25x | 1x | 1.5x | 4x | 12x`
 
-Theoretical ideal-binomial EV = **0.849609375x**. Bare V0 has been physically calibrated with the Matter runner; the current watchdog-enabled accepted 100k sample measured **0.865400x EV**, **52.188% combined center**, **0.614% maximum mirrored-pocket delta**, and **0 stuck/watchdog outcomes**. The ideal distribution is a target shape, not a fake probability override.
+Theoretical ideal-binomial EV = **0.849609375x**. The ideal distribution is a target shape, not a fake probability override.
+
+Current candidate (2026-10-05): frictionAir 0.026, measured using the production shared-world adapter with Phaser Resolver initialization. An independent 10,000-root holdout measured **0.846025x EV**, **0.68% combined edge**, **55.25% combined center**, and **0 unresolved roots**. See `reports/physics/2026-10-05-bare/README.md`. This establishes a bare-board candidate, not acceptance of upgrades or whole-game pacing.
+
+Historical standalone-Matter measurements (including 0.865400x) used different Resolver initialization and do not validate the production runtime. The superseded runtime board measured 1.912x / 8.05% edge in `reports/pacing/2026-10-05-pockets/README.md`.
 
 ## 4. Physics seed
 
-Exact calibrated physics values live in `balance.v0.json -> plinko.physicsSeed`. Bare V0 currently uses gravity 1.0, ball restitution 0.155, peg restitution 0.6, frictionAir 0.023 and wall restitution 0.2. These values remain TUNABLE V0 and may change only through config + measured physical reports, never Scene constants.
+Exact calibrated physics values live in `balance.v0.json -> plinko.physicsSeed`. Bare V0 currently uses gravity 1.0, ball restitution 0.155, peg restitution 0.6, frictionAir 0.026 and wall restitution 0.2. These values remain TUNABLE V0 and may change only through config + measured physical reports, never Scene constants.
 
 ## 5. Bet / payout semantics
 

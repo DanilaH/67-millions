@@ -852,7 +852,7 @@
       "ballRestitution": 0.155,
       "pegRestitution": 0.6,
       "friction": 0,
-      "frictionAir": 0.023,
+      "frictionAir": 0.026,
       "wallRestitution": 0.2
     },
     "pocketFamilies": {

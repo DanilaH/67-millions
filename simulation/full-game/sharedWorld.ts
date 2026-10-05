@@ -21,6 +21,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
   let pending: PendingDrop | null = null;
   let advancedMinutes = 0, launches = 0, elapsedTicks = 0;
   const settlements: { stake: number; payout: number; tick: number }[] = [];
+  const diagnostics = { pockets: Array<number>(config.plinko.basePockets.length).fill(0), amplifierProcs: 0, returnProcs: 0, splitterProcs: 0 };
   const balls = new Map<MatterJS.BodyType, DropBallState>();
   const mutations: (() => void)[] = [];
   // MatterPhysics' constructor overrides the raw Matter defaults (Phaser 4.2.1,
@@ -66,11 +67,14 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
       ball = clearSplitterBlockAfterPeg(ball, id); balls.set(body, ball);
       const active = deriveActiveSpecialPins(config, pending.specialLevelsAtCommit);
       if (active.amplifier?.pegIds.includes(id) && canAmplifyAt(ball, id)) {
+        diagnostics.amplifierProcs++;
         for (const [b, meta] of balls) if (meta.lineageId === ball.lineageId) balls.set(b, markAmplifierProc(meta, id, active.amplifier.multiplier, b === body));
       } else if (active.return?.pegIds.includes(id) && canReturnLineage(ball)) {
+        diagnostics.returnProcs++;
         for (const [b, meta] of balls) if (meta.lineageId === ball.lineageId) balls.set(b, markReturnUsed(meta));
         runtime.returnBall(body);
       } else if (active.splitter?.pegIds.includes(id) && canSplitAt(ball, id, balls.size, config)) {
+        diagnostics.splitterProcs++;
         const children = createSplitChildren(ball, id, active.splitter.childValue);
         const bodies = runtime.splitBall(body); balls.delete(body);
         balls.set(bodies[0], children[0]); balls.set(bodies[1], children[1]);
@@ -78,6 +82,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
     }); },
     onPocket(index, body) { mutations.push(() => {
       const meta = balls.get(body); if (!pending || !meta) return;
+      diagnostics.pockets[index]!++;
       const shot = findBallDrop(pending, meta.lineageId);
       const payout = (shot.physics?.alreadySettledPayout ?? 0) + calculateBallPocketPayout(shot, meta.currentValue, index, config);
       balls.delete(body); runtime.removeBall(body);
@@ -110,7 +115,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
     step() { elapsedTicks++; M.Engine.update(engine, 1000 / 60); while (mutations.length) mutations.shift()!(); },
     snapshot() {
       const checkpoint = pending ? { ...pending, physics: { fixedTicksElapsed: runtime.getFixedTicksElapsed(), alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0, balls: [...balls].map(([b,m])=>runtime.snapshotBall(b,m)), solver: runtime.snapshotSolver(balls) } } : null;
-      return { state: structuredClone(state), pending: structuredClone(checkpoint), advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements) };
+      return { state: structuredClone(state), pending: structuredClone(checkpoint), advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements), diagnostics: structuredClone(diagnostics) };
     },
     get active() { return pending !== null; },
     destroy() { runtime.destroy(); M.Engine.clear(engine); },

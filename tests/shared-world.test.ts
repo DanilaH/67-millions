@@ -1,11 +1,14 @@
+import legacyPhysics from '../src/config/plinko-physics-2026-10-03.json';
 import { expect, it } from 'vitest';
 import { balance } from '../src/config/balance';
 import { createInitialGameState } from '../src/core/state/GameState';
 import { createSharedWorld } from '../simulation/full-game/sharedWorld';
 
-it('caps a shared world at six independently charged and settled launches', () => {
+it.each([false, true])('caps and independently settles six launches (legacy physics: %s)', legacy => {
+  const config = structuredClone(balance);
+  if (legacy) config.plinko.physicsSeed = structuredClone(legacyPhysics);
   const state = { ...createInitialGameState(balance, 123), cash: 100000 };
-  const world = createSharedWorld(state, balance);
+  const world = createSharedWorld(state, config);
   for (let i=0;i<6;i++) expect(world.launch(1)).toBe(true);
   expect(world.launch(1)).toBe(false);
   expect(world.snapshot().state.cash).toBe(97000);
@@ -13,8 +16,10 @@ it('caps a shared world at six independently charged and settled launches', () =
   const result = world.snapshot();
   expect(result.pending).toBeNull(); expect(result.settlements).toHaveLength(6);
   expect(result.state.cash).toBe(97000 + result.settlements.reduce((sum,r)=>sum+r.payout,0));
+  expect(result.diagnostics.pockets.reduce((sum, n) => sum + n, 0)).toBe(6);
+  expect(result.diagnostics.splitterProcs).toBe(0);
   expect(result.advancedMinutes).toBe(6 * 15 + Math.floor(result.elapsedTicks / 180)); // shared passive clock, not per ball
-  expect(result.advancedMinutes).toBe(92); // Phaser's resolver defaults give two passive minutes for this seed
+  expect(result.advancedMinutes).toBe(legacy ? 92 : 91); // Same seed: calibrated damping changes flight duration, not clock rules
   expect(state.cash).toBe(100000);
   world.destroy();
 });

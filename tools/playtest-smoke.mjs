@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, extname } from 'node:path';
 import assert from 'node:assert/strict';
+import legacyPhysics from '../src/config/plinko-physics-2026-10-03.json' with { type: 'json' };
 import legacyPairs from '../src/config/plinko-deflectors-2026-10-02.json' with { type: 'json' };
 import { commitBareDrop, createBoardFingerprint } from '../src/core/plinko-rules/drop.ts';
 import { balance } from '../src/config/balance.ts';
@@ -96,8 +97,10 @@ try {
   assert.equal(specialReplay.game.rngState, specialResult.game.rngState, 'special cascades restore RNG');
   assert.deepEqual(specialReplay.game.clock, specialResult.game.clock, 'special cascades restore clock');
   // A pre-calibration paid board must keep its old geometry through reload.
+  for (const olderDeflectors of [false, true]) {
   const legacyBalance = structuredClone(balance);
-  legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
+  legacyBalance.plinko.physicsSeed = structuredClone(legacyPhysics);
+  if (olderDeflectors) legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
   const oldCommit = commitBareDrop({ ...fixture.game, plinkoJackpotBiasLevel: 4 }, null, legacyBalance, 'legacy-geometry', 1);
   await load({ ...createSaveState(oldCommit.state), pendingDrop: oldCommit.pendingDrop });
   await page.waitForFunction(() => !!JSON.parse(localStorage.getItem('67m.save')).pendingDrop?.physics?.solver);
@@ -114,6 +117,7 @@ try {
   const newShot = (await save()).pendingDrop;
   assert.equal(newShot.boardFingerprint, createBoardFingerprint(balance, newShot.pocketLevelsAtCommit, newShot.specialLevelsAtCommit), 'next paid launch switches to calibrated geometry');
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 30000 });
+  }
   // High-density input is transformed back into logical map/minigame space.
   await load(fixture); await clickMap('work'); await ready('РАБОТА');
   await click(760, 510); await ready('Курьерский маршрут');
