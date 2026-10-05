@@ -22,6 +22,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
   let advancedMinutes = 0, launches = 0, elapsedTicks = 0;
   const settlements: { stake: number; payout: number; tick: number }[] = [];
   const diagnostics = { pockets: Array<number>(config.plinko.basePockets.length).fill(0), amplifierProcs: 0, returnProcs: 0, splitterProcs: 0 };
+  const pegHits = new Set<string>();
   const balls = new Map<MatterJS.BodyType, DropBallState>();
   const mutations: (() => void)[] = [];
   // MatterPhysics' constructor overrides the raw Matter defaults (Phaser 4.2.1,
@@ -61,7 +62,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
         const next = advanceRunTime(state, null, 1, config); state = next.state; advancedMinutes += next.advancedMinutes;
       }
     },
-    onPeg(id, body) { mutations.push(() => {
+    onPeg(id, body) { pegHits.add(id); mutations.push(() => {
       if (!pending) return;
       let ball = balls.get(body); if (!ball) return;
       ball = clearSplitterBlockAfterPeg(ball, id); balls.set(body, ball);
@@ -115,7 +116,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
     step() { elapsedTicks++; M.Engine.update(engine, 1000 / 60); while (mutations.length) mutations.shift()!(); },
     snapshot() {
       const checkpoint = pending ? { ...pending, physics: { fixedTicksElapsed: runtime.getFixedTicksElapsed(), alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0, balls: [...balls].map(([b,m])=>runtime.snapshotBall(b,m)), solver: runtime.snapshotSolver(balls) } } : null;
-      return { state: structuredClone(state), pending: structuredClone(checkpoint), advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements), diagnostics: structuredClone(diagnostics) };
+      return { state: structuredClone(state), pending: structuredClone(checkpoint), advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements), diagnostics: { ...structuredClone(diagnostics), pegHits: [...pegHits] } };
     },
     get active() { return pending !== null; },
     destroy() { runtime.destroy(); M.Engine.clear(engine); },

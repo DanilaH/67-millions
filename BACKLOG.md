@@ -285,10 +285,11 @@ Acceptance: safe interstitials, simulation pause, mobile/desktop lifecycle, rati
 2026-10-05 bare-board candidate: frictionAir 0.026 yields 0.846025× and 0.68% edge on 10,000 independent roots; known historical paid boards retain old physics. See reports/physics/2026-10-05-bare/README.md. Upgrade calibration and pacing remain open.
 2026-10-05 playtest follow-up: 70,000 independent roots confirm base 1.912× / 8.05% edge, a Return L1→L2 regression and frequent but economically weak Splitter contacts. See reports/pacing/2026-10-05-pockets/README.md. No runtime/config change.
 2026-10-05 correction: the Phaser-matched adapter finds a profitable bare board and strongly unequal upgrade effects in 35,000 roots. Historical standalone-Matter calibration is not an accepted runtime result; see reports/pacing/2026-10-05-upgrades/README.md. Recalibration remains open; do not compensate through prices.
-Status: Partial (2026-10-05): corrected bare-board candidate measured and browser-tested. Upgrade calibration remains open, especially Return L2 and Splitter. Historical 2026-10-01 standalone-Matter samples are retained but do not accept the current runtime.
+Status: Partial (2026-10-05): corrected bare-board candidate measured and browser-tested. V1 Return/Splitter calibration and matched full-game comparison are recorded in reports/physics/2026-10-05-specials/README.md; final milestone freeze and broader upgrade combinations remain open. Historical 2026-10-01 standalone-Matter samples are retained but do not accept the current runtime.
 Acceptance: reports for frozen candidate geometry/config.
 
 ### T070 [P0] Large full-game batch + dominant strategy search
+2026-10-05 follow-up: 40 matched runs per config find 26→36 wins after special-pin repair, with candidate successful medians 13–28 minutes. This is diagnostic, not an accepted win rate or pacing target. Next: price/max-bet progression and dominant burst policy, without undoing measured upgrade usefulness; see reports/pacing/2026-10-05-specials/README.md.
 Status: Candidate selected (2026-10-01): 6000 physical runs on selected config plus rejected candidate batches, versioned liquidity policy and honest report provenance; final dominance/event review remains open.
 Acceptance: reproducible artifact; no unacceptable dominant policy.
 

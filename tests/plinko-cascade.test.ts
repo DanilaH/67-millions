@@ -24,9 +24,9 @@ describe('Plinko special-pin lineage rules', () => {
 
     expect(active.amplifier?.pegIds).toEqual(['r6c3']);
     expect(active.amplifier?.multiplier).toBe(1.25);
-    expect(active.return?.pegIds).toEqual(['r7c1', 'r7c6']);
-    expect(active.splitter?.pegIds).toEqual(['r8c4']);
-    expect(active.splitter?.childValue).toBe(0.48);
+    expect(active.return?.pegIds).toEqual(['r8c1', 'r8c7']);
+    expect(active.splitter?.pegIds).toEqual(['r4c2']);
+    expect(active.splitter?.childValue).toBe(0.7);
   });
 
   it('allows each physical Amplifier once per lineage state and multiplies only when requested', () => {

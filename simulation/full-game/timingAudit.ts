@@ -7,7 +7,7 @@ import { buildCasinoUpgradePreviews, type CasinoUpgradeId } from '../../src/game
 import { createLiquidityPolicy } from './liquidityPolicy';
 import { runFullGame, type FullGameDecision } from './runner';
 import { createSharedWorld } from './sharedWorld';
-const raw = readFileSync('balance.v0.json','utf8');
+const raw = readFileSync(process.argv[5]??'balance.v0.json','utf8');
 const config = parseBalanceConfig(JSON.parse(raw));
 const configHash = createHash('sha256').update(raw).digest('hex');
 const perVariant = Number(process.argv[2] ?? 20);

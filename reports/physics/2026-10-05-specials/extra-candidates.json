@@ -1,0 +1,1 @@
+[{"name": "return-1-0", "returnPins": ["r1c0", "r1c1"]}, {"name": "return-2-0", "returnPins": ["r2c0", "r2c2"]}, {"name": "return-4-1", "returnPins": ["r4c1", "r4c3"]}, {"name": "return-5-1", "returnPins": ["r5c1", "r5c4"]}, {"name": "return-6-2", "returnPins": ["r6c2", "r6c4"]}]

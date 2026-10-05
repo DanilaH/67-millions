@@ -88,7 +88,7 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 - Fixed timestep: 60 Hz.
 - Physics seed: gravityY 1.0, ball restitution 0.155, peg restitution 0.6, frictionAir 0.026, wall restitution 0.2.
 - All values are tunable through JSON + physical reports.
-- Accepted bare-board 100k evidence: EV 0.870225x; combined center 52.188%; edge pockets 1.161%; symmetry delta 0.613%; stuck/watchdog 0/100,000.
+- Historical standalone-Matter evidence is not production calibration. Current Phaser-matched 100k bare probe: EV 0.8512025x, center 54.981%, edges 0.692%, unresolved 0/100,000 (seed 67108200).
 - The ideal-binomial shape remains a target/reference; production payout uses the measured Matter physics, never a hidden probability override.
 
 ## Plinko base
@@ -123,3 +123,7 @@ T070 playtest candidate: prices are listed in the numeric JSON and sampled by th
 - Aggressive/high-variance policies should win faster when successful but fail more often.
 - Initial work-count corridor 25–50 minigames is subordinate to the stronger ~30-real-minute session target; lower repetition is acceptable/preferred if required.
 - These are design targets, not measured facts for this exact config.
+
+## 2026-10-05 special-pin candidate
+
+`BOARD_LAYOUT_V1`: Return contact targets 7% / 20% / 30% / 43%; measured bare contact rates 6.939% / 19.653% / 30.409% / 42.899%. Splitter is on row 4 (zero-indexed), with 70% / 75% / 80% / 85% / 90% value per child. Prices and all other upgrade values are unchanged. These are physical contacts, never hidden payout routing. [Evidence](reports/physics/2026-10-05-specials/README.md); [40 matched full-game runs before/after](reports/pacing/2026-10-05-specials/README.md). Full-game balance remains unaccepted: the improved effects increase the sampled win count.

@@ -70,3 +70,5 @@ Current physics revision (2026-10-03): [deflector calibration and save compatibi
 Measurement correction: [shared-world pacing audit](reports/pacing/2026-10-05/README.md) applies Phaser’s resolver initialization, models active time and concurrent paid roots, and reruns 240 sessions. Older standalone-Matter edge/EV/pacing figures require remeasurement; matching the config hash alone does not establish production parity. No balance change accompanies this audit.
 
 Current bare-board candidate (2026-10-05): [damping correction](reports/physics/2026-10-05-bare/README.md), config SHA-256 `7b47d04609c9bf6c07d4ea6ad6a22fda4b7ef9ec89e8d3715a8824efdf4659e6`. Independent 10,000-root holdout: 0.846025× gross return / 0.68% edge. Upgrade and full-game balance remain open.
+
+Current special-pin candidate (2026-10-05): [Return/Splitter calibration](reports/physics/2026-10-05-specials/README.md), config SHA-256 `bd8928de31c8bcf5392b8a3861cfd193920088a6cd36ba2f73628a6020f4e589`. [Matched full-game comparison](reports/pacing/2026-10-05-specials/README.md) shows higher win counts; economy and human pacing remain open.

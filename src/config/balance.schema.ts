@@ -227,7 +227,7 @@ export const balanceSchema = z.object({
     }),
     ballBallCollisions: z.literal(false),
     specialPinLayout: z.object({
-      id: z.literal('BOARD_LAYOUT_V0'),
+      id: z.enum(['BOARD_LAYOUT_V0', 'BOARD_LAYOUT_V1']),
       calibrationSeed: z.number().int().positive(),
       calibrationRuns: z.number().int().min(100_000),
       amplifierByCount: z.object({

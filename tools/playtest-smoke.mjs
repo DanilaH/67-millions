@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, extname } from 'node:path';
 import assert from 'node:assert/strict';
+import legacySpecials from '../src/config/plinko-specials-2026-10-05.json' with { type: 'json' };
 import legacyPhysics from '../src/config/plinko-physics-2026-10-03.json' with { type: 'json' };
 import legacyPairs from '../src/config/plinko-deflectors-2026-10-02.json' with { type: 'json' };
 import { commitBareDrop, createBoardFingerprint } from '../src/core/plinko-rules/drop.ts';
@@ -116,10 +117,12 @@ try {
   assert.equal(specialReplay.game.rngState, specialResult.game.rngState, 'special cascades restore RNG');
   assert.deepEqual(specialReplay.game.clock, specialResult.game.clock, 'special cascades restore clock');
   // A pre-calibration paid board must keep its old geometry through reload.
-  for (const olderDeflectors of [false, true]) {
+  for (const revision of ['specials', 'physics', 'deflectors']) {
   const legacyBalance = structuredClone(balance);
-  legacyBalance.plinko.physicsSeed = structuredClone(legacyPhysics);
-  if (olderDeflectors) legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
+  legacyBalance.plinko.specialPinLayout = structuredClone(legacySpecials.layout);
+  legacyBalance.plinko.splitter = structuredClone(legacySpecials.splitter);
+  if (revision !== 'specials') legacyBalance.plinko.physicsSeed = structuredClone(legacyPhysics);
+  if (revision === 'deflectors') legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
   const oldCommit = commitBareDrop({ ...fixture.game, plinkoJackpotBiasLevel: 4 }, null, legacyBalance, 'legacy-geometry', 1);
   await load({ ...createSaveState(oldCommit.state), pendingDrop: oldCommit.pendingDrop });
   await page.waitForFunction(() => !!JSON.parse(localStorage.getItem('67m.save')).pendingDrop?.physics?.solver);

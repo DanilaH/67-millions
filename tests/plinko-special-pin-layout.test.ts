@@ -8,7 +8,7 @@ import {
   isMirrorSymmetricPinSet,
 } from '../src/core/plinko-rules/specialPinLayout';
 
-describe('BOARD_LAYOUT_V0', () => {
+describe('configured special-pin layout', () => {
   it('resolves Amplifier count sets with exact configured cardinality and symmetry', () => {
     for (const count of [1, 2, 3] as const) {
       const pins = getAmplifierPins(balance, count);

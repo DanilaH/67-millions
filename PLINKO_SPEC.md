@@ -88,15 +88,19 @@ Special positions are data, never hardcoded in Scene code.
 
 Exact production special-pin positions are intentionally **TUNABLE V0**. E07 provides the physical report machinery; E10/T034 creates `BOARD_LAYOUT_V0` from symmetric seed positions and 100k+ physical runs. The agent must not treat visual preference as balance evidence.
 
-`BOARD_LAYOUT_V0` now lives in `balance.v0.json -> plinko.specialPinLayout`. Peg positions are referenced by stable physical ids `r{row}c{column}`; Scene code must resolve those ids through the board derivation rather than duplicate coordinates.
+Current `BOARD_LAYOUT_V1` lives in `balance.v0.json -> plinko.specialPinLayout`. Peg positions are referenced by stable physical ids `r{row}c{column}`; Scene code must resolve those ids through the board derivation rather than duplicate coordinates.
 
-The V0 seed was selected from a 100k bare-board unique-hit probe:
+The historical V0 seed was selected from a standalone-Matter 100k bare-board unique-hit probe (not production-parity evidence):
 - Return levels use mirrored pairs whose measured combined bare hit rates track the configured 7% / 11% / 15% / 20% frequency targets;
 - Amplifier uses symmetric 1 / 2 / 3-pin sets keyed by configured physical pin count;
 - Splitter starts from a separate symmetric seed slot;
 - the systems do not share a peg in the max-level seed state.
 
 These began as **placement seeds**, not proof of final upgrade EV. T035 has now enabled the real Amplifier / Return / Splitter effects and produced 100k physical milestone reports for baseline, isolated L1/max effects and combined max. The evidence is recorded in `reports/plinko/T035_CASCADE_EFFECTS.md`. Upgrade prices remain TUNABLE until full-game simulation.
+
+2026-10-05 V1 calibration uses the Phaser-matched shared world. Return L1–L4 use mirrored pairs `r8c1/r8c7`, `r8c2/r8c6`, `r5c1/r5c4`, `r6c2/r6c4`. A fresh 100,000-root bare-contact probe measures 6.939% / 19.653% / 30.409% / 42.899%; these are contact rates without effects, not payout probabilities. Splitter moves from `r8c4` to `r4c2`, with child value 0.70 / 0.75 / 0.80 / 0.85 / 0.90. Earlier contact alone was insufficient: the old L1 child values made the moved pin reduce isolated return. Lineage/depth/cap rules, Return value preservation, base damping and prices are unchanged. See [calibration and limitations](reports/physics/2026-10-05-specials/README.md).
+
+Known paid V0 boards also preserve their archived special positions and child-value ladder. The layout version participates in the paid-board fingerprint; V1 applies only after the old paid world drains. Completed saves keep their purchased levels. This revision does **not** accept full-game economy: measured upgrade usefulness increases profitability, and pacing/dominant-strategy gates remain open.
 
 ## 10. Upgrade systems
 
