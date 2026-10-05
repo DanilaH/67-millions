@@ -21,6 +21,7 @@ export const createEventOverlay = (
   const width = balance.plinko.geometry.logicalViewportWidth;
   const height = balance.plinko.geometry.logicalViewportHeight;
   let visible = false;
+  let signature = '';
   const choiceObjects: Phaser.GameObjects.GameObject[] = [];
 
   const container = scene.add
@@ -91,6 +92,11 @@ export const createEventOverlay = (
 
   return {
     show: (presentation) => {
+      // The passive clock re-renders the scene. Keep unchanged touch targets
+      // alive between pointerdown and pointerup instead of rebuilding each minute.
+      const nextSignature = JSON.stringify(presentation);
+      if (visible && nextSignature === signature) return;
+      signature = nextSignature;
       clearChoices();
       title.setText(presentation.title);
       body.setText(presentation.body);

@@ -1,0 +1,444 @@
+{
+  "metadata": {
+    "sourceRevision": "472c0dfdfe58abe563c77d51b02d6971ab71a7e9",
+    "configHash": "7fe6c5c2a3ae98cbb1c1eaf81172097d0bd7cfbd259fee499f9c593214a3cd2c",
+    "seedStart": 67106000,
+    "rootSeedSampling": "consecutive states of xorshift32 stream, not adjacent integer seeds",
+    "runsPerVariant": 1000,
+    "model": "shared-world Phaser resolver v1; single roots; full core settlement",
+    "limitations": "No insurance or upgraded max bet; no interaction with purchasing policy; gross return includes stake. Paired seeds. Means can be dominated by rare tails. Not human win probabilities."
+  },
+  "rows": [
+    {
+      "name": "base",
+      "levels": {},
+      "runs": 1000,
+      "meanGrossReturn": 1.99225,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10370755852489817
+    },
+    {
+      "name": "only-center-1",
+      "levels": {
+        "plinkoCenterLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.033149999999999,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.1030292123433742
+    },
+    {
+      "name": "only-center-2",
+      "levels": {
+        "plinkoCenterLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.065700000000004,
+      "medianGrossReturn": 1.05,
+      "lossShare": 0.409,
+      "standardError": 0.10257509522374389
+    },
+    {
+      "name": "only-mid-1",
+      "levels": {
+        "plinkoMidLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.0716499999999978,
+      "medianGrossReturn": 1.1,
+      "lossShare": 0.409,
+      "standardError": 0.10327378298363883
+    },
+    {
+      "name": "only-mid-2",
+      "levels": {
+        "plinkoMidLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.1815500000000054,
+      "medianGrossReturn": 1.25,
+      "lossShare": 0.409,
+      "standardError": 0.10284777470739082
+    },
+    {
+      "name": "only-mid-3",
+      "levels": {
+        "plinkoMidLevel": 3
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.328249999999991,
+      "medianGrossReturn": 1.4,
+      "lossShare": 0.409,
+      "standardError": 0.10278257973117928
+    },
+    {
+      "name": "only-jackpot-1",
+      "levels": {
+        "plinkoJackpotLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 3.14925,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.21829438695687267
+    },
+    {
+      "name": "only-jackpot-2",
+      "levels": {
+        "plinkoJackpotLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 5.37425,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.44239203219276846
+    },
+    {
+      "name": "only-jackpot-3",
+      "levels": {
+        "plinkoJackpotLevel": 3
+      },
+      "runs": 1000,
+      "meanGrossReturn": 9.82425,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.892287987305549
+    },
+    {
+      "name": "only-amplifier-1",
+      "levels": {
+        "plinkoAmplifierLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.010141999999999,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.1034468181628803
+    },
+    {
+      "name": "only-amplifier-2",
+      "levels": {
+        "plinkoAmplifierLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.341263999999998,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.13002710484471436
+    },
+    {
+      "name": "only-amplifier-3",
+      "levels": {
+        "plinkoAmplifierLevel": 3
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.5505500000000034,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.14594113886602866
+    },
+    {
+      "name": "only-amplifier-4",
+      "levels": {
+        "plinkoAmplifierLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.5797500000000024,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.14553487567431223
+    },
+    {
+      "name": "only-amplifier-5",
+      "levels": {
+        "plinkoAmplifierLevel": 5
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.873799999999996,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.16665125982842843
+    },
+    {
+      "name": "only-return-1",
+      "levels": {
+        "plinkoReturnLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.45475,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.527,
+      "standardError": 0.1322445785885612
+    },
+    {
+      "name": "only-return-2",
+      "levels": {
+        "plinkoReturnLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.0725,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.518,
+      "standardError": 0.1147945841342114
+    },
+    {
+      "name": "only-return-3",
+      "levels": {
+        "plinkoReturnLevel": 3
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.8915,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.532,
+      "standardError": 0.14320871651713993
+    },
+    {
+      "name": "only-return-4",
+      "levels": {
+        "plinkoReturnLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.97075,
+      "medianGrossReturn": 0.25,
+      "lossShare": 0.537,
+      "standardError": 0.1421800693121564
+    },
+    {
+      "name": "only-splitter-1",
+      "levels": {
+        "plinkoSplitterLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 1.98988,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10374749311635414
+    },
+    {
+      "name": "only-splitter-2",
+      "levels": {
+        "plinkoSplitterLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 1.9927239999999995,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10369959070766384
+    },
+    {
+      "name": "only-splitter-3",
+      "levels": {
+        "plinkoSplitterLevel": 3
+      },
+      "runs": 1000,
+      "meanGrossReturn": 1.9946200000000005,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10366778315785906
+    },
+    {
+      "name": "only-splitter-4",
+      "levels": {
+        "plinkoSplitterLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 1.9984119999999996,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10360447421483955
+    },
+    {
+      "name": "only-splitter-5",
+      "levels": {
+        "plinkoSplitterLevel": 5
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.0022040000000003,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10354157410408603
+    },
+    {
+      "name": "only-jackpotBias-1",
+      "levels": {
+        "plinkoJackpotBiasLevel": 1
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.05175,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.10769741487459494
+    },
+    {
+      "name": "only-jackpotBias-2",
+      "levels": {
+        "plinkoJackpotBiasLevel": 2
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.25825,
+      "medianGrossReturn": 1,
+      "lossShare": 0.409,
+      "standardError": 0.11738248628132565
+    },
+    {
+      "name": "only-jackpotBias-3",
+      "levels": {
+        "plinkoJackpotBiasLevel": 3
+      },
+      "runs": 1000,
+      "meanGrossReturn": 2.67325,
+      "medianGrossReturn": 1,
+      "lossShare": 0.411,
+      "standardError": 0.1321860245358133
+    },
+    {
+      "name": "only-jackpotBias-4",
+      "levels": {
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 3.35675,
+      "medianGrossReturn": 1,
+      "lossShare": 0.411,
+      "standardError": 0.1498578470144688
+    },
+    {
+      "name": "maximum",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 42.934703999999996,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.509,
+      "standardError": 2.137621192536031
+    },
+    {
+      "name": "maximum-without-center",
+      "levels": {
+        "plinkoCenterLevel": 0,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 42.821766000000004,
+      "medianGrossReturn": 0.464,
+      "lossShare": 0.515,
+      "standardError": 2.139860548868988
+    },
+    {
+      "name": "maximum-without-mid",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 42.854128,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.509,
+      "standardError": 2.1391746352628043
+    },
+    {
+      "name": "maximum-without-jackpot",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 0,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 5.816303999999963,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.509,
+      "standardError": 0.24481055118101697
+    },
+    {
+      "name": "maximum-without-amplifier",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 29.144375999999998,
+      "medianGrossReturn": 0.464,
+      "lossShare": 0.515,
+      "standardError": 1.4155605207911979
+    },
+    {
+      "name": "maximum-without-return",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 37.21903999999999,
+      "medianGrossReturn": 1.4,
+      "lossShare": 0.405,
+      "standardError": 2.0992979392940647
+    },
+    {
+      "name": "maximum-without-splitter",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4
+      },
+      "runs": 1000,
+      "meanGrossReturn": 42.904208,
+      "medianGrossReturn": 0.64,
+      "lossShare": 0.509,
+      "standardError": 2.138224886505162
+    },
+    {
+      "name": "maximum-without-jackpotBias",
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 0
+      },
+      "runs": 1000,
+      "meanGrossReturn": 28.805135999999997,
+      "medianGrossReturn": 0.744,
+      "lossShare": 0.531,
+      "standardError": 1.823099918074926
+    }
+  ]
+}

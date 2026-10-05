@@ -227,6 +227,7 @@ Status: 2026-10-02 follow-up: three-second active-time dumpster rummage with pro
 Acceptance: pre-action cost/time/effect visible; lock reason readable.
 
 ### T057 [P0] Casino upgrade/bet/result UI
+2026-10-05 follow-up: distinguish stake size from odds, clarify total return, separate expanded visit totals from the latest result. Event choices retain touch targets across passive-clock redraws.
 UI follow-up 2026-10-02: fraction selection + explicit throw, next-effect upgrade cards with pagination, Barry countdown, payout versus net result including insurance exactly once.
 Status: 2026-10-02: exit shutdown crash, repeated entry, passive clock and overlapping controls fixed; detailed evidence in reports/release/2026-10-02/GAMEPLAY_AUDIT.md.
 Acceptance: quick bets; upgrade state; active-Drop locks visually clear; map payout toast.
@@ -281,6 +282,7 @@ Acceptance: safe interstitials, simulation pause, mobile/desktop lifecycle, rati
 ## E21 — Final balance / playtest
 
 ### T069 [P0] Re-run physical milestone boards
+2026-10-05 correction: the Phaser-matched adapter finds a profitable bare board and strongly unequal upgrade effects in 35,000 roots. Historical standalone-Matter calibration is not an accepted runtime result; see reports/pacing/2026-10-05-upgrades/README.md. Recalibration remains open; do not compensate through prices.
 Status: Candidate measured (2026-10-01): exact runtime hash, 100k bare and 10k max-cascade reports retained; final frozen-candidate review follows pacing/device acceptance.
 Acceptance: reports for frozen candidate geometry/config.
 

@@ -150,11 +150,15 @@ try {
   await clickMap('casino'); await ready('Казино Plinko');
   await click(1100, 660); await ready('Карта города');
   // Cross-check the node adapter against the actual Phaser scene from the same solver checkpoint.
-  for (const special of [false, true]) {
+  for (const { special, roots, spacing, name } of [
+    { special: false, roots: 1, spacing: 0, name: 'base-first-tick' },
+    { special: false, roots: 6, spacing: 15, name: 'base' },
+    { special: true, roots: 6, spacing: 15, name: 'special' },
+  ]) {
     const initial = { ...createInitialGameState(balance, 67105001), cash: 100000 };
     if (special) Object.assign(initial, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3, plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
     const world = createSharedWorld(initial, balance);
-    for (let i = 0; i < 6; i++) { world.launch(i % 2 ? 1 : 0.25); for (let tick = 0; tick < 15; tick++) world.step(); }
+    for (let i = 0; i < roots; i++) { world.launch(i % 2 ? 1 : 0.25); for (let tick = 0; tick < spacing; tick++) world.step(); }
     const checkpoint = world.snapshot();
     const trajectory = [];
     for (let tick = 0; tick < 3600 && world.active; tick++) { world.step(); trajectory.push(world.snapshot()); }
@@ -176,7 +180,7 @@ try {
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 45000 });
     const actual = (await save()).game;
     const browserSaves = await page.evaluate(() => window.__paritySaves);
-    writeFileSync(`${output}/node-parity-${special ? 'special' : 'base'}.json`, JSON.stringify({ checkpoint, actual, expected, trajectory, browserSaves }));
+    writeFileSync(`${output}/node-parity-${name}.json`, JSON.stringify({ checkpoint, actual, expected, trajectory, browserSaves }));
     const divergences = browserSaves.flatMap(saved => {
       const tick = saved.pendingDrop?.physics?.fixedTicksElapsed;
       if (tick === undefined) return [];

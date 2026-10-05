@@ -242,6 +242,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         fontSize: '17px',
         padding: { x: 10, y: 8 },
         wordWrap: { width: 264 },
+        lineSpacing: 1,
       })
       .setOrigin(0, 0)
       .setVisible(false);
@@ -938,7 +939,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     this.showStatus('');
     this.resultText
-      ?.setText(this.lastResultMessage)
+      ?.setText(this.lastResultMessage.replace(/^Итог/, 'Последний:'))
       .setColor(
         result.losing
           ? visualHex('warning')
@@ -1164,12 +1165,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.infoText || !this.save) return;
 
     const net = this.visitPayout - this.visitStake;
-    this.visitResultText?.setPosition(28, buildTutorialCard(deriveTutorialStep(loadTutorialProgress()), 'casino') === null ? 386 : 640);
+    const hasTutorial = buildTutorialCard(deriveTutorialStep(loadTutorialProgress()), 'casino') !== null && this.save.pendingDrop === null;
+    this.visitResultText?.setPosition(28, hasTutorial ? 630 : 398);
     this.visitResultText?.setText(this.visitDrops === 0 ? 'Итог появится после броска' : [
-      `После входа: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
-      ...(this.visitDetails ? [
+      `За визит: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
+      ...(this.visitDetails && !hasTutorial ? [
         `Ставки: ${this.visitStake.toLocaleString('ru-RU')} ₽`,
         `Выплаты: ${this.visitPayout.toLocaleString('ru-RU')} ₽`,
+        'Только казино · свернуть ‹',
       ] : [`Завершено: ${this.visitDrops} · подробнее ›`]),
     ]);
     const snapshot = this.visualSnapshot;
@@ -1195,9 +1198,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
 
     if (this.lastResultMessage) {
+      // Expanded totals and the last launch share the same space; never overlap.
       this.resultText
-        ?.setText(this.lastResultMessage)
-        .setVisible(true);
+        ?.setPosition(28, (this.visitResultText?.y ?? 398) + (this.visitResultText?.height ?? 60) + 12)
+        .setText(this.lastResultMessage.replace(/^Итог/, 'Последний:'))
+        .setVisible(!hasTutorial && !this.visitDetails && !this.statusText?.text);
     }
   }
 
@@ -1241,6 +1246,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private showStatus(message: string): void {
     this.statusText?.setText(message);
+    if (message) this.resultText?.setVisible(false);
   }
 
   private installPocketLabels(): void {

@@ -292,7 +292,7 @@ const SPECS: readonly UpgradeSpec[] = [
 ];
 
 const describeNextEffect = (id: CasinoUpgradeId, state: GameState, config: BalanceConfig, nextLevel: number): string => {
-  if (id === 'maxBet') return `Лимит: ${getMaxBetForLevel(config, state.plinkoMaxBetLevel).toLocaleString('ru-RU')} → ${getMaxBetForLevel(config, nextLevel).toLocaleString('ru-RU')} ₽`;
+  if (id === 'maxBet') return `Ставка до ${getMaxBetForLevel(config, nextLevel).toLocaleString('ru-RU')} ₽\nШансы не меняются`;
   if (id === 'center' || id === 'mid' || id === 'jackpot') {
     const levels = getPocketUpgradeLevels(state);
     const next = { ...levels, [`${id}Level`]: nextLevel };

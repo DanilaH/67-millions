@@ -13,7 +13,7 @@ export const createCasinoBetPanel = (
   parent?.add(container);
   let previews: CasinoQuickBetPreview[] = [];
   let selected: CasinoQuickBetPreview['fraction'] | null = null;
-  const title = scene.add.text(28, 294, 'ВЫБЕРИ СТАВКУ', {
+  const title = scene.add.text(28, 294, 'СТАВКА ЗА ОДИН ЗАПУСК', {
     fontFamily: VISUAL_FONT.sans, fontSize: '20px', color: visualHex('textMuted'),
   });
   const amount = scene.add.text(28, 332, '', {
@@ -39,7 +39,7 @@ export const createCasinoBetPanel = (
     if (!preview) return;
     const locked = preview.lockedReason !== null;
     const reason = preview.lockedReason?.includes('DROP') ? 'Дождись конца броска' : preview.lockedReason?.includes('ВРЕМЕННО') ? 'Казино временно закрыто' : preview.lockedReason?.toLocaleLowerCase('ru-RU');
-    amount.setText(locked ? reason! : 'За каждый шар — отдельная ставка')
+    amount.setText(locked ? reason! : '×1 — вернул ставку\nМеньше ×1 — потерял часть денег')
       .setFontSize(17).setColor(visualHex('textMuted'));
     drop.setText(`Бросить · ${(preview.amount ?? 0).toLocaleString('ru-RU')} ₽`).setFontSize(20);
     drop.setAlpha(locked ? 0.4 : 1);

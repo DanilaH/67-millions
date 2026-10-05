@@ -59,7 +59,7 @@ export const buildTutorialCard = (
       title: 'ПЕРВЫЙ АПГРЕЙД',
       body:
         surface === 'casino'
-          ? `Лимит ставки L1: ${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽. Центр L1: ${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽. Покупка — кнопкой с ценой.`
+          ? `Центр (${balance.plinko.centerUpgrades[0]!.price.toLocaleString('ru-RU')} ₽) повышает выплаты. Лимит ставки (${balance.plinko.maxBetLevels[1]!.price.toLocaleString('ru-RU')} ₽) — только размер ставок, не шансы.`
           : 'Вернись в КАЗИНО и купи первый недорогой апгрейд.',
       acknowledge: null,
     };

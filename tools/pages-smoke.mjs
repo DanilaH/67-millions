@@ -153,7 +153,12 @@ try {
       assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.pendingEventId, eventId, 'unaffordable event choice stays locked');
       await clickMap('work');
       assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction, null, 'event shade blocks underlying map');
-      await click(640, 496);
+      if (eventId === 'EVENT_01') {
+        const minute = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.clock.minuteOfDay;
+        await move(640, 496); await down();
+        await page.waitForFunction(minute => JSON.parse(localStorage.getItem('67m.save')).game.clock.minuteOfDay !== minute, minute, { timeout: 6000 });
+        await up();
+      } else await click(640, 496);
       await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.pendingEventId === null);
     }
     const lateBarry = structuredClone(fixture); lateBarry.game.cash = 100000000; lateBarry.game.barryPaymentIndex = 24; lateBarry.game.barryInterruptPending = true; lateBarry.game.clock.minuteOfDay = 540;
