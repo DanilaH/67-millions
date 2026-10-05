@@ -326,3 +326,5 @@ Acceptance: config hash recorded; production build and submission artifacts read
 ## User playtest revision — 2026-10-02
 
 Extends T057 casino UI, map/HUD presentation and persistence verification: free concurrent launches, independent settlements, capped effects, full-screen map, vector stat icons, denser rendering and opt-in preview debug controls. Implemented; browser/deployment evidence is recorded in `reports/release/2026-10-02/FREE_LAUNCHES.md`. Real-device performance and new pacing/balance remain open.
+
+2026-10-05 fixed-tick repair: collision effects now complete synchronously after each solver step and before persistence; save latency cannot postpone them into another tick. Local browser payout/RNG/clock/needs parity (including delayed render frames) and 42,000 effect reruns pass. This supersedes the V1 scheduling blocker above, pending CI/live verification. See [evidence and historical-save limits](reports/physics/2026-10-05-fixed-tick/README.md). Economy acceptance remains open.

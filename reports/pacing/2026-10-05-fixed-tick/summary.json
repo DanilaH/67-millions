@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "configHash": "bd8928de31c8bcf5392b8a3861cfd193920088a6cd36ba2f73628a6020f4e589",
+    "sourceRevision": "0ea5594cc7e0fcc3feb92bca6d16158572c8e8c7",
+    "perVariant": 10,
+    "seedStart": 67104000,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 9,
+        "BARRY_LOSS": 1
+      },
+      "wins": 9,
+      "medianWinMinutes": 27.712777777777777,
+      "medianWinWork": 29,
+      "medianWinRecovery": 24,
+      "medianWinDrops": 89,
+      "medianAllMinutes": 29.431527777777777
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 9,
+        "BARRY_LOSS": 1
+      },
+      "wins": 9,
+      "medianWinMinutes": 22.38555555555556,
+      "medianWinWork": 14,
+      "medianWinRecovery": 12,
+      "medianWinDrops": 85,
+      "medianAllMinutes": 23.272638888888892
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "BARRY_LOSS": 2,
+        "VICTORY": 8
+      },
+      "wins": 8,
+      "medianWinMinutes": 16.14847222222222,
+      "medianWinWork": 20.5,
+      "medianWinRecovery": 19.5,
+      "medianWinDrops": 120,
+      "medianAllMinutes": 17.938055555555557
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 13.033194444444444,
+      "medianWinWork": 14.5,
+      "medianWinRecovery": 15,
+      "medianWinDrops": 113.5,
+      "medianAllMinutes": 13.033194444444444
+    }
+  ]
+}

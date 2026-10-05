@@ -31,6 +31,13 @@ try {
   // Capture the durable settlement boundary, before screenshot/polling latency can
   // legitimately advance the idle casino clock. Keep exact clock assertions.
   await context.addInitScript(() => {
+    // Test-only render throttling: force several fixed updates per render frame.
+    if (sessionStorage.getItem('67m.smokeSlowFrames') === '1') {
+      const request = window.requestAnimationFrame.bind(window);
+      window.requestAnimationFrame = callback => request(time => {
+        setTimeout(() => callback(time), 60);
+      });
+    }
     const original = Storage.prototype.setItem;
     Storage.prototype.setItem = function(key, value) {
       const previous = key === '67m.save' ? this.getItem(key) : null;
@@ -123,7 +130,7 @@ try {
   legacyBalance.plinko.splitter = structuredClone(legacySpecials.splitter);
   if (revision !== 'specials') legacyBalance.plinko.physicsSeed = structuredClone(legacyPhysics);
   if (revision === 'deflectors') legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
-  const oldCommit = commitBareDrop({ ...fixture.game, plinkoJackpotBiasLevel: 4 }, null, legacyBalance, 'legacy-geometry', 1);
+  const oldCommit = commitBareDrop({ ...upgraded.game }, null, legacyBalance, 'legacy-geometry', 1);
   await load({ ...createSaveState(oldCommit.state), pendingDrop: oldCommit.pendingDrop });
   await page.waitForFunction(() => !!JSON.parse(localStorage.getItem('67m.save')).pendingDrop?.physics?.solver);
   const oldCheckpoint = await save();
@@ -176,10 +183,11 @@ try {
   await clickMap('casino'); await ready('Казино Plinko');
   await click(1100, 660); await ready('Карта города');
   // Cross-check the node adapter against the actual Phaser scene from the same solver checkpoint.
-  for (const { special, roots, spacing, name } of [
+  for (const { special, roots, spacing, name, slowFrames = false } of [
     { special: false, roots: 1, spacing: 0, name: 'base-first-tick' },
     { special: false, roots: 6, spacing: 15, name: 'base' },
     { special: true, roots: 6, spacing: 15, name: 'special' },
+    { special: true, roots: 6, spacing: 15, name: 'special-slow-frames', slowFrames: true },
   ]) {
     const initial = { ...createInitialGameState(balance, 67105001), cash: 100000 };
     if (special) Object.assign(initial, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3, plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
@@ -192,6 +200,7 @@ try {
     assert.equal(expected.pending, null);
     const saved = { ...createSaveState(checkpoint.state), pendingDrop: checkpoint.pending };
     const inert = route => route.fulfill({ contentType: 'text/html', body: '<html></html>' });
+    await page.evaluate(slow => sessionStorage.setItem('67m.smokeSlowFrames', slow ? '1' : '0'), slowFrames);
     await page.route(url, inert); await page.goto(url);
     await page.evaluate(value => localStorage.setItem('67m.save', JSON.stringify(value)), saved);
     await page.addInitScript(() => {
@@ -204,7 +213,7 @@ try {
     });
     await page.unroute(url, inert); await page.reload(); await ready('Казино Plinko');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 45000 });
-    const actual = (await save()).game;
+    const actual = await page.evaluate(() => window.__smokeSettlement.game);
     const browserSaves = await page.evaluate(() => window.__paritySaves);
     writeFileSync(`${output}/node-parity-${name}.json`, JSON.stringify({ checkpoint, actual, expected, trajectory, browserSaves }));
     const divergences = browserSaves.flatMap(saved => {
@@ -222,7 +231,7 @@ try {
     assert.deepEqual(actual.needs, expected.state.needs, 'node/Phaser needs parity');
   }
   assert.deepEqual(errors, []);
-  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360'], errors }, null, 2));
+  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360', 'exact node/browser cash RNG clock needs parity including delayed render frames'], errors }, null, 2));
   console.log('Playtest smoke passed');
 } catch (error) { writeFileSync(`${output}/failure.json`, JSON.stringify({ error: String(error), errors }, null, 2)); throw error; }
 finally { await browser.close(); server.close(); }

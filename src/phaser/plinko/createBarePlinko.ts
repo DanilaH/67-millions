@@ -47,6 +47,8 @@ export interface BarePlinkoCallbacks {
   onPocket?: (index: number, body: MatterJS.BodyType) => void;
   onPeg?: (pegId: string, body: MatterJS.BodyType) => void;
   onFixedTick?: (fixedTicksElapsed: number) => void;
+  /** Runs after all collision effects for this completed solver tick. */
+  onAfterFixedTick?: (fixedTicksElapsed: number) => void;
 }
 
 export const createBarePlinko = (
@@ -177,10 +179,11 @@ export const createBarePlinko = (
     );
   }
 
+  const collisions: { bodyA: MatterJS.BodyType; bodyB: MatterJS.BodyType }[] = [];
   const handleCollision = (
     event: { pairs: { bodyA: MatterJS.BodyType; bodyB: MatterJS.BodyType }[] },
   ): void => {
-    dispatchPlinkoCollisions(event.pairs, callbacks);
+    collisions.push(...event.pairs);
   };
 
   const handleAfterUpdate = (): void => {
@@ -214,6 +217,11 @@ export const createBarePlinko = (
     }
 
     callbacks.onFixedTick?.(fixedTicksElapsed);
+    // Matter may run several fixed ticks in one render frame. Apply effects
+    // synchronously after each solver step, before any checkpoint or next step.
+    const completed = collisions.splice(0);
+    dispatchPlinkoCollisions(completed, callbacks);
+    callbacks.onAfterFixedTick?.(fixedTicksElapsed);
   };
 
   const createBallAt = (

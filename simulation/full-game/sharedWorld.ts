@@ -24,7 +24,6 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
   const diagnostics = { pockets: Array<number>(config.plinko.basePockets.length).fill(0), amplifierProcs: 0, returnProcs: 0, splitterProcs: 0 };
   const pegHits = new Set<string>();
   const balls = new Map<MatterJS.BodyType, DropBallState>();
-  const mutations: (() => void)[] = [];
   // MatterPhysics' constructor overrides the raw Matter defaults (Phaser 4.2.1,
   // src/physics/matter-js/MatterPhysics.js). Loading CustomMain alone skips it.
   // These are integration defaults, not a new physics/balance configuration.
@@ -62,7 +61,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
         const next = advanceRunTime(state, null, 1, config); state = next.state; advancedMinutes += next.advancedMinutes;
       }
     },
-    onPeg(id, body) { pegHits.add(id); mutations.push(() => {
+    onPeg(id, body) { pegHits.add(id);
       if (!pending) return;
       let ball = balls.get(body); if (!ball) return;
       ball = clearSplitterBlockAfterPeg(ball, id); balls.set(body, ball);
@@ -80,8 +79,8 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
         const bodies = runtime.splitBall(body); balls.delete(body);
         balls.set(bodies[0], children[0]); balls.set(bodies[1], children[1]);
       }
-    }); },
-    onPocket(index, body) { mutations.push(() => {
+    },
+    onPocket(index, body) {
       const meta = balls.get(body); if (!pending || !meta) return;
       diagnostics.pockets[index]!++;
       const shot = findBallDrop(pending, meta.lineageId);
@@ -92,7 +91,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
       pending = removeSettledDrop(pending, shot.dropId);
       if (pending) { const result = settleAggregateDrop(state, shot, payout, config); state = result.state; settlements.push({ stake: shot.originalStake, payout: result.payout, tick: elapsedTicks }); }
       else { const result = settleAggregatePendingDropAndResumeTime(state, shot, payout, config); state = result.state; advancedMinutes += result.remainingMinutesAdvancedAfterBarry; settlements.push({ stake: shot.originalStake, payout: result.payout, tick: elapsedTicks }); }
-    }); },
+    },
   });
   if (checkpoint) {
     pending = structuredClone(checkpoint);
@@ -113,7 +112,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
       const body = runtime.spawnBall(); balls.set(body, createRootBallState(committed.pendingDrop.dropId)); launches++;
       return true;
     },
-    step() { elapsedTicks++; M.Engine.update(engine, 1000 / 60); while (mutations.length) mutations.shift()!(); },
+    step() { elapsedTicks++; M.Engine.update(engine, 1000 / 60); },
     snapshot() {
       const checkpoint = pending ? { ...pending, physics: { fixedTicksElapsed: runtime.getFixedTicksElapsed(), alreadySettledPayout: pending.physics?.alreadySettledPayout ?? 0, balls: [...balls].map(([b,m])=>runtime.snapshotBall(b,m)), solver: runtime.snapshotSolver(balls) } } : null;
       return { state: structuredClone(state), pending: structuredClone(checkpoint), advancedMinutes, launches, elapsedTicks, settlements: structuredClone(settlements), diagnostics: { ...structuredClone(diagnostics), pegHits: [...pegHits] } };

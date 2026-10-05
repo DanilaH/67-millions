@@ -1,0 +1,145 @@
+{
+  "configHash": "bd8928de31c8bcf5392b8a3861cfd193920088a6cd36ba2f73628a6020f4e589",
+  "sourceBaseLocal": "0ea5594cc7e0fcc3feb92bca6d16158572c8e8c7",
+  "sourceBaseRemote": "63549c42c13217f020d0c39e12a51661bb646bbf",
+  "patch": "fixed-tick boundary changes committed with this report",
+  "browser": "local Chromium headless-shell 1243, production Pages build",
+  "cases": [
+    {
+      "name": "base-first-tick",
+      "actual": {
+        "cash": 100063,
+        "rngState": 1102540056,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 561
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 98.9333333333334,
+          "energy": 99.59999999999991,
+          "happiness": 99.92000000000007
+        }
+      },
+      "expected": {
+        "cash": 100063,
+        "rngState": 1102540056,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 561
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 98.9333333333334,
+          "energy": 99.59999999999991,
+          "happiness": 99.92000000000007
+        }
+      },
+      "exactMatch": true,
+      "artifactSHA256": "45f875304dc87b107e10f4ad17ff9ec6b6e70470ca73152bffc762502bcf8c2b"
+    },
+    {
+      "name": "base",
+      "actual": {
+        "cash": 99375,
+        "rngState": 2661648106,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 637
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 93.86666666666702,
+          "energy": 97.69999999999948,
+          "happiness": 95.54000000000042
+        }
+      },
+      "expected": {
+        "cash": 99375,
+        "rngState": 2661648106,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 637
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 93.86666666666702,
+          "energy": 97.69999999999948,
+          "happiness": 95.54000000000042
+        }
+      },
+      "exactMatch": true,
+      "artifactSHA256": "eaeceb41765f2c67a33c69f3291f548b401f8cbf3474e084222774db7ff350d8"
+    },
+    {
+      "name": "special",
+      "actual": {
+        "cash": 118487,
+        "rngState": 2661648106,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 637
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 93.86666666666702,
+          "energy": 97.69999999999948,
+          "happiness": 95.54000000000042
+        }
+      },
+      "expected": {
+        "cash": 118487,
+        "rngState": 2661648106,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 637
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 93.86666666666702,
+          "energy": 97.69999999999948,
+          "happiness": 95.54000000000042
+        }
+      },
+      "exactMatch": true,
+      "artifactSHA256": "adf896889941186ffb0d08e67bcc3b1c156984bd71d8fb1b8062c374307c9e6b"
+    },
+    {
+      "name": "special-slow-frames",
+      "actual": {
+        "cash": 118487,
+        "rngState": 2661648106,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 637
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 93.86666666666702,
+          "energy": 97.69999999999948,
+          "happiness": 95.54000000000042
+        }
+      },
+      "expected": {
+        "cash": 118487,
+        "rngState": 2661648106,
+        "clock": {
+          "gameDayIndex": 0,
+          "minuteOfDay": 637
+        },
+        "needs": {
+          "health": 100,
+          "satiety": 93.86666666666702,
+          "energy": 97.69999999999948,
+          "happiness": 95.54000000000042
+        }
+      },
+      "exactMatch": true,
+      "artifactSHA256": "d62c1f39a64f48039ea9f9045da4bced6a14eceb34c8269902681a12ac6f291d"
+    }
+  ],
+  "repeatRowsEqual": {
+    "return": true,
+    "splitter": true
+  }
+}

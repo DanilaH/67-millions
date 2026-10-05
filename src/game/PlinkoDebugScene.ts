@@ -117,8 +117,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private repository: SaveRepository | null = null;
   private readonly balls = new Map<MatterJS.BodyType, DropBallState>();
   private saveWriteChain: Promise<void> = Promise.resolve();
-  private cascadeMutationChain: Promise<void> = Promise.resolve();
+  private launchChain: Promise<void> = Promise.resolve();
   private physicsSaveQueued = false;
+  private physicsDirty = false;
   private lastPersistedPhysicsTick = 0;
   private visibilityHandler: (() => void) | null = null;
   private audio: PlinkoAudio | null = null;
@@ -168,9 +169,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.visualSnapshot = null;
     this.pocketLabels.length = 0;
     this.physicsSaveQueued = false;
+    this.physicsDirty = false;
     this.lastPersistedPhysicsTick = 0;
     this.saveWriteChain = Promise.resolve();
-    this.cascadeMutationChain = Promise.resolve();
+    this.launchChain = Promise.resolve();
 
     this.casinoLayer = this.add.container(0, 0);
     createCasinoRoom(this, this.casinoLayer);
@@ -356,13 +358,11 @@ export class PlinkoDebugScene extends Phaser.Scene {
           multiplier,
           getPocketVisualRole(index, this.boardConfig) === 'jackpot',
         );
-        this.enqueueCascadeMutation(() =>
-          this.resolvePocket(index, body),
-        );
+        this.resolvePocket(index, body);
       },
       onPeg: (pegId, body) => {
         this.effects?.hit(body.position.x, body.position.y);
-        this.enqueueCascadeMutation(() => this.resolvePeg(pegId, body));
+        this.resolvePeg(pegId, body);
       },
       onFixedTick: (fixedTicksElapsed) => {
         // Derive passive cascade minutes from saved solver ticks, so reload does
@@ -377,11 +377,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
           probe.activeBallCount = this.balls.size;
           probe.maxActiveBallCount = Math.max(probe.maxActiveBallCount ?? 0, this.balls.size);
         }
-        if (
-          this.save?.pendingDrop &&
-          fixedTicksElapsed - this.lastPersistedPhysicsTick >= 15
-        ) {
-          void this.persistPendingPhysics(false);
+      },
+      onAfterFixedTick: (tick) => {
+        if (this.physicsDirty && !this.save?.pendingDrop) {
+          this.physicsDirty = false;
+          // The final empty-world state must be durable before leaving/restarting.
+          void this.enqueueSave(true).then(() => this.finishPaidWorld());
+        } else if (this.save?.pendingDrop &&
+          (this.physicsDirty || tick - this.lastPersistedPhysicsTick >= 15)) {
+          void this.persistPendingPhysics(this.physicsDirty);
         }
       },
     });
@@ -478,7 +482,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
           return;
         }
         this.audio?.prime();
-        this.enqueueCascadeMutation(() => this.commitAndSpawn(preview.fraction));
+        this.enqueueLaunch(() => this.commitAndSpawn(preview.fraction));
       },
       this.casinoLayer,
     );
@@ -734,10 +738,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
   }
 
-  private async resolvePeg(
+  private resolvePeg(
     pegId: string,
     body: MatterJS.BodyType,
-  ): Promise<void> {
+  ): void {
     if (
       !this.save?.pendingDrop ||
       !this.runtime ||
@@ -784,7 +788,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       }
 
       this.audio?.amplifier();
-      await this.persistPendingPhysics(true);
+      this.physicsDirty = true;
       return;
     }
 
@@ -812,7 +816,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         },
       };
       this.audio?.returnCue();
-      await this.persistPendingPhysics(true);
+      this.physicsDirty = true;
       return;
     }
 
@@ -836,14 +840,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.balls.set(rightBody, rightState);
 
       this.audio?.splitter();
-      await this.persistPendingPhysics(true);
+      this.physicsDirty = true;
     }
   }
 
-  private async resolvePocket(
+  private resolvePocket(
     index: number,
     body: MatterJS.BodyType,
-  ): Promise<void> {
+  ): void {
     if (
       !this.save ||
       !this.repository ||
@@ -875,8 +879,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.save.pendingDrop = recordDropPayout(worldPending, pending.dropId, aggregatePayout);
     const lineageStillActive = Array.from(this.balls.values()).some((ball) => ball.lineageId === metadata.lineageId);
     if (lineageStillActive) {
-      this.capturePendingPhysics();
-      await this.enqueueSave(true);
+      this.physicsDirty = true;
       return;
     }
 
@@ -887,10 +890,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
       ? settleAggregateDrop(this.save.game, pending, aggregatePayout, this.boardConfig)
       : settleAggregatePendingDropAndResumeTime(this.save.game, pending, aggregatePayout, this.boardConfig);
     this.save = { ...this.save, game: result.state, pendingDrop: remaining };
-    this.capturePendingPhysics();
+    this.physicsDirty = true;
     this.refreshVisualSnapshot();
     if (!remaining) this.runtime.setJackpotBiasLevel(this.save.game.plinkoJackpotBiasLevel);
-    await this.enqueueSave(true);
 
     (this.game.registry.get(GAME_ANALYTICS_KEY) as GameAnalytics | undefined)?.track('plinko_resolved', result.state, {
       bet: pending.originalStake, payout: result.payout, board_hash: pending.boardFingerprint,
@@ -954,7 +956,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     this.renderAll();
+  }
 
+  private finishPaidWorld(): void {
+    if (!this.save || this.save.pendingDrop || this.leaving) return;
     if (!this.save.pendingDrop && this.boardConfig !== balance && !this.mapMode) {
       // The old paid world is now durably empty; new launches use current geometry.
       this.scene.restart();
@@ -1062,10 +1067,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     };
   }
 
-  private enqueueCascadeMutation(
+  private enqueueLaunch(
     mutation: () => Promise<void> | void,
   ): void {
-    this.cascadeMutationChain = this.cascadeMutationChain
+    this.launchChain = this.launchChain
       .then(async () => {
         await mutation();
       })
@@ -1104,6 +1109,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     try {
       this.capturePendingPhysics();
+      this.physicsDirty = false;
       await this.enqueueSave(flush);
     } finally {
       this.physicsSaveQueued = false;

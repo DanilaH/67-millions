@@ -1,5 +1,8 @@
 # Return and Splitter calibration — 2026-10-05
 
+**Follow-up:** the scheduling defect below is repaired and rerun in [fixed-tick evidence](../../physics/2026-10-05-fixed-tick/README.md). The original failed-run record is retained as history; consult the follow-up for current verification status.
+
+
 T069/T070 candidate, **blocked and not deployed**.
 
 > **BLOCKED — browser parity failed. Do not accept these numbers as production balance evidence.** Candidate commit `febb1fdd702f48007bf0504fc44d37c3e1b0a8ac` passed 383 unit tests/build but failed [Pages browser run 37323285586](https://github.com/DanilaH/67-millions/actions/runs/37323285586), build job `111807512448`. Deploy and verify-live were skipped. The tables below describe the Node adapter only. Do not tune prices from them or treat this candidate as published.
