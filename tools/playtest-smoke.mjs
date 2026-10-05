@@ -27,6 +27,19 @@ const browser = await chromium.launch({ ...(process.env.PLAYWRIGHT_CHROMIUM_EXEC
 const errors = [];
 try {
   const context = await browser.newContext({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+  // Capture the durable settlement boundary, before screenshot/polling latency can
+  // legitimately advance the idle casino clock. Keep exact clock assertions.
+  await context.addInitScript(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      const previous = key === '67m.save' ? this.getItem(key) : null;
+      original.call(this, key, value);
+      if (key === '67m.save' && previous) {
+        const before = JSON.parse(previous), after = JSON.parse(value);
+        if (before.pendingDrop && !after.pendingDrop) window.__smokeSettlement = after;
+      }
+    };
+  });
   const page = await context.newPage(); page.on('pageerror', e => errors.push(e.message));
   const ready = async label => {
     await page.waitForFunction(label => document.querySelector('canvas')?.getAttribute('aria-label') === label && document.querySelector('#startup-preload')?.dataset.state === 'hidden', label);
@@ -89,10 +102,16 @@ try {
   assert.ok(specialCheckpoint.pendingDrop.physics.balls.length <= balance.plinko.maxActiveBalls);
   await page.screenshot({ path: `${output}/special-cascades.png` });
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 45000 });
-  const specialResult = await save();
+  const specialObserved = await save();
+  const specialResult = await page.evaluate(() => window.__smokeSettlement);
+  assert.ok(specialResult, 'captured original durable settlement');
   await load(specialCheckpoint);
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 45000 });
-  const specialReplay = await save();
+  const specialReplayObserved = await save();
+  const specialReplay = await page.evaluate(() => window.__smokeSettlement);
+  assert.ok(specialReplay, 'captured replay durable settlement');
+  writeFileSync(`${output}/special-clock-boundary.json`, JSON.stringify({checkpoint:specialCheckpoint,original:specialResult,replay:specialReplay,observedOriginal:specialObserved,observedReplay:specialReplayObserved},null,2));
+  console.log('Special clock boundary',JSON.stringify({original:specialResult.game.clock,replay:specialReplay.game.clock,observedOriginal:specialObserved.game.clock,observedReplay:specialReplayObserved.game.clock}));
   assert.equal(specialReplay.game.cash, specialResult.game.cash, 'special cascades restore exact independently aggregated payouts');
   assert.equal(specialReplay.game.rngState, specialResult.game.rngState, 'special cascades restore RNG');
   assert.deepEqual(specialReplay.game.clock, specialResult.game.clock, 'special cascades restore clock');
