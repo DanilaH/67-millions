@@ -38,7 +38,7 @@ Gross return includes the stake. Standard errors in the raw summary describe sam
 | All seven board tracks max | 42.935× | 0.744× | 50.9% |
 | Maximum without edge-payout upgrades | 5.816× | 0.744× | 50.9% |
 
-The bare sample contains 89 edge outcomes out of 1,000 (8.9%), identified unambiguously by its unique 12× payout. Its mean standard error is 0.104×; the observed profitability is much larger than that sampling error. **The intended negative → roughly fair → profitable board progression is not currently established.** Correct bare-board physics comes before changing upgrade prices.
+The bare sample contains 89 edge outcomes out of 1,000 (8.9%), identified unambiguously by its unique 12× payout. Its mean standard error is 0.104×; the observed profitability is much larger than that sampling error. **The intended negative → roughly fair → profitable board progression is not currently established.** Correct bare-board physics comes before changing upgrade prices. The max-bet ladder increases the allowed stake fivefold per level; the inference is that it scales an already profitable starting board before the player needs meaningful physical upgrades. This is not a separate measured max-bet strategy experiment.
 
 Edge payout upgrades account for the largest sampled increase: removing them from the maximum board changes mean gross return from 42.935× to 5.816×. This is an ablation, not an additive attribution: effects interact. The full maximum's mean standard error is 2.138×, and its median is still below the stake. Large rare payouts coexist with frequent losses.
 
@@ -56,4 +56,4 @@ One promising addition beyond the current presentation scope is visible machine 
 
 ## Verification status
 
-377 unit tests passed and the Pages build passed locally. The diagnostic entrypoint was explicitly typechecked. Local Chromium installation failed, so visual checks and the new held-input/browser-first-tick cases run through GitHub Actions. Final CI/Pages outcomes are reported separately; no unrun browser result is claimed here.
+377 unit tests passed and the Pages build passed locally. The diagnostic entrypoint was explicitly typechecked. Local Chromium installation failed, so browser checks ran through GitHub Actions. [Run 37286661736](https://github.com/DanilaH/67-millions/actions/runs/37286661736) passed build, deployment and live verification on `cfd94bf704f8322adaea72d3ca00e0a72246f8f1`. The live manifest matched that revision, with zero page errors or failed requests. Mouse and touch held-choice regressions passed. Node/Phaser parity also passed from the first solver tick, alongside the six-root base/max-board fixtures. Desktop controls and mobile expanded-result screenshots were visually inspected: the totals no longer overlap the last-result card. Evidence: `pages-live-smoke`, artifact 11335203669. CI run 37286661629 passed. This Markdown follow-up changes no executable source.
