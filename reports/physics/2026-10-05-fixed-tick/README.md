@@ -1,5 +1,7 @@
 # Fixed-tick collision and checkpoint boundary — 2026-10-05
 
+**Published and verified:** CI, Pages deployment and live browser checks are green.
+
 This repairs the browser/Node payout mismatch that blocked the V1 Return/Splitter candidate. Config SHA-256 stays `bd8928de31c8bcf5392b8a3861cfd193920088a6cd36ba2f73628a6020f4e589`; no prices, needs, multipliers or positions changed in this fix.
 
 ## Cause and fix
@@ -15,9 +17,10 @@ The regression test covers two consecutive ticks on one JavaScript stack: no bod
 - 384 unit tests pass; TypeScript and Pages build pass.
 - Local production-build browser smoke passes, including normal and delayed-frame max-special parity. Both now end at **118487**, with exact RNG, clock and needs matches. See `verification.json`.
 - Bare browser fixtures also retain their exact final outcomes. Tiny pre-existing cross-engine floating differences on bare poses are not claimed to be bit-identical across engines or all seeds.
+- Repeated [100,000 bare roots](bare-100k.md): identical payouts/contact counts, .8512025× mean gross return, .692% edges, zero unresolved.
 - Repeated 30,000 Return and 12,000 Splitter roots match every row/per-root payout in the earlier adapter reports, with zero unresolved roots. Seeds 67108500 and 67108600; candidate CLI files are in the preceding special-pin report. Gzipped reruns are retained here.
 - Repeated 40 full-game runs match the previous candidate traces exactly; [new artifacts](../../pacing/2026-10-05-fixed-tick/summary.json). 36/40 wins and successful medians 13–28 minutes still indicate an unfinished economy, not a passed pacing gate.
-- Expanded CI also tests three historical paid boards with max specials. Publication/live status is recorded after the run completes.
+- Expanded CI passed three historical paid boards with max specials, normal/delayed-frame parity, and desktop/touch Pages scenarios. Build, deploy and verify-live all succeeded in [run 37328078720](https://github.com/DanilaH/67-millions/actions/runs/37328078720). Published executable: `5bf6c6806dd709f6d17800cd7893cecbedffb160`. Build job `111823829467`, deploy `111828294874`, live check `111828474522`. The live check asserts the expected revision and runs against https://danilah.github.io/67-millions/.
 
 Provenance: local base `0ea5594cc7e0fcc3feb92bca6d16158572c8e8c7` has the same tree as remote `63549c42c13217f020d0c39e12a51661bb646bbf`, plus the code changes committed with these reruns. CLI metadata records the pre-commit revision; this report explicitly identifies the accompanying working-tree patch. Model: Phaser CustomMain + Phaser Resolver defaults, fixed-tick-boundary-v1. Raw config is unchanged. Full-game policy and limitations remain recorded in its summary metadata.
 
