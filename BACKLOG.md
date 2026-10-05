@@ -285,7 +285,7 @@ Acceptance: safe interstitials, simulation pause, mobile/desktop lifecycle, rati
 2026-10-05 bare-board candidate: frictionAir 0.026 yields 0.846025× and 0.68% edge on 10,000 independent roots; known historical paid boards retain old physics. See reports/physics/2026-10-05-bare/README.md. Upgrade calibration and pacing remain open.
 2026-10-05 playtest follow-up: 70,000 independent roots confirm base 1.912× / 8.05% edge, a Return L1→L2 regression and frequent but economically weak Splitter contacts. See reports/pacing/2026-10-05-pockets/README.md. No runtime/config change.
 2026-10-05 correction: the Phaser-matched adapter finds a profitable bare board and strongly unequal upgrade effects in 35,000 roots. Historical standalone-Matter calibration is not an accepted runtime result; see reports/pacing/2026-10-05-upgrades/README.md. Recalibration remains open; do not compensate through prices.
-Status: Candidate measured (2026-10-01): exact runtime hash, 100k bare and 10k max-cascade reports retained; final frozen-candidate review follows pacing/device acceptance.
+Status: Partial (2026-10-05): corrected bare-board candidate measured and browser-tested. Upgrade calibration remains open, especially Return L2 and Splitter. Historical 2026-10-01 standalone-Matter samples are retained but do not accept the current runtime.
 Acceptance: reports for frozen candidate geometry/config.
 
 ### T070 [P0] Large full-game batch + dominant strategy search

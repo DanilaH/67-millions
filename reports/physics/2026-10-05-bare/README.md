@@ -80,3 +80,15 @@ Resolver accepts exact fingerprints of the current board, the previous physics w
 ## Remaining work
 
 Return L2 still reduces expected payout versus L1; Splitter remains economically weak. Recalibrate these on the corrected bare board, then evaluate prices/max bets and complete-run pacing. Do not claim that this one parameter fixes five-minute progression or proves the 30-minute target.
+
+## Published verification follow-up
+
+Runtime change and the preceding audit were published together as `e845d31aff650f2dc4eea8e6abe4885d7791d7fe`. Its first Pages build stopped before deployment because a screenshot/poll-time comparison of special-cascade clocks differed by one minute (cash and RNG matched). This is not a demonstrated payout error. The exact cause of that first timing difference was not captured.
+
+`3a764fa4b6206acb20024d4dcf5fafb02f2de1eb` adds a browser-only observer of the durable pending→settled save transition. It retains exact cash, RNG and clock assertions at that boundary, avoiding comparisons with later idle time. The subsequent run recorded original/replay minute 637 at both the durable boundary and the later observation; it therefore verifies the chosen boundary but does not reproduce the first mismatch's cause.
+
+Pages run `37309060790`, build job `111759713622`: 381 tests, build, playtest smoke and mouse/touch UI smoke all passed. Node/Phaser final money, RNG, clock and needs matched in all three fixtures. Intermediate floats first differ at approximately 1e-14 at tick 135; this is not bit-identical cross-engine trajectory evidence. Both historical paid-board variants replayed and switched to the current board. UI smoke reported no page errors, failed requests or unwanted service requests. Deploy job `111763125625` succeeded; live verification is recorded below when complete.
+
+Reproduction note: `409ef54` in diagnostic metadata is the local audit revision subsequently included in `e845d31`; the old runtime/config is available at `b5aebb9`. To repeat the initial coarse screen using the published diagnostic code, temporarily use `balance.v0.json` from `b5aebb9` (only damping differs from the current candidate). Fine and holdout candidates explicitly override damping. The raw result files preserve both old and candidate parameters.
+
+Live verification job `111763409805` passed at 2026-10-05 12:39 UTC: served manifest SHA `3a764fa4b6206acb20024d4dcf5fafb02f2de1eb`, mouse 1280×720 and CDP touch 640×360, no page errors, failed requests or unwanted service requests. Pages run `37309060790` and CI for that revision are successful.
