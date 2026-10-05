@@ -192,3 +192,5 @@ For bare board and every meaningful progression milestone, minimum 100k Drops:
 - stuck/watchdog incidence.
 
 No upgrade-price freeze before these reports exist.
+
+**V1 publication blocked (2026-10-05):** browser/Node special-cascade payout parity failed; these configured positions/values are an unaccepted main-branch candidate, not the deployed board. See reports/physics/2026-10-05-specials/README.md. Repair deterministic effect scheduling and remeasure before publication; the old live board remains in use.

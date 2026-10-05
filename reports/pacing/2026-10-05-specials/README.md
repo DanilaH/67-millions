@@ -1,5 +1,7 @@
 # Matched full-game diagnostic — 2026-10-05
 
+> **Blocked evidence:** the candidate failed browser/Node payout parity in [run 37323285586](https://github.com/DanilaH/67-millions/actions/runs/37323285586). These are adapter diagnostics, not established production outcomes. Candidate deployment was skipped. Resolve deterministic effect scheduling before tuning prices or claiming these win counts for the game. See the [blocking finding](../../physics/2026-10-05-specials/README.md).
+
 40 physical bot runs before and 40 after special-pin calibration, all starting from configured 500 ₽. Same 10 seeds (67104000–67104009) in four policy variants. Policy remains liquidity-v1 BASELINE_GROWTH, with original or cheapest-affordable upgrade order, and single launches or bounded six-root bursts spaced .25s then drained. Decisions assume 2 real seconds; dishes/trash use full configured work timers; courier assumes 30 seconds. This is nominal simulated active time, not measured human pacing.
 
 Config/code provenance: [physics report](../../physics/2026-10-05-specials/README.md). Each folder includes full traces/results in `runs.json.gz` and metadata/summary JSON. All losses were Barry losses. Same-seed outcomes may diverge after changed physics/purchases.

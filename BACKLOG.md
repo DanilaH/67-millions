@@ -282,6 +282,7 @@ Acceptance: safe interstitials, simulation pause, mobile/desktop lifecycle, rati
 ## E21 — Final balance / playtest
 
 ### T069 [P0] Re-run physical milestone boards
+BLOCKER (2026-10-05): V1 candidate failed browser/Node six-root payout parity (101055 vs 118487); Pages deployment skipped. Suspected async cascade/save queue versus fixed-tick scheduling. Establish deterministic effect application and snapshot boundaries before accepting calibration or changing economy. Evidence: reports/physics/2026-10-05-specials/README.md.
 2026-10-05 bare-board candidate: frictionAir 0.026 yields 0.846025× and 0.68% edge on 10,000 independent roots; known historical paid boards retain old physics. See reports/physics/2026-10-05-bare/README.md. Upgrade calibration and pacing remain open.
 2026-10-05 playtest follow-up: 70,000 independent roots confirm base 1.912× / 8.05% edge, a Return L1→L2 regression and frequent but economically weak Splitter contacts. See reports/pacing/2026-10-05-pockets/README.md. No runtime/config change.
 2026-10-05 correction: the Phaser-matched adapter finds a profitable bare board and strongly unequal upgrade effects in 35,000 roots. Historical standalone-Matter calibration is not an accepted runtime result; see reports/pacing/2026-10-05-upgrades/README.md. Recalibration remains open; do not compensate through prices.

@@ -1,6 +1,18 @@
 # Return and Splitter calibration — 2026-10-05
 
-T069/T070 playtest candidate, not final economy acceptance.
+T069/T070 candidate, **blocked and not deployed**.
+
+> **BLOCKED — browser parity failed. Do not accept these numbers as production balance evidence.** Candidate commit `febb1fdd702f48007bf0504fc44d37c3e1b0a8ac` passed 383 unit tests/build but failed [Pages browser run 37323285586](https://github.com/DanilaH/67-millions/actions/runs/37323285586), build job `111807512448`. Deploy and verify-live were skipped. The tables below describe the Node adapter only. Do not tune prices from them or treat this candidate as published.
+
+## Blocking finding
+
+The six-root max-special parity fixture (seed 67105001, 15 ticks between launches, mixed 25%/100% stakes, checkpoint at tick 90) gave browser cash **101055** versus Node **118487**. First recorded special divergence was tick **143**: the browser still had `audit:2:root` while Node had already created its children; another lineage's children were also one step apart. Bare parity fixtures completed before this assertion failed. Logs/artifacts are retained by the linked workflow (`pages-smoke`, artifact 11350824235).
+
+Code inspection identifies a likely scheduling cause, not yet a verified fix: `PlinkoDebugScene.enqueueCascadeMutation` serializes collisions through promises; `resolvePeg` awaits `persistPendingPhysics(true)`. Phaser's `World.update` can execute several fixed updates before JavaScript microtasks run, and a save wait can postpone later effects further. The Node adapter drains its collision mutations synchronously after **every** Engine.update. Thus matching Matter settings is insufficient to establish effect parity. Moving Splitter earlier exposed a substantial payout difference; the previously passing fixture did not prove general parity.
+
+Per AGENTS.md's stop-and-report rule for invalidated balance assumptions, no test assertion was weakened and no runtime scheduling workaround was added. Main contains the blocked candidate; Pages retains its preceding deployment because the deploy gate did not run. Next minimal task: make the collision/effect/solver-save boundary deterministic across fixed ticks and render/save latency, verify exact browser replay and adapter parity, then rerun all effect and full-game calibration before accepting/publishing V1. Historical paid-save behavior must be considered explicitly in that change.
+
+
 
 ## Provenance
 
@@ -22,7 +34,7 @@ A candidate Return ladder ending at `r8c3/r8c5` was rejected because the last le
 
 Base damping .026, deflectors, prices, max-bet ladder, needs and pocket multipliers are unchanged. Return still preserves 100% value, same X, one proc/lineage. Split depth 2, 24-body cap and six paid-root cap are unchanged.
 
-## Final accepted-config measurements
+## Candidate adapter measurements (browser parity unconfirmed)
 
 Return mean gross payout/stake:
 
