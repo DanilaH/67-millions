@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "configHash": "ce5f43f8335dd0a1e7e3c52aca1b1e0fa202744f9076f3f7c2a6b5c3d62463cc",
+    "sourceRevision": "4a212de8bc898358c32599a3c59af96d88b07e2e",
+    "perVariant": 10,
+    "seedStart": 67104000,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 26.036944444444444,
+      "medianWinWork": 24.5,
+      "medianWinRecovery": 23,
+      "medianWinDrops": 75.5,
+      "medianAllMinutes": 26.036944444444444
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 21.721527777777773,
+      "medianWinWork": 14,
+      "medianWinRecovery": 13,
+      "medianWinDrops": 105,
+      "medianAllMinutes": 21.721527777777773
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 14.0075,
+      "medianWinWork": 16,
+      "medianWinRecovery": 16.5,
+      "medianWinDrops": 135.5,
+      "medianAllMinutes": 14.0075
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 13.854166666666668,
+      "medianWinWork": 15.5,
+      "medianWinRecovery": 15,
+      "medianWinDrops": 136,
+      "medianAllMinutes": 13.854166666666668
+    }
+  ]
+}

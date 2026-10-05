@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "configHash": "16a227eec5d3d410c83e5a85e20a65fae31759663d3a318b2a3c2b51b12f6613",
+    "sourceRevision": "4a212de8bc898358c32599a3c59af96d88b07e2e",
+    "perVariant": 10,
+    "seedStart": 67104000,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 9,
+        "HP_DEATH": 1
+      },
+      "wins": 9,
+      "medianWinMinutes": 28.268611111111113,
+      "medianWinWork": 30,
+      "medianWinRecovery": 26,
+      "medianWinDrops": 96,
+      "medianAllMinutes": 28.499583333333334
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 24.93888888888889,
+      "medianWinWork": 19,
+      "medianWinRecovery": 17.5,
+      "medianWinDrops": 95.5,
+      "medianAllMinutes": 24.93888888888889
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 15.03486111111111,
+      "medianWinWork": 17.5,
+      "medianWinRecovery": 17,
+      "medianWinDrops": 131.5,
+      "medianAllMinutes": 15.03486111111111
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 13.438611111111111,
+      "medianWinWork": 14.5,
+      "medianWinRecovery": 15,
+      "medianWinDrops": 129,
+      "medianAllMinutes": 13.438611111111111
+    }
+  ]
+}

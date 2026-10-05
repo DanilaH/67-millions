@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "configHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+    "sourceRevision": "4a212de8bc898358c32599a3c59af96d88b07e2e",
+    "perVariant": 10,
+    "seedStart": 67104000,
+    "archetype": "BASELINE_GROWTH",
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 28.97486111111111,
+      "medianWinWork": 23,
+      "medianWinRecovery": 22,
+      "medianWinDrops": 141,
+      "medianAllMinutes": 28.97486111111111
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 26.812222222222218,
+      "medianWinWork": 16,
+      "medianWinRecovery": 16,
+      "medianWinDrops": 134,
+      "medianAllMinutes": 26.812222222222218
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 15.502083333333335,
+      "medianWinWork": 16,
+      "medianWinRecovery": 19,
+      "medianWinDrops": 209,
+      "medianAllMinutes": 15.502083333333335
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 14.067916666666669,
+      "medianWinWork": 14,
+      "medianWinRecovery": 17,
+      "medianWinDrops": 196.5,
+      "medianAllMinutes": 14.067916666666669
+    }
+  ]
+}

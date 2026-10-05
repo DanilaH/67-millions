@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "configHash": "fda79ad09cafd6821c83b0ef34969fc4a5e382ab802c47e5365e08d2cca1f992",
+    "sourceRevision": "4a212de8bc898358c32599a3c59af96d88b07e2e",
+    "perVariant": 10,
+    "seedStart": 67104000,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 26.30291666666667,
+      "medianWinWork": 27.5,
+      "medianWinRecovery": 23,
+      "medianWinDrops": 90,
+      "medianAllMinutes": 26.30291666666667
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 23.107222222222223,
+      "medianWinWork": 16,
+      "medianWinRecovery": 15,
+      "medianWinDrops": 98.5,
+      "medianAllMinutes": 23.107222222222223
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 17.45652777777778,
+      "medianWinWork": 20.5,
+      "medianWinRecovery": 19.5,
+      "medianWinDrops": 130,
+      "medianAllMinutes": 17.45652777777778
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 11.91513888888889,
+      "medianWinWork": 13,
+      "medianWinRecovery": 13,
+      "medianWinDrops": 125,
+      "medianAllMinutes": 11.91513888888889
+    }
+  ]
+}

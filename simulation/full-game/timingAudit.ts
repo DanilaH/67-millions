@@ -13,12 +13,16 @@ const configHash = createHash('sha256').update(raw).digest('hex');
 const perVariant = Number(process.argv[2] ?? 20);
 const output = process.argv[3] ?? 'reports/pacing/2026-10-05';
 const decisionDelay = Number(process.argv[4] ?? 2);
+const seedStart = Number(process.argv[6] ?? 67104000);
+const archetype = process.argv[7] ?? 'BASELINE_GROWTH';
+if (archetype !== 'BASELINE_GROWTH' && archetype !== 'AGGRESSIVE') throw Error('Unsupported audit archetype');
+if (!Number.isInteger(seedStart) || seedStart < 1 || seedStart > 0xffffffff - perVariant) throw Error('Invalid seed range');
 const runs = [];
 const buy = (id: CasinoUpgradeId): FullGameDecision => id === 'maxBet' ? { type: 'BUY_PLINKO_MAX_BET' } : id === 'insurance' ? {type:'BUY_PLINKO_INSURANCE'} : ['center','mid','jackpot'].includes(id) ? {type:'BUY_PLINKO_POCKET',track:id as 'center'|'mid'|'jackpot'} : {type:'BUY_PLINKO_SPECIAL',track:id as 'amplifier'|'return'|'splitter'|'jackpotBias'};
 for (const batch of [1,6]) for (const order of ['original','cheapest'] as const) {
   for(let index=0;index<perVariant;index++) {
-    const seed=67104000+index;
-    const base=createLiquidityPolicy(config,'BASELINE_GROWTH',seed);
+    const seed=seedStart+index;
+    const base=createLiquidityPolicy(config,archetype,seed);
     const trace: object[]=[];
     const result=runFullGame(config, {id:`${base.id}+${order}+batch${batch}+timing-v2`,decide(ctx){
       let action=base.decide(ctx);
@@ -56,7 +60,7 @@ for (const batch of [1,6]) for (const order of ['original','cheapest'] as const)
   }
 }
 mkdirSync(output,{recursive:true});
-const metadata={configHash,sourceRevision:execSync('git rev-parse HEAD').toString().trim(),perVariant,seedStart:67104000,decisionSeconds:decisionDelay,courierSecondsAssumed:30,workTimers:'dishes/trash full configured duration, not measured human completion',launchSpacingSeconds:0.25,mode:'bounded bursts then drain; no continuous replenishment; nominal 60Hz',limitations:'No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts.'};
+const metadata={configHash,sourceRevision:execSync('git rev-parse HEAD').toString().trim(),perVariant,seedStart,archetype,decisionSeconds:decisionDelay,courierSecondsAssumed:30,workTimers:'dishes/trash full configured duration, not measured human completion',launchSpacingSeconds:0.25,mode:'bounded bursts then drain; no continuous replenishment; nominal 60Hz',limitations:'No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts.'};
 writeFileSync(`${output}/runs.json.gz`,gzipSync(JSON.stringify({metadata,runs})));
 const median=(a:number[])=>{a.sort((a,b)=>a-b);return a.length?a.length%2?a[Math.floor(a.length/2)]!:(a[a.length/2-1]!+a[a.length/2]!)/2:null;};
 const summaries=[];

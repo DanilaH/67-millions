@@ -168,7 +168,7 @@ describe('baseline full-game policies', () => {
         counters: zeroCounters(),
         decisionIndex: 0,
       }),
-    ).toEqual({ type: 'PLINKO', fraction: 0.25 });
+    ).toEqual({ type: 'PLINKO', fraction: 0.5 });
   });
 
   it('BASELINE_GROWTH buys EV-oriented pocket progression before routine earning', () => {

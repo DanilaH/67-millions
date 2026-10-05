@@ -4,7 +4,7 @@
 
 Config version: `0.8-candidate-price0.5-payout1.5`. This is the T070 playtest candidate, not a frozen RC. Target successful median: ~30 real minutes.
 
-T070 changes: job salaries ×1.5; job and EV/special/Insurance upgrade prices ×0.5; max-bet prices and all game rules, needs, Barry payments and physics are unchanged. See `reports/release/2026-10-01/README.md` for exact candidate-hash evidence and measurement limits.
+Historical 2026-10-01 T070 changes: job salaries ×1.5; job and EV/special/Insurance upgrade prices ×0.5; max-bet prices and all game rules, needs, Barry payments and physics are unchanged. See `reports/release/2026-10-01/README.md` for exact candidate-hash evidence and measurement limits.
 
 ## Time / start
 - 1 game minute = 3 real seconds.
@@ -102,12 +102,12 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 | 0 | 500 ₽ | 0 ₽ |
 | 1 | 2 500 ₽ | 500 ₽ |
 | 2 | 12 500 ₽ | 1 800 ₽ |
-| 3 | 62 500 ₽ | 7 000 ₽ |
-| 4 | 312 500 ₽ | 26 000 ₽ |
-| 5 | 1 562 500 ₽ | 105 000 ₽ |
-| 6 | 7 812 500 ₽ | 420 000 ₽ |
+| 3 | 30 000 ₽ | 7 000 ₽ |
+| 4 | 60 000 ₽ | 250 000 ₽ |
+| 5 | 120 000 ₽ | 1 500 000 ₽ |
+| 6 | 240 000 ₽ | 6 000 000 ₽ |
 
-**Price provenance:** latestKnownTunedDiscussionValue; rerun canonical simulator before freeze.
+**Price provenance:** 2026-10-05 economy candidate, SHA-256 `53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc`. See [selection and independent comparison](reports/pacing/2026-10-05-economy/README.md). First-level board prices, center and Insurance are unchanged. Other board tracks cost ×2/×4/×8/×12 at levels 2/3/4/5 relative to the previous config; effects and physics are unchanged. Purchased levels survive; future stakes use the new caps, while already-paid stakes retain their original amounts. Human pacing and continuous-burst dominance remain open.
 
 ### Insurance
 - L1: 500 ₽; after 3 losing Drop(s), next Drop floor 0.75x.

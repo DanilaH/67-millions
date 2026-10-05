@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "configHash": "0bf8e7eec60f1c6ebf0a4298ec54154b357da0bdf9b76a85491402b383bc7d10",
+    "sourceRevision": "4a212de8bc898358c32599a3c59af96d88b07e2e",
+    "perVariant": 10,
+    "seedStart": 67104000,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "bounded bursts then drain; no continuous replenishment; nominal 60Hz",
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 9,
+        "BARRY_LOSS": 1
+      },
+      "wins": 9,
+      "medianWinMinutes": 25.43027777777777,
+      "medianWinWork": 23,
+      "medianWinRecovery": 19,
+      "medianWinDrops": 95,
+      "medianAllMinutes": 26.70222222222222
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 25.54625,
+      "medianWinWork": 17.5,
+      "medianWinRecovery": 15.5,
+      "medianWinDrops": 119,
+      "medianAllMinutes": 25.54625
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 9,
+        "BARRY_LOSS": 1
+      },
+      "wins": 9,
+      "medianWinMinutes": 16.12972222222222,
+      "medianWinWork": 16,
+      "medianWinRecovery": 19,
+      "medianWinDrops": 168,
+      "medianAllMinutes": 16.22472222222222
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 10
+      },
+      "wins": 10,
+      "medianWinMinutes": 13.204166666666666,
+      "medianWinWork": 14,
+      "medianWinRecovery": 15.5,
+      "medianWinDrops": 157,
+      "medianAllMinutes": 13.204166666666666
+    }
+  ]
+}

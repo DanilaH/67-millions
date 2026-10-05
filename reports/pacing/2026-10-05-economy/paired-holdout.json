@@ -1,0 +1,46 @@
+[
+  {
+    "variant": "(1, 'original')",
+    "commonWins": 42,
+    "medianPairedDelta": {
+      "minutes": 6.00541666666667,
+      "work": -2.0,
+      "millionToEndMinutes": 5.473472222222224,
+      "cash100kMinutes": 0.0,
+      "maxPurchaseGapMinutes": 0.6458333333333339
+    }
+  },
+  {
+    "variant": "(1, 'cheapest')",
+    "commonWins": 48,
+    "medianPairedDelta": {
+      "minutes": 5.890555555555552,
+      "work": -1.0,
+      "millionToEndMinutes": 4.639305555555557,
+      "cash100kMinutes": 0.0,
+      "maxPurchaseGapMinutes": 0.5523611111111146
+    }
+  },
+  {
+    "variant": "(6, 'original')",
+    "commonWins": 42,
+    "medianPairedDelta": {
+      "minutes": 1.9044444444444437,
+      "work": 0.0,
+      "millionToEndMinutes": 1.8077777777777804,
+      "cash100kMinutes": 0.0,
+      "maxPurchaseGapMinutes": 0.09138888888888808
+    }
+  },
+  {
+    "variant": "(6, 'cheapest')",
+    "commonWins": 47,
+    "medianPairedDelta": {
+      "minutes": 1.2530555555555551,
+      "work": 0,
+      "millionToEndMinutes": 1.3599999999999983,
+      "cash100kMinutes": 0.0,
+      "maxPurchaseGapMinutes": 0.03888888888889053
+    }
+  }
+]

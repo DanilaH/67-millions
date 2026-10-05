@@ -556,17 +556,17 @@
       {
         "level": 4,
         "maxBet": 60000,
-        "price": 250000
+        "price": 26000
       },
       {
         "level": 5,
         "maxBet": 120000,
-        "price": 1500000
+        "price": 105000
       },
       {
         "level": 6,
         "maxBet": 240000,
-        "price": 6000000
+        "price": 420000
       }
     ],
     "centerUpgrades": [
@@ -591,13 +591,13 @@
       },
       {
         "level": 2,
-        "price": 30000,
+        "price": 15000,
         "mid": 2.2,
         "inner": 1.25
       },
       {
         "level": 3,
-        "price": 300000,
+        "price": 75000,
         "mid": 2.8,
         "inner": 1.4
       }
@@ -610,12 +610,12 @@
       },
       {
         "level": 2,
-        "price": 50000,
+        "price": 25000,
         "edge": 50
       },
       {
         "level": 3,
-        "price": 500000,
+        "price": 125000,
         "edge": 100
       }
     ],
@@ -628,25 +628,25 @@
       },
       {
         "level": 2,
-        "price": 45000,
+        "price": 22500,
         "count": 2,
         "multiplier": 1.25
       },
       {
         "level": 3,
-        "price": 300000,
+        "price": 75000,
         "count": 2,
         "multiplier": 1.4
       },
       {
         "level": 4,
-        "price": 2000000,
+        "price": 250000,
         "count": 3,
         "multiplier": 1.4
       },
       {
         "level": 5,
-        "price": 9000000,
+        "price": 750000,
         "count": 3,
         "multiplier": 1.6
       }
@@ -659,17 +659,17 @@
       },
       {
         "level": 2,
-        "price": 150000,
+        "price": 75000,
         "targetFrequency": 0.2
       },
       {
         "level": 3,
-        "price": 1200000,
+        "price": 300000,
         "targetFrequency": 0.3
       },
       {
         "level": 4,
-        "price": 8000000,
+        "price": 1000000,
         "targetFrequency": 0.43
       }
     ],
@@ -681,22 +681,22 @@
       },
       {
         "level": 2,
-        "price": 90000,
+        "price": 45000,
         "childValue": 0.75
       },
       {
         "level": 3,
-        "price": 700000,
+        "price": 175000,
         "childValue": 0.8
       },
       {
         "level": 4,
-        "price": 4000000,
+        "price": 500000,
         "childValue": 0.85
       },
       {
         "level": 5,
-        "price": 18000000,
+        "price": 1500000,
         "childValue": 0.9
       }
     ],
@@ -717,7 +717,7 @@
       },
       {
         "level": 2,
-        "price": 45000,
+        "price": 22500,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
@@ -739,7 +739,7 @@
       },
       {
         "level": 3,
-        "price": 360000,
+        "price": 90000,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
@@ -769,7 +769,7 @@
       },
       {
         "level": 4,
-        "price": 2800000,
+        "price": 350000,
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
