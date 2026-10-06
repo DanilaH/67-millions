@@ -161,7 +161,7 @@ try {
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 15000 });
   assert.ok((await save()).game.cash > fixture.game.cash, '1080p courier pointer path reaches its endpoint');
   await load(fixture);
-  await page.goto(url + '?debug=1'); await ready('Карта города');
+  await page.goto(url); await ready('Карта города');
   await page.locator('#debug-root summary').click();
   const cash = (await save()).game.cash;
   await page.getByLabel('Сумма денег').fill('12345');

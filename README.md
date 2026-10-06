@@ -80,3 +80,5 @@ Historical special-pin calibration (2026-10-05): [Return/Splitter calibration](r
 2026-10-05 economy candidate: late max-bet caps and board prices now slow the final acceleration while preserving entry prices and upgrade effects. Independent 200-run comparison per config: successful medians 27–32 minutes for single drops and 15–17 for six-root bursts. These are modeled times, not human playtests. Exact config and limitations: [economy report](reports/pacing/2026-10-05-economy/README.md).
 
 2026-10-05 continuous-launch follow-up: [760-run audit](reports/pacing/2026-10-05-continuous/README.md) adds replenishment and purchase-gap diagnostics. Riskier continuous play is faster among winners but loses more often; tested price discounts did not reliably fix purchase droughts, so the published economy remains unchanged.
+
+2026-10-06 playtest access: the ordinary Pages URL now shows the collapsed **⚙ Плейтест** panel without `?debug=1`. Open it from the map to add/remove cash, advance time, reset the save (with confirmation), or copy diagnostics. Opening the panel pauses the game.
