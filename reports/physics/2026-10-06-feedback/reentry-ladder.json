@@ -1,0 +1,129 @@
+{
+  "revision": "f90a1a9992c60c5763dd996c0c3e53493cf8dca2",
+  "sourceConfigHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+  "scriptHash": "e01e6b5c617d0f45ec3c3e9cce991f10db0fe260bc8aef6afe41ea29ae8bd549",
+  "sharedWorldHash": "4e994b6ce6f01dfab26ab13ac389aaeeea562634a0c063c145e938bc44e223e8",
+  "count": 1500,
+  "seed": 67110603,
+  "model": "Phaser shared-world, independent paid roots, 3600 tick limit, common seed stream; gross payout/stake, not human pacing",
+  "candidates": [
+    {
+      "name": "return-half-L1",
+      "returnLevel": 1,
+      "retention": 0.5
+    },
+    {
+      "name": "return-half-L2",
+      "returnLevel": 2,
+      "retention": 0.5
+    },
+    {
+      "name": "return-half-L3",
+      "returnLevel": 3,
+      "retention": 0.5
+    },
+    {
+      "name": "return-half-L4",
+      "returnLevel": 4,
+      "retention": 0.5
+    }
+  ],
+  "rows": [
+    {
+      "candidate": "return-half-L1",
+      "context": "isolated",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 0.966,
+      "se": 0.05170923737741079,
+      "edge": 0.03,
+      "returnRate": 0.056666666666666664,
+      "bonusAfterReturn": 0,
+      "meanTicks": 305.28333333333336,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L1",
+      "context": "combined",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 11.672358666666549,
+      "se": 1.0131386291598783,
+      "edge": 0.06533333333333333,
+      "returnRate": 0.037333333333333336,
+      "bonusAfterReturn": 0.9642857142857143,
+      "meanTicks": 300.5926666666667,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L2",
+      "context": "isolated",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 1.2886666666666666,
+      "se": 0.06667933724377748,
+      "edge": 0.05,
+      "returnRate": 0.194,
+      "bonusAfterReturn": 0,
+      "meanTicks": 320.22933333333333,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L2",
+      "context": "combined",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 15.527233333333424,
+      "se": 1.152553357907673,
+      "edge": 0.08933333333333333,
+      "returnRate": 0.15,
+      "bonusAfterReturn": 0.8177777777777778,
+      "meanTicks": 312.71866666666665,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L3",
+      "context": "isolated",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 2.698,
+      "se": 0.11487019097158972,
+      "edge": 0.18333333333333332,
+      "returnRate": 0.3,
+      "bonusAfterReturn": 0,
+      "meanTicks": 306.8946666666667,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L3",
+      "context": "combined",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 34.19210133333373,
+      "se": 1.5911494274002074,
+      "edge": 0.23,
+      "returnRate": 0.31066666666666665,
+      "bonusAfterReturn": 0.27682403433476394,
+      "meanTicks": 306.89866666666666,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L4",
+      "context": "isolated",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 1.521,
+      "se": 0.0669043356349285,
+      "edge": 0.04733333333333333,
+      "returnRate": 0.442,
+      "bonusAfterReturn": 0,
+      "meanTicks": 350.24733333333336,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-half-L4",
+      "context": "combined",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 19.596529333333525,
+      "se": 1.2925926534457448,
+      "edge": 0.11266666666666666,
+      "returnRate": 0.49933333333333335,
+      "bonusAfterReturn": 0.3938584779706275,
+      "meanTicks": 353.25333333333333,
+      "unresolved": 0
+    }
+  ]
+}

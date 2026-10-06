@@ -1,0 +1,22 @@
+[
+  {
+    "name": "return-half-L1",
+    "returnLevel": 1,
+    "retention": 0.5
+  },
+  {
+    "name": "return-half-L2",
+    "returnLevel": 2,
+    "retention": 0.5
+  },
+  {
+    "name": "return-half-L3",
+    "returnLevel": 3,
+    "retention": 0.5
+  },
+  {
+    "name": "return-half-L4",
+    "returnLevel": 4,
+    "retention": 0.5
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "name": "return-off",
+    "returnLevel": 0
+  },
+  {
+    "name": "current-return",
+    "returnLevel": 4
+  },
+  {
+    "name": "reentry-0.5",
+    "retention": 0.5,
+    "returnLevel": 4
+  },
+  {
+    "name": "reentry-0.25",
+    "retention": 0.25,
+    "returnLevel": 4
+  },
+  {
+    "name": "reentry-0",
+    "retention": 0,
+    "returnLevel": 4
+  },
+  {
+    "name": "central-1",
+    "central": true,
+    "retention": 1,
+    "returnLevel": 4
+  },
+  {
+    "name": "central-0.25",
+    "central": true,
+    "retention": 0.25,
+    "returnLevel": 4
+  },
+  {
+    "name": "central-0",
+    "central": true,
+    "retention": 0,
+    "returnLevel": 4
+  },
+  {
+    "name": "current-guides",
+    "biasLevel": 4
+  },
+  {
+    "name": "guides-down-2",
+    "lower": 2,
+    "biasLevel": 4
+  },
+  {
+    "name": "guides-down-4",
+    "lower": 4,
+    "biasLevel": 4
+  },
+  {
+    "name": "guides-down-6",
+    "lower": 6,
+    "biasLevel": 4
+  }
+]

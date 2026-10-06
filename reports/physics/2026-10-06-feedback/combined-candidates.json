@@ -1,0 +1,22 @@
+[
+  {
+    "name": "current-L1",
+    "returnLevel": 1
+  },
+  {
+    "name": "combined-fix-L1",
+    "returnLevel": 1,
+    "retention": 0.5,
+    "lower": 4
+  },
+  {
+    "name": "current-L2",
+    "returnLevel": 2
+  },
+  {
+    "name": "combined-fix-L2",
+    "returnLevel": 2,
+    "retention": 0.5,
+    "lower": 4
+  }
+]

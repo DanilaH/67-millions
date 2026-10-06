@@ -1,0 +1,361 @@
+{
+  "revision": "f90a1a9992c60c5763dd996c0c3e53493cf8dca2",
+  "sourceConfigHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+  "scriptHash": "e01e6b5c617d0f45ec3c3e9cce991f10db0fe260bc8aef6afe41ea29ae8bd549",
+  "sharedWorldHash": "4e994b6ce6f01dfab26ab13ac389aaeeea562634a0c063c145e938bc44e223e8",
+  "count": 500,
+  "seed": 67110601,
+  "model": "Phaser shared-world, independent paid roots, 3600 tick limit, common seed stream; gross payout/stake, not human pacing",
+  "candidates": [
+    {
+      "name": "return-off",
+      "returnLevel": 0
+    },
+    {
+      "name": "current-return",
+      "returnLevel": 4
+    },
+    {
+      "name": "reentry-0.5",
+      "retention": 0.5,
+      "returnLevel": 4
+    },
+    {
+      "name": "reentry-0.25",
+      "retention": 0.25,
+      "returnLevel": 4
+    },
+    {
+      "name": "reentry-0",
+      "retention": 0,
+      "returnLevel": 4
+    },
+    {
+      "name": "central-1",
+      "central": true,
+      "retention": 1,
+      "returnLevel": 4
+    },
+    {
+      "name": "central-0.25",
+      "central": true,
+      "retention": 0.25,
+      "returnLevel": 4
+    },
+    {
+      "name": "central-0",
+      "central": true,
+      "retention": 0,
+      "returnLevel": 4
+    },
+    {
+      "name": "current-guides",
+      "biasLevel": 4
+    },
+    {
+      "name": "guides-down-2",
+      "lower": 2,
+      "biasLevel": 4
+    },
+    {
+      "name": "guides-down-4",
+      "lower": 4,
+      "biasLevel": 4
+    },
+    {
+      "name": "guides-down-6",
+      "lower": 6,
+      "biasLevel": 4
+    }
+  ],
+  "rows": [
+    {
+      "candidate": "return-off",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.8095,
+      "se": 0.049315652354341384,
+      "edge": 0.004,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 299.21,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-off",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 8.96944000000001,
+      "se": 1.518758621599286,
+      "edge": 0.048,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 295.828,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-return",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.8745,
+      "se": 0.13927506808175835,
+      "edge": 0.08,
+      "returnRate": 0.412,
+      "bonusAfterReturn": 0,
+      "meanTicks": 319.886,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-return",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 28.9554399999999,
+      "se": 2.621291002368684,
+      "edge": 0.17,
+      "returnRate": 0.438,
+      "bonusAfterReturn": 0.7808219178082192,
+      "meanTicks": 316.972,
+      "unresolved": 0
+    },
+    {
+      "candidate": "reentry-0.5",
+      "context": "isolated",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 1.359,
+      "se": 0.09908771240420813,
+      "edge": 0.03,
+      "returnRate": 0.412,
+      "bonusAfterReturn": 0,
+      "meanTicks": 345.114,
+      "unresolved": 0
+    },
+    {
+      "candidate": "reentry-0.5",
+      "context": "combined",
+      "configHash": "3648249c7a8d46e5acf18dcfe31e1283ccc49855e329af3310139ef03351a5ea",
+      "mean": 16.031059999999947,
+      "se": 2.027643351921134,
+      "edge": 0.09,
+      "returnRate": 0.438,
+      "bonusAfterReturn": 0.3926940639269406,
+      "meanTicks": 346.01,
+      "unresolved": 0
+    },
+    {
+      "candidate": "reentry-0.25",
+      "context": "isolated",
+      "configHash": "da02958bfef64fc8de5e00a5908664c12c08cc9b9da0e8886b707b4634f04442",
+      "mean": 2.686,
+      "se": 0.1871118105821189,
+      "edge": 0.16,
+      "returnRate": 0.412,
+      "bonusAfterReturn": 0,
+      "meanTicks": 341.106,
+      "unresolved": 0
+    },
+    {
+      "candidate": "reentry-0.25",
+      "context": "combined",
+      "configHash": "da02958bfef64fc8de5e00a5908664c12c08cc9b9da0e8886b707b4634f04442",
+      "mean": 42.21646400000009,
+      "se": 3.066624537947037,
+      "edge": 0.262,
+      "returnRate": 0.438,
+      "bonusAfterReturn": 0.6712328767123288,
+      "meanTicks": 336.662,
+      "unresolved": 0
+    },
+    {
+      "candidate": "reentry-0",
+      "context": "isolated",
+      "configHash": "f530dad2d2e7edf72e1fed3a0d65bba0d3e773684af47e4eb3d15566dac9ccbb",
+      "mean": 0.738,
+      "se": 0.04956940843408379,
+      "edge": 0.004,
+      "returnRate": 0.412,
+      "bonusAfterReturn": 0,
+      "meanTicks": 380.04,
+      "unresolved": 0
+    },
+    {
+      "candidate": "reentry-0",
+      "context": "combined",
+      "configHash": "f530dad2d2e7edf72e1fed3a0d65bba0d3e773684af47e4eb3d15566dac9ccbb",
+      "mean": 8.830800000000016,
+      "se": 1.5200984405840747,
+      "edge": 0.048,
+      "returnRate": 0.438,
+      "bonusAfterReturn": 0.091324200913242,
+      "meanTicks": 381.598,
+      "unresolved": 0
+    },
+    {
+      "candidate": "central-1",
+      "context": "isolated",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 0.994,
+      "se": 0.056845323304236216,
+      "edge": 0.006,
+      "returnRate": 0.662,
+      "bonusAfterReturn": 0,
+      "meanTicks": 385.814,
+      "unresolved": 0
+    },
+    {
+      "candidate": "central-1",
+      "context": "combined",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 10.695987999999982,
+      "se": 1.6173071505208787,
+      "edge": 0.056,
+      "returnRate": 0.662,
+      "bonusAfterReturn": 0.9003021148036254,
+      "meanTicks": 370.236,
+      "unresolved": 0
+    },
+    {
+      "candidate": "central-0.25",
+      "context": "isolated",
+      "configHash": "f97df09c47a18a631f540d42d0aeeb9b2cbd8c95c215ba995b6a62159a0d4d36",
+      "mean": 0.984,
+      "se": 0.05251670218145885,
+      "edge": 0.004,
+      "returnRate": 0.662,
+      "bonusAfterReturn": 0,
+      "meanTicks": 382.354,
+      "unresolved": 0
+    },
+    {
+      "candidate": "central-0.25",
+      "context": "combined",
+      "configHash": "f97df09c47a18a631f540d42d0aeeb9b2cbd8c95c215ba995b6a62159a0d4d36",
+      "mean": 9.33053200000002,
+      "se": 1.5152056376302732,
+      "edge": 0.048,
+      "returnRate": 0.662,
+      "bonusAfterReturn": 0.7280966767371602,
+      "meanTicks": 371.676,
+      "unresolved": 0
+    },
+    {
+      "candidate": "central-0",
+      "context": "isolated",
+      "configHash": "4bcc335139135f21870f729a8655d2c2726fbba617d9a926b64c7b72976efa7d",
+      "mean": 0.7905,
+      "se": 0.04927296571448279,
+      "edge": 0.004,
+      "returnRate": 0.662,
+      "bonusAfterReturn": 0,
+      "meanTicks": 409.894,
+      "unresolved": 0
+    },
+    {
+      "candidate": "central-0",
+      "context": "combined",
+      "configHash": "4bcc335139135f21870f729a8655d2c2726fbba617d9a926b64c7b72976efa7d",
+      "mean": 8.97688,
+      "se": 1.518662930281378,
+      "edge": 0.048,
+      "returnRate": 0.662,
+      "bonusAfterReturn": 0.6102719033232629,
+      "meanTicks": 400.85,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-guides",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.211,
+      "se": 0.11281805630153059,
+      "edge": 0.048,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 295.06,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-guides",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 28.9554399999999,
+      "se": 2.621291002368684,
+      "edge": 0.17,
+      "returnRate": 0.438,
+      "bonusAfterReturn": 0.7808219178082192,
+      "meanTicks": 316.972,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down-2",
+      "context": "isolated",
+      "configHash": "1edde35328d53a770c12c7082026879de6f86ffca4d6e6f318b394521baea857",
+      "mean": 1.5045,
+      "se": 0.13624549596350233,
+      "edge": 0.074,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 294.036,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down-2",
+      "context": "combined",
+      "configHash": "1edde35328d53a770c12c7082026879de6f86ffca4d6e6f318b394521baea857",
+      "mean": 30.831227999999903,
+      "se": 2.694723359184217,
+      "edge": 0.182,
+      "returnRate": 0.4,
+      "bonusAfterReturn": 0.84,
+      "meanTicks": 313.314,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down-4",
+      "context": "isolated",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 1.314,
+      "se": 0.12060015254379693,
+      "edge": 0.056,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 295.95,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down-4",
+      "context": "combined",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 28.299771999999898,
+      "se": 2.5962607719688235,
+      "edge": 0.166,
+      "returnRate": 0.4,
+      "bonusAfterReturn": 0.83,
+      "meanTicks": 315.474,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down-6",
+      "context": "isolated",
+      "configHash": "8d28b2817c6ff097c2b24b0ca032bb68eb181112c5759a1b17d28ff9664f82d5",
+      "mean": 1.306,
+      "se": 0.12048344500819201,
+      "edge": 0.056,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 295.668,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down-6",
+      "context": "combined",
+      "configHash": "8d28b2817c6ff097c2b24b0ca032bb68eb181112c5759a1b17d28ff9664f82d5",
+      "mean": 27.648251999999907,
+      "se": 2.57063517763568,
+      "edge": 0.162,
+      "returnRate": 0.396,
+      "bonusAfterReturn": 0.8383838383838383,
+      "meanTicks": 314.718,
+      "unresolved": 0
+    }
+  ]
+}

@@ -21,14 +21,10 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
   let pending: PendingDrop | null = null;
   let advancedMinutes = 0, launches = 0, elapsedTicks = 0;
   const settlements: { stake: number; payout: number; tick: number }[] = [];
-  const diagnostics = { pockets: Array<number>(config.plinko.basePockets.length).fill(0), amplifierProcs: 0, returnProcs: 0, splitterProcs: 0, returnedLineagesWithLaterBonus: 0, returnedBranchesWithLaterBonus: 0 };
-  const returnedBodies = new Set<MatterJS.BodyType>();
-  const rewardedReturns = new Set<string>();
+  const diagnostics = { pockets: Array<number>(config.plinko.basePockets.length).fill(0), amplifierProcs: 0, returnProcs: 0, splitterProcs: 0, returnedLineagesWithLaterBonus: 0 };
   const returnedLineages = new Set<string>();
   const returnBonusLineages = new Set<string>();
-  const noteReturnBonus = (lineage: string, body: MatterJS.BodyType) => {
-    if (returnedBodies.has(body)) rewardedReturns.add(lineage);
-    diagnostics.returnedBranchesWithLaterBonus = rewardedReturns.size;
+  const noteReturnBonus = (lineage: string) => {
     if (returnedLineages.has(lineage)) returnBonusLineages.add(lineage);
     diagnostics.returnedLineagesWithLaterBonus = returnBonusLineages.size;
   };
@@ -77,17 +73,16 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
       ball = clearSplitterBlockAfterPeg(ball, id); balls.set(body, ball);
       const active = deriveActiveSpecialPins(config, pending.specialLevelsAtCommit);
       if (active.amplifier?.pegIds.includes(id) && canAmplifyAt(ball, id)) {
-        diagnostics.amplifierProcs++; noteReturnBonus(ball.lineageId, body);
+        diagnostics.amplifierProcs++; noteReturnBonus(ball.lineageId);
         for (const [b, meta] of balls) if (meta.lineageId === ball.lineageId) balls.set(b, markAmplifierProc(meta, id, active.amplifier.multiplier, b === body));
       } else if (active.return?.pegIds.includes(id) && canReturnLineage(ball)) {
-        diagnostics.returnProcs++; returnedLineages.add(ball.lineageId); returnedBodies.add(body);
+        diagnostics.returnProcs++; returnedLineages.add(ball.lineageId);
         for (const [b, meta] of balls) if (meta.lineageId === ball.lineageId) balls.set(b, markReturnUsed(meta));
         runtime.returnBall(body);
       } else if (active.splitter?.pegIds.includes(id) && canSplitAt(ball, id, balls.size, config)) {
-        diagnostics.splitterProcs++; noteReturnBonus(ball.lineageId, body);
+        diagnostics.splitterProcs++; noteReturnBonus(ball.lineageId);
         const children = createSplitChildren(ball, id, active.splitter.childValue);
         const bodies = runtime.splitBall(body); balls.delete(body);
-        if (returnedBodies.delete(body)) { returnedBodies.add(bodies[0]); returnedBodies.add(bodies[1]); }
         balls.set(bodies[0], children[0]); balls.set(bodies[1], children[1]);
       }
     },
@@ -96,7 +91,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
       diagnostics.pockets[index]!++;
       const shot = findBallDrop(pending, meta.lineageId);
       const payout = (shot.physics?.alreadySettledPayout ?? 0) + calculateBallPocketPayout(shot, meta.currentValue, index, config);
-      balls.delete(body); returnedBodies.delete(body); runtime.removeBall(body);
+      balls.delete(body); runtime.removeBall(body);
       pending = recordDropPayout(pending, shot.dropId, payout);
       if ([...balls.values()].some(b => b.lineageId === meta.lineageId)) return;
       pending = removeSettledDrop(pending, shot.dropId);

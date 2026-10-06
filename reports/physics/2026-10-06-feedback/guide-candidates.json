@@ -1,0 +1,42 @@
+[
+  {
+    "name": "guides-off",
+    "biasLevel": 0
+  },
+  {
+    "name": "guides-current-L1",
+    "biasLevel": 1
+  },
+  {
+    "name": "guides-down4-L1",
+    "biasLevel": 1,
+    "lower": 4
+  },
+  {
+    "name": "guides-current-L2",
+    "biasLevel": 2
+  },
+  {
+    "name": "guides-down4-L2",
+    "biasLevel": 2,
+    "lower": 4
+  },
+  {
+    "name": "guides-current-L3",
+    "biasLevel": 3
+  },
+  {
+    "name": "guides-down4-L3",
+    "biasLevel": 3,
+    "lower": 4
+  },
+  {
+    "name": "guides-current-L4",
+    "biasLevel": 4
+  },
+  {
+    "name": "guides-down4-L4",
+    "biasLevel": 4,
+    "lower": 4
+  }
+]

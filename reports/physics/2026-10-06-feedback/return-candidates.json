@@ -1,0 +1,42 @@
+[
+  {
+    "name": "return-off",
+    "returnLevel": 0
+  },
+  {
+    "name": "return-current-L1",
+    "returnLevel": 1
+  },
+  {
+    "name": "return-central-L1",
+    "returnLevel": 1,
+    "central": true
+  },
+  {
+    "name": "return-current-L2",
+    "returnLevel": 2
+  },
+  {
+    "name": "return-central-L2",
+    "returnLevel": 2,
+    "central": true
+  },
+  {
+    "name": "return-current-L3",
+    "returnLevel": 3
+  },
+  {
+    "name": "return-central-L3",
+    "returnLevel": 3,
+    "central": true
+  },
+  {
+    "name": "return-current-L4",
+    "returnLevel": 4
+  },
+  {
+    "name": "return-central-L4",
+    "returnLevel": 4,
+    "central": true
+  }
+]

@@ -1,0 +1,137 @@
+{
+  "revision": "f90a1a9992c60c5763dd996c0c3e53493cf8dca2",
+  "sourceConfigHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+  "scriptHash": "f3db76a0a91b131594c885a0ee31f31317c04eb218dd3b7ce7487edd2de26228",
+  "sharedWorldHash": "3e78f399cd66b32e426a3d03e216be984b674b7d40b66f677e856ec45f0b3bca",
+  "count": 2000,
+  "seed": 67110604,
+  "model": "Phaser shared-world, independent paid roots, 3600 tick limit, common seed stream; gross payout/stake, not human pacing",
+  "candidates": [
+    {
+      "name": "current-L1",
+      "returnLevel": 1
+    },
+    {
+      "name": "combined-fix-L1",
+      "returnLevel": 1,
+      "retention": 0.5,
+      "lower": 4
+    },
+    {
+      "name": "current-L2",
+      "returnLevel": 2
+    },
+    {
+      "name": "combined-fix-L2",
+      "returnLevel": 2,
+      "retention": 0.5,
+      "lower": 4
+    }
+  ],
+  "rows": [
+    {
+      "candidate": "current-L1",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.9905,
+      "se": 0.04575343225684448,
+      "edge": 0.0315,
+      "returnRate": 0.07,
+      "bonusAfterReturn": 0,
+      "branchBonusAfterReturn": 0,
+      "meanTicks": 303.2025,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-L1",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 14.968048000000378,
+      "se": 0.9263013686741774,
+      "edge": 0.1035,
+      "returnRate": 0.0515,
+      "bonusAfterReturn": 0.02912621359223301,
+      "branchBonusAfterReturn": 0,
+      "meanTicks": 298.7655,
+      "unresolved": 0
+    },
+    {
+      "candidate": "combined-fix-L1",
+      "context": "isolated",
+      "configHash": "1bd38a5ecd8781cd8bf0d43a5d4f8c899d1ad089711388dbd2952f541ad1caeb",
+      "mean": 0.936625,
+      "se": 0.042716885371424144,
+      "edge": 0.027,
+      "returnRate": 0.07,
+      "bonusAfterReturn": 0,
+      "branchBonusAfterReturn": 0,
+      "meanTicks": 306.478,
+      "unresolved": 0
+    },
+    {
+      "candidate": "combined-fix-L1",
+      "context": "combined",
+      "configHash": "1bd38a5ecd8781cd8bf0d43a5d4f8c899d1ad089711388dbd2952f541ad1caeb",
+      "mean": 13.75296800000036,
+      "se": 0.9516167073472104,
+      "edge": 0.078,
+      "returnRate": 0.0515,
+      "bonusAfterReturn": 0.9611650485436893,
+      "branchBonusAfterReturn": 0.9611650485436893,
+      "meanTicks": 301.795,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-L2",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.28975,
+      "se": 0.06271205122968672,
+      "edge": 0.059,
+      "returnRate": 0.1945,
+      "bonusAfterReturn": 0,
+      "branchBonusAfterReturn": 0,
+      "meanTicks": 312.945,
+      "unresolved": 0
+    },
+    {
+      "candidate": "current-L2",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 15.625020000000415,
+      "se": 0.9435658362125133,
+      "edge": 0.1125,
+      "returnRate": 0.1575,
+      "bonusAfterReturn": 0.15555555555555556,
+      "branchBonusAfterReturn": 0.04126984126984127,
+      "meanTicks": 304.2695,
+      "unresolved": 0
+    },
+    {
+      "candidate": "combined-fix-L2",
+      "context": "isolated",
+      "configHash": "1bd38a5ecd8781cd8bf0d43a5d4f8c899d1ad089711388dbd2952f541ad1caeb",
+      "mean": 1.209375,
+      "se": 0.05249618657092932,
+      "edge": 0.039,
+      "returnRate": 0.1945,
+      "bonusAfterReturn": 0,
+      "branchBonusAfterReturn": 0,
+      "meanTicks": 320.8725,
+      "unresolved": 0
+    },
+    {
+      "candidate": "combined-fix-L2",
+      "context": "combined",
+      "configHash": "1bd38a5ecd8781cd8bf0d43a5d4f8c899d1ad089711388dbd2952f541ad1caeb",
+      "mean": 18.469706000000475,
+      "se": 1.0792382928052167,
+      "edge": 0.108,
+      "returnRate": 0.1745,
+      "bonusAfterReturn": 0.8108882521489972,
+      "branchBonusAfterReturn": 0.8108882521489972,
+      "meanTicks": 314.8895,
+      "unresolved": 0
+    }
+  ]
+}

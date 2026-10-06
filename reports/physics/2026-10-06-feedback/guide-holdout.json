@@ -1,0 +1,269 @@
+{
+  "revision": "f90a1a9992c60c5763dd996c0c3e53493cf8dca2",
+  "sourceConfigHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+  "scriptHash": "e01e6b5c617d0f45ec3c3e9cce991f10db0fe260bc8aef6afe41ea29ae8bd549",
+  "sharedWorldHash": "4e994b6ce6f01dfab26ab13ac389aaeeea562634a0c063c145e938bc44e223e8",
+  "count": 3000,
+  "seed": 67110602,
+  "model": "Phaser shared-world, independent paid roots, 3600 tick limit, common seed stream; gross payout/stake, not human pacing",
+  "candidates": [
+    {
+      "name": "guides-off",
+      "biasLevel": 0
+    },
+    {
+      "name": "guides-current-L1",
+      "biasLevel": 1
+    },
+    {
+      "name": "guides-down4-L1",
+      "biasLevel": 1,
+      "lower": 4
+    },
+    {
+      "name": "guides-current-L2",
+      "biasLevel": 2
+    },
+    {
+      "name": "guides-down4-L2",
+      "biasLevel": 2,
+      "lower": 4
+    },
+    {
+      "name": "guides-current-L3",
+      "biasLevel": 3
+    },
+    {
+      "name": "guides-down4-L3",
+      "biasLevel": 3,
+      "lower": 4
+    },
+    {
+      "name": "guides-current-L4",
+      "biasLevel": 4
+    },
+    {
+      "name": "guides-down4-L4",
+      "biasLevel": 4,
+      "lower": 4
+    }
+  ],
+  "rows": [
+    {
+      "candidate": "guides-off",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.8781666666666667,
+      "se": 0.02476373837529794,
+      "edge": 0.009333333333333334,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 297.98466666666667,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-off",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 22.324780666667188,
+      "se": 0.9356437337000106,
+      "edge": 0.12666666666666668,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 321.14233333333334,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L1",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.9115,
+      "se": 0.028187392448238403,
+      "edge": 0.014333333333333333,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 297.74,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L1",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 24.43934066666709,
+      "se": 0.9790917840043936,
+      "edge": 0.14066666666666666,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 320.639,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L1",
+      "context": "isolated",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 0.911,
+      "se": 0.02767501825736034,
+      "edge": 0.013333333333333334,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 297.87033333333335,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L1",
+      "context": "combined",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 24.446316666667087,
+      "se": 0.979046642661501,
+      "edge": 0.14066666666666666,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 320.6553333333333,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L2",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.9988333333333334,
+      "se": 0.03407565825258472,
+      "edge": 0.023666666666666666,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 297.21433333333334,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L2",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 26.280770000000334,
+      "se": 1.0142676439578415,
+      "edge": 0.15266666666666667,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 319.054,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L2",
+      "context": "isolated",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 0.9885,
+      "se": 0.03319434999550229,
+      "edge": 0.022,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 297.37966666666665,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L2",
+      "context": "combined",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 26.028930000000347,
+      "se": 1.009425245450741,
+      "edge": 0.151,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 319.31533333333334,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L3",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.105,
+      "se": 0.039826964011257966,
+      "edge": 0.034333333333333334,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 296.06533333333334,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L3",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 28.127500666666933,
+      "se": 1.0474006001510843,
+      "edge": 0.16466666666666666,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 318.09433333333334,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L3",
+      "context": "isolated",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 1.0985833333333332,
+      "se": 0.03930725358522739,
+      "edge": 0.03333333333333333,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 296.49066666666664,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L3",
+      "context": "combined",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 27.92458866666693,
+      "se": 1.0435297222352777,
+      "edge": 0.16333333333333333,
+      "returnRate": 0.44566666666666666,
+      "bonusAfterReturn": 0.7965594614809275,
+      "meanTicks": 318.54133333333334,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L4",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.2738333333333334,
+      "se": 0.04784513604420455,
+      "edge": 0.052333333333333336,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 293.33033333333333,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-current-L4",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 32.84696066666679,
+      "se": 1.1210616890869949,
+      "edge": 0.195,
+      "returnRate": 0.4736666666666667,
+      "bonusAfterReturn": 0.7733990147783252,
+      "meanTicks": 316.8326666666667,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L4",
+      "context": "isolated",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 1.3590833333333334,
+      "se": 0.049978866245177646,
+      "edge": 0.058,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 294.31933333333336,
+      "unresolved": 0
+    },
+    {
+      "candidate": "guides-down4-L4",
+      "context": "combined",
+      "configHash": "b20fe9c48e8589bc6f8a2fb5ce3162a5508e91727b3507aeb7ecae776656ebf5",
+      "mean": 33.148119333333476,
+      "se": 1.1256799296682585,
+      "edge": 0.197,
+      "returnRate": 0.44366666666666665,
+      "bonusAfterReturn": 0.8001502629601803,
+      "meanTicks": 315.17066666666665,
+      "unresolved": 0
+    }
+  ]
+}

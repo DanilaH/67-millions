@@ -1,0 +1,269 @@
+{
+  "revision": "f90a1a9992c60c5763dd996c0c3e53493cf8dca2",
+  "sourceConfigHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+  "scriptHash": "e01e6b5c617d0f45ec3c3e9cce991f10db0fe260bc8aef6afe41ea29ae8bd549",
+  "sharedWorldHash": "4e994b6ce6f01dfab26ab13ac389aaeeea562634a0c063c145e938bc44e223e8",
+  "count": 1500,
+  "seed": 67110603,
+  "model": "Phaser shared-world, independent paid roots, 3600 tick limit, common seed stream; gross payout/stake, not human pacing",
+  "candidates": [
+    {
+      "name": "return-off",
+      "returnLevel": 0
+    },
+    {
+      "name": "return-current-L1",
+      "returnLevel": 1
+    },
+    {
+      "name": "return-central-L1",
+      "returnLevel": 1,
+      "central": true
+    },
+    {
+      "name": "return-current-L2",
+      "returnLevel": 2
+    },
+    {
+      "name": "return-central-L2",
+      "returnLevel": 2,
+      "central": true
+    },
+    {
+      "name": "return-current-L3",
+      "returnLevel": 3
+    },
+    {
+      "name": "return-central-L3",
+      "returnLevel": 3,
+      "central": true
+    },
+    {
+      "name": "return-current-L4",
+      "returnLevel": 4
+    },
+    {
+      "name": "return-central-L4",
+      "returnLevel": 4,
+      "central": true
+    }
+  ],
+  "rows": [
+    {
+      "candidate": "return-off",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.8685,
+      "se": 0.036575679810073786,
+      "edge": 0.011333333333333334,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 300.11,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-off",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 9.931045333333133,
+      "se": 0.9264059908506082,
+      "edge": 0.054,
+      "returnRate": 0,
+      "bonusAfterReturn": null,
+      "meanTicks": 297.26866666666666,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L1",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 0.9981666666666666,
+      "se": 0.05369256847479974,
+      "edge": 0.03266666666666666,
+      "returnRate": 0.056666666666666664,
+      "bonusAfterReturn": 0,
+      "meanTicks": 302.946,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L1",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 13.982965333333368,
+      "se": 1.0597946870736252,
+      "edge": 0.09133333333333334,
+      "returnRate": 0.037333333333333336,
+      "bonusAfterReturn": 0.03571428571428571,
+      "meanTicks": 298.99066666666664,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L1",
+      "context": "isolated",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 2.3525,
+      "se": 0.09590991419605183,
+      "edge": 0.12333333333333334,
+      "returnRate": 0.4086666666666667,
+      "bonusAfterReturn": 0,
+      "meanTicks": 343.97133333333335,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L1",
+      "context": "combined",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 29.453666666667036,
+      "se": 1.5376552898752605,
+      "edge": 0.16866666666666666,
+      "returnRate": 0.458,
+      "bonusAfterReturn": 0.7933042212518195,
+      "meanTicks": 344.98466666666667,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L2",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.3023333333333333,
+      "se": 0.07468194165763717,
+      "edge": 0.064,
+      "returnRate": 0.194,
+      "bonusAfterReturn": 0,
+      "meanTicks": 313.50933333333336,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L2",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 14.639565333333373,
+      "se": 1.0749561831272882,
+      "edge": 0.10133333333333333,
+      "returnRate": 0.15,
+      "bonusAfterReturn": 0.1688888888888889,
+      "meanTicks": 305.46866666666665,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L2",
+      "context": "isolated",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 1.1318333333333332,
+      "se": 0.039344288971111925,
+      "edge": 0.013333333333333334,
+      "returnRate": 0.586,
+      "bonusAfterReturn": 0,
+      "meanTicks": 409.93066666666664,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L2",
+      "context": "combined",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 11.874187999999924,
+      "se": 0.9874607585806642,
+      "edge": 0.06133333333333333,
+      "returnRate": 0.6506666666666666,
+      "bonusAfterReturn": 0.6659836065573771,
+      "meanTicks": 414.06666666666666,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L3",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 1.6698333333333333,
+      "se": 0.08469765311453627,
+      "edge": 0.088,
+      "returnRate": 0.3,
+      "bonusAfterReturn": 0,
+      "meanTicks": 299.18466666666666,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L3",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 26.92594133333373,
+      "se": 1.500349220277144,
+      "edge": 0.16,
+      "returnRate": 0.31066666666666665,
+      "bonusAfterReturn": 0.740343347639485,
+      "meanTicks": 294.9773333333333,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L3",
+      "context": "isolated",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 2.3026666666666666,
+      "se": 0.09420639657703646,
+      "edge": 0.118,
+      "returnRate": 0.442,
+      "bonusAfterReturn": 0,
+      "meanTicks": 322.1573333333333,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L3",
+      "context": "combined",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 35.83406800000044,
+      "se": 1.645915333300206,
+      "edge": 0.21333333333333335,
+      "returnRate": 0.49933333333333335,
+      "bonusAfterReturn": 0.7449933244325768,
+      "meanTicks": 318.69933333333336,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L4",
+      "context": "isolated",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 2.3026666666666666,
+      "se": 0.09420639657703646,
+      "edge": 0.118,
+      "returnRate": 0.442,
+      "bonusAfterReturn": 0,
+      "meanTicks": 322.1573333333333,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-current-L4",
+      "context": "combined",
+      "configHash": "7b68d5afaca626660349fe2d98ce6b877be070451c4e1c081f77573a747e8035",
+      "mean": 35.83406800000044,
+      "se": 1.645915333300206,
+      "edge": 0.21333333333333335,
+      "returnRate": 0.49933333333333335,
+      "bonusAfterReturn": 0.7449933244325768,
+      "meanTicks": 318.69933333333336,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L4",
+      "context": "isolated",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 1.1041666666666667,
+      "se": 0.04250422918869569,
+      "edge": 0.016666666666666666,
+      "returnRate": 0.6353333333333333,
+      "bonusAfterReturn": 0,
+      "meanTicks": 382.732,
+      "unresolved": 0
+    },
+    {
+      "candidate": "return-central-L4",
+      "context": "combined",
+      "configHash": "c66c875fb28cf4664eb6e3a0bc28e084686bcf974bb9f074fea5f59542d332b9",
+      "mean": 11.829430666666562,
+      "se": 0.9872564913467912,
+      "edge": 0.06333333333333334,
+      "returnRate": 0.6353333333333333,
+      "bonusAfterReturn": 0.8845750262329486,
+      "meanTicks": 369.72266666666667,
+      "unresolved": 0
+    }
+  ]
+}
