@@ -24,10 +24,10 @@ import {
   appendCourierRoutePoint,
   canBeginCourierRoute,
   createCourierSession,
-  redrawCourierRoute,
+  cancelCourierRoute,
+  courierRouteReachesFinish,
   startCourierDelivery,
   advanceCourierSession,
-  type CourierPoint,
   type CourierSession,
 } from '../minigames/courier/courierModel';
 
@@ -50,23 +50,12 @@ const deriveCourierSeed = (
   return (mixed >>> 0) || 1;
 };
 
-const distanceSquared = (
-  left: CourierPoint,
-  right: CourierPoint,
-): number => {
-  const dx = left.x - right.x;
-  const dy = left.y - right.y;
-  return dx * dx + dy * dy;
-};
-
 export class CourierScene extends Phaser.Scene {
   private repository: SaveRepository | null = null;
   private save: SaveState | null = null;
   private session: CourierSession | null = null;
   private graphics?: Phaser.GameObjects.Graphics;
   private statusText?: Phaser.GameObjects.Text;
-  private redrawText?: Phaser.GameObjects.Text;
-  private startText?: Phaser.GameObjects.Text;
   private drawing = false;
   private completionInFlight = false;
   private saveWriteChain: Promise<void> = Promise.resolve();
@@ -113,7 +102,7 @@ export class CourierScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Нарисуй путь от зелёной точки к синей, не задевая препятствия.',
+        'Доведи линию от зелёной зоны до синей. Отпустишь раньше — линия исчезнет.',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
@@ -140,31 +129,6 @@ export class CourierScene extends Phaser.Scene {
         align: 'center',
       })
       .setOrigin(0.5, 0);
-
-    this.redrawText = this.add
-      .text(36, 650, '[ ПЕРЕРИСОВАТЬ ]', {
-        color: visualHex('textMain'),
-        backgroundColor: visualHex('inkRaised'),
-        fontFamily: VISUAL_FONT.sans,
-        fontSize: '17px',
-        padding: { x: 10, y: 13 },
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => this.redraw());
-
-    this.startText = this.add
-      .text(width - 36, 650, '[ СТАРТ ]', {
-        color: visualHex('textMain'),
-        backgroundColor: visualHex('mold'),
-        fontFamily: VISUAL_FONT.sans,
-        fontSize: '17px',
-        padding: { x: 10, y: 13 },
-      })
-      .setOrigin(1, 0)
-      .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => {
-        void this.startDelivery();
-      });
 
     this.input.on('pointerdown', this.handlePointerDown);
     this.input.on('pointermove', this.handlePointerMove);
@@ -291,22 +255,8 @@ export class CourierScene extends Phaser.Scene {
     }
 
     const point = logicalPointer(this, pointer);
-    if (this.session.route.length === 0) {
-      if (!canBeginCourierRoute(this.session, point)) {
-        this.statusText?.setText(
-          'Начни линию внутри зелёной зоны.',
-        );
-        return;
-      }
-    } else {
-      const last = this.session.route.at(-1)!;
-      if (distanceSquared(last, point) > 55 * 55) {
-        this.statusText?.setText(
-          'Продолжай линию от её последней точки.',
-        );
-        return;
-      }
-    }
+    if (!canBeginCourierRoute(this.session, point)) return;
+    this.session = cancelCourierRoute(this.session);
 
     this.drawing = true;
     this.session = appendCourierRoutePoint(
@@ -334,34 +284,27 @@ export class CourierScene extends Phaser.Scene {
       this.session,
       logicalPointer(this, pointer),
     );
+    if (courierRouteReachesFinish(this.session)) {
+      void this.startDelivery();
+      return;
+    }
     this.audio?.play('courierDraw');
     this.render();
   };
 
-  private readonly handlePointerUp = (): void => {
-    this.drawing = false;
-  };
-
-  private redraw(): void {
-    if (
-      !this.session ||
-      this.completionInFlight ||
-      this.save?.game.barryInterruptPending
-    ) {
-      return;
+  private readonly handlePointerUp = (pointer: Phaser.Input.Pointer): void => {
+    if (!this.drawing || !this.session) return;
+    if (!this.save?.game.barryInterruptPending) {
+      this.session = appendCourierRoutePoint(this.session, logicalPointer(this, pointer));
+      if (courierRouteReachesFinish(this.session)) {
+        void this.startDelivery();
+        return;
+      }
     }
-
-    const before = this.session.redrawsRemaining;
-    this.session = redrawCourierRoute(this.session);
     this.drawing = false;
-
-    this.statusText?.setText(
-      before > this.session.redrawsRemaining
-        ? 'Маршрут очищен. Это была единственная перерисовка.'
-        : 'Перерисовка уже использована.',
-    );
+    this.session = cancelCourierRoute(this.session);
     this.render();
-  }
+  };
 
   private async payBarry(): Promise<void> {
     if (
@@ -594,21 +537,13 @@ export class CourierScene extends Phaser.Scene {
       }
     }
 
-    this.redrawText?.setText(
-      `[ ПЕРЕРИСОВАТЬ (${this.session.redrawsRemaining}) ]`,
-    );
-
-    const editable = !this.session.started && !this.completionInFlight;
-    this.redrawText?.setAlpha(editable && this.session.route.length > 0 && this.session.redrawsRemaining > 0 ? 1 : 0.45);
-    this.startText?.setAlpha(editable && this.session.route.length >= 2 ? 1 : 0.45);
-
     if (!this.completionInFlight) {
       const suffix =
         this.session.started
           ? 'Курьер в пути…'
           : this.session.route.length === 0
           ? 'Начни в зелёной зоне.'
-          : 'Нажми СТАРТ, чтобы отправить курьера.';
+          : 'Доведи до синей зоны — курьер отправится сам.';
       this.statusText?.setText(suffix);
     }
   }

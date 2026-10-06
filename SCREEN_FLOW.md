@@ -168,3 +168,7 @@ Restart = полностью новая партия без permanent upgrades/m
 ## Pacing target
 
 Медианная успешная партия: около **30 реальных минут**. Tutorial первого дня должен занимать только небольшую часть этого времени и быстро доводить до первого Plinko loop.
+
+### Playtest correction — 2026-10-06
+
+After the last paid casino ball resolves, a successful automatic daily Barry payment opens a blocking receipt showing the amount charged and remaining cash. The receipt pauses idle time and blocks launches, upgrades and exit until acknowledged. Closing it does not perform a second economic transaction; the payment is already saved. A failed payment continues to the existing game-over flow.

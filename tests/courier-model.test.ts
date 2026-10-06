@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { balance } from '../src/config/balance';
 import {
   appendCourierRoutePoint,
+  cancelCourierRoute,
+  courierRouteReachesFinish,
   startCourierDelivery,
   advanceCourierSession,
   createCourierSession,
@@ -12,7 +14,7 @@ import {
 } from '../src/minigames/courier/courierModel';
 
 describe('Courier minigame model', () => {
-  it('uses the canonical 2–4 obstacle range and one redraw', () => {
+  it('uses the canonical 2–4 obstacle range and retains the legacy redraw config', () => {
     expect(getCourierRules(balance)).toEqual({
       obstacleCountMin: 2,
       obstacleCountMax: 4,
@@ -195,5 +197,28 @@ describe('Courier physical traversal regressions', () => {
     expect(drawn.route[0]).toEqual(empty.start);
     expect(drawn.route[1]).toEqual({ x: 200, y: 365 });
     expect(() => advanceCourierSession(drawn, -1)).toThrow();
+  });
+});
+
+
+describe('Courier continuous gesture', () => {
+  it('discards an incomplete route without spending redraws or failing the job', () => {
+    const initial = createCourierSession(balance, 912);
+    const partial = appendCourierRoutePoint(appendCourierRoutePoint(initial, initial.start), { x: 300, y: 600 });
+    expect(courierRouteReachesFinish(partial)).toBe(false);
+    const cancelled = cancelCourierRoute(partial);
+    expect(cancelled).toEqual(initial);
+    expect(appendCourierRoutePoint(cancelled, { x: 300, y: 600 }).route).toEqual([]);
+  });
+
+  it('recognizes the finish zone, snaps to its center and locks the committed route', () => {
+    const initial = createCourierSession(balance, 913);
+    const completed = appendCourierRoutePoint(appendCourierRoutePoint(initial, initial.start), { x: initial.finish.x - initial.finishRadius + 1, y: initial.finish.y });
+    expect(courierRouteReachesFinish(completed)).toBe(true);
+    const started = startCourierDelivery(completed);
+    expect(started.started).toBe(true);
+    expect(started.route.at(-1)).toEqual(initial.finish);
+    expect(cancelCourierRoute(started)).toBe(started);
+    expect(appendCourierRoutePoint(started, initial.start)).toBe(started);
   });
 });

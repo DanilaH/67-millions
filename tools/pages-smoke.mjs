@@ -324,7 +324,7 @@ try {
       } else {
         await move(180, 365); await down();
         for (const point of [[180, 600], [1100, 600], [1100, 365]]) { await move(...point, { steps: 8 }); await page.waitForTimeout(25); }
-        await up(); await move(1180, 670); await down(); await up();
+        await up();
         await page.waitForTimeout(600);
         assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction?.result, null, 'courier still travelling, no instant result');
         await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-courier-moving.png` });

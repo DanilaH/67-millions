@@ -155,11 +155,33 @@ try {
     const box = await page.locator('canvas').boundingBox();
     await page.mouse.move(box.x + box.width * x / 1280, box.y + box.height * y / 720, { steps: 8 });
   };
+  await move(180, 365); await page.mouse.down(); await move(180, 600); await page.mouse.up();
+  await move(180, 600); await page.mouse.down(); await move(1100, 365); await page.mouse.up();
+  await page.waitForTimeout(1000);
+  assert.equal((await save()).activeAction?.result, null, 'cancelled line cannot continue from its old endpoint');
   await move(180, 365); await page.mouse.down();
   for (const [x, y] of [[180, 600], [1100, 600], [1100, 365]]) await move(x, y);
-  await page.mouse.up(); await click(1180, 670);
+  await page.mouse.up();
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 15000 });
   assert.ok((await save()).game.cash > fixture.game.cash, '1080p courier pointer path reaches its endpoint');
+  // Barry still settles only after paid balls, then visibly interrupts casino play.
+  const dueGame = { ...fixture.game, barryInterruptPending: false };
+  const dueDrop = commitBareDrop(dueGame, null, balance, 'barry-receipt', 1);
+  await load({ ...fixture, game: { ...dueDrop.state, barryInterruptPending: true }, pendingDrop: dueDrop.pendingDrop });
+  await page.waitForFunction(() => document.querySelector('canvas')?.dataset.barryReceipt === 'paid', null, { timeout: 30000 });
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null);
+  const afterBarry = await save();
+  assert.equal(afterBarry.game.barryPaymentIndex, fixture.game.barryPaymentIndex + 1);
+  assert.ok(afterBarry.game.totalBarryPaid > fixture.game.totalBarryPaid);
+  await click(810, 695); // A covered throw must not charge or launch.
+  await page.waitForTimeout(3300);
+  assert.deepEqual((await save()).game, afterBarry.game, 'Barry receipt pauses time and blocks covered controls');
+  await page.screenshot({ path: `${output}/casino-barry-receipt.png` });
+  await click(640, 432);
+  assert.equal(await page.locator('canvas').getAttribute('data-barry-receipt'), null);
+  assert.equal((await save()).game.cash, afterBarry.game.cash, 'closing receipt cannot charge Barry twice');
+  await page.reload(); await ready('Карта города');
+  assert.equal((await save()).game.totalBarryPaid, afterBarry.game.totalBarryPaid, 'payment survives reload exactly once');
   await load(fixture);
   await page.goto(url); await ready('Карта города');
   await page.locator('#debug-root summary').click();
@@ -232,7 +254,7 @@ try {
     assert.deepEqual(actual.needs, expected.state.needs, 'node/Phaser needs parity');
   }
   assert.deepEqual(errors, []);
-  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier path reaches destination', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360', 'exact node/browser cash RNG clock needs parity including delayed render frames'], errors }, null, 2));
+  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier auto-start and cancelled incomplete gesture', 'post-cascade Barry receipt pauses input/time without duplicate charge', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360', 'exact node/browser cash RNG clock needs parity including delayed render frames'], errors }, null, 2));
   console.log('Playtest smoke passed');
 } catch (error) { writeFileSync(`${output}/failure.json`, JSON.stringify({ error: String(error), errors }, null, 2)); throw error; }
 finally { await browser.close(); server.close(); }

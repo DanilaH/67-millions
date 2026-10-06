@@ -65,6 +65,7 @@ Acceptance: no partial principal; exact manual payment; no auto-win.
 Acceptance: due 09:00; payment does not reduce principal; next index correct.
 
 ### T014 [P0] Barry hard interrupt
+2026-10-06 playtest correction: casino post-cascade automatic payment now shows a blocking receipt; idle clock and casino actions wait for acknowledgement, without a second charge.
 Acceptance: pauses work/action; sleep ends; Plinko exception delegated to E08.
 
 ### T015 [P0] Game Over + restart
@@ -209,8 +210,9 @@ Status: 2026-10-02: scene re-entry state reset; two shifts through the map witho
 Acceptance: 5 bags; 25 sec; all accepted in dumpster; forgiving grab/target.
 
 ### T053 [P0] Courier
+2026-10-06 user revision: reaching the finish commits and starts the route immediately; releasing early discards the entire line without penalty. No separate Start/redraw buttons.
 Status: 2026-10-02: actual route traversal, sprite-size swept collision and arrival settlement; deterministic model and repeated mouse/touch shifts checked.
-Acceptance: draw route; one redraw before start; 2–4 obstacles; deterministic pass/fail.
+Acceptance: draw one continuous route; start on reaching finish; cancel incomplete gestures; 2–4 obstacles; deterministic pass/fail.
 
 ### T054 [P1] Barry pause/resume across all minigames
 Acceptance: exact minigame state pauses in runtime; work transaction remains correct.
@@ -282,6 +284,7 @@ Acceptance: safe interstitials, simulation pause, mobile/desktop lifecycle, rati
 ## E21 — Final balance / playtest
 
 ### T069 [P0] Re-run physical milestone boards
+2026-10-06 human feedback remains OPEN: same-X Return can send an outer ball above empty space and downgrade an apparently promising trajectory; probe lower-central Return placement/re-entry through special pins. Deflector inner tips sit 6.607 px above the nearest outer peg center (peg radius 6, plate thickness 5), exposing a corner above the peg; screen a lower attachment and verify level progression, combined effects, stuck rates and saved-board compatibility before changing production geometry. No balance change accompanies the courier/Barry UI fix.
 Historical blocker, resolved by fixed-tick repair (2026-10-05): V1 candidate failed browser/Node six-root payout parity (101055 vs 118487); Pages deployment skipped. Suspected async cascade/save queue versus fixed-tick scheduling. Establish deterministic effect application and snapshot boundaries before accepting calibration or changing economy. Evidence: reports/physics/2026-10-05-specials/README.md.
 2026-10-05 bare-board candidate: frictionAir 0.026 yields 0.846025× and 0.68% edge on 10,000 independent roots; known historical paid boards retain old physics. See reports/physics/2026-10-05-bare/README.md. Upgrade calibration and pacing remain open.
 2026-10-05 playtest follow-up: 70,000 independent roots confirm base 1.912× / 8.05% edge, a Return L1→L2 regression and frequent but economically weak Splitter contacts. See reports/pacing/2026-10-05-pockets/README.md. No runtime/config change.

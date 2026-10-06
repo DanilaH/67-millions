@@ -246,6 +246,16 @@ export const appendCourierRoutePoint = (
   };
 };
 
+/** An unfinished gesture is discarded; only reaching the finish commits a route. */
+export const cancelCourierRoute = (session: CourierSession): CourierSession =>
+  session.started || session.result !== null ? session : { ...session, route: [] };
+
+export const courierRouteReachesFinish = (session: CourierSession): boolean => {
+  const last = session.route.at(-1);
+  return session.route.length >= 2 && last !== undefined &&
+    distanceSquared(last, session.finish) <= session.finishRadius ** 2;
+};
+
 export const redrawCourierRoute = (
   session: CourierSession,
 ): CourierSession => {

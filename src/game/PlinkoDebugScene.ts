@@ -1,3 +1,4 @@
+import { createBarryMinigameOverlay, type BarryMinigameOverlay } from './work/createBarryMinigameOverlay';
 import { createCasinoRoom } from './casino/createCasinoRoom';
 import { PersistentHud } from './ui/PersistentHud';
 import { PlinkoEffects } from './casino/PlinkoEffects';
@@ -105,6 +106,8 @@ import {
 import { getSceneSaveRepository } from './save/sceneSaveRepository';
 
 export class PlinkoDebugScene extends Phaser.Scene {
+  private barryOverlay?: BarryMinigameOverlay;
+  private barryReceiptOpen = false;
   private boardConfig = balance;
   private effects?: PlinkoEffects;
   private mapHud?: PersistentHud;
@@ -161,6 +164,14 @@ export class PlinkoDebugScene extends Phaser.Scene {
   public create(): void {
     installScenePresentation(this);
     this.save = null;
+    this.barryReceiptOpen = false;
+    this.game.canvas.removeAttribute('data-barry-receipt');
+    this.barryOverlay = createBarryMinigameOverlay(this, balance, () => {
+      this.barryReceiptOpen = false;
+      this.barryOverlay?.hide();
+      this.game.canvas.removeAttribute('data-barry-receipt');
+      void this.enqueueSave(true).then(() => this.finishPaidWorld());
+    });
     this.mapMode = false;
     this.leaving = false;
     this.lastResultMessage = '';
@@ -294,7 +305,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   public update(_time: number, _deltaMs: number): void {
-    if (this.save && this.runtime && !this.leaving && !this.save.pendingDrop && !isPlinkoPerfMode()) {
+    if (this.save && this.runtime && !this.leaving && !this.barryReceiptOpen && !this.save.pendingDrop && !isPlinkoPerfMode()) {
       if (this.save.game.barryInterruptPending || this.save.game.terminalReason !== null ||
           this.save.game.victory || this.save.game.pendingEventId !== null) {
         void this.leaveCasino();
@@ -570,7 +581,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private async leaveCasino(): Promise<void> {
-    if (!this.save || this.leaving) return;
+    if (!this.save || this.leaving || this.barryReceiptOpen) return;
 
     if (!this.save.pendingDrop) {
       this.leaving = true;
@@ -637,7 +648,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private async purchaseUpgrade(
     id: CasinoUpgradeId,
   ): Promise<void> {
-    if (!this.save || !this.repository || this.leaving) return;
+    if (!this.save || !this.repository || this.leaving || this.barryReceiptOpen) return;
 
     try {
       const purchased = buildCasinoUpgradePreviews(this.save.game, this.save.pendingDrop, this.boardConfig).find(preview => preview.id === id);
@@ -703,7 +714,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private async commitAndSpawn(fraction: BetFraction): Promise<void> {
-    if (!this.save || !this.repository || !this.runtime || !this.random || this.leaving) return;
+    if (!this.save || !this.repository || !this.runtime || !this.random || this.leaving || this.barryReceiptOpen) return;
     if (this.save.activeAction) {
       this.showStatus('Finish the active non-Plinko action first.');
       return;
@@ -909,6 +920,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
         previousBarryPaymentIndex
     ) {
       recordTutorialMilestone('BARRY_PAID');
+      this.barryReceiptOpen = true;
+      this.barryOverlay?.showPaid(result.state.totalBarryPaid - previousBarryTotal, result.state.cash);
+      this.game.canvas.setAttribute('data-barry-receipt', 'paid');
     }
 
     if (result.payout > 0) {
@@ -959,7 +973,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private finishPaidWorld(): void {
-    if (!this.save || this.save.pendingDrop || this.leaving) return;
+    if (!this.save || this.save.pendingDrop || this.leaving || this.barryReceiptOpen) return;
     if (!this.save.pendingDrop && this.boardConfig !== balance && !this.mapMode) {
       // The old paid world is now durably empty; new launches use current geometry.
       this.scene.restart();
