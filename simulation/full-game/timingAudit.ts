@@ -22,12 +22,28 @@ const mode = process.argv[8] ?? 'burst';
 if (!['burst','continuous','continuous-spend'].includes(mode)) throw Error('Unsupported launch mode');
 const batches = mode !== 'burst' ? [6] : [1, 6];
 const maxBetReserveBets = Number(process.argv[9] ?? 1);
+const approach = process.argv[10] ?? 'reserve';
+if (!['reserve', 'casino-first', 'casino-invest'].includes(approach)) throw Error('Unsupported approach');
 const runs = [];
 const buy = (id: CasinoUpgradeId): FullGameDecision => id === 'maxBet' ? { type: 'BUY_PLINKO_MAX_BET' } : id === 'insurance' ? {type:'BUY_PLINKO_INSURANCE'} : ['center','mid','jackpot'].includes(id) ? {type:'BUY_PLINKO_POCKET',track:id as 'center'|'mid'|'jackpot'} : {type:'BUY_PLINKO_SPECIAL',track:id as 'amplifier'|'return'|'splitter'|'jackpotBias'};
 for (const batch of batches) for (const order of ['original','cheapest'] as const) {
   for(let index=0;index<perVariant;index++) {
     const seed=seedStart+index;
-    const base=createLiquidityPolicy(config,archetype,seed,maxBetReserveBets);
+    const liquidity=createLiquidityPolicy(config,archetype,seed,maxBetReserveBets);
+    const base = {...liquidity, decide(ctx: FullGamePolicyContext): FullGameDecision {
+      const action = liquidity.decide(ctx);
+      if (approach === 'casino-invest' && ['WORK','WAIT','PLINKO','BUY_PLINKO_MAX_BET','BUY_PLINKO_POCKET','BUY_PLINKO_SPECIAL'].includes(action.type)
+          && ctx.state.eventModifiers.plinkoLockRemainingMinutes === 0) {
+        const choices = buildCasinoUpgradePreviews(ctx.state,null,config)
+          .filter(p=>p.lockedReason === null && p.nextPrice !== null && ctx.state.cash - p.nextPrice >= 125)
+          .sort((a,b)=>a.nextPrice!-b.nextPrice!);
+        if (choices[0]) return buy(choices[0].id);
+        if (ctx.state.cash > 0) return {type:'PLINKO',fraction:1};
+      }
+      return approach === 'casino-first' && ['WORK','WAIT'].includes(action.type)
+        && ctx.state.cash > 0 && ctx.state.eventModifiers.plinkoLockRemainingMinutes === 0
+        ? {type:'PLINKO',fraction:1} : action;
+    }};
     const trace: object[]=[];
     const sessions: object[]=[];
     let context: FullGamePolicyContext;
@@ -80,7 +96,7 @@ for (const batch of batches) for (const order of ['original','cheapest'] as cons
   }
 }
 mkdirSync(output,{recursive:true});
-const metadata={configHash,sourceRevision:execSync('git rev-parse HEAD').toString().trim(),perVariant,seedStart,archetype,maxBetReserveBets,decisionSeconds:decisionDelay,courierSecondsAssumed:30,workTimers:'dishes/trash full configured duration, not measured human completion',launchSpacingSeconds:0.25,mode,launchPolicy:mode==='burst'?'bounded bursts then drain':`recheck every 15 ticks; drain for recovery/event/purchase/victory; ${mode==='continuous-spend'?'reuse original fraction without cash reserve inside session':'preserve liquidity reserve, drain on work intention'}; no purchases while active`,fixedHz:60,limitations:'No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts.'};
+const metadata={approach,configHash,sourceRevision:execSync('git rev-parse HEAD').toString().trim(),perVariant,seedStart,archetype,maxBetReserveBets,decisionSeconds:decisionDelay,courierSecondsAssumed:30,workTimers:'dishes/trash full configured duration, not measured human completion',launchSpacingSeconds:0.25,mode,launchPolicy:mode==='burst'?'bounded bursts then drain':`recheck every 15 ticks; drain for recovery/event/purchase/victory; ${mode==='continuous-spend'?'reuse original fraction without cash reserve inside session':'preserve liquidity reserve, drain on work intention'}; no purchases while active`,fixedHz:60,limitations:'No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts.'};
 writeFileSync(`${output}/runs.json.gz`,gzipSync(JSON.stringify({metadata,runs})));
 const median=(a:number[])=>{a.sort((a,b)=>a-b);return a.length?a.length%2?a[Math.floor(a.length/2)]!:(a[a.length/2-1]!+a[a.length/2]!)/2:null;};
 const summaries=[];

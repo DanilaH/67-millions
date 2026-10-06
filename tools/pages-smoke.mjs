@@ -111,6 +111,19 @@ try {
       await click(target.x, target.y);
     };
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    // Debug commands must update the live scene without reloading the page.
+    await loadSave(fixture);
+    await page.locator('#debug-root summary').click();
+    await page.getByLabel('Сумма денег').fill('2499');
+    await page.getByRole('button', {name:'+ Деньги',exact:true}).click();
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.cash === 2999);
+    await page.getByRole('button', {name:'Вызвать платёж Барри',exact:true}).click();
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.barryInterruptPending);
+    await page.locator('#debug-root summary').click();
+    await page.screenshot({path:`${output}/${touch ? 'touch' : 'mouse'}-debug-barry.png`});
+    await click(640,432);
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.terminalReason === 'BARRY_PAYMENT_FAILED');
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.totalBarryPaid,0);
     // Reload must finish reserved timed actions through the same scheduler, once.
     const reservedFood = startFood(fixture.game, null, null, balance, 'FOOD_01');
     await loadSave({ ...fixture, game: reservedFood.state, activeAction: reservedFood.action });

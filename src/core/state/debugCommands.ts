@@ -1,10 +1,16 @@
+import { beginBarryInterrupt } from '../barry/barry';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { GameState } from './GameState';
 import { advanceRunTime } from '../time/runTime';
 
-export type DebugCommand = { kind: 'cash' | 'time'; amount: number } | { kind: 'reset' };
+export type DebugCommand = { kind: 'cash' | 'time'; amount: number } | { kind: 'reset' } | { kind: 'barry' };
 
 export const applyDebugCommand = (state: GameState, command: Exclude<DebugCommand, { kind: 'reset' }>, config: BalanceConfig): GameState => {
+  if (command.kind === 'barry') {
+    if (state.terminalReason || state.victory) throw new Error('Забег завершён — начни новый');
+    if (state.pendingEventId || state.barryInterruptPending) throw new Error('Сначала разбери текущее событие');
+    return beginBarryInterrupt(state);
+  }
   if (!Number.isSafeInteger(command.amount)) throw new Error('Нужно целое безопасное число');
   if (command.kind === 'cash') {
     const cash = state.cash + command.amount;

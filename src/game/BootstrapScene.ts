@@ -980,7 +980,9 @@ export class BootstrapScene extends Phaser.Scene {
     }
     await this.persist();
     await this.repository.flush();
-    this.scene.restart();
+    this.closeActionPanel();
+    this.clearContextControls();
+    this.render();
   }
 
   private async persist(): Promise<void> {

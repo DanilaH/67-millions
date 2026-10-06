@@ -45,6 +45,7 @@ export const installDebugPanel = (
   resetConfirm.hidden = true;
   controls.append(amount, button('+ Деньги', () => money(1)), button('− Деньги', () => money(-1)), minutes,
     button('Промотать минуты', () => { void execute({ kind: 'time', amount: minutes.valueAsNumber }); }),
+    button('Вызвать платёж Барри', () => { void execute({ kind: 'barry' }); }),
     button('Сбросить сейв', () => { resetConfirm.hidden = !resetConfirm.hidden; }), resetConfirm,
     button('Скопировать диагностику', () => { void copyOrExposeText(JSON.stringify(getPayload()), { container: controls, ariaLabel: 'Startup diagnostics JSON' }); }), status);
   details.append(summary, controls); root.append(details);

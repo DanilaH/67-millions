@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "configHash": "8219cffd485fb057df04cc861d0acdaf22a2f223db91e304fee65307d6c0a75c",
+    "sourceRevision": "3e0df3631f47ec6c8e0607a9fcb9857bd8a1925c",
+    "perVariant": 6,
+    "seedStart": 67114000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "burst",
+    "launchPolicy": "bounded bursts then drain",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 6
+      },
+      "wins": 6,
+      "medianWinMinutes": 34.393055555555556,
+      "medianWinWork": 24.5,
+      "medianWinRecovery": 25.5,
+      "medianWinDrops": 171.5,
+      "medianAllMinutes": 34.393055555555556
+    },
+    {
+      "batch": 1,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 6
+      },
+      "wins": 6,
+      "medianWinMinutes": 33.86625,
+      "medianWinWork": 21.5,
+      "medianWinRecovery": 23.5,
+      "medianWinDrops": 167,
+      "medianAllMinutes": 33.86625
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 6
+      },
+      "wins": 6,
+      "medianWinMinutes": 16.042916666666667,
+      "medianWinWork": 16.5,
+      "medianWinRecovery": 20,
+      "medianWinDrops": 190.5,
+      "medianAllMinutes": 16.042916666666667
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 6
+      },
+      "wins": 6,
+      "medianWinMinutes": 16.800694444444446,
+      "medianWinWork": 15,
+      "medianWinRecovery": 20.5,
+      "medianWinDrops": 193.5,
+      "medianAllMinutes": 16.800694444444446
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { resolveBarryPayment } from '../src/core/barry/barry';
 import { balance } from '../src/config/balance';
 import { createInitialGameState } from '../src/core/state/GameState';
 import { commitBareDrop, settleAggregateDrop, type PendingDrop } from '../src/core/plinko-rules/drop';
@@ -85,5 +86,40 @@ describe('preview commands use game rules', () => {
     expect(result.clock.minuteOfDay).toBe(540);
     expect(result.barryInterruptPending).toBe(true);
     expect(result.totalBarryPaid).toBe(0);
+  });
+});
+
+
+describe('Barry exact cash boundary after concurrent payouts', () => {
+  it.each([2999, 3000, 3001])('settles all six saved roots before checking %i cash', (finalCash) => {
+    let state = {...initial(), cash: 3000};
+    let pending: PendingDrop | null = null;
+    for (let i=0;i<6;i++) {
+      const paid = commitBareDrop(state, null, balance, `boundary-${i}`, 1);
+      state = paid.state; pending = appendDrop(pending, paid.pendingDrop);
+    }
+    state = {...state, barryInterruptPending:true};
+    for (let i=0;i<5;i++) {
+      const root = activeDrops(pending)[0]!;
+      state = settleAggregateDrop(state, root, 0, balance).state;
+      pending = removeSettledDrop(pending!, root.dropId);
+      expect(state.totalBarryPaid).toBe(0);
+      expect(state.terminalReason).toBeNull();
+    }
+    const saved = parseSaveState(JSON.parse(JSON.stringify({...createSaveState(state), pendingDrop:pending})));
+    const result = settleAggregatePendingDropAndResumeTime(saved.game,saved.pendingDrop!,finalCash,balance);
+    expect(result.state.terminalReason).toBe(finalCash < 3000 ? 'BARRY_PAYMENT_FAILED' : null);
+    expect(result.state.cash).toBe(finalCash < 3000 ? finalCash : finalCash-3000);
+    expect(result.state.totalBarryPaid).toBe(finalCash < 3000 ? 0 : 3000);
+    expect(result.state.barryPaymentIndex).toBe(finalCash < 3000 ? 0 : 1);
+    expect(result.state.mainDebt).toBe(67000000);
+  });
+  it('debug Barry uses the real insufficient-funds rule without gifting cash', () => {
+    const state = {...initial(),cash:2999};
+    const due = applyDebugCommand(state,{kind:'barry'},balance);
+    expect(due.cash).toBe(2999);
+    expect(due.clock).toEqual(state.clock);
+    expect(due.barryInterruptPending).toBe(true);
+    expect(resolveBarryPayment(due,balance).terminalReason).toBe('BARRY_PAYMENT_FAILED');
   });
 });

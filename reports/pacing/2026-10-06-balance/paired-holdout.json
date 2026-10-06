@@ -1,0 +1,42 @@
+[
+  {
+    "batch": 1,
+    "order": "original",
+    "commonWinners": 20,
+    "medianDifferences": {
+      "minutes": 2.0908333333333395,
+      "millionToEndMinutes": 1.616944444444436,
+      "internalPurchaseGapMinutes": 0.0
+    }
+  },
+  {
+    "batch": 1,
+    "order": "cheapest",
+    "commonWinners": 20,
+    "medianDifferences": {
+      "minutes": 1.4726388888888877,
+      "millionToEndMinutes": 1.2530555555555565,
+      "internalPurchaseGapMinutes": 0.0
+    }
+  },
+  {
+    "batch": 6,
+    "order": "original",
+    "commonWinners": 17,
+    "medianDifferences": {
+      "minutes": 0.21444444444444422,
+      "millionToEndMinutes": 0.039722222222220216,
+      "internalPurchaseGapMinutes": 0.0
+    }
+  },
+  {
+    "batch": 6,
+    "order": "cheapest",
+    "commonWinners": 20,
+    "medianDifferences": {
+      "minutes": 0.34430555555555564,
+      "millionToEndMinutes": 0.19361111111111196,
+      "internalPurchaseGapMinutes": 0.0
+    }
+  }
+]

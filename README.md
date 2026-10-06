@@ -85,3 +85,5 @@ Historical special-pin calibration (2026-10-05): [Return/Splitter calibration](r
 The panel hides during jobs and casino play so it cannot intercept touch paths.
 
 2026-10-06 physics follow-up: guide attachment moves 4 px down; Return L1/L2 re-enters halfway toward center, L3/L4 retains the original X. Historical paid shots retain their old board. [Comparison](reports/physics/2026-10-06-feedback/README.md) and [implementation verification](reports/physics/2026-10-06-implementation/README.md). Economy prices and pocket payouts are unchanged.
+
+2026-10-06 balance diagnosis: [six rejected numeric candidates, physical ablation and Barry verification](reports/pacing/2026-10-06-balance/README.md). Economy is unchanged; T070 remains open. The map debug panel now supports a real current Barry payment and refreshes the live scene after commands without requiring reload.
