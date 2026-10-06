@@ -1,0 +1,52 @@
+{
+  "centerUpgrades": [
+    {
+      "level": 1,
+      "price": 500,
+      "center": 0.35
+    },
+    {
+      "level": 2,
+      "price": 1250,
+      "center": 0.4,
+      "inner": 1.05
+    }
+  ],
+  "midUpgrades": [
+    {
+      "level": 1,
+      "price": 2500,
+      "mid": 1.8,
+      "inner": 1.1
+    },
+    {
+      "level": 2,
+      "price": 30000,
+      "mid": 2.2,
+      "inner": 1.25
+    },
+    {
+      "level": 3,
+      "price": 300000,
+      "mid": 2.8,
+      "inner": 1.4
+    }
+  ],
+  "jackpotUpgrades": [
+    {
+      "level": 1,
+      "price": 5000,
+      "edge": 25
+    },
+    {
+      "level": 2,
+      "price": 50000,
+      "edge": 50
+    },
+    {
+      "level": 3,
+      "price": 500000,
+      "edge": 100
+    }
+  ]
+}

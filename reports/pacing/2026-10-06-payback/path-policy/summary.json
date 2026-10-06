@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "paybackPath": "reports/pacing/2026-10-06-payback/guarded-selection/summary.json",
+    "approach": "payback",
+    "configHash": "8219cffd485fb057df04cc861d0acdaf22a2f223db91e304fee65307d6c0a75c",
+    "sourceRevision": "2122e7f74f326fc4f5a8e5e4826e0571f2238b47",
+    "perVariant": 10,
+    "seedStart": 67118000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "burst",
+    "launchPolicy": "bounded bursts then drain",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 1,
+      "order": "original",
+      "outcomes": {
+        "BARRY_LOSS": 10
+      },
+      "wins": 0,
+      "medianWinMinutes": null,
+      "medianWinWork": null,
+      "medianWinRecovery": null,
+      "medianWinDrops": null,
+      "medianAllMinutes": 67.89777777777778
+    },
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "BARRY_LOSS": 10
+      },
+      "wins": 0,
+      "medianWinMinutes": null,
+      "medianWinWork": null,
+      "medianWinRecovery": null,
+      "medianWinDrops": null,
+      "medianAllMinutes": 28.48472222222222
+    }
+  ]
+}

@@ -29,16 +29,7 @@ describe('Plinko derived progression', () => {
     });
 
     expect(pockets).toEqual([
-      100,
-      4,
-      1.8,
-      1.1,
-      0.4,
-      0.4,
-      1.1,
-      1.8,
-      4,
-      100,
+      32, 4, 2, 1.2, 0.75, 0.75, 1.2, 2, 4, 32,
     ]);
   });
 

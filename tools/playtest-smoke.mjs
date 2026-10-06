@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, extname } from 'node:path';
 import assert from 'node:assert/strict';
+import legacyPockets from '../src/config/plinko-pockets-2026-10-06.json' with { type: 'json' };
 import legacyFeedback from '../src/config/plinko-feedback-2026-10-06.json' with { type: 'json' };
 import legacySpecials from '../src/config/plinko-specials-2026-10-05.json' with { type: 'json' };
 import legacyPhysics from '../src/config/plinko-physics-2026-10-03.json' with { type: 'json' };
@@ -125,12 +126,13 @@ try {
   assert.equal(specialReplay.game.rngState, specialResult.game.rngState, 'special cascades restore RNG');
   assert.deepEqual(specialReplay.game.clock, specialResult.game.clock, 'special cascades restore clock');
   // A pre-calibration paid board must keep its old geometry through reload.
-  for (const revision of ['feedback', 'specials', 'physics', 'deflectors']) {
+  for (const revision of ['pockets', 'feedback', 'specials', 'physics', 'deflectors']) {
   const legacyBalance = structuredClone(balance);
-  legacyBalance.plinko.returnPhysics = structuredClone(legacyFeedback.returnPhysics);
-  legacyBalance.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyFeedback.deflectorPairs[i]); });
-  if (revision !== 'feedback') legacyBalance.plinko.specialPinLayout = structuredClone(legacySpecials.layout);
-  if (revision !== 'feedback') legacyBalance.plinko.splitter = structuredClone(legacySpecials.splitter);
+  Object.assign(legacyBalance.plinko, structuredClone(legacyPockets));
+  if (revision !== 'pockets') legacyBalance.plinko.returnPhysics = structuredClone(legacyFeedback.returnPhysics);
+  if (revision !== 'pockets') legacyBalance.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyFeedback.deflectorPairs[i]); });
+  if (revision !== 'pockets' && revision !== 'feedback') legacyBalance.plinko.specialPinLayout = structuredClone(legacySpecials.layout);
+  if (revision !== 'pockets' && revision !== 'feedback') legacyBalance.plinko.splitter = structuredClone(legacySpecials.splitter);
   if (revision === 'physics' || revision === 'deflectors') legacyBalance.plinko.physicsSeed = structuredClone(legacyPhysics);
   if (revision === 'deflectors') legacyBalance.plinko.jackpotBias.forEach((level, index) => { level.deflectorPairs = structuredClone(legacyPairs[index]); });
   const oldCommit = commitBareDrop({ ...upgraded.game, plinkoReturnLevel: revision === 'feedback' ? 1 : 4 }, null, legacyBalance, 'legacy-geometry', 1);

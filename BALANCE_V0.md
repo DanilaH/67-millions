@@ -131,3 +131,12 @@ T070 playtest candidate: prices are listed in the numeric JSON and sampled by th
 **Historical V1 publication blocker (resolved by the fixed-tick repair below):** browser/Node special-cascade payout parity failed; these configured positions/values are an unaccepted main-branch candidate, not the deployed board. See reports/physics/2026-10-05-specials/README.md. Repair deterministic effect scheduling and remeasure before publication; the old live board remains in use.
 
 2026-10-05 fixed-tick repair: collision effects now complete synchronously after each solver step and before persistence; save latency cannot postpone them into another tick. Local browser payout/RNG/clock/needs parity (including delayed render frames) and 42,000 effect reruns pass. This supersedes the V1 scheduling blocker above. CI, Pages deployment and live verification all passed in run 37328078720; published executable `5bf6c6806dd709f6d17800cd7893cecbedffb160`. See [evidence and historical-save limits](reports/physics/2026-10-05-fixed-tick/README.md). Economy acceptance remains open.
+
+## 2026-10-06 progression playtest candidate
+
+Pocket upgrades now redistribute income from rare edges toward earlier regular returns:
+- Center I/II: 0.50× / 0.75× (previously 0.35× / 0.40×); Center II inner pockets 1.15×.
+- Mid I: 2.0× and inner 1.2× (previously 1.8× / 1.1×). Mid II/III unchanged.
+- Edge I/II/III: 16× / 22× / 32× (previously 25× / 50× / 100×).
+
+Prices, max bets, physical routes, base board and special effects are unchanged. Current paid roots retain the old multiplier table; the next paid world uses the candidate. [Payback and matched progression evidence](reports/pacing/2026-10-06-payback/README.md). This candidate improves sampled purchase-gap/final-phase distribution during concurrent play but increases modeled survival and slows solo play. The ~30-minute pacing and challenge gates remain OPEN; this is not a balance freeze.

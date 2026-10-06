@@ -294,6 +294,8 @@ Acceptance: reports for frozen candidate geometry/config.
 
 ### T070 [P0] Large full-game batch + dominant strategy search
 
+2026-10-06 follow-up: [payback audit and pocket progression candidate](reports/pacing/2026-10-06-payback/README.md). Uses independent matched full-game comparisons and preserves historical payouts. No optimal-policy or final balance claim; solo duration and increased survival remain OPEN.
+
 2026-10-06: [balance diagnosis](reports/pacing/2026-10-06-balance/README.md) tests six rejected numeric candidates, 35,000 physical roots and 488 labeled modeled sessions. No candidate accepted; progression quality and a stronger investment policy remain OPEN. Barry boundary and debug-trigger regressions pass.
 2026-10-05 continuous follow-up: 760 runs cover slot replenishment, two rejected price candidates and bankroll-policy sensitivity. Two continuous launch policies are measured; optimal spacing/fractions/purchase order and human pacing remain open. No production balance change; see reports/pacing/2026-10-05-continuous/README.md.
 2026-10-05 economy follow-up: seven price/cap candidates screened (280 runs), selected candidate compared independently against baseline (400 growth-policy runs plus 160 aggressive-policy runs). Late acceleration reduced without increasing common-winner median work counts. Continuous replenishment dominance and human pacing remain open; see reports/pacing/2026-10-05-economy/README.md.

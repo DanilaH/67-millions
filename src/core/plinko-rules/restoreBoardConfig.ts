@@ -1,4 +1,5 @@
 import type { BalanceConfig } from '../../config/balance.schema';
+import legacyPockets from '../../config/plinko-pockets-2026-10-06.json';
 import legacyFeedback from '../../config/plinko-feedback-2026-10-06.json';
 import legacyPairs from '../../config/plinko-deflectors-2026-10-02.json';
 import legacySpecials from '../../config/plinko-specials-2026-10-05.json';
@@ -15,6 +16,8 @@ export const resolvePendingBoardConfig = (
     createBoardFingerprint(candidate, pending.pocketLevelsAtCommit, pending.specialLevelsAtCommit);
   if (matches(config)) return config;
   const legacy = structuredClone(config);
+  Object.assign(legacy.plinko, structuredClone(legacyPockets));
+  if (matches(legacy)) return legacy;
   legacy.plinko.returnPhysics = structuredClone(legacyFeedback.returnPhysics) as BalanceConfig['plinko']['returnPhysics'];
   legacy.plinko.jackpotBias.forEach((level, index) => {
     level.deflectorPairs = structuredClone(legacyFeedback.deflectorPairs[index]!);

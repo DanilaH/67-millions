@@ -1,0 +1,98 @@
+[
+  {
+    "mode": "holdout",
+    "batch": 1,
+    "order": "original",
+    "commonWins": 19,
+    "pairedMedians": {
+      "minutes": 8.513055555555553,
+      "millionToEndMinutes": 6.276666666666665,
+      "internalPurchaseGapMinutes": -2.248333333333335,
+      "work": -5
+    },
+    "candidateMedians": {
+      "millionToEndMinutes": 14.559166666666671,
+      "internalPurchaseGapMinutes": 4.7183333333333355
+    }
+  },
+  {
+    "mode": "holdout",
+    "batch": 1,
+    "order": "cheapest",
+    "commonWins": 20,
+    "pairedMedians": {
+      "minutes": 8.57611111111111,
+      "millionToEndMinutes": 6.818750000000011,
+      "internalPurchaseGapMinutes": -0.19458333333333266,
+      "work": -0.5
+    },
+    "candidateMedians": {
+      "millionToEndMinutes": 13.760694444444447,
+      "internalPurchaseGapMinutes": 3.7205555555555554
+    }
+  },
+  {
+    "mode": "holdout",
+    "batch": 6,
+    "order": "original",
+    "commonWins": 17,
+    "pairedMedians": {
+      "minutes": -0.25194444444444386,
+      "millionToEndMinutes": 1.6191666666666664,
+      "internalPurchaseGapMinutes": -1.7277777777777792,
+      "work": -8
+    },
+    "candidateMedians": {
+      "millionToEndMinutes": 4.025555555555557,
+      "internalPurchaseGapMinutes": 2.8780555555555547
+    }
+  },
+  {
+    "mode": "holdout",
+    "batch": 6,
+    "order": "cheapest",
+    "commonWins": 20,
+    "pairedMedians": {
+      "minutes": 0.9369444444444444,
+      "millionToEndMinutes": 1.784027777777776,
+      "internalPurchaseGapMinutes": -0.5423611111111096,
+      "work": -2.5
+    },
+    "candidateMedians": {
+      "millionToEndMinutes": 3.918750000000001,
+      "internalPurchaseGapMinutes": 2.1911111111111117
+    }
+  },
+  {
+    "mode": "continuous",
+    "batch": 6,
+    "order": "original",
+    "commonWins": 10,
+    "pairedMedians": {
+      "minutes": -1.462083333333335,
+      "millionToEndMinutes": 1.1963888888888863,
+      "internalPurchaseGapMinutes": -2.211388888888889,
+      "work": -5.5
+    },
+    "candidateMedians": {
+      "millionToEndMinutes": 3.3388888888888895,
+      "internalPurchaseGapMinutes": 2.4893055555555557
+    }
+  },
+  {
+    "mode": "continuous",
+    "batch": 6,
+    "order": "cheapest",
+    "commonWins": 15,
+    "pairedMedians": {
+      "minutes": 0.0663888888888895,
+      "millionToEndMinutes": 1.1986111111111142,
+      "internalPurchaseGapMinutes": -1.1749999999999996,
+      "work": -2
+    },
+    "candidateMedians": {
+      "millionToEndMinutes": 3.754166666666667,
+      "internalPurchaseGapMinutes": 1.8666666666666667
+    }
+  }
+]

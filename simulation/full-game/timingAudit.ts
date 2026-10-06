@@ -4,6 +4,10 @@ import { createHash } from 'node:crypto';
 import { execSync } from 'node:child_process';
 import { parseBalanceConfig } from '../../src/config/balance';
 import { buildCasinoUpgradePreviews, type CasinoUpgradeId } from '../../src/game/casino/casinoUiModel';
+import { startWork } from '../../src/core/work/work';
+import { getBarryPaymentDue } from '../../src/core/barry/barry';
+import { getMaxBetForLevel } from '../../src/core/plinko-rules/progression';
+import { createBaselinePolicy, deterministicPolicyRoll } from './policies';
 import { createLiquidityPolicy } from './liquidityPolicy';
 import { runFullGame, type FullGameDecision, type FullGamePolicyContext } from './runner';
 import { createSharedWorld } from './sharedWorld';
@@ -23,15 +27,35 @@ if (!['burst','continuous','continuous-spend'].includes(mode)) throw Error('Unsu
 const batches = mode !== 'burst' ? [6] : [1, 6];
 const maxBetReserveBets = Number(process.argv[9] ?? 1);
 const approach = process.argv[10] ?? 'reserve';
-if (!['reserve', 'casino-first', 'casino-invest'].includes(approach)) throw Error('Unsupported approach');
+if (!['reserve', 'casino-first', 'casino-invest', 'payback'].includes(approach)) throw Error('Unsupported approach');
+const paybackPath = approach==='payback' ? JSON.parse(readFileSync(process.argv[11]!, 'utf8')).stages as {levels:Record<string,number>;chosen:{id:CasinoUpgradeId}}[] : null;
 const runs = [];
 const buy = (id: CasinoUpgradeId): FullGameDecision => id === 'maxBet' ? { type: 'BUY_PLINKO_MAX_BET' } : id === 'insurance' ? {type:'BUY_PLINKO_INSURANCE'} : ['center','mid','jackpot'].includes(id) ? {type:'BUY_PLINKO_POCKET',track:id as 'center'|'mid'|'jackpot'} : {type:'BUY_PLINKO_SPECIAL',track:id as 'amplifier'|'return'|'splitter'|'jackpotBias'};
-for (const batch of batches) for (const order of ['original','cheapest'] as const) {
+for (const batch of batches) for (const order of (paybackPath ? ['original'] : ['original','cheapest']) as ('original'|'cheapest')[]) {
   for(let index=0;index<perVariant;index++) {
     const seed=seedStart+index;
+    const profile=createBaselinePolicy(config,archetype,seed).profile;
     const liquidity=createLiquidityPolicy(config,archetype,seed,maxBetReserveBets);
     const base = {...liquidity, decide(ctx: FullGamePolicyContext): FullGameDecision {
       const action = liquidity.decide(ctx);
+      if (paybackPath && ['WORK','WAIT','PLINKO','BUY_PLINKO_MAX_BET','BUY_PLINKO_POCKET','BUY_PLINKO_SPECIAL','BUY_PLINKO_INSURANCE'].includes(action.type)
+          && ctx.state.eventModifiers.plinkoLockRemainingMinutes===0) {
+        const stage=paybackPath.find(s=>Object.entries(s.levels).every(([k,v])=>ctx.state[k as keyof typeof ctx.state]===v));
+        const reserve=getBarryPaymentDue(ctx.state,config)*profile.reserveMultiplier+profile.reserveFlat;
+        if(stage){
+          const preview=buildCasinoUpgradePreviews(ctx.state,null,config).find(p=>p.id===stage.chosen.id)!;
+          const cap=stage.chosen.id==='maxBet'?getMaxBetForLevel(config,ctx.state.plinkoMaxBetLevel+1):getMaxBetForLevel(config,ctx.state.plinkoMaxBetLevel);
+          if(preview.lockedReason===null && ctx.state.cash-preview.nextPrice! >= reserve+cap*0.25) return buy(stage.chosen.id);
+        }
+        const cap=getMaxBetForLevel(config,ctx.state.plinkoMaxBetLevel);
+        const fraction=([0.5,0.25] as const).find(f=>ctx.state.cash-cap*f>=reserve);
+        if(fraction)return {type:'PLINKO',fraction};
+        for(const jobId of profile.workPriority){
+          try{startWork(ctx.state,config,jobId,ctx.state.jobLevels[jobId]);}catch{continue;}
+          return {type:'WORK',jobId,level:ctx.state.jobLevels[jobId],result:deterministicPolicyRoll(seed,ctx.decisionIndex,`work:${archetype}:${jobId}`)<profile.workFailureProbability?'FAILURE':'SUCCESS'};
+        }
+        return {type:'WAIT',minutes:60};
+      }
       if (approach === 'casino-invest' && ['WORK','WAIT','PLINKO','BUY_PLINKO_MAX_BET','BUY_PLINKO_POCKET','BUY_PLINKO_SPECIAL'].includes(action.type)
           && ctx.state.eventModifiers.plinkoLockRemainingMinutes === 0) {
         const choices = buildCasinoUpgradePreviews(ctx.state,null,config)
@@ -96,11 +120,11 @@ for (const batch of batches) for (const order of ['original','cheapest'] as cons
   }
 }
 mkdirSync(output,{recursive:true});
-const metadata={approach,configHash,sourceRevision:execSync('git rev-parse HEAD').toString().trim(),perVariant,seedStart,archetype,maxBetReserveBets,decisionSeconds:decisionDelay,courierSecondsAssumed:30,workTimers:'dishes/trash full configured duration, not measured human completion',launchSpacingSeconds:0.25,mode,launchPolicy:mode==='burst'?'bounded bursts then drain':`recheck every 15 ticks; drain for recovery/event/purchase/victory; ${mode==='continuous-spend'?'reuse original fraction without cash reserve inside session':'preserve liquidity reserve, drain on work intention'}; no purchases while active`,fixedHz:60,limitations:'No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts.'};
+const metadata={paybackPath:process.argv[11]??null,approach,configHash,sourceRevision:execSync('git rev-parse HEAD').toString().trim(),perVariant,seedStart,archetype,maxBetReserveBets,decisionSeconds:decisionDelay,courierSecondsAssumed:30,workTimers:'dishes/trash full configured duration, not measured human completion',launchSpacingSeconds:0.25,mode,launchPolicy:mode==='burst'?'bounded bursts then drain':`recheck every 15 ticks; drain for recovery/event/purchase/victory; ${mode==='continuous-spend'?'reuse original fraction without cash reserve inside session':'preserve liquidity reserve, drain on work intention'}; no purchases while active`,fixedHz:60,limitations:'No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts.'};
 writeFileSync(`${output}/runs.json.gz`,gzipSync(JSON.stringify({metadata,runs})));
 const median=(a:number[])=>{a.sort((a,b)=>a-b);return a.length?a.length%2?a[Math.floor(a.length/2)]!:(a[a.length/2-1]!+a[a.length/2]!)/2:null;};
 const summaries=[];
-for(const batch of batches)for(const order of ['original','cheapest']) {
+for(const batch of batches)for(const order of (paybackPath ? ['original'] : ['original','cheapest'])) {
  const subset=runs.filter(r=>r.batch===batch&&r.order===order);
  const wins=subset.filter(r=>r.result.outcome==='VICTORY');
  summaries.push({batch,order,outcomes:subset.reduce<Record<string,number>>((a,r)=>{a[r.result.outcome]=(a[r.result.outcome]??0)+1;return a;},{}),wins:wins.length,medianWinMinutes:median(wins.map(r=>Object.values(r.result.diagnostics.activeSeconds!).reduce((a,b)=>a+b,0)/60)),medianWinWork:median(wins.map(r=>r.result.counters.workShifts)),medianWinRecovery:median(wins.map(r=>{const c=r.result.counters;return c.foodActions+c.sleeps+c.entertainmentActions+c.showers;})),medianWinDrops:median(wins.map(r=>r.result.counters.plinkoDrops)),medianAllMinutes:median(subset.map(r=>Object.values(r.result.diagnostics.activeSeconds!).reduce((a,b)=>a+b,0)/60))});

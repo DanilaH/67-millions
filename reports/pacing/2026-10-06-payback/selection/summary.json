@@ -1,0 +1,2550 @@
+{
+  "metadata": {
+    "revision": "2122e7f74f326fc4f5a8e5e4826e0571f2238b47",
+    "configHash": "8219cffd485fb057df04cc861d0acdaf22a2f223db91e304fee65307d6c0a75c",
+    "runnerHash": "9c28a842684e2c5b471708b9c045e410038df88e3378c1e7508ade59dd567f84",
+    "count": 150,
+    "seed": 67116000,
+    "fixedPath": null,
+    "model": "paired independent roots; expected net income per solo-board second at half cap; greedy one-step marginal gain/price, not globally optimal; selection noise; no bankroll, insurance or need costs in ranking"
+  },
+  "stages": [
+    {
+      "levels": {
+        "plinkoCenterLevel": 0,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 0,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 0,
+        "plinkoMaxBetLevel": 0
+      },
+      "baseMean": 0.9883333333333333,
+      "baseSeconds": 4.975777777777778,
+      "baseRate": -0.5861730159439084,
+      "chosen": {
+        "id": "center",
+        "level": 1,
+        "price": 500,
+        "mean": 1.043666666666665,
+        "seconds": 4.975777777777778,
+        "deltaRate": 2.7801348756195856,
+        "score": 0.005560269751239171,
+        "paybackSeconds": 179.8473895582383
+      },
+      "candidates": [
+        {
+          "id": "center",
+          "level": 1,
+          "price": 500,
+          "mean": 1.043666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 2.7801348756195856,
+          "score": 0.005560269751239171,
+          "paybackSeconds": 179.8473895582383
+        },
+        {
+          "id": "jackpot",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.2483333333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": 13.063284355321333,
+          "score": 0.0026126568710642664,
+          "paybackSeconds": 382.7521367521368
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.0609999999999993,
+          "seconds": 4.975777777777778,
+          "deltaRate": 3.6510204993077235,
+          "score": 0.0014604081997230895,
+          "paybackSeconds": 684.7400611620859
+        },
+        {
+          "id": "jackpotBias",
+          "level": 1,
+          "price": 4000,
+          "mean": 1.0416666666666667,
+          "seconds": 4.971555555555556,
+          "deltaRate": 2.6814260107588597,
+          "score": 0.0006703565026897149,
+          "paybackSeconds": 1491.7435662779956
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.0358266666666671,
+          "seconds": 5.0184444444444445,
+          "deltaRate": 2.370922606343789,
+          "score": 0.0003161230141791719,
+          "paybackSeconds": 3163.3255256550888
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.0135866666666664,
+          "seconds": 4.975777777777778,
+          "deltaRate": 1.268813362511713,
+          "score": 0.0002537626725023426,
+          "paybackSeconds": 3940.6898979232988
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.0266666666666666,
+          "seconds": 5.0857777777777775,
+          "deltaRate": 1.8970180740580367,
+          "score": 0.0001264678716038691,
+          "paybackSeconds": 7907.146592395142
+        },
+        {
+          "id": "maxBet",
+          "level": 1,
+          "price": 500,
+          "mean": 0.9883333333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": -2.3446920637756334,
+          "score": -0.004689384127551267,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 0,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 0,
+        "plinkoMaxBetLevel": 0
+      },
+      "baseMean": 1.043666666666665,
+      "baseSeconds": 4.975777777777778,
+      "baseRate": 2.193961859675677,
+      "chosen": {
+        "id": "maxBet",
+        "level": 1,
+        "price": 500,
+        "mean": 1.043666666666665,
+        "seconds": 4.975777777777778,
+        "deltaRate": 8.775847438702709,
+        "score": 0.01755169487740542,
+        "paybackSeconds": 56.97455470738135
+      },
+      "candidates": [
+        {
+          "id": "maxBet",
+          "level": 1,
+          "price": 500,
+          "mean": 1.043666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 8.775847438702709,
+          "score": 0.01755169487740542,
+          "paybackSeconds": 56.97455470738135
+        },
+        {
+          "id": "jackpot",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.303666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 13.063284355321333,
+          "score": 0.0026126568710642664,
+          "paybackSeconds": 382.7521367521368
+        },
+        {
+          "id": "center",
+          "level": 2,
+          "price": 1250,
+          "mean": 1.0826666666666678,
+          "seconds": 4.975777777777778,
+          "deltaRate": 1.9594926532983417,
+          "score": 0.0015675941226386734,
+          "paybackSeconds": 637.9202279201819
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.116333333333331,
+          "seconds": 4.975777777777778,
+          "deltaRate": 3.651020499307723,
+          "score": 0.0014604081997230893,
+          "paybackSeconds": 684.740061162086
+        },
+        {
+          "id": "jackpotBias",
+          "level": 1,
+          "price": 4000,
+          "mean": 1.0969999999999984,
+          "seconds": 4.971555555555556,
+          "deltaRate": 2.683787112253441,
+          "score": 0.0006709467780633602,
+          "paybackSeconds": 1490.4311827630029
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.104039999999999,
+          "seconds": 5.0184444444444445,
+          "deltaRate": 2.988919068456055,
+          "score": 0.00039852254246080734,
+          "paybackSeconds": 2509.2683435802
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.077413333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": 1.6955473181189498,
+          "score": 0.00033910946362378995,
+          "paybackSeconds": 2948.9003029104665
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.082666666666665,
+          "seconds": 5.0857777777777775,
+          "deltaRate": 1.869657820478042,
+          "score": 0.00012464385469853614,
+          "paybackSeconds": 8022.858426663728
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 0,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 0,
+        "plinkoMaxBetLevel": 1
+      },
+      "baseMean": 1.043666666666665,
+      "baseSeconds": 4.975777777777778,
+      "baseRate": 10.969809298378387,
+      "chosen": {
+        "id": "maxBet",
+        "level": 2,
+        "price": 1800,
+        "mean": 1.043666666666665,
+        "seconds": 4.975777777777778,
+        "deltaRate": 43.87923719351354,
+        "score": 0.02437735399639641,
+        "paybackSeconds": 41.02167938931458
+      },
+      "candidates": [
+        {
+          "id": "maxBet",
+          "level": 2,
+          "price": 1800,
+          "mean": 1.043666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 43.87923719351354,
+          "score": 0.02437735399639641,
+          "paybackSeconds": 41.02167938931458
+        },
+        {
+          "id": "jackpot",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.303666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 65.31642177660666,
+          "score": 0.013063284355321333,
+          "paybackSeconds": 76.55042735042737
+        },
+        {
+          "id": "center",
+          "level": 2,
+          "price": 1250,
+          "mean": 1.0826666666666678,
+          "seconds": 4.975777777777778,
+          "deltaRate": 9.797463266491704,
+          "score": 0.007837970613193364,
+          "paybackSeconds": 127.58404558403643
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.116333333333331,
+          "seconds": 4.975777777777778,
+          "deltaRate": 18.255102496538615,
+          "score": 0.0073020409986154465,
+          "paybackSeconds": 136.9480122324172
+        },
+        {
+          "id": "jackpotBias",
+          "level": 1,
+          "price": 4000,
+          "mean": 1.0969999999999984,
+          "seconds": 4.971555555555556,
+          "deltaRate": 13.418935561267201,
+          "score": 0.0033547338903168003,
+          "paybackSeconds": 298.08623655260067
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.104039999999999,
+          "seconds": 5.0184444444444445,
+          "deltaRate": 14.944595342280273,
+          "score": 0.0019926127123040364,
+          "paybackSeconds": 501.8536687160401
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.077413333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": 8.477736590594748,
+          "score": 0.0016955473181189497,
+          "paybackSeconds": 589.7800605820934
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.082666666666665,
+          "seconds": 5.0857777777777775,
+          "deltaRate": 9.348289102390208,
+          "score": 0.0006232192734926805,
+          "paybackSeconds": 1604.571685332746
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 0,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 0,
+        "plinkoMaxBetLevel": 2
+      },
+      "baseMean": 1.043666666666665,
+      "baseSeconds": 4.975777777777778,
+      "baseRate": 54.849046491891926,
+      "chosen": {
+        "id": "jackpot",
+        "level": 1,
+        "price": 5000,
+        "mean": 1.303666666666665,
+        "seconds": 4.975777777777778,
+        "deltaRate": 326.58210888303336,
+        "score": 0.06531642177660667,
+        "paybackSeconds": 15.31008547008547
+      },
+      "candidates": [
+        {
+          "id": "jackpot",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.303666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 326.58210888303336,
+          "score": 0.06531642177660667,
+          "paybackSeconds": 15.31008547008547
+        },
+        {
+          "id": "center",
+          "level": 2,
+          "price": 1250,
+          "mean": 1.0826666666666678,
+          "seconds": 4.975777777777778,
+          "deltaRate": 48.98731633245852,
+          "score": 0.03918985306596681,
+          "paybackSeconds": 25.516809116807284
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.116333333333331,
+          "seconds": 4.975777777777778,
+          "deltaRate": 91.27551248269307,
+          "score": 0.03651020499307723,
+          "paybackSeconds": 27.38960244648344
+        },
+        {
+          "id": "jackpotBias",
+          "level": 1,
+          "price": 4000,
+          "mean": 1.0969999999999984,
+          "seconds": 4.971555555555556,
+          "deltaRate": 67.09467780633601,
+          "score": 0.016773669451584,
+          "paybackSeconds": 59.61724731052013
+        },
+        {
+          "id": "maxBet",
+          "level": 3,
+          "price": 7000,
+          "mean": 1.043666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 76.78866508864871,
+          "score": 0.010969809298378387,
+          "paybackSeconds": 91.15928753181015
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.104039999999999,
+          "seconds": 5.0184444444444445,
+          "deltaRate": 74.72297671140137,
+          "score": 0.009963063561520182,
+          "paybackSeconds": 100.370733743208
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.077413333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": 42.38868295297375,
+          "score": 0.00847773659059475,
+          "paybackSeconds": 117.95601211641863
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.082666666666665,
+          "seconds": 5.0857777777777775,
+          "deltaRate": 46.741445511951056,
+          "score": 0.003116096367463404,
+          "paybackSeconds": 320.9143370665491
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 1,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 0,
+        "plinkoMaxBetLevel": 2
+      },
+      "baseMean": 1.303666666666665,
+      "baseSeconds": 4.975777777777778,
+      "baseRate": 381.43115537492525,
+      "chosen": {
+        "id": "maxBet",
+        "level": 3,
+        "price": 7000,
+        "mean": 1.303666666666665,
+        "seconds": 4.975777777777778,
+        "deltaRate": 534.0036175248954,
+        "score": 0.07628623107498506,
+        "paybackSeconds": 13.108525429930554
+      },
+      "candidates": [
+        {
+          "id": "maxBet",
+          "level": 3,
+          "price": 7000,
+          "mean": 1.303666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 534.0036175248954,
+          "score": 0.07628623107498506,
+          "paybackSeconds": 13.108525429930554
+        },
+        {
+          "id": "jackpotBias",
+          "level": 1,
+          "price": 4000,
+          "mean": 1.443666666666665,
+          "seconds": 4.971555555555556,
+          "deltaRate": 176.32519184481174,
+          "score": 0.044081297961202935,
+          "paybackSeconds": 22.685357424822772
+        },
+        {
+          "id": "center",
+          "level": 2,
+          "price": 1250,
+          "mean": 1.3426666666666678,
+          "seconds": 4.975777777777778,
+          "deltaRate": 48.98731633245859,
+          "score": 0.039189853065966875,
+          "paybackSeconds": 25.51680911680725
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.376333333333331,
+          "seconds": 4.975777777777778,
+          "deltaRate": 91.2755124826931,
+          "score": 0.03651020499307724,
+          "paybackSeconds": 27.389602446483433
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.515999999999998,
+          "seconds": 5.0857777777777775,
+          "deltaRate": 252.69014148778314,
+          "score": 0.016846009432518877,
+          "paybackSeconds": 59.36123946776613
+        },
+        {
+          "id": "jackpot",
+          "level": 2,
+          "price": 50000,
+          "mean": 1.8036666666666656,
+          "seconds": 4.975777777777778,
+          "deltaRate": 628.0425170827573,
+          "score": 0.012560850341655145,
+          "paybackSeconds": 79.61244444444434
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.364039999999999,
+          "seconds": 5.0184444444444445,
+          "deltaRate": 71.9463852529795,
+          "score": 0.009592851367063933,
+          "paybackSeconds": 104.24429210207478
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.337413333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": 42.388682952973795,
+          "score": 0.008477736590594758,
+          "paybackSeconds": 117.95601211641852
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 1,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 0,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 1.303666666666665,
+      "baseSeconds": 4.975777777777778,
+      "baseRate": 915.4347728998207,
+      "chosen": {
+        "id": "jackpotBias",
+        "level": 1,
+        "price": 4000,
+        "mean": 1.443666666666665,
+        "seconds": 4.971555555555556,
+        "deltaRate": 423.18046042754804,
+        "score": 0.10579511510688701,
+        "paybackSeconds": 9.452232260342825
+      },
+      "candidates": [
+        {
+          "id": "jackpotBias",
+          "level": 1,
+          "price": 4000,
+          "mean": 1.443666666666665,
+          "seconds": 4.971555555555556,
+          "deltaRate": 423.18046042754804,
+          "score": 0.10579511510688701,
+          "paybackSeconds": 9.452232260342825
+        },
+        {
+          "id": "center",
+          "level": 2,
+          "price": 1250,
+          "mean": 1.3426666666666678,
+          "seconds": 4.975777777777778,
+          "deltaRate": 117.56955919790039,
+          "score": 0.09405564735832031,
+          "paybackSeconds": 10.632003798669707
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.376333333333331,
+          "seconds": 4.975777777777778,
+          "deltaRate": 219.0612299584634,
+          "score": 0.08762449198338536,
+          "paybackSeconds": 11.412334352701432
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.515999999999998,
+          "seconds": 5.0857777777777775,
+          "deltaRate": 606.4563395706796,
+          "score": 0.040430422638045305,
+          "paybackSeconds": 24.733849778235886
+        },
+        {
+          "id": "jackpot",
+          "level": 2,
+          "price": 50000,
+          "mean": 1.8036666666666656,
+          "seconds": 4.975777777777778,
+          "deltaRate": 1507.3020409986177,
+          "score": 0.030146040819972353,
+          "paybackSeconds": 33.171851851851805
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.364039999999999,
+          "seconds": 5.0184444444444445,
+          "deltaRate": 172.67132460715084,
+          "score": 0.023022843280953446,
+          "paybackSeconds": 43.435121709197816
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.337413333333333,
+          "seconds": 4.975777777777778,
+          "deltaRate": 101.732839087137,
+          "score": 0.0203465678174274,
+          "paybackSeconds": 49.1483383818411
+        },
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 1.303666666666665,
+          "seconds": 4.975777777777778,
+          "deltaRate": 915.4347728998207,
+          "score": 0.0036617390915992826,
+          "paybackSeconds": 273.09427979021984
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 1,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 1.443666666666665,
+      "baseSeconds": 4.971555555555556,
+      "baseRate": 1338.6152333273687,
+      "chosen": {
+        "id": "center",
+        "level": 2,
+        "price": 1250,
+        "mean": 1.4826666666666684,
+        "seconds": 4.971555555555556,
+        "deltaRate": 117.66940818881721,
+        "score": 0.09413552655105377,
+        "paybackSeconds": 10.622981956314407
+      },
+      "candidates": [
+        {
+          "id": "center",
+          "level": 2,
+          "price": 1250,
+          "mean": 1.4826666666666684,
+          "seconds": 4.971555555555556,
+          "deltaRate": 117.66940818881721,
+          "score": 0.09413552655105377,
+          "paybackSeconds": 10.622981956314407
+        },
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.5163333333333315,
+          "seconds": 4.971555555555556,
+          "deltaRate": 219.24727337743525,
+          "score": 0.0876989093509741,
+          "paybackSeconds": 11.40265035677884
+        },
+        {
+          "id": "jackpot",
+          "level": 2,
+          "price": 50000,
+          "mean": 2.110333333333333,
+          "seconds": 4.971555555555556,
+          "deltaRate": 2011.442875022353,
+          "score": 0.04022885750044706,
+          "paybackSeconds": 24.85777777777773
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.655999999999998,
+          "seconds": 5.081666666666666,
+          "deltaRate": 597.7573478467809,
+          "score": 0.039850489856452065,
+          "paybackSeconds": 25.09379442014797
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.504039999999999,
+          "seconds": 5.014222222222222,
+          "deltaRate": 169.21582499562055,
+          "score": 0.022562109999416075,
+          "paybackSeconds": 44.32209576258075
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.4774133333333324,
+          "seconds": 4.971555555555556,
+          "deltaRate": 101.81923833363317,
+          "score": 0.020363847666726633,
+          "paybackSeconds": 49.10663330260239
+        },
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 1.443666666666665,
+          "seconds": 4.971555555555556,
+          "deltaRate": 1338.6152333273687,
+          "score": 0.005354460933309475,
+          "paybackSeconds": 186.76016361966842
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 1.443666666666665,
+          "seconds": 4.972777777777778,
+          "deltaRate": -0.32900832458062723,
+          "score": -0.0000073112961017917165,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 0,
+        "plinkoJackpotLevel": 1,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 1.4826666666666684,
+      "baseSeconds": 4.971555555555556,
+      "baseRate": 1456.284641516186,
+      "chosen": {
+        "id": "mid",
+        "level": 1,
+        "price": 2500,
+        "mean": 1.5440000000000014,
+        "seconds": 4.971555555555556,
+        "deltaRate": 185.05274450205525,
+        "score": 0.0740210978008221,
+        "paybackSeconds": 13.509661835748858
+      },
+      "candidates": [
+        {
+          "id": "mid",
+          "level": 1,
+          "price": 2500,
+          "mean": 1.5440000000000014,
+          "seconds": 4.971555555555556,
+          "deltaRate": 185.05274450205525,
+          "score": 0.0740210978008221,
+          "paybackSeconds": 13.509661835748858
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.6980000000000026,
+          "seconds": 5.081666666666666,
+          "deltaRate": 604.0630134526643,
+          "score": 0.040270867563510955,
+          "paybackSeconds": 24.831846456322445
+        },
+        {
+          "id": "jackpot",
+          "level": 2,
+          "price": 50000,
+          "mean": 2.149333333333334,
+          "seconds": 4.971555555555556,
+          "deltaRate": 2011.4428750223472,
+          "score": 0.04022885750044694,
+          "paybackSeconds": 24.857777777777805
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.5516266666666683,
+          "seconds": 5.014222222222222,
+          "deltaRate": 193.9014956935332,
+          "score": 0.02585353275913776,
+          "paybackSeconds": 38.67943345756323
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.5205733333333342,
+          "seconds": 4.971555555555556,
+          "deltaRate": 114.37064187376836,
+          "score": 0.022874128374753673,
+          "paybackSeconds": 43.717512799469404
+        },
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 1.4826666666666684,
+          "seconds": 4.971555555555556,
+          "deltaRate": 1456.284641516186,
+          "score": 0.005825138566064744,
+          "paybackSeconds": 171.6697360343763
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 1.4826666666666684,
+          "seconds": 4.972777777777778,
+          "deltaRate": -0.3579294169740024,
+          "score": -0.00000795398704386672,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 1,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 1.5440000000000014,
+      "baseSeconds": 4.971555555555556,
+      "baseRate": 1641.3373860182412,
+      "chosen": {
+        "id": "jackpot",
+        "level": 2,
+        "price": 50000,
+        "mean": 2.210666666666667,
+        "seconds": 4.971555555555556,
+        "deltaRate": 2011.4428750223458,
+        "score": 0.04022885750044691,
+        "paybackSeconds": 24.857777777777823
+      },
+      "candidates": [
+        {
+          "id": "jackpot",
+          "level": 2,
+          "price": 50000,
+          "mean": 2.210666666666667,
+          "seconds": 4.971555555555556,
+          "deltaRate": 2011.4428750223458,
+          "score": 0.04022885750044691,
+          "paybackSeconds": 24.857777777777823
+        },
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 1.7480000000000007,
+          "seconds": 5.081666666666666,
+          "deltaRate": 566.5996425157066,
+          "score": 0.037773309501047105,
+          "paybackSeconds": 26.47371949159708
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 1.6128666666666676,
+          "seconds": 5.014222222222222,
+          "deltaRate": 192.04765209557104,
+          "score": 0.025606353612742806,
+          "paybackSeconds": 39.05280756188408
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 1.5821866666666675,
+          "seconds": 4.971555555555556,
+          "deltaRate": 115.21544788127835,
+          "score": 0.02304308957625567,
+          "paybackSeconds": 43.39695841092558
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 1.644666666666668,
+          "seconds": 4.971555555555556,
+          "deltaRate": 303.72787412837465,
+          "score": 0.010124262470945822,
+          "paybackSeconds": 98.77262693156736
+        },
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 1.5440000000000014,
+          "seconds": 4.971555555555556,
+          "deltaRate": 1641.3373860182412,
+          "score": 0.0065653495440729645,
+          "paybackSeconds": 152.31481481481444
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 1.5440000000000014,
+          "seconds": 4.972777777777778,
+          "deltaRate": -0.4034121605675409,
+          "score": -0.000008964714679278688,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 2,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 0,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 2.210666666666667,
+      "baseSeconds": 4.971555555555556,
+      "baseRate": 3652.780261040587,
+      "chosen": {
+        "id": "return",
+        "level": 1,
+        "price": 15000,
+        "mean": 2.7480000000000016,
+        "seconds": 5.081666666666666,
+        "deltaRate": 1506.9442387954296,
+        "score": 0.10046294925302864,
+        "paybackSeconds": 9.953918409078092
+      },
+      "candidates": [
+        {
+          "id": "return",
+          "level": 1,
+          "price": 15000,
+          "mean": 2.7480000000000016,
+          "seconds": 5.081666666666666,
+          "deltaRate": 1506.9442387954296,
+          "score": 0.10046294925302864,
+          "paybackSeconds": 9.953918409078092
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 2.279533333333334,
+          "seconds": 5.014222222222222,
+          "deltaRate": 174.9320240152565,
+          "score": 0.023324269868700866,
+          "paybackSeconds": 42.873796505926755
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 2.2488533333333334,
+          "seconds": 4.971555555555556,
+          "deltaRate": 115.21544788127949,
+          "score": 0.023043089576255896,
+          "paybackSeconds": 43.39695841092515
+        },
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 2.210666666666667,
+          "seconds": 4.971555555555556,
+          "deltaRate": 3652.780261040587,
+          "score": 0.014611121044162349,
+          "paybackSeconds": 68.44101811062163
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 2.311333333333334,
+          "seconds": 4.971555555555556,
+          "deltaRate": 303.72787412837624,
+          "score": 0.010124262470945875,
+          "paybackSeconds": 98.77262693156685
+        },
+        {
+          "id": "jackpot",
+          "level": 3,
+          "price": 500000,
+          "mean": 3.544,
+          "seconds": 4.971555555555556,
+          "deltaRate": 4022.8857500446975,
+          "score": 0.008045771500089395,
+          "paybackSeconds": 124.28888888888893
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 2.210666666666667,
+          "seconds": 4.972777777777778,
+          "deltaRate": -0.8977898083217042,
+          "score": -0.000019950884629371204,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 2,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 1,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 2.7480000000000016,
+      "baseSeconds": 5.081666666666666,
+      "baseRate": 5159.724499836017,
+      "chosen": {
+        "id": "return",
+        "level": 2,
+        "price": 150000,
+        "mean": 5.414666666666662,
+        "seconds": 5.338555555555556,
+        "deltaRate": 7244.37981468933,
+        "score": 0.0482958654312622,
+        "paybackSeconds": 20.705706193903175
+      },
+      "candidates": [
+        {
+          "id": "return",
+          "level": 2,
+          "price": 150000,
+          "mean": 5.414666666666662,
+          "seconds": 5.338555555555556,
+          "deltaRate": 7244.37981468933,
+          "score": 0.0482958654312622,
+          "paybackSeconds": 20.705706193903175
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 2.801573333333334,
+          "seconds": 5.081666666666666,
+          "deltaRate": 158.1370941292207,
+          "score": 0.03162741882584414,
+          "paybackSeconds": 31.618135058902006
+        },
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 2.7480000000000016,
+          "seconds": 5.081666666666666,
+          "deltaRate": 5159.724499836017,
+          "score": 0.020638897999344066,
+          "paybackSeconds": 48.45219933892698
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 2.8136000000000005,
+          "seconds": 5.124333333333333,
+          "deltaRate": 149.06363520594186,
+          "score": 0.019875151360792247,
+          "paybackSeconds": 50.314082235001344
+        },
+        {
+          "id": "jackpot",
+          "level": 3,
+          "price": 500000,
+          "mean": 4.747999999999997,
+          "seconds": 5.081666666666666,
+          "deltaRate": 5903.574942604118,
+          "score": 0.011807149885208236,
+          "paybackSeconds": 84.69444444444464
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 2.8379999999999996,
+          "seconds": 5.081666666666666,
+          "deltaRate": 265.66087241718014,
+          "score": 0.008855362413906005,
+          "paybackSeconds": 112.9259259259284
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 2.7480000000000016,
+          "seconds": 5.077111111111111,
+          "deltaRate": 4.629682332325501,
+          "score": 0.00010288182960723335,
+          "paybackSeconds": 9719.88935089557
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 2,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 3
+      },
+      "baseMean": 5.414666666666662,
+      "baseSeconds": 5.338555555555556,
+      "baseRate": 12404.104314525346,
+      "chosen": {
+        "id": "maxBet",
+        "level": 4,
+        "price": 250000,
+        "mean": 5.414666666666662,
+        "seconds": 5.338555555555556,
+        "deltaRate": 12404.104314525346,
+        "score": 0.049616417258101383,
+        "paybackSeconds": 20.154619282526284
+      },
+      "candidates": [
+        {
+          "id": "maxBet",
+          "level": 4,
+          "price": 250000,
+          "mean": 5.414666666666662,
+          "seconds": 5.338555555555556,
+          "deltaRate": 12404.104314525346,
+          "score": 0.049616417258101383,
+          "paybackSeconds": 20.154619282526284
+        },
+        {
+          "id": "jackpot",
+          "level": 3,
+          "price": 500000,
+          "mean": 10.08133333333333,
+          "seconds": 5.338555555555556,
+          "deltaRate": 13112.161009012012,
+          "score": 0.026224322018024025,
+          "paybackSeconds": 38.13253968253967
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 5.452853333333332,
+          "seconds": 5.338555555555556,
+          "deltaRate": 107.29494037089535,
+          "score": 0.02145898807417907,
+          "paybackSeconds": 46.60051986343516
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 5.4879999999999916,
+          "seconds": 5.338555555555556,
+          "deltaRate": 206.04824442732024,
+          "score": 0.006868274814244008,
+          "paybackSeconds": 145.5969696969777
+        },
+        {
+          "id": "return",
+          "level": 3,
+          "price": 1200000,
+          "mean": 7.335999999999998,
+          "seconds": 4.951555555555555,
+          "deltaRate": 6789.863910948126,
+          "score": 0.005658219925790105,
+          "paybackSeconds": 176.7340282130093
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 5.414666666666662,
+          "seconds": 5.331888888888889,
+          "deltaRate": 15.509330836925074,
+          "score": 0.00034465179637611275,
+          "paybackSeconds": 2901.4791465317553
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 5.35626666666666,
+          "seconds": 5.349777777777778,
+          "deltaRate": -189.76519348191505,
+          "score": -0.025302025797588674,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 2,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 4
+      },
+      "baseMean": 5.414666666666662,
+      "baseSeconds": 5.338555555555556,
+      "baseRate": 24808.208629050692,
+      "chosen": {
+        "id": "jackpot",
+        "level": 3,
+        "price": 500000,
+        "mean": 10.08133333333333,
+        "seconds": 5.338555555555556,
+        "deltaRate": 26224.322018024024,
+        "score": 0.05244864403604805,
+        "paybackSeconds": 19.066269841269836
+      },
+      "candidates": [
+        {
+          "id": "jackpot",
+          "level": 3,
+          "price": 500000,
+          "mean": 10.08133333333333,
+          "seconds": 5.338555555555556,
+          "deltaRate": 26224.322018024024,
+          "score": 0.05244864403604805,
+          "paybackSeconds": 19.066269841269836
+        },
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 5.452853333333332,
+          "seconds": 5.338555555555556,
+          "deltaRate": 214.5898807417907,
+          "score": 0.04291797614835814,
+          "paybackSeconds": 23.30025993171758
+        },
+        {
+          "id": "maxBet",
+          "level": 5,
+          "price": 1500000,
+          "mean": 5.414666666666662,
+          "seconds": 5.338555555555556,
+          "deltaRate": 24808.208629050692,
+          "score": 0.01653880575270046,
+          "paybackSeconds": 60.46385784757885
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 5.4879999999999916,
+          "seconds": 5.338555555555556,
+          "deltaRate": 412.0964888546405,
+          "score": 0.013736549628488016,
+          "paybackSeconds": 72.79848484848885
+        },
+        {
+          "id": "return",
+          "level": 3,
+          "price": 1200000,
+          "mean": 7.335999999999998,
+          "seconds": 4.951555555555555,
+          "deltaRate": 13579.727821896253,
+          "score": 0.01131643985158021,
+          "paybackSeconds": 88.36701410650466
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 5.414666666666662,
+          "seconds": 5.331888888888889,
+          "deltaRate": 31.018661673850147,
+          "score": 0.0006893035927522255,
+          "paybackSeconds": 1450.7395732658777
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 5.35626666666666,
+          "seconds": 5.349777777777778,
+          "deltaRate": -379.5303869638301,
+          "score": -0.05060405159517735,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 0,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 4
+      },
+      "baseMean": 10.08133333333333,
+      "baseSeconds": 5.338555555555556,
+      "baseRate": 51032.53064707472,
+      "chosen": {
+        "id": "amplifier",
+        "level": 1,
+        "price": 5000,
+        "mean": 10.119519999999996,
+        "seconds": 5.338555555555556,
+        "deltaRate": 214.58988074176887,
+        "score": 0.04291797614835377,
+        "paybackSeconds": 23.300259931719953
+      },
+      "candidates": [
+        {
+          "id": "amplifier",
+          "level": 1,
+          "price": 5000,
+          "mean": 10.119519999999996,
+          "seconds": 5.338555555555556,
+          "deltaRate": 214.58988074176887,
+          "score": 0.04291797614835377,
+          "paybackSeconds": 23.300259931719953
+        },
+        {
+          "id": "maxBet",
+          "level": 5,
+          "price": 1500000,
+          "mean": 10.08133333333333,
+          "seconds": 5.338555555555556,
+          "deltaRate": 51032.53064707472,
+          "score": 0.03402168709804981,
+          "paybackSeconds": 29.393016199285483
+        },
+        {
+          "id": "return",
+          "level": 3,
+          "price": 1200000,
+          "mean": 14.00266666666667,
+          "seconds": 4.951555555555555,
+          "deltaRate": 27746.753079700284,
+          "score": 0.02312229423308357,
+          "paybackSeconds": 43.24830356017145
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 10.154666666666671,
+          "seconds": 5.338555555555556,
+          "deltaRate": 412.0964888547096,
+          "score": 0.01373654962849032,
+          "paybackSeconds": 72.79848484847665
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 10.08133333333333,
+          "seconds": 5.331888888888889,
+          "deltaRate": 63.807944627180404,
+          "score": 0.0014179543250484533,
+          "paybackSeconds": 705.2413341775509
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 9.822933333333324,
+          "seconds": 5.349777777777778,
+          "deltaRate": -1556.083027235938,
+          "score": -0.20747773696479174,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 1,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 4
+      },
+      "baseMean": 10.119519999999996,
+      "baseSeconds": 5.338555555555556,
+      "baseRate": 51247.120527816485,
+      "chosen": {
+        "id": "amplifier",
+        "level": 2,
+        "price": 45000,
+        "mean": 12.476560000000008,
+        "seconds": 5.338555555555556,
+        "deltaRate": 13245.38056486364,
+        "score": 0.2943417903303031,
+        "paybackSeconds": 3.397410876919056
+      },
+      "candidates": [
+        {
+          "id": "amplifier",
+          "level": 2,
+          "price": 45000,
+          "mean": 12.476560000000008,
+          "seconds": 5.338555555555556,
+          "deltaRate": 13245.38056486364,
+          "score": 0.2943417903303031,
+          "paybackSeconds": 3.397410876919056
+        },
+        {
+          "id": "maxBet",
+          "level": 5,
+          "price": 1500000,
+          "mean": 10.119519999999996,
+          "seconds": 5.338555555555556,
+          "deltaRate": 51247.120527816485,
+          "score": 0.03416474701854432,
+          "paybackSeconds": 29.26993720917087
+        },
+        {
+          "id": "return",
+          "level": 3,
+          "price": 1200000,
+          "mean": 14.077146666666664,
+          "seconds": 4.951555555555555,
+          "deltaRate": 27983.41533072402,
+          "score": 0.02331951277560335,
+          "paybackSeconds": 42.88254259952594
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 10.193573333333337,
+          "seconds": 5.338555555555556,
+          "deltaRate": 416.1425271089247,
+          "score": 0.01387141757029749,
+          "paybackSeconds": 72.0906853919007
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 10.119519999999996,
+          "seconds": 5.331888888888889,
+          "deltaRate": 64.07625464540615,
+          "score": 0.0014239167698979144,
+          "paybackSeconds": 702.2882384282148
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 9.859240000000003,
+          "seconds": 5.349777777777778,
+          "deltaRate": -1567.0756661399646,
+          "score": -0.20894342215199527,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 2,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 4
+      },
+      "baseMean": 12.476560000000008,
+      "baseSeconds": 5.338555555555556,
+      "baseRate": 64492.501092680126,
+      "chosen": {
+        "id": "maxBet",
+        "level": 5,
+        "price": 1500000,
+        "mean": 12.476560000000008,
+        "seconds": 5.338555555555556,
+        "deltaRate": 64492.501092680126,
+        "score": 0.042995000728453414,
+        "paybackSeconds": 23.258518038312666
+      },
+      "candidates": [
+        {
+          "id": "maxBet",
+          "level": 5,
+          "price": 1500000,
+          "mean": 12.476560000000008,
+          "seconds": 5.338555555555556,
+          "deltaRate": 64492.501092680126,
+          "score": 0.042995000728453414,
+          "paybackSeconds": 23.258518038312666
+        },
+        {
+          "id": "return",
+          "level": 3,
+          "price": 1200000,
+          "mean": 17.41246666666667,
+          "seconds": 4.951555555555555,
+          "deltaRate": 34945.74502526264,
+          "score": 0.029121454187718863,
+          "paybackSeconds": 34.338944530514595
+        },
+        {
+          "id": "amplifier",
+          "level": 3,
+          "price": 300000,
+          "mean": 13.913600000000002,
+          "seconds": 5.338555555555556,
+          "deltaRate": 8075.442795595947,
+          "score": 0.02691814265198649,
+          "paybackSeconds": 37.14966567079258
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 12.557386666666677,
+          "seconds": 5.338555555555556,
+          "deltaRate": 454.20525735219417,
+          "score": 0.01514017524507314,
+          "paybackSeconds": 66.0494336302624
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 12.476560000000008,
+          "seconds": 5.331888888888889,
+          "deltaRate": 80.63746567947237,
+          "score": 0.0017919436817660527,
+          "paybackSeconds": 558.0532525522501
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 12.126466666666657,
+          "seconds": 5.349777777777778,
+          "deltaRate": -2098.5075727001167,
+          "score": -0.2798010096933489,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 2,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 5
+      },
+      "baseMean": 12.476560000000008,
+      "baseSeconds": 5.338555555555556,
+      "baseRate": 128985.00218536025,
+      "chosen": {
+        "id": "return",
+        "level": 3,
+        "price": 1200000,
+        "mean": 17.41246666666667,
+        "seconds": 4.951555555555555,
+        "deltaRate": 69891.49005052527,
+        "score": 0.058242908375437726,
+        "paybackSeconds": 17.169472265257298
+      },
+      "candidates": [
+        {
+          "id": "return",
+          "level": 3,
+          "price": 1200000,
+          "mean": 17.41246666666667,
+          "seconds": 4.951555555555555,
+          "deltaRate": 69891.49005052527,
+          "score": 0.058242908375437726,
+          "paybackSeconds": 17.169472265257298
+        },
+        {
+          "id": "amplifier",
+          "level": 3,
+          "price": 300000,
+          "mean": 13.913600000000002,
+          "seconds": 5.338555555555556,
+          "deltaRate": 16150.885591191894,
+          "score": 0.05383628530397298,
+          "paybackSeconds": 18.57483283539629
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 12.557386666666677,
+          "seconds": 5.338555555555556,
+          "deltaRate": 908.4105147043883,
+          "score": 0.03028035049014628,
+          "paybackSeconds": 33.0247168151312
+        },
+        {
+          "id": "maxBet",
+          "level": 6,
+          "price": 6000000,
+          "mean": 12.476560000000008,
+          "seconds": 5.338555555555556,
+          "deltaRate": 128985.00218536025,
+          "score": 0.021497500364226707,
+          "paybackSeconds": 46.51703607662533
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 12.476560000000008,
+          "seconds": 5.331888888888889,
+          "deltaRate": 161.27493135894474,
+          "score": 0.0035838873635321055,
+          "paybackSeconds": 279.02662627612506
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 12.126466666666657,
+          "seconds": 5.349777777777778,
+          "deltaRate": -4197.015145400233,
+          "score": -0.5596020193866978,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 2,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 5
+      },
+      "baseMean": 17.41246666666667,
+      "baseSeconds": 4.951555555555555,
+      "baseRate": 198876.49223588553,
+      "chosen": {
+        "id": "amplifier",
+        "level": 3,
+        "price": 300000,
+        "mean": 19.458133333333336,
+        "seconds": 4.951555555555555,
+        "deltaRate": 24788.169823175675,
+        "score": 0.08262723274391892,
+        "paybackSeconds": 12.102547390147187
+      },
+      "candidates": [
+        {
+          "id": "amplifier",
+          "level": 3,
+          "price": 300000,
+          "mean": 19.458133333333336,
+          "seconds": 4.951555555555555,
+          "deltaRate": 24788.169823175675,
+          "score": 0.08262723274391892,
+          "paybackSeconds": 12.102547390147187
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 17.497933333333343,
+          "seconds": 4.951555555555555,
+          "deltaRate": 1035.634144152311,
+          "score": 0.034521138138410366,
+          "paybackSeconds": 28.967758710346164
+        },
+        {
+          "id": "maxBet",
+          "level": 6,
+          "price": 6000000,
+          "mean": 17.41246666666667,
+          "seconds": 4.951555555555555,
+          "deltaRate": 198876.49223588553,
+          "score": 0.033146082039314254,
+          "paybackSeconds": 30.169478215069567
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 17.41246666666667,
+          "seconds": 4.943444444444444,
+          "deltaRate": 326.3128258124052,
+          "score": 0.00725139612916456,
+          "paybackSeconds": 137.9044782808205
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 16.95005333333335,
+          "seconds": 5.320888888888889,
+          "deltaRate": -19018.72411025886,
+          "score": -0.0023773405137823573,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 17.48133333333332,
+          "seconds": 4.994222222222222,
+          "deltaRate": -871.686682802072,
+          "score": -0.11622489104027627,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 5
+      },
+      "baseMean": 19.458133333333336,
+      "baseSeconds": 4.951555555555555,
+      "baseRate": 223664.6620590612,
+      "chosen": {
+        "id": "maxBet",
+        "level": 6,
+        "price": 6000000,
+        "mean": 19.458133333333336,
+        "seconds": 4.951555555555555,
+        "deltaRate": 223664.6620590612,
+        "score": 0.0372774436765102,
+        "paybackSeconds": 26.825873809317414
+      },
+      "candidates": [
+        {
+          "id": "maxBet",
+          "level": 6,
+          "price": 6000000,
+          "mean": 19.458133333333336,
+          "seconds": 4.951555555555555,
+          "deltaRate": 223664.6620590612,
+          "score": 0.0372774436765102,
+          "paybackSeconds": 26.825873809317414
+        },
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 19.55040000000001,
+          "seconds": 4.951555555555555,
+          "deltaRate": 1118.0324925949972,
+          "score": 0.037267749753166574,
+          "paybackSeconds": 26.832851637763074
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 19.458133333333336,
+          "seconds": 4.943444444444444,
+          "deltaRate": 366.98479086355655,
+          "score": 0.008155217574745702,
+          "paybackSeconds": 122.6208854435355
+        },
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 19.60021333333331,
+          "seconds": 4.951555555555555,
+          "deltaRate": 1721.6407862845517,
+          "score": 0.0008608203931422759,
+          "paybackSeconds": 1161.6825158494132
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 18.904800000000012,
+          "seconds": 5.320888888888889,
+          "deltaRate": -21764.561825182027,
+          "score": -0.0027205702281477536,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 19.52699999999998,
+          "seconds": 4.994222222222222,
+          "deltaRate": -1083.4571111215628,
+          "score": -0.1444609481495417,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 1,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 19.458133333333336,
+      "baseSeconds": 4.951555555555555,
+      "baseRate": 447329.3241181224,
+      "chosen": {
+        "id": "mid",
+        "level": 2,
+        "price": 30000,
+        "mean": 19.55040000000001,
+        "seconds": 4.951555555555555,
+        "deltaRate": 2236.0649851899943,
+        "score": 0.07453549950633315,
+        "paybackSeconds": 13.416425818881537
+      },
+      "candidates": [
+        {
+          "id": "mid",
+          "level": 2,
+          "price": 30000,
+          "mean": 19.55040000000001,
+          "seconds": 4.951555555555555,
+          "deltaRate": 2236.0649851899943,
+          "score": 0.07453549950633315,
+          "paybackSeconds": 13.416425818881537
+        },
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 19.458133333333336,
+          "seconds": 4.943444444444444,
+          "deltaRate": 733.9695817271131,
+          "score": 0.016310435149491403,
+          "paybackSeconds": 61.31044272176775
+        },
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 19.60021333333331,
+          "seconds": 4.951555555555555,
+          "deltaRate": 3443.2815725691034,
+          "score": 0.0017216407862845518,
+          "paybackSeconds": 580.8412579247066
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 18.904800000000012,
+          "seconds": 5.320888888888889,
+          "deltaRate": -43529.123650364054,
+          "score": -0.005441140456295507,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 19.52699999999998,
+          "seconds": 4.994222222222222,
+          "deltaRate": -2166.9142222431256,
+          "score": -0.2889218962990834,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 2,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 1,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 19.55040000000001,
+      "baseSeconds": 4.951555555555555,
+      "baseRate": 449565.3891033124,
+      "chosen": {
+        "id": "jackpotBias",
+        "level": 2,
+        "price": 45000,
+        "mean": 19.55040000000001,
+        "seconds": 4.943444444444444,
+        "deltaRate": 737.638475299289,
+        "score": 0.016391966117761978,
+        "paybackSeconds": 61.005494570686174
+      },
+      "candidates": [
+        {
+          "id": "jackpotBias",
+          "level": 2,
+          "price": 45000,
+          "mean": 19.55040000000001,
+          "seconds": 4.943444444444444,
+          "deltaRate": 737.638475299289,
+          "score": 0.016391966117761978,
+          "paybackSeconds": 61.005494570686174
+        },
+        {
+          "id": "mid",
+          "level": 3,
+          "price": 300000,
+          "mean": 19.66880000000001,
+          "seconds": 4.951555555555555,
+          "deltaRate": 2869.4013104748446,
+          "score": 0.009564671034916148,
+          "paybackSeconds": 104.55142642642562
+        },
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 19.704319999999985,
+          "seconds": 4.951555555555555,
+          "deltaRate": 3730.221703616611,
+          "score": 0.0018651108518083056,
+          "paybackSeconds": 536.1611611612558
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 19.07173333333334,
+          "seconds": 5.320888888888889,
+          "deltaRate": -42000.40413839405,
+          "score": -0.005250050517299256,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 19.620559999999983,
+          "seconds": 4.994222222222222,
+          "deltaRate": -2154.9414749421994,
+          "score": -0.28732552999229327,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 2,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 2,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 19.55040000000001,
+      "baseSeconds": 4.943444444444444,
+      "baseRate": 450303.0275786117,
+      "chosen": {
+        "id": "jackpotBias",
+        "level": 3,
+        "price": 360000,
+        "mean": 22.263133333333347,
+        "seconds": 4.941777777777777,
+        "deltaRate": 66024.51986270532,
+        "score": 0.18340144406307032,
+        "paybackSeconds": 5.452519772178609
+      },
+      "candidates": [
+        {
+          "id": "jackpotBias",
+          "level": 3,
+          "price": 360000,
+          "mean": 22.263133333333347,
+          "seconds": 4.941777777777777,
+          "deltaRate": 66024.51986270532,
+          "score": 0.18340144406307032,
+          "paybackSeconds": 5.452519772178609
+        },
+        {
+          "id": "mid",
+          "level": 3,
+          "price": 300000,
+          "mean": 19.66880000000001,
+          "seconds": 4.943444444444444,
+          "deltaRate": 2874.109370434482,
+          "score": 0.00958036456811494,
+          "paybackSeconds": 104.38016141141097
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 21.776533333333344,
+          "seconds": 5.289666666666666,
+          "deltaRate": 21027.995170144073,
+          "score": 0.002628499396268009,
+          "paybackSeconds": 380.4452081746026
+        },
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 19.704319999999985,
+          "seconds": 4.943444444444444,
+          "deltaRate": 3736.342181564134,
+          "score": 0.001868171090782067,
+          "paybackSeconds": 535.282879032976
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 19.620559999999983,
+          "seconds": 4.986111111111112,
+          "deltaRate": -2164.7590549353044,
+          "score": -0.2886345406580406,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 2,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 3,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 22.263133333333347,
+      "baseSeconds": 4.941777777777777,
+      "baseRate": 516327.547441317,
+      "chosen": {
+        "id": "jackpotBias",
+        "level": 4,
+        "price": 2800000,
+        "mean": 29.583266666666685,
+        "seconds": 4.850888888888889,
+        "deltaRate": 190757.70612045913,
+        "score": 0.06812775218587826,
+        "paybackSeconds": 14.678306092818415
+      },
+      "candidates": [
+        {
+          "id": "jackpotBias",
+          "level": 4,
+          "price": 2800000,
+          "mean": 29.583266666666685,
+          "seconds": 4.850888888888889,
+          "deltaRate": 190757.70612045913,
+          "score": 0.06812775218587826,
+          "paybackSeconds": 14.678306092818415
+        },
+        {
+          "id": "mid",
+          "level": 3,
+          "price": 300000,
+          "mean": 22.366133333333366,
+          "seconds": 4.941777777777777,
+          "deltaRate": 2501.124201817147,
+          "score": 0.008337080672723823,
+          "paybackSeconds": 119.94606256740084
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 24.514933333333346,
+          "seconds": 5.253222222222222,
+          "deltaRate": 20826.96090276842,
+          "score": 0.0026033701128460526,
+          "paybackSeconds": 384.1174925784108
+        },
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 22.417053333333318,
+          "seconds": 4.941777777777777,
+          "deltaRate": 3737.6023023646558,
+          "score": 0.001868801151182328,
+          "paybackSeconds": 535.1024101025052
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 22.333293333333323,
+          "seconds": 4.984444444444445,
+          "deltaRate": -2730.6504283881513,
+          "score": -0.36408672378508683,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 2,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 29.583266666666685,
+      "baseSeconds": 4.850888888888889,
+      "baseRate": 707085.2535617761,
+      "chosen": {
+        "id": "mid",
+        "level": 3,
+        "price": 300000,
+        "mean": 29.6498666666667,
+        "seconds": 4.850888888888889,
+        "deltaRate": 1647.5330981725128,
+        "score": 0.005491776993908376,
+        "paybackSeconds": 182.090423757051
+      },
+      "candidates": [
+        {
+          "id": "mid",
+          "level": 3,
+          "price": 300000,
+          "mean": 29.6498666666667,
+          "seconds": 4.850888888888889,
+          "deltaRate": 1647.5330981725128,
+          "score": 0.005491776993908376,
+          "paybackSeconds": 182.090423757051
+        },
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 29.73718666666666,
+          "seconds": 4.850888888888889,
+          "deltaRate": 3807.6320491082733,
+          "score": 0.0019038160245541367,
+          "paybackSeconds": 525.2608377609357
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 30.906399999999987,
+          "seconds": 5.183333333333334,
+          "deltaRate": -14718.4368415192,
+          "score": -0.0018398046051899,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 29.653426666666668,
+          "seconds": 4.893555555555555,
+          "deltaRate": -4444.574210247956,
+          "score": -0.5926098946997275,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 29.6498666666667,
+      "baseSeconds": 4.850888888888889,
+      "baseRate": 708732.7866599486,
+      "chosen": {
+        "id": "amplifier",
+        "level": 4,
+        "price": 2000000,
+        "mean": 29.815626666666674,
+        "seconds": 4.850888888888889,
+        "deltaRate": 4100.526822116575,
+        "score": 0.0020502634110582878,
+        "paybackSeconds": 487.7422064923006
+      },
+      "candidates": [
+        {
+          "id": "amplifier",
+          "level": 4,
+          "price": 2000000,
+          "mean": 29.815626666666674,
+          "seconds": 4.850888888888889,
+          "deltaRate": 4100.526822116575,
+          "score": 0.0020502634110582878,
+          "paybackSeconds": 487.7422064923006
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 31.102400000000035,
+          "seconds": 5.183333333333334,
+          "deltaRate": -11828.349360912456,
+          "score": -0.001478543670114057,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 29.720666666666673,
+          "seconds": 4.893555555555555,
+          "deltaRate": -4443.244858940365,
+          "score": -0.5924326478587153,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 4,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 29.815626666666674,
+      "baseSeconds": 4.850888888888889,
+      "baseRate": 712833.3134820652,
+      "chosen": {
+        "id": "amplifier",
+        "level": 5,
+        "price": 9000000,
+        "mean": 34.09402666666667,
+        "seconds": 4.850888888888889,
+        "deltaRate": 105837.92203032668,
+        "score": 0.011759769114480742,
+        "paybackSeconds": 85.03568312141607
+      },
+      "candidates": [
+        {
+          "id": "amplifier",
+          "level": 5,
+          "price": 9000000,
+          "mean": 34.09402666666667,
+          "seconds": 4.850888888888889,
+          "deltaRate": 105837.92203032668,
+          "score": 0.011759769114480742,
+          "paybackSeconds": 85.03568312141607
+        },
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 31.17226666666668,
+          "seconds": 5.183333333333334,
+          "deltaRate": -14311.384221614804,
+          "score": -0.0017889230277018506,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 29.88466666666668,
+          "seconds": 4.893555555555555,
+          "deltaRate": -4522.155950617627,
+          "score": -0.6029541267490169,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 34.09402666666667,
+      "baseSeconds": 4.850888888888889,
+      "baseRate": 818671.2355123919,
+      "chosen": {
+        "id": "return",
+        "level": 4,
+        "price": 8000000,
+        "mean": 35.52240000000001,
+        "seconds": 5.183333333333334,
+        "deltaRate": -19438.823936828994,
+        "score": -0.0024298529921036242,
+        "paybackSeconds": null
+      },
+      "candidates": [
+        {
+          "id": "return",
+          "level": 4,
+          "price": 8000000,
+          "mean": 35.52240000000001,
+          "seconds": 5.183333333333334,
+          "deltaRate": -19438.823936828994,
+          "score": -0.0024298529921036242,
+          "paybackSeconds": null
+        },
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 34.16218666666667,
+          "seconds": 4.893555555555555,
+          "deltaRate": -5466.530912237358,
+          "score": -0.7288707882983144,
+          "paybackSeconds": null
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 0,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 35.52240000000001,
+      "baseSeconds": 5.183333333333334,
+      "baseRate": 799232.4115755629,
+      "chosen": {
+        "id": "splitter",
+        "level": 1,
+        "price": 7500,
+        "mean": 37.64773333333335,
+        "seconds": 5.196777777777778,
+        "deltaRate": 47008.89179618482,
+        "score": 6.267852239491309,
+        "paybackSeconds": 0.15954428435619258
+      },
+      "candidates": [
+        {
+          "id": "splitter",
+          "level": 1,
+          "price": 7500,
+          "mean": 37.64773333333335,
+          "seconds": 5.196777777777778,
+          "deltaRate": 47008.89179618482,
+          "score": 6.267852239491309,
+          "paybackSeconds": 0.15954428435619258
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 1,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 37.64773333333335,
+      "baseSeconds": 5.196777777777778,
+      "baseRate": 846241.3033717477,
+      "chosen": {
+        "id": "splitter",
+        "level": 2,
+        "price": 90000,
+        "mean": 38.1790133333333,
+        "seconds": 5.196777777777778,
+        "deltaRate": 12267.909602102707,
+        "score": 0.13631010669003008,
+        "paybackSeconds": 7.336213170707917
+      },
+      "candidates": [
+        {
+          "id": "splitter",
+          "level": 2,
+          "price": 90000,
+          "mean": 38.1790133333333,
+          "seconds": 5.196777777777778,
+          "deltaRate": 12267.909602102707,
+          "score": 0.13631010669003008,
+          "paybackSeconds": 7.336213170707917
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 2,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 38.1790133333333,
+      "baseSeconds": 5.196777777777778,
+      "baseRate": 858509.2129738504,
+      "chosen": {
+        "id": "splitter",
+        "level": 3,
+        "price": 700000,
+        "mean": 38.711733333333314,
+        "seconds": 5.196777777777778,
+        "deltaRate": 12301.160975818639,
+        "score": 0.01757308710831234,
+        "paybackSeconds": 56.90519792205347
+      },
+      "candidates": [
+        {
+          "id": "splitter",
+          "level": 3,
+          "price": 700000,
+          "mean": 38.711733333333314,
+          "seconds": 5.196777777777778,
+          "deltaRate": 12301.160975818639,
+          "score": 0.01757308710831234,
+          "paybackSeconds": 56.90519792205347
+        }
+      ]
+    },
+    {
+      "levels": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 3,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6
+      },
+      "baseMean": 38.711733333333314,
+      "baseSeconds": 5.196777777777778,
+      "baseRate": 870810.3739496691,
+      "chosen": {
+        "id": "splitter",
+        "level": 4,
+        "price": 4000000,
+        "mean": 39.246186666666674,
+        "seconds": 5.196777777777778,
+        "deltaRate": 12341.185777512495,
+        "score": 0.0030852964443781237,
+        "paybackSeconds": 324.1179633879756
+      },
+      "candidates": [
+        {
+          "id": "splitter",
+          "level": 4,
+          "price": 4000000,
+          "mean": 39.246186666666674,
+          "seconds": 5.196777777777778,
+          "deltaRate": 12341.185777512495,
+          "score": 0.0030852964443781237,
+          "paybackSeconds": 324.1179633879756
+        }
+      ]
+    }
+  ]
+}
