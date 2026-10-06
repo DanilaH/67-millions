@@ -262,5 +262,9 @@ try {
   assert.deepEqual(errors, []);
   writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier auto-start and cancelled incomplete gesture', 'post-cascade Barry receipt pauses input/time without duplicate charge', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360', 'exact node/browser cash RNG clock needs parity including delayed render frames'], errors }, null, 2));
   console.log('Playtest smoke passed');
-} catch (error) { writeFileSync(`${output}/failure.json`, JSON.stringify({ error: String(error), errors }, null, 2)); throw error; }
+} catch (error) {
+  const diagnosticPage=browser.contexts()[0]?.pages()[0];
+  const ui=await diagnosticPage?.evaluate(()=>({label:document.querySelector('canvas')?.getAttribute('aria-label'),preload:document.querySelector('#startup-preload')?.getAttribute('data-state'),debugOpen:document.querySelector('#debug-root details')?.hasAttribute('open'),save:localStorage.getItem('67m.save')})).catch(()=>null);
+  await diagnosticPage?.screenshot({path:`${output}/failure.png`}).catch(()=>{});
+  writeFileSync(`${output}/failure.json`, JSON.stringify({ error: String(error), errors,ui }, null, 2)); throw error; }
 finally { await browser.close(); server.close(); }

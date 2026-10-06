@@ -12,6 +12,10 @@ export const installDebugPanel = (
   const root = document.querySelector<HTMLElement>('#debug-root');
   if (!root || !isDebugBuild()) return { setVisible: () => undefined, destroy: () => undefined };
   root.hidden = false;
+  // Phaser listens for releases on window; DOM controls must not release into the map.
+  const inputEvents = ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchmove', 'touchend'] as const;
+  const stopInput = (event: Event) => event.stopPropagation();
+  inputEvents.forEach(name => root.addEventListener(name, stopInput));
   const details = document.createElement('details');
   const summary = document.createElement('summary');
   summary.textContent = '⚙ Плейтест';
@@ -55,6 +59,6 @@ export const installDebugPanel = (
       root.hidden = !visible;
       if (!visible && details.open) { details.open = false; pause(false); }
     },
-    destroy: () => { pause(false); root.replaceChildren(); root.hidden = true; },
+    destroy: () => { inputEvents.forEach(name => root.removeEventListener(name, stopInput)); pause(false); root.replaceChildren(); root.hidden = true; },
   };
 };
