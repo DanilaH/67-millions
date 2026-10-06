@@ -1,0 +1,218 @@
+{
+  "metadata": {
+    "revision": "00b74bb31b329ac2d71b32024b7365f34624c6d2",
+    "configHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+    "runnerHash": "1a103c451cc0e8205129ce4c38f8c016d2c0f29f5642ad4be6045d67043e5f89",
+    "worldHash": "3ad779ec74c70b0630c06c719b0922927a153d7a846fc31cf47921609e22bef5",
+    "returnPhysicsHash": "79cd948825e68f4909fbb4759c100cab61c43797552952fb6af4be052140daa8",
+    "count": 1000,
+    "seed": 67110610,
+    "contexts": {
+      "bare": {},
+      "early": {
+        "plinkoAmplifierLevel": 1,
+        "plinkoSplitterLevel": 1,
+        "plinkoJackpotBiasLevel": 1
+      },
+      "middle": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 2,
+        "plinkoJackpotLevel": 1,
+        "plinkoAmplifierLevel": 3,
+        "plinkoSplitterLevel": 3,
+        "plinkoJackpotBiasLevel": 2
+      },
+      "max": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4
+      }
+    },
+    "model": "production Phaser shared world; independent roots; 3600 tick cap; gross payout/stake"
+  },
+  "rows": [
+    {
+      "context": "bare",
+      "level": 0,
+      "mean": 0.901,
+      "edge": 0.007,
+      "returnRate": 0,
+      "branchBonus": null,
+      "unresolved": 0
+    },
+    {
+      "context": "bare",
+      "level": 1,
+      "mean": 1.135,
+      "edge": 0.043,
+      "returnRate": 0.075,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "bare",
+      "level": 2,
+      "mean": 1.41375,
+      "edge": 0.066,
+      "returnRate": 0.21,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "bare",
+      "level": 3,
+      "mean": 1.8515,
+      "edge": 0.104,
+      "returnRate": 0.31,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "bare",
+      "level": 4,
+      "mean": 2.068,
+      "edge": 0.091,
+      "returnRate": 0.4,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "early",
+      "level": 0,
+      "mean": 1.003300000000002,
+      "edge": 0.012,
+      "returnRate": 0,
+      "branchBonus": null,
+      "unresolved": 0
+    },
+    {
+      "context": "early",
+      "level": 1,
+      "mean": 1.2618500000000012,
+      "edge": 0.051,
+      "returnRate": 0.078,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "early",
+      "level": 2,
+      "mean": 1.7265299999999995,
+      "edge": 0.101,
+      "returnRate": 0.223,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "early",
+      "level": 3,
+      "mean": 2.053417999999998,
+      "edge": 0.116,
+      "returnRate": 0.31,
+      "branchBonus": 0.5967741935483871,
+      "unresolved": 0
+    },
+    {
+      "context": "early",
+      "level": 4,
+      "mean": 2.601121999999977,
+      "edge": 0.137,
+      "returnRate": 0.427,
+      "branchBonus": 0.5714285714285714,
+      "unresolved": 0
+    },
+    {
+      "context": "middle",
+      "level": 0,
+      "mean": 1.900599999999982,
+      "edge": 0.02,
+      "returnRate": 0,
+      "branchBonus": null,
+      "unresolved": 0
+    },
+    {
+      "context": "middle",
+      "level": 1,
+      "mean": 2.547389999999977,
+      "edge": 0.053,
+      "returnRate": 0.07,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "middle",
+      "level": 2,
+      "mean": 3.9557899999999666,
+      "edge": 0.11,
+      "returnRate": 0.223,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "middle",
+      "level": 3,
+      "mean": 5.2590300000000125,
+      "edge": 0.124,
+      "returnRate": 0.31,
+      "branchBonus": 0.47096774193548385,
+      "unresolved": 0
+    },
+    {
+      "context": "middle",
+      "level": 4,
+      "mean": 6.587680000000047,
+      "edge": 0.149,
+      "returnRate": 0.427,
+      "branchBonus": 0.7798594847775175,
+      "unresolved": 0
+    },
+    {
+      "context": "max",
+      "level": 0,
+      "mean": 10.334167999999881,
+      "edge": 0.056,
+      "returnRate": 0,
+      "branchBonus": null,
+      "unresolved": 0
+    },
+    {
+      "context": "max",
+      "level": 1,
+      "mean": 16.32276799999983,
+      "edge": 0.113,
+      "returnRate": 0.057,
+      "branchBonus": 0,
+      "unresolved": 0
+    },
+    {
+      "context": "max",
+      "level": 2,
+      "mean": 16.431547999999854,
+      "edge": 0.119,
+      "returnRate": 0.156,
+      "branchBonus": 0.038461538461538464,
+      "unresolved": 0
+    },
+    {
+      "context": "max",
+      "level": 3,
+      "mean": 29.159936000000165,
+      "edge": 0.174,
+      "returnRate": 0.319,
+      "branchBonus": 0.7147335423197492,
+      "unresolved": 0
+    },
+    {
+      "context": "max",
+      "level": 4,
+      "mean": 35.73656400000035,
+      "edge": 0.214,
+      "returnRate": 0.469,
+      "branchBonus": 0.744136460554371,
+      "unresolved": 0
+    }
+  ]
+}

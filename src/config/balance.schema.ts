@@ -217,6 +217,7 @@ export const balanceSchema = z.object({
     }),
     returnPhysics: z.object({
       horizontalRetention: z.number().min(0).max(1),
+      horizontalRetentionByLevel: z.array(z.number().min(0).max(1)).length(4).optional(),
       resetVelocity: z.literal(true),
     }),
     stuckWatchdog: z.object({

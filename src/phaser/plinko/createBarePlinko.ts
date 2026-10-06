@@ -28,7 +28,7 @@ export interface BarePlinkoRuntime {
   layout: PlinkoBoardLayout;
   spawnBall(): MatterJS.BodyType;
   restoreBall(snapshot: DropBallSnapshot): MatterJS.BodyType;
-  returnBall(body: MatterJS.BodyType): void;
+  returnBall(body: MatterJS.BodyType, returnLevel: number): void;
   splitBall(body: MatterJS.BodyType): [MatterJS.BodyType, MatterJS.BodyType];
   setJackpotBiasLevel(level: number): void;
   removeBall(body: MatterJS.BodyType): void;
@@ -306,8 +306,8 @@ export const createBarePlinko = (
       matter.body.setAngularVelocity(body, snapshot.angularVelocity);
       return body;
     },
-    returnBall: (body) => {
-      const target = getReturnTarget(config, body.position.x);
+    returnBall: (body, returnLevel) => {
+      const target = getReturnTarget(config, body.position.x, returnLevel);
       matter.body.setPosition(body, target);
       matter.body.setVelocity(body, { x: 0, y: 0 });
       matter.body.setAngle(body, 0);

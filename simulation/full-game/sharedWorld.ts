@@ -82,7 +82,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
       } else if (active.return?.pegIds.includes(id) && canReturnLineage(ball)) {
         diagnostics.returnProcs++; returnedLineages.add(ball.lineageId); returnedBodies.add(body);
         for (const [b, meta] of balls) if (meta.lineageId === ball.lineageId) balls.set(b, markReturnUsed(meta));
-        runtime.returnBall(body);
+        runtime.returnBall(body, pending.specialLevelsAtCommit.returnLevel);
       } else if (active.splitter?.pegIds.includes(id) && canSplitAt(ball, id, balls.size, config)) {
         diagnostics.splitterProcs++; noteReturnBonus(ball.lineageId, body);
         const children = createSplitChildren(ball, id, active.splitter.childValue);

@@ -3,6 +3,7 @@ import { balance, parseBalanceConfig } from '../src/config/balance';
 import oldConfig from '../reports/pacing/2026-10-05-economy/baseline-config.json';
 import { createInitialGameState } from '../src/core/state/GameState';
 import { createSharedWorld } from '../simulation/full-game/sharedWorld';
+import { createBoardFingerprint } from '../src/core/plinko-rules/drop';
 import { resolvePendingBoardConfig } from '../src/core/plinko-rules/restoreBoardConfig';
 
 it('keeps the original paid high-limit stake and payout across an economy update', () => {
@@ -17,7 +18,10 @@ it('keeps the original paid high-limit stake and payout across an economy update
   const checkpoint = original.snapshot();
   expect(checkpoint.pending?.originalStake).toBe(3_906_250);
   const current = resolvePendingBoardConfig(balance, checkpoint.pending);
-  expect(current).toBe(balance); // Prices/limits do not change the physical fingerprint.
+  // Later geometry revisions must still preserve this historical high-stake board.
+  expect(createBoardFingerprint(current, checkpoint.pending!.pocketLevelsAtCommit,
+    checkpoint.pending!.specialLevelsAtCommit)).toBe(checkpoint.pending!.boardFingerprint);
+  expect(current.plinko.maxBetLevels).toEqual(balance.plinko.maxBetLevels);
   const restored = createSharedWorld(checkpoint.state, current, checkpoint.pending);
   try {
     for(let i=0;i<3600 && (original.active || restored.active);i++) { original.step(); restored.step(); }

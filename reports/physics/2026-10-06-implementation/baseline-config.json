@@ -707,7 +707,7 @@
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
-            "deflectorY": 324,
+            "deflectorY": 320,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -721,7 +721,7 @@
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
-            "deflectorY": 324,
+            "deflectorY": 320,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -729,7 +729,7 @@
           },
           {
             "deflectorOffsetX": 158,
-            "deflectorY": 297,
+            "deflectorY": 293,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -743,7 +743,7 @@
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
-            "deflectorY": 324,
+            "deflectorY": 320,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -751,7 +751,7 @@
           },
           {
             "deflectorOffsetX": 158,
-            "deflectorY": 297,
+            "deflectorY": 293,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -759,7 +759,7 @@
           },
           {
             "deflectorOffsetX": 134,
-            "deflectorY": 270,
+            "deflectorY": 266,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -773,7 +773,7 @@
         "deflectorPairs": [
           {
             "deflectorOffsetX": 182,
-            "deflectorY": 324,
+            "deflectorY": 320,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -781,7 +781,7 @@
           },
           {
             "deflectorOffsetX": 158,
-            "deflectorY": 297,
+            "deflectorY": 293,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -789,7 +789,7 @@
           },
           {
             "deflectorOffsetX": 134,
-            "deflectorY": 270,
+            "deflectorY": 266,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -797,7 +797,7 @@
           },
           {
             "deflectorOffsetX": 110.5,
-            "deflectorY": 243,
+            "deflectorY": 239,
             "length": 36,
             "thickness": 5,
             "angleDegrees": 25,
@@ -945,13 +945,7 @@
     "ballBallCollisions": false,
     "returnPhysics": {
       "horizontalRetention": 1,
-      "resetVelocity": true,
-      "horizontalRetentionByLevel": [
-        0.5,
-        0.5,
-        1,
-        1
-      ]
+      "resetVelocity": true
     },
     "stuckWatchdog": {
       "speedEpsilon": 0.001,

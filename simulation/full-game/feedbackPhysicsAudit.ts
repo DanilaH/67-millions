@@ -10,7 +10,7 @@ import { createSharedWorld } from './sharedWorld';
 type Candidate = { name: string; retention?: number; lower?: number; central?: boolean; returnLevel?: number; biasLevel?: number };
 const candidates: Candidate[] = JSON.parse(readFileSync(process.argv[2]!, 'utf8'));
 const count = Number(process.argv[3] ?? 500), seed = Number(process.argv[4] ?? 67110601), output = process.argv[5]!;
-const raw = readFileSync('balance.v0.json', 'utf8');
+const raw = readFileSync(process.argv[6] ?? 'balance.v0.json', 'utf8');
 const hash = (s: string) => createHash('sha256').update(s).digest('hex');
 const rng = new SeededRandom(seed);
 const seeds = Array.from({length: count}, () => { rng.next(); return rng.snapshot().state; });
@@ -18,7 +18,10 @@ const rows: object[] = [];
 const provenance = { revision: execSync('git rev-parse HEAD').toString().trim(), sourceConfigHash: hash(raw), scriptHash: hash(readFileSync(import.meta.filename, 'utf8')), sharedWorldHash: hash(readFileSync('simulation/full-game/sharedWorld.ts','utf8')), count, seed, model: 'Phaser shared-world, independent paid roots, 3600 tick limit, common seed stream; gross payout/stake, not human pacing', candidates };
 for (const c of candidates) for (const context of ['isolated', 'combined'] as const) {
   const source = JSON.parse(raw);
-  if (c.retention !== undefined) source.plinko.returnPhysics.horizontalRetention = c.retention;
+  if (c.retention !== undefined) {
+    source.plinko.returnPhysics.horizontalRetention = c.retention;
+    delete source.plinko.returnPhysics.horizontalRetentionByLevel;
+  }
   if (c.lower !== undefined) for (const level of source.plinko.jackpotBias) for (const pair of level.deflectorPairs) pair.deflectorY += c.lower;
   if (c.central) {
     const pairs = [['r8c3','r8c5'], ['r7c3','r7c4'], ['r6c2','r6c4'], ['r5c2','r5c3']];

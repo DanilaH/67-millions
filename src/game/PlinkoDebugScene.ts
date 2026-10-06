@@ -818,7 +818,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.balls.set(candidateBody, markReturnUsed(candidate));
       }
 
-      this.runtime.returnBall(body);
+      this.runtime.returnBall(body, pending.specialLevelsAtCommit.returnLevel);
       this.save = {
         ...this.save,
         game: {

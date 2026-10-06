@@ -1,0 +1,49 @@
+{
+  "metadata": {
+    "configHash": "53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc",
+    "sourceRevision": "00b74bb31b329ac2d71b32024b7365f34624c6d2",
+    "perVariant": 20,
+    "seedStart": 67110670,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "continuous-spend",
+    "launchPolicy": "recheck every 15 ticks; drain for recovery/event/purchase/victory; reuse original fraction without cash reserve inside session; no purchases while active",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 10,
+        "BARRY_LOSS": 9,
+        "HP_DEATH": 1
+      },
+      "wins": 10,
+      "medianWinMinutes": 18.051388888888887,
+      "medianWinWork": 16,
+      "medianWinRecovery": 26.5,
+      "medianWinDrops": 285.5,
+      "medianAllMinutes": 13.50763888888889
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 17,
+        "BARRY_LOSS": 3
+      },
+      "wins": 17,
+      "medianWinMinutes": 15.119166666666665,
+      "medianWinWork": 13,
+      "medianWinRecovery": 22,
+      "medianWinDrops": 291,
+      "medianAllMinutes": 15.439444444444444
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "returnPhysics": {
+    "horizontalRetention": 1,
+    "resetVelocity": true
+  },
+  "deflectorPairs": [
+    [
+      {
+        "deflectorOffsetX": 182,
+        "deflectorY": 320,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      }
+    ],
+    [
+      {
+        "deflectorOffsetX": 182,
+        "deflectorY": 320,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      },
+      {
+        "deflectorOffsetX": 158,
+        "deflectorY": 293,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      }
+    ],
+    [
+      {
+        "deflectorOffsetX": 182,
+        "deflectorY": 320,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      },
+      {
+        "deflectorOffsetX": 158,
+        "deflectorY": 293,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      },
+      {
+        "deflectorOffsetX": 134,
+        "deflectorY": 266,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      }
+    ],
+    [
+      {
+        "deflectorOffsetX": 182,
+        "deflectorY": 320,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      },
+      {
+        "deflectorOffsetX": 158,
+        "deflectorY": 293,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      },
+      {
+        "deflectorOffsetX": 134,
+        "deflectorY": 266,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      },
+      {
+        "deflectorOffsetX": 110.5,
+        "deflectorY": 239,
+        "length": 36,
+        "thickness": 5,
+        "angleDegrees": 25,
+        "restitution": 0.75
+      }
+    ]
+  ]
+}

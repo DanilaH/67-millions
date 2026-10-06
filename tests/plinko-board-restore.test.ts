@@ -1,6 +1,7 @@
 import { createSharedWorld } from '../simulation/full-game/sharedWorld';
 import { describe, expect, it } from 'vitest';
 import { balance } from '../src/config/balance';
+import legacyFeedback from '../src/config/plinko-feedback-2026-10-06.json';
 import legacySpecials from '../src/config/plinko-specials-2026-10-05.json';
 import type { BalanceConfig } from '../src/config/balance.schema';
 import legacyPhysics from '../src/config/plinko-physics-2026-10-03.json';
@@ -10,11 +11,13 @@ import { assertDropBoardCompatible, commitBareDrop, settleAggregateDrop } from '
 import { createInitialGameState } from '../src/core/state/GameState';
 
 describe('paid board compatibility after calibration', () => {
-  it.each(['specials', 'physics', 'deflectors'])('finishes historical board (%s) without rewriting the save', revision => {
+  it.each(['feedback', 'specials', 'physics', 'deflectors'])('finishes historical board (%s) without rewriting the save', revision => {
     const old = structuredClone(balance);
-    old.plinko.specialPinLayout = structuredClone(legacySpecials.layout) as BalanceConfig['plinko']['specialPinLayout'];
-    old.plinko.splitter = structuredClone(legacySpecials.splitter);
-    if (revision !== 'specials') old.plinko.physicsSeed = structuredClone(legacyPhysics);
+    old.plinko.returnPhysics = structuredClone(legacyFeedback.returnPhysics) as BalanceConfig['plinko']['returnPhysics'];
+    old.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyFeedback.deflectorPairs[i]!); });
+    if (revision !== 'feedback') old.plinko.specialPinLayout = structuredClone(legacySpecials.layout) as BalanceConfig['plinko']['specialPinLayout'];
+    if (revision !== 'feedback') old.plinko.splitter = structuredClone(legacySpecials.splitter);
+    if (revision === 'physics' || revision === 'deflectors') old.plinko.physicsSeed = structuredClone(legacyPhysics);
     if (revision === 'deflectors') old.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyPairs[i]!); });
     const state = { ...createInitialGameState(old, 67), plinkoJackpotBiasLevel: 4 };
     const committed = commitBareDrop(state, null, old, 'old-paid', 1);
@@ -29,14 +32,17 @@ describe('paid board compatibility after calibration', () => {
     expect(JSON.stringify(committed)).toBe(before);
     expect(resolvePendingBoardConfig(balance, null)).toBe(balance);
   });
-  it.each(['specials', 'physics', 'deflectors'])('continues six paid historical cascades exactly (%s)', revision => {
+  it.each(['feedback', 'specials', 'physics', 'deflectors'].flatMap(revision =>
+    [1, 4].map(returnLevel => ({revision, returnLevel}))))('continues six paid historical cascades exactly ($revision, Return $returnLevel)', ({revision, returnLevel}) => {
     const old = structuredClone(balance);
-    old.plinko.specialPinLayout = structuredClone(legacySpecials.layout) as BalanceConfig['plinko']['specialPinLayout'];
-    old.plinko.splitter = structuredClone(legacySpecials.splitter);
-    if (revision !== 'specials') old.plinko.physicsSeed = structuredClone(legacyPhysics);
+    old.plinko.returnPhysics = structuredClone(legacyFeedback.returnPhysics) as BalanceConfig['plinko']['returnPhysics'];
+    old.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyFeedback.deflectorPairs[i]!); });
+    if (revision !== 'feedback') old.plinko.specialPinLayout = structuredClone(legacySpecials.layout) as BalanceConfig['plinko']['specialPinLayout'];
+    if (revision !== 'feedback') old.plinko.splitter = structuredClone(legacySpecials.splitter);
+    if (revision === 'physics' || revision === 'deflectors') old.plinko.physicsSeed = structuredClone(legacyPhysics);
     if (revision === 'deflectors') old.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyPairs[i]!); });
     const original = createSharedWorld({ ...createInitialGameState(old, 67105001), cash: 100000,
-      plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 }, old);
+      plinkoAmplifierLevel: 5, plinkoReturnLevel: returnLevel, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 }, old);
     for (let i=0;i<6;i++) { expect(original.launch(1)).toBe(true); for(let t=0;t<15;t++) original.step(); }
     const checkpoint = original.snapshot();
     const restored = createSharedWorld(checkpoint.state, resolvePendingBoardConfig(balance, checkpoint.pending), checkpoint.pending);

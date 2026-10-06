@@ -83,3 +83,5 @@ Historical special-pin calibration (2026-10-05): [Return/Splitter calibration](r
 
 2026-10-06 playtest access: on the city map, the ordinary Pages URL now shows the collapsed **⚙ Плейтест** panel without `?debug=1`. Open it from the map to add/remove cash, advance time, reset the save (with confirmation), or copy diagnostics. Opening the panel pauses the game.
 The panel hides during jobs and casino play so it cannot intercept touch paths.
+
+2026-10-06 physics follow-up: guide attachment moves 4 px down; Return L1/L2 re-enters halfway toward center, L3/L4 retains the original X. Historical paid shots retain their old board. [Comparison](reports/physics/2026-10-06-feedback/README.md) and [implementation verification](reports/physics/2026-10-06-implementation/README.md). Economy prices and pocket payouts are unchanged.

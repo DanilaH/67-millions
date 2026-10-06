@@ -122,7 +122,7 @@ The `outerStatic` 4x pair is intentionally unchanged by the current Center/Mid/J
 A hit multiplies current ball value. A specific Amplifier can proc a lineage at most once.
 
 ### Return
-Returns a ball to the upper board preserving **100% current value**. Maximum one Return proc per lineage in V0. V0 re-entry preserves the current physical X coordinate, moves the ball to the configured upper-board Y, resets velocity/rotation and introduces no additional RNG.
+Returns a ball to the upper board preserving **100% current value**. Maximum one Return proc per lineage in V0. Re-entry moves the ball to the configured upper-board Y, resets velocity/rotation and introduces no additional RNG. User-approved 2026-10-06 revision uses horizontal retention 0.5 at Return L1/L2 (half the distance to center), and 1.0 at L3/L4. The per-level map is numeric config; historical boards without the map retain the original global retention. Pin locations and value/lineage limits are unchanged.
 
 ### Splitter
 Creates two children using configured value per child. Guards:
@@ -196,3 +196,5 @@ No upgrade-price freeze before these reports exist.
 **Historical V1 publication blocker (resolved by the fixed-tick repair below):** browser/Node special-cascade payout parity failed; these configured positions/values are an unaccepted main-branch candidate, not the deployed board. See reports/physics/2026-10-05-specials/README.md. Repair deterministic effect scheduling and remeasure before publication; the old live board remains in use.
 
 2026-10-05 fixed-tick repair: collision effects now complete synchronously after each solver step and before persistence; save latency cannot postpone them into another tick. Local browser payout/RNG/clock/needs parity (including delayed render frames) and 42,000 effect reruns pass. This supersedes the V1 scheduling blocker above. CI, Pages deployment and live verification all passed in run 37328078720; published executable `5bf6c6806dd709f6d17800cd7893cecbedffb160`. See [evidence and historical-save limits](reports/physics/2026-10-05-fixed-tick/README.md). Economy acceptance remains open.
+
+2026-10-06 playtest revision: every deflector pair moves 4 logical pixels downward so its inner face is shielded by the physical peg. Early Return uses the per-level retention above. The paid-board fingerprint includes the retention map and physical geometry; pre-revision paid worlds retain their exact old config and solver state until durably empty. Evidence and remaining balance limits: [implementation verification](reports/physics/2026-10-06-implementation/README.md).

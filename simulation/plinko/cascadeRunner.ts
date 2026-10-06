@@ -566,7 +566,7 @@ export const runCascadePhysicalDrops = (
 
           Matter.Body.setPosition(
             body,
-            getReturnTarget(config, body.position.x),
+            getReturnTarget(config, body.position.x, options.specialLevels.returnLevel),
           );
           Matter.Body.setVelocity(body, { x: 0, y: 0 });
           Matter.Body.setAngle(body, 0);
