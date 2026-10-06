@@ -121,6 +121,10 @@ try {
     },
   );
 
+  const updateDebugVisibility = () => debug.setVisible(game.scene.isActive('bootstrap'));
+  game.events.on(GAME_PRESENTABLE_EVENT, updateDebugVisibility);
+  updateDebugVisibility();
+
   void presentable.then(async () => {
     startupTimeline.mark('gamePresentable');
     await afterPaintFrames(2);
@@ -136,6 +140,7 @@ try {
     platform.activity.setGameplayDesired(false);
     removeBlockedListener();
     disposeSceneAudioRuntime();
+    game.events.off(GAME_PRESENTABLE_EVENT, updateDebugVisibility);
     debug.destroy();
     viewport.destroy();
     saveRecovery.destroy();

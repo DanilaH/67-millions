@@ -2,7 +2,7 @@ import { copyOrExposeText } from '@danilah/mini-games-kit/startup';
 import type { DebugCommand } from '../core/state/debugCommands';
 import { isDebugBuild } from './startup';
 
-export interface DebugPanelHandle { destroy(): void; }
+export interface DebugPanelHandle { setVisible(visible: boolean): void; destroy(): void; }
 
 export const installDebugPanel = (
   getPayload: () => unknown,
@@ -10,7 +10,7 @@ export const installDebugPanel = (
   pause: (paused: boolean) => void,
 ): DebugPanelHandle => {
   const root = document.querySelector<HTMLElement>('#debug-root');
-  if (!root || !isDebugBuild()) return { destroy: () => undefined };
+  if (!root || !isDebugBuild()) return { setVisible: () => undefined, destroy: () => undefined };
   root.hidden = false;
   const details = document.createElement('details');
   const summary = document.createElement('summary');
@@ -49,5 +49,11 @@ export const installDebugPanel = (
     button('Скопировать диагностику', () => { void copyOrExposeText(JSON.stringify(getPayload()), { container: controls, ariaLabel: 'Startup diagnostics JSON' }); }), status);
   details.append(summary, controls); root.append(details);
   details.addEventListener('toggle', () => pause(details.open));
-  return { destroy: () => { pause(false); root.replaceChildren(); root.hidden = true; } };
+  return {
+    setVisible: (visible) => {
+      root.hidden = !visible;
+      if (!visible && details.open) { details.open = false; pause(false); }
+    },
+    destroy: () => { pause(false); root.replaceChildren(); root.hidden = true; },
+  };
 };

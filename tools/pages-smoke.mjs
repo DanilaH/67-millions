@@ -59,12 +59,12 @@ try {
     const ready = async () => {
       await page.waitForFunction(() => document.querySelector('#startup-preload')?.dataset.state === 'hidden', null, { timeout: 30000 });
       assert.equal(await page.locator('canvas').count(), 1);
-      assert.equal(await page.locator('#debug-root').isVisible(), true);
       assert.equal(await page.locator('#debug-root details').getAttribute('open'), null, 'playtest panel starts collapsed');
       assert.equal(await page.evaluate(() => typeof window.__PLINKO_PERF__), 'undefined');
     };
     await page.goto(url, { waitUntil: 'networkidle' });
     await ready();
+    assert.equal(await page.locator('#debug-root').isVisible(), true, 'map exposes the playtest panel without a query flag');
     await page.waitForFunction(() => localStorage.getItem('67m.save') !== null);
     const initial = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(initial.version, 15);
@@ -436,7 +436,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'playtest panel visible and collapsed by default; perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'playtest panel visible on map, hidden during jobs/casino; perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

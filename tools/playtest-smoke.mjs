@@ -181,6 +181,7 @@ try {
   await page.setViewportSize({ width: 640, height: 360 });
   await page.waitForTimeout(300);
   await clickMap('casino'); await ready('Казино Plinko');
+  assert.equal(await page.locator('#debug-root').isVisible(), false, 'playtest controls stay off the casino board');
   await click(1100, 660); await ready('Карта города');
   // Cross-check the node adapter against the actual Phaser scene from the same solver checkpoint.
   for (const { special, roots, spacing, name, slowFrames = false } of [
