@@ -40,7 +40,7 @@ export const createCasinoBetPanel = (
     if (!preview) return;
     const compact = sceneViewport(scene).scale < 0.8;
     const locked = preview.lockedReason !== null;
-    title.setFontSize(compact ? 24 : 20);
+    title.setFontSize(compact ? 24 : 20).setText(compact ? 'ДОЛЯ ЛИМИТА СТАВКИ' : 'СТАВКА ЗА ОДИН ЗАПУСК');
     drop.setPosition(compact ? 28 : 706, compact ? 506 : 675).setFixedSize(compact ? 284 : 220, compact ? 88 : 42).setPadding(0, compact ? 26 : 7);
     const targets: Record<string, { x: number; y: number }> = { drop: { x: drop.x + drop.width / 2, y: drop.y + drop.height / 2 } };
     const reason = preview.lockedReason?.includes('DROP') ? 'Дождись конца броска' : preview.lockedReason?.includes('ВРЕМЕННО') ? 'Казино временно закрыто' : preview.lockedReason?.toLocaleLowerCase('ru-RU');
@@ -53,7 +53,7 @@ export const createCasinoBetPanel = (
       button.setPosition(compact ? 28 + index * 96 : 356 + index * 114, compact ? 410 : 675).setFixedSize(compact ? 92 : 106, compact ? 88 : 42).setPadding(0, compact ? 28 : 7);
       targets[`fraction${index}`] = { x: button.x + button.width / 2, y: button.y + button.height / 2 };
       button.setFontSize(compact ? 24 : (entry?.label.length ?? 0) > 9 ? 12 : (entry?.label.length ?? 0) > 7 ? 14 : 17);
-      button.setText(entry?.label ?? '').setAlpha(locked ? 0.4 : 1)
+      button.setText(compact && entry ? `${entry.fraction * 100}%` : entry?.label ?? '').setAlpha(locked ? 0.4 : 1)
         .setBackgroundColor(visualHex(entry?.fraction === selected ? 'mustard' : 'inkRaised'))
         .setColor(visualHex(entry?.fraction === selected ? 'inkDeep' : 'textMain'));
     });

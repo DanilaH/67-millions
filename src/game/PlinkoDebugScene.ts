@@ -433,7 +433,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         if (pendingAtLoad.physics.solver) this.runtime.restoreSolver(pendingAtLoad.physics.solver, this.balls);
 
         this.showStatus(
-          `RESTORED DROP ${pendingAtLoad.dropId} at fixed tick ${pendingAtLoad.physics.fixedTicksElapsed}.`,
+          'Продолжаем сохранённые броски.',
         );
       } else {
         const timed = advancePendingDropTime(
@@ -1128,13 +1128,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const compact = sceneViewport(this).scale < 0.8;
     const net = this.visitPayout - this.visitStake;
     const hasTutorial = buildTutorialCard(deriveTutorialStep(loadTutorialProgress()), 'casino') !== null && this.save.pendingDrop === null;
-    this.visitResultText?.setVisible(!compact).setPosition(28, hasTutorial ? 630 : 398);
+    this.visitResultText?.setVisible(!compact || !this.statusText?.text).setFontSize(compact ? 22 : 19).setPosition(28, compact ? 610 : hasTutorial ? 630 : 398);
     this.visitResultText?.setText(this.visitDrops === 0 ? 'Итог появится после броска' : [
       `За визит: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
-      ...(this.visitDetails && !hasTutorial ? [
+      ...(this.visitDetails && (!hasTutorial || compact) ? [
         `Ставки: ${this.visitStake.toLocaleString('ru-RU')} ₽`,
         `Выплаты: ${this.visitPayout.toLocaleString('ru-RU')} ₽`,
-        'Только казино · свернуть ‹',
+        ...(compact ? [] : ['Только казино · свернуть ‹']),
       ] : [`Завершено: ${this.visitDrops} · подробнее ›`]),
     ]);
     const snapshot = this.visualSnapshot;
@@ -1194,7 +1194,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private showStatus(message: string): void {
     this.statusText?.setText(message);
-    if (message) this.resultText?.setVisible(false);
+    if (message) {
+      this.resultText?.setVisible(false);
+      if (sceneViewport(this).scale < 0.8) this.visitResultText?.setVisible(false);
+    }
   }
 
   private installPocketLabels(): void {

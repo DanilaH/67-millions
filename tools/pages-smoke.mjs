@@ -257,12 +257,10 @@ try {
     if (touch) await click(1100, 188);
     const scrollTop = touch ? 250 : 175;
     // Swipe through every row; releasing over a price must never buy.
-    await move(1205, 590); await down(); await move(1205, 175, { steps: 12 }); await up();
-    await move(1205, 590); await down(); await move(1205, 175, { steps: 12 }); await up();
+    for (let i = 0; i < 4; i++) { await move(1205, 610); await down(); await move(1205, scrollTop, { steps: 12 }); await up(); }
     await page.waitForFunction(() => Number(document.querySelector('canvas')?.dataset.upgradeScroll) > 0);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-insurance.png` });
-    await move(1205, scrollTop); await down(); await move(1205, 610, { steps: 12 }); await up();
-    await move(1205, scrollTop); await down(); await move(1205, 610, { steps: 12 }); await up();
+    for (let i = 0; i < 4; i++) { await move(1205, scrollTop); await down(); await move(1205, 610, { steps: 12 }); await up(); }
     await page.waitForFunction(() => document.querySelector('canvas')?.dataset.upgradeScroll === '0');
     if (!touch) {
       await move(1100, 400); await page.mouse.wheel(0, 300);
