@@ -1,0 +1,3354 @@
+[
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 2235471949,
+    "outcome": "VICTORY",
+    "minutes": 7.44472222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 7.2113888888888855,
+      "FOOD": 0.06666666666666667,
+      "ENTERTAINMENT": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 7.44472222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 7.2113888888888855,
+      "FOOD": 0.06666666666666667,
+      "ENTERTAINMENT": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 200056781,
+    "outcome": "VICTORY",
+    "minutes": 6.235833333333335,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 5.552500000000001,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "DUMPSTER": 0.03333333333333333,
+      "SHOWER": 0.03333333333333333,
+      "WORK": 0.45,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 200056781,
+    "outcome": "BARRY_LOSS",
+    "minutes": 6.235833333333335,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 5.552500000000001,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "DUMPSTER": 0.03333333333333333,
+      "SHOWER": 0.03333333333333333,
+      "WORK": 0.45,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 220076048,
+    "outcome": "VICTORY",
+    "minutes": 5.993611111111111,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 4.926944444444445,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "WORK": 0.9,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 220076048,
+    "outcome": "BARRY_LOSS",
+    "minutes": 5.993611111111111,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 4.926944444444445,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "WORK": 0.9,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 630596433,
+    "outcome": "VICTORY",
+    "minutes": 5.779444444444442,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.9961111111111083,
+      "WORK": 1.5166666666666666,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 630596433,
+    "outcome": "VICTORY",
+    "minutes": 5.779444444444442,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.9961111111111083,
+      "WORK": 1.5166666666666666,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 630596433,
+    "outcome": "BARRY_LOSS",
+    "minutes": 5.779444444444442,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.9961111111111083,
+      "WORK": 1.5166666666666666,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 3749179945,
+    "outcome": "VICTORY",
+    "minutes": 5.740555555555558,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 4.940555555555558,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.7333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 3749179945,
+    "outcome": "VICTORY",
+    "minutes": 5.740555555555558,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 4.940555555555558,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.7333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 3749179945,
+    "outcome": "VICTORY",
+    "minutes": 5.740555555555558,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 4.940555555555558,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.7333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 3749179945,
+    "outcome": "BARRY_LOSS",
+    "minutes": 5.740555555555558,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 4.940555555555558,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.7333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 5.138333333333331,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 3.9049999999999976,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 2235471949,
+    "outcome": "VICTORY",
+    "minutes": 5.012500000000002,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 4.879166666666668,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 5.012500000000002,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 4.879166666666668,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 2407774775,
+    "outcome": "VICTORY",
+    "minutes": 4.962222222222221,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 4.328888888888887,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 3199702198,
+    "outcome": "VICTORY",
+    "minutes": 4.914722222222223,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 2.05,
+      "SLEEP": 0.06666666666666667,
+      "FOOD": 0.1,
+      "PLINKO": 2.5980555555555562
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 3199702198,
+    "outcome": "VICTORY",
+    "minutes": 4.852500000000002,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.019166666666668,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.6,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 3199702198,
+    "outcome": "VICTORY",
+    "minutes": 4.852500000000002,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.019166666666668,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.6,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 3199702198,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.852500000000002,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.019166666666668,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.6,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 289126845,
+    "outcome": "VICTORY",
+    "minutes": 4.792500000000001,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.4925000000000015,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 289126845,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.792500000000001,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.4925000000000015,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 220076048,
+    "outcome": "VICTORY",
+    "minutes": 4.740833333333338,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.524166666666671,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 0.9833333333333334,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "ENTERTAINMENT": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 982426425,
+    "outcome": "VICTORY",
+    "minutes": 4.7275,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.894166666666665,
+      "BUY_JOB_UPGRADE": 0.10000000000000095,
+      "WORK": 1.6,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.655555555555556,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 4.522222222222223,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 322094660,
+    "outcome": "VICTORY",
+    "minutes": 4.581111111111111,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.714444444444444,
+      "WORK": 1.5666666666666667,
+      "FOOD": 0.1,
+      "BUY_JOB_UPGRADE": 0.1,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 3199702198,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.429444444444445,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 4.296111111111111,
+      "FOOD": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 3199702198,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.429444444444445,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 4.296111111111111,
+      "FOOD": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.403055555555556,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.369722222222223,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.9,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.3975,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.3641666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.9,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 852571131,
+    "outcome": "VICTORY",
+    "minutes": 4.248888888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.932222222222221,
+      "SLEEP": 0.06666666666666667,
+      "FOOD": 0.1,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 2.0500000000000007
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 1435351719,
+    "outcome": "VICTORY",
+    "minutes": 4.241388888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.6080555555555556,
+      "WORK": 1.4,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 1435351719,
+    "outcome": "VICTORY",
+    "minutes": 4.241388888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.6080555555555556,
+      "WORK": 1.4,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 1435351719,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.241388888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.6080555555555556,
+      "WORK": 1.4,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 2855245301,
+    "outcome": "VICTORY",
+    "minutes": 4.200833333333332,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 4.034166666666666,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 1674652233,
+    "outcome": "VICTORY",
+    "minutes": 4.197777777777784,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 4.1311111111111165,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 4.17861111111111,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.37861111111111,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.6,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 4.17861111111111,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.37861111111111,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.6,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 1301390044,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.17861111111111,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.37861111111111,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.6,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 1781185941,
+    "outcome": "VICTORY",
+    "minutes": 4.11861111111111,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.9019444444444435,
+      "FOOD": 0.1,
+      "WORK": 2.05,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 1781185941,
+    "outcome": "VICTORY",
+    "minutes": 4.11861111111111,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.9019444444444435,
+      "FOOD": 0.1,
+      "WORK": 2.05,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 1781185941,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.11861111111111,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.9019444444444435,
+      "FOOD": 0.1,
+      "WORK": 2.05,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1362912587,
+    "outcome": "VICTORY",
+    "minutes": 4.112222222222223,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.8788888888888886,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.1,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1362912587,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.112222222222223,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.8788888888888886,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.1,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 1674652233,
+    "outcome": "VICTORY",
+    "minutes": 4.108888888888888,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.9755555555555557,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 2235471949,
+    "outcome": "VICTORY",
+    "minutes": 4.1066666666666665,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.6,
+      "PLINKO": 2.306666666666666,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 2235471949,
+    "outcome": "VICTORY",
+    "minutes": 4.105277777777777,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.438611111111111,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.4333333333333331,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 2235471949,
+    "outcome": "VICTORY",
+    "minutes": 4.105277777777777,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.438611111111111,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.4333333333333331,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.105277777777777,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.438611111111111,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.4333333333333331,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 2504952015,
+    "outcome": "VICTORY",
+    "minutes": 4.095555555555554,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.828888888888887,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 2504952015,
+    "outcome": "VICTORY",
+    "minutes": 4.095555555555554,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.828888888888887,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 2504952015,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.095555555555554,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.828888888888887,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 220076048,
+    "outcome": "VICTORY",
+    "minutes": 4.070833333333334,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.4375,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 220076048,
+    "outcome": "VICTORY",
+    "minutes": 4.070833333333334,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.4375,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 220076048,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.070833333333334,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.4375,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1163517056,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.006666666666668,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.906666666666667,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1163517056,
+    "outcome": "BARRY_LOSS",
+    "minutes": 4.006666666666668,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.906666666666667,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 289126845,
+    "outcome": "VICTORY",
+    "minutes": 3.982499999999997,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.4324999999999974,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.45,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 1739030539,
+    "outcome": "VICTORY",
+    "minutes": 3.951111111111112,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "PLINKO": 2.651111111111112
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 200056781,
+    "outcome": "VICTORY",
+    "minutes": 3.938055555555556,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 1.7713888888888893,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.9666666666666666,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 1310611398,
+    "outcome": "VICTORY",
+    "minutes": 3.9172222222222217,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.1672222222222213,
+      "WORK": 1.4833333333333334,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "SLEEP": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 2095224392,
+    "outcome": "VICTORY",
+    "minutes": 3.9072222222222215,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.807222222222221,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 793342592,
+    "outcome": "VICTORY",
+    "minutes": 3.8138888888888896,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.0666666666666667,
+      "PLINKO": 2.5805555555555557,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 793342592,
+    "outcome": "VICTORY",
+    "minutes": 3.8138888888888896,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.0666666666666667,
+      "PLINKO": 2.5805555555555557,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 793342592,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.8138888888888896,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.0666666666666667,
+      "PLINKO": 2.5805555555555557,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 3.7872222222222205,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.6538888888888876,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1301390044,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.7872222222222205,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.6538888888888876,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1362912587,
+    "outcome": "VICTORY",
+    "minutes": 3.77388888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.67388888888889,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1362912587,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.77388888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.67388888888889,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 256560347,
+    "outcome": "VICTORY",
+    "minutes": 3.7222222222222228,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.122222222222223,
+      "WORK": 1.4333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 200056781,
+    "outcome": "VICTORY",
+    "minutes": 3.6675000000000013,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 2.4008333333333343,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 200056781,
+    "outcome": "VICTORY",
+    "minutes": 3.6675000000000013,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 2.4008333333333343,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 200056781,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.6675000000000013,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 2.4008333333333343,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 107977856,
+    "outcome": "VICTORY",
+    "minutes": 3.6474999999999986,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.3808333333333316,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 3199702198,
+    "outcome": "VICTORY",
+    "minutes": 3.630833333333332,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.9308333333333314,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 322094660,
+    "outcome": "VICTORY",
+    "minutes": 3.6297222222222216,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.229722222222222,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.2666666666666662,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 322094660,
+    "outcome": "VICTORY",
+    "minutes": 3.6297222222222216,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.229722222222222,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.2666666666666662,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 322094660,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.6297222222222216,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.229722222222222,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.2666666666666662,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 547771961,
+    "outcome": "VICTORY",
+    "minutes": 3.6252777777777796,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.42527777777778,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 630596433,
+    "outcome": "VICTORY",
+    "minutes": 3.538055555555555,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.8213888888888887,
+      "WORK": 1.4833333333333332,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "ENTERTAINMENT": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 793342592,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.5075,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.4075,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 630596433,
+    "outcome": "VICTORY",
+    "minutes": 3.5019444444444434,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.8519444444444435,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "WORK": 1.5166666666666666
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 2407774775,
+    "outcome": "VICTORY",
+    "minutes": 3.481111111111115,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.7144444444444462,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 1.5666666666666687,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 793342592,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.4741666666666666,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 3.3741666666666665,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1435351719,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.4400000000000004,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.3733333333333335,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1435351719,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.4400000000000004,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.3733333333333335,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 261725492,
+    "outcome": "VICTORY",
+    "minutes": 3.425555555555556,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.3922222222222227
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 261725492,
+    "outcome": "VICTORY",
+    "minutes": 3.425555555555556,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.3922222222222227
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 261725492,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.425555555555556,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.3922222222222227
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 982426425,
+    "outcome": "VICTORY",
+    "minutes": 3.3822222222222234,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.582222222222223,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.6,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 982426425,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.3822222222222234,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.582222222222223,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.6,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1674652233,
+    "outcome": "VICTORY",
+    "minutes": 3.3736111111111104,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.27361111111111,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1674652233,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.3736111111111104,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.27361111111111,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 48983982,
+    "outcome": "VICTORY",
+    "minutes": 3.3644444444444455,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.5644444444444456,
+      "WORK": 1.6,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 48983982,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.3644444444444455,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.5644444444444456,
+      "WORK": 1.6,
+      "FOOD": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 2095224392,
+    "outcome": "VICTORY",
+    "minutes": 3.3241666666666654,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "PLINKO": 2.057499999999999,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 261725492,
+    "outcome": "VICTORY",
+    "minutes": 3.3077777777777775,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 3.2744444444444434
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 3060040993,
+    "outcome": "VICTORY",
+    "minutes": 3.286944444444444,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.186944444444444,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 3060040993,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.286944444444444,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.186944444444444,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 3637452683,
+    "outcome": "VICTORY",
+    "minutes": 3.2797222222222238,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.1463888888888905,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 261725492,
+    "outcome": "VICTORY",
+    "minutes": 3.260555555555557,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 0.9833333333333334,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "PLINKO": 2.043888888888891
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 261725492,
+    "outcome": "VICTORY",
+    "minutes": 3.260555555555557,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 0.9833333333333334,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "PLINKO": 2.043888888888891
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 261725492,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.260555555555557,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 0.9833333333333334,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "PLINKO": 2.043888888888891
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 2407774775,
+    "outcome": "VICTORY",
+    "minutes": 3.2549999999999994,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.4549999999999994,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 1.5666666666666664,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 2407774775,
+    "outcome": "VICTORY",
+    "minutes": 3.2549999999999994,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.4549999999999994,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 1.5666666666666664,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 2407774775,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.2549999999999994,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 1.4549999999999994,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 1.5666666666666664,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 3060040993,
+    "outcome": "VICTORY",
+    "minutes": 3.2394444444444446,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.006111111111111,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 2834726383,
+    "outcome": "VICTORY",
+    "minutes": 3.223888888888889,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333357,
+      "PLINKO": 2.590555555555556,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "WORK": 0.5333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 3199702198,
+    "outcome": "VICTORY",
+    "minutes": 3.210833333333333,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.744166666666666,
+      "WORK": 0.36666666666666664,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 3199702198,
+    "outcome": "VICTORY",
+    "minutes": 3.210833333333333,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.744166666666666,
+      "WORK": 0.36666666666666664,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 3199702198,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.210833333333333,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.744166666666666,
+      "WORK": 0.36666666666666664,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 2235471949,
+    "outcome": "VICTORY",
+    "minutes": 3.207222222222223,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.1738888888888894
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 2235471949,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.207222222222223,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.1738888888888894
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 3.204722222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.5380555555555544,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333,
+      "FOOD": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 3.204722222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.5380555555555544,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333,
+      "FOOD": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 1301390044,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.204722222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.5380555555555544,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.5333333333333333,
+      "FOOD": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 392477257,
+    "outcome": "VICTORY",
+    "minutes": 3.1969444444444455,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.4969444444444453,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 0.5333333333333333,
+      "FOOD": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 3519291426,
+    "outcome": "VICTORY",
+    "minutes": 3.1849999999999983,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.984999999999998,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 852571131,
+    "outcome": "VICTORY",
+    "minutes": 3.1649999999999987,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 2.100000000000001,
+      "FOOD": 0.06666666666666667,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "PLINKO": 0.8316666666666644,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 107977856,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.161388888888888,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.328055555555555,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.7333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 107977856,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.1611111111111105,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "center"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.3277777777777775,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 0.7333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 3637452683,
+    "outcome": "VICTORY",
+    "minutes": 3.149444444444443,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.9161111111111098,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 289126845,
+    "outcome": "VICTORY",
+    "minutes": 3.1452777777777783,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.1119444444444446,
+      "WORK": 0.8999999999999999,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve0",
+    "seed": 1674652233,
+    "outcome": "VICTORY",
+    "minutes": 3.135833333333333,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 3.0358333333333327,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 1674652233,
+    "outcome": "VICTORY",
+    "minutes": 3.131944444444444,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "WORK": 1.4833333333333338,
+      "PLINKO": 1.3486111111111105,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "EVENT_CHOICE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 4282720256,
+    "outcome": "VICTORY",
+    "minutes": 3.131666666666668,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.015000000000001,
+      "WORK": 0.9833333333333334,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 48983982,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.1255555555555556,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.025555555555556,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 48983982,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.1255555555555556,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.025555555555556,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 2834726383,
+    "outcome": "VICTORY",
+    "minutes": 3.1133333333333346,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.8800000000000012,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0333333333333332,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 2834726383,
+    "outcome": "VICTORY",
+    "minutes": 3.1133333333333346,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.8800000000000012,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0333333333333332,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 2834726383,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.1133333333333346,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.8800000000000012,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0333333333333332,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 1301390044,
+    "outcome": "VICTORY",
+    "minutes": 3.1,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.0666666666666664
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 1301390044,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.1,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 3.0666666666666664
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 256560347,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.0980555555555553,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.9980555555555553,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 256560347,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.0980555555555553,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.9980555555555553,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 1362912587,
+    "outcome": "VICTORY",
+    "minutes": 3.0958333333333354,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.562500000000002,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.36666666666666664,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 3057520989,
+    "outcome": "VICTORY",
+    "minutes": 3.086944444444443,
+    "fromAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 3,
+      "price": 5000
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "activityMinutes": {
+      "AUDIT_BUY_CAPACITY": 0.03333333333333333,
+      "PLINKO": 3.020277777777777,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 289126845,
+    "outcome": "VICTORY",
+    "minutes": 3.071111111111113,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.7711111111111126,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 1.0666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 322094660,
+    "outcome": "VICTORY",
+    "minutes": 3.0691666666666664,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.835833333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "FOOD": 0.03333333333333333,
+      "WORK": 1.0333333333333332,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 322094660,
+    "outcome": "VICTORY",
+    "minutes": 3.0691666666666664,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.835833333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "FOOD": 0.03333333333333333,
+      "WORK": 1.0333333333333332,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 322094660,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.0691666666666664,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.835833333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "FOOD": 0.03333333333333333,
+      "WORK": 1.0333333333333332,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 1163517056,
+    "outcome": "VICTORY",
+    "minutes": 3.067777777777778,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.7177777777777778,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.1833333333333338,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 1163517056,
+    "outcome": "VICTORY",
+    "minutes": 3.067777777777778,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.7177777777777778,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.1833333333333338,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 1163517056,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.067777777777778,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 1.7177777777777778,
+      "EVENT_CHOICE": 0.03333333333333333,
+      "WORK": 1.1833333333333338,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 3637452683,
+    "outcome": "VICTORY",
+    "minutes": 3.0661111111111117,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "splitter"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "PLINKO": 1.2327777777777782,
+      "WORK": 1.5333333333333332,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 3637452683,
+    "outcome": "VICTORY",
+    "minutes": 3.0661111111111117,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1,
+      "PLINKO": 1.2327777777777782,
+      "WORK": 1.5333333333333332,
+      "EVENT_CHOICE": 0.06666666666666667,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 3519291426,
+    "outcome": "VICTORY",
+    "minutes": 3.0655555555555547,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.9155555555555548,
+      "BUY_JOB_UPGRADE": 0.06666666666666667,
+      "WORK": 0.9833333333333334,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve1",
+    "seed": 1435351719,
+    "outcome": "VICTORY",
+    "minutes": 3.054722222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.954722222222222,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stake-first-reserve1",
+    "seed": 1435351719,
+    "outcome": "VICTORY",
+    "minutes": 3.054722222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.954722222222222,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve1",
+    "seed": 1435351719,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.054722222222222,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "amplifier"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "jackpotBias"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.954722222222222,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "FOOD": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve0",
+    "seed": 1674652233,
+    "outcome": "VICTORY",
+    "minutes": 3.053888888888887,
+    "fromAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "mid"
+    },
+    "toAction": {
+      "type": "BUY_PLINKO_POCKET",
+      "track": "jackpot"
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_POCKET": 0.03333333333333333,
+      "PLINKO": 2.8538888888888874,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.1
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 3057520989,
+    "outcome": "VICTORY",
+    "minutes": 3.018055555555558,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 1.2180555555555581,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 1.6,
+      "ENTERTAINMENT": 0.03333333333333333,
+      "FOOD": 0.06666666666666667,
+      "SLEEP": 0.03333333333333333
+    }
+  },
+  {
+    "scenario": "stress-cheapest-reserve0",
+    "seed": 200056781,
+    "outcome": "VICTORY",
+    "minutes": 3.0072222222222176,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.8405555555555515,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-stop-at-12-reserve0",
+    "seed": 200056781,
+    "outcome": "BARRY_LOSS",
+    "minutes": 3.0072222222222176,
+    "fromAction": {
+      "type": "BUY_PLINKO_SPECIAL",
+      "track": "return"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_SPECIAL": 0.03333333333333333,
+      "PLINKO": 2.8405555555555515,
+      "SLEEP": 0.03333333333333333,
+      "FOOD": 0.03333333333333333,
+      "BUY_JOB_UPGRADE": 0.06666666666666667
+    }
+  },
+  {
+    "scenario": "stress-specials-first-reserve1",
+    "seed": 630596433,
+    "outcome": "VICTORY",
+    "minutes": 3.0024999999999995,
+    "fromAction": {
+      "type": "BUY_PLINKO_MAX_BET"
+    },
+    "toAction": {
+      "type": "AUDIT_BUY_CAPACITY",
+      "capacity": 4,
+      "price": 25000
+    },
+    "activityMinutes": {
+      "BUY_PLINKO_MAX_BET": 0.03333333333333333,
+      "PLINKO": 2.4524999999999997,
+      "BUY_JOB_UPGRADE": 0.03333333333333333,
+      "WORK": 0.45,
+      "EVENT_CHOICE": 0.03333333333333333
+    }
+  }
+]

@@ -47,7 +47,7 @@ describe('T057 casino UI model', () => {
     ).toBe(true);
   });
 
-  it('shows all nine upgrade tracks with current/next state', () => {
+  it('shows all ten upgrade tracks with current/next state', () => {
     const state = {
       ...createInitialGameState(balance, 1_102),
       cash: 100_000,
@@ -61,6 +61,7 @@ describe('T057 casino UI model', () => {
 
     expect(upgrades.map((upgrade) => upgrade.id)).toEqual([
       'maxBet',
+      'capacity',
       'center',
       'mid',
       'jackpot',

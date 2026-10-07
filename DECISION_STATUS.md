@@ -76,3 +76,7 @@ Tunable values move through simulator + playtest, never ad-hoc Scene edits.
 ## Evidence rule
 
 No historical simulation percentage is canonical until reproduced by the repository runner against the exact `balance.v0.json` hash. Design corridors may be used as tuning targets, not as empirical claims.
+
+## User-authorized revision — 2026-10-07
+
+Paid launch capacity is now a purchasable Plinko track: new runs start at two places and unlock 3/4/6. One click remains one paid launch, with no automatic or free batch. Legacy saves retain their six places. Capacity prices and late stake caps are TUNABLE playtest values; final pacing remains OPEN.

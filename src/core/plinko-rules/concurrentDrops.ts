@@ -1,3 +1,5 @@
+import { getLaunchCapacity } from './progression';
+import type { GameState } from '../state/GameState';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { PendingDrop, PendingShot } from './drop';
 
@@ -5,8 +7,8 @@ import type { PendingDrop, PendingShot } from './drop';
 export const activeDrops = (pending: PendingDrop | null): PendingShot[] =>
   pending ? [pending, ...(pending.additionalDrops ?? [])] : [];
 
-export const canLaunchDrop = (pending: PendingDrop | null, config: BalanceConfig): boolean =>
-  activeDrops(pending).length < config.plinko.maxConcurrentDrops &&
+export const canLaunchDrop = (pending: PendingDrop | null, config: BalanceConfig, state: Pick<GameState, 'plinkoCapacityLevel'>): boolean =>
+  activeDrops(pending).length < getLaunchCapacity(config, state) &&
   (pending?.physics?.balls.length ?? 0) < config.plinko.maxActiveBalls;
 
 export const findBallDrop = (pending: PendingDrop, lineageId: string): PendingShot => {

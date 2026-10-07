@@ -68,7 +68,25 @@ try {
     await click(target.x, target.y);
   };
   await page.goto(url); await ready('Карта города');
-  const fixture = createSaveState({ ...createInitialGameState(balance, 670123), cash: 100000 });
+  // Fresh capacity progression is a real purchase and survives reload.
+  const capacityFixture = createSaveState({ ...createInitialGameState(balance, 670123), cash: 100000 });
+  await load(capacityFixture); await clickMap('casino'); await ready('Казино Plinko');
+  await page.screenshot({ path: `${output}/capacity-start.png` });
+  await click(1205, 386);
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoCapacityLevel === 1);
+  assert.equal((await save()).game.cash, 95000, 'third place costs 5000 once');
+  await page.reload(); await ready('Карта города');
+  assert.equal((await save()).game.plinkoCapacityLevel, 1, 'capacity purchase persists');
+  await clickMap('casino'); await ready('Казино Plinko');
+  await click(1205, 386);
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoCapacityLevel === 2);
+  assert.equal((await save()).game.cash, 70000, 'fourth place costs 25000 once');
+  await page.screenshot({ path: `${output}/capacity-purchased.png` });
+  await load(capacityFixture); await clickMap('casino'); await ready('Казино Plinko');
+  await click(810, 695); await click(810, 695); await click(810, 695);
+  assert.equal((await save()).game.cash, 99000, 'fresh board only charges for two available places');
+  assert.equal((await save()).pendingDrop.additionalDrops.length, 1, 'third launch is blocked');
+  const fixture = createSaveState({ ...createInitialGameState(balance, 670123), cash: 100000, plinkoCapacityLevel: 3 });
   await load(fixture);
   assert.equal(await page.locator('canvas').evaluate(c => c.width), 1920, '1080p uses a native 1920px backing store');
   await page.screenshot({ path: `${output}/map-1080p.png` });
@@ -219,7 +237,7 @@ try {
     { special: true, roots: 6, spacing: 15, name: 'return-L2', returnLevel: 2 },
     { special: true, roots: 6, spacing: 15, name: 'special-slow-frames', slowFrames: true },
   ]) {
-    const initial = { ...createInitialGameState(balance, seed), cash: 100000 };
+    const initial = { ...createInitialGameState(balance, seed), cash: 100000, plinkoCapacityLevel: 3 };
     if (special) Object.assign(initial, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3, plinkoAmplifierLevel: 5, plinkoReturnLevel: returnLevel, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
     const world = createSharedWorld(initial, balance);
     for (let i = 0; i < roots; i++) { world.launch(i % 2 ? 1 : 0.25); for (let tick = 0; tick < spacing; tick++) world.step(); }

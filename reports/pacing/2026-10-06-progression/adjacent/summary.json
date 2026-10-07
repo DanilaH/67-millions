@@ -1,0 +1,195 @@
+{
+  "metadata": {
+    "revision": "ef9fefcf85827c4b846854222883f09ad4a757a4",
+    "configHash": "bf5acb94044cff5997b7a14630642c984fa209e106fc028213e98017f7b94f79",
+    "runnerHash": "0451ee8f70f8b8ec199174f403bb16aeb56206be55c7e413deb851b725209e2f",
+    "count": 300,
+    "seed": 67122000,
+    "contexts": {
+      "max": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoCenterLevel": {
+        "plinkoCenterLevel": 1,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoMidLevel": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 2,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoJackpotLevel": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 2,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoAmplifierLevel": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoSplitterLevel": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 4,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoJackpotBiasLevel": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 3,
+        "plinkoReturnLevel": 4
+      },
+      "minusOne-plinkoReturnLevel": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoReturnLevel": 3
+      }
+    },
+    "batches": [
+      6
+    ],
+    "launchSpacingTicks": 15,
+    "model": "production shared-world; bounded burst then drain; fixed base stake; no purchases/insurance",
+    "limitations": "Paired session seeds, not matched root trajectories across batch sizes. Generous bankroll isolates throughput. No full-game or human win prediction. 2s decision overhead shown separately."
+  },
+  "rows": [
+    {
+      "context": "max",
+      "batch": 6,
+      "gross": 12.43496888888889,
+      "standardError": 0.46072748784608414,
+      "meanSeconds": 7.1063888888888895,
+      "netPerSecond": 4827.333150920533,
+      "netPerSecondWithDecision": 3767.1251563310248,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4066666666666667,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoCenterLevel",
+      "batch": 6,
+      "gross": 12.210215555555555,
+      "standardError": 0.4627803749697443,
+      "meanSeconds": 7.1063888888888895,
+      "netPerSecond": 4732.45233162647,
+      "netPerSecondWithDecision": 3693.082634292163,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4066666666666667,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoMidLevel",
+      "batch": 6,
+      "gross": 12.138218888888888,
+      "standardError": 0.4655959528697298,
+      "meanSeconds": 7.1063888888888895,
+      "netPerSecond": 4702.0585545088525,
+      "netPerSecondWithDecision": 3669.3641216484148,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4066666666666667,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoJackpotLevel",
+      "batch": 6,
+      "gross": 9.295413333333334,
+      "standardError": 0.3066273740413317,
+      "meanSeconds": 7.1063888888888895,
+      "netPerSecond": 3501.953015674471,
+      "netPerSecondWithDecision": 2732.8329927096356,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4066666666666667,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoAmplifierLevel",
+      "batch": 6,
+      "gross": 11.055571111111112,
+      "standardError": 0.40067125185939634,
+      "meanSeconds": 7.1063888888888895,
+      "netPerSecond": 4245.01301645624,
+      "netPerSecondWithDecision": 3312.697678674923,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4066666666666667,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoSplitterLevel",
+      "batch": 6,
+      "gross": 12.263295555555555,
+      "standardError": 0.45959089566845085,
+      "meanSeconds": 7.1063888888888895,
+      "netPerSecond": 4754.8603369425,
+      "netPerSecondWithDecision": 3710.5692584571266,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4066666666666667,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoJackpotBiasLevel",
+      "batch": 6,
+      "gross": 10.69096888888889,
+      "standardError": 0.4261606511503143,
+      "meanSeconds": 7.114444444444446,
+      "netPerSecond": 4086.4619709511153,
+      "netPerSecondWithDecision": 3189.761794465439,
+      "splitterPerRoot": 0.6105555555555555,
+      "returnsPerRoot": 0.4033333333333333,
+      "amplifierPerRoot": 0.7716666666666666,
+      "maxBalls": 13
+    },
+    {
+      "context": "minusOne-plinkoReturnLevel",
+      "batch": 6,
+      "gross": 10.468152222222223,
+      "standardError": 0.4392907506624013,
+      "meanSeconds": 6.395055555555559,
+      "netPerSecond": 4441.62782010407,
+      "netPerSecondWithDecision": 3383.4745319665662,
+      "splitterPerRoot": 0.3827777777777778,
+      "returnsPerRoot": 0.3388888888888889,
+      "amplifierPerRoot": 1.0405555555555555,
+      "maxBalls": 11
+    }
+  ]
+}

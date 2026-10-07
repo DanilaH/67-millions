@@ -1,0 +1,54 @@
+{
+  "metadata": {
+    "capacityLadder": null,
+    "capacitySemantics": "production capacity",
+    "batches": [
+      6
+    ],
+    "runnerHash": "e73c1ef947706d9dd5d91daa3fb79efe26a744cad6a94192da07e521746233a3",
+    "paybackPath": null,
+    "approach": "reserve",
+    "configHash": "bf5acb94044cff5997b7a14630642c984fa209e106fc028213e98017f7b94f79",
+    "sourceRevision": "ef9fefcf85827c4b846854222883f09ad4a757a4",
+    "perVariant": 20,
+    "seedStart": 67124000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "burst",
+    "launchPolicy": "bounded bursts then drain",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 19.05430555555556,
+      "medianWinWork": 11.5,
+      "medianWinRecovery": 22,
+      "medianWinDrops": 362.5,
+      "medianAllMinutes": 19.05430555555556
+    },
+    {
+      "batch": 6,
+      "order": "cheapest",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 15.945,
+      "medianWinWork": 9,
+      "medianWinRecovery": 16,
+      "medianWinDrops": 301,
+      "medianAllMinutes": 15.945
+    }
+  ]
+}

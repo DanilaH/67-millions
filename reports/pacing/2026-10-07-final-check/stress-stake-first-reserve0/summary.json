@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "strategy": "stake-first",
+    "reserveScale": 0,
+    "seedSampling": "sha256 seedStart:index first uint32, zero mapped to one",
+    "paidCapacity": [
+      {
+        "capacity": 3,
+        "price": 5000
+      },
+      {
+        "capacity": 4,
+        "price": 25000
+      },
+      {
+        "capacity": 6,
+        "price": 1000000
+      }
+    ],
+    "capacityPolicy": "cheapest",
+    "purchaseAll": true,
+    "skipFinal": null,
+    "capacityLadder": null,
+    "capacitySemantics": "production capacity",
+    "batches": [
+      6
+    ],
+    "runnerHash": "c9cfb67f66f3dd47d9a9bbe4796897a784974cc81b8fbc144209468fb6058128",
+    "paybackPath": null,
+    "approach": "reserve",
+    "configHash": "f410135b50973e0a0f759848eaab654177b529035e24dccc55acc014b8d1eb8f",
+    "sourceRevision": "83155d8b304d3575583a211fee35f676622c83f1",
+    "perVariant": 40,
+    "seedStart": 67131000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "continuous",
+    "launchPolicy": "recheck every 15 ticks; drain for recovery/event/purchase/victory; preserve liquidity reserve, drain on work intention; no purchases while active",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 9,
+        "BARRY_LOSS": 29,
+        "HP_DEATH": 2
+      },
+      "wins": 9,
+      "medianWinMinutes": 16.399166666666662,
+      "medianWinWork": 1,
+      "medianWinRecovery": 7,
+      "medianWinDrops": 249,
+      "medianAllMinutes": 7.375555555555556
+    }
+  ]
+}

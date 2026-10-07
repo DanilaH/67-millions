@@ -39,6 +39,7 @@ const formatNeeds = (state: GameState): string =>
 
 const formatPlinkoProgress = (state: GameState): string => {
   const levels = [
+    state.plinkoCapacityLevel,
     state.plinkoMaxBetLevel,
     state.plinkoCenterLevel,
     state.plinkoMidLevel,

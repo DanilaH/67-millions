@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "paidCapacity": [
+      {
+        "capacity": 3,
+        "price": 5000
+      },
+      {
+        "capacity": 4,
+        "price": 100000
+      },
+      {
+        "capacity": 6,
+        "price": 1000000
+      }
+    ],
+    "capacityPolicy": "cheapest",
+    "purchaseAll": true,
+    "skipFinal": null,
+    "capacityLadder": null,
+    "capacitySemantics": "production capacity",
+    "batches": [
+      6
+    ],
+    "runnerHash": "0835ce810137bce2b567877ae104690c250c47ebaca2c53573c60ff83f7525bb",
+    "paybackPath": null,
+    "approach": "reserve",
+    "configHash": "f410135b50973e0a0f759848eaab654177b529035e24dccc55acc014b8d1eb8f",
+    "sourceRevision": "63bf0f812cc3d231b59f516bdd22aafd0e8b42ba",
+    "perVariant": 20,
+    "seedStart": 67129000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "continuous-spend",
+    "launchPolicy": "recheck every 15 ticks; drain for recovery/event/purchase/victory; reuse original fraction without cash reserve inside session; no purchases while active",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "wins": 20,
+      "medianWinMinutes": 13.914444444444445,
+      "medianWinWork": 7,
+      "medianWinRecovery": 12.5,
+      "medianWinDrops": 307.5,
+      "medianAllMinutes": 13.914444444444445
+    }
+  ]
+}

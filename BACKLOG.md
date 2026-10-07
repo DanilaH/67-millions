@@ -294,6 +294,14 @@ Acceptance: reports for frozen candidate geometry/config.
 
 ### T070 [P0] Large full-game batch + dominant strategy search
 
+2026-10-07: [final bounded candidate check](reports/pacing/2026-10-07-final-check/README.md), 600 labeled runs across diverse seeds. Provisional slot prices 5k/25k/1m with late caps 40k/65k/100k. Reserve-sensitive losses and depleted-start recovery measured. Long purchase gaps and a ~57-minute losing hoarding policy remain UX risks. Numeric cycle concluded; no runtime implementation/deployment.
+
+2026-10-07: [paid capacity × late stake caps](reports/pacing/2026-10-07-paid-capacity/README.md), 272 modeled runs. Simulation-only paid 2→3→4→6 progression; combined candidate extends final phase but adds purchase/work friction and does not establish difficulty. No production change.
+
+2026-10-07: [explicit buy/skip check](reports/pacing/2026-10-07-final-upgrades/README.md), 368 modeled runs. Corrects policy-driven interpretation of missing Splitter purchases; final-price discounts change completion by seconds and are not promoted. Paid launch-capacity progression remains unimplemented.
+
+2026-10-06: [multi-angle progression audit](reports/pacing/2026-10-06-progression/README.md): 316 modeled runs and adjacent late-level comparisons. Free capacity-unlock proxies do not repair final acceleration; Splitter V price/value and purchase-order sensitivity need targeted follow-up. No runtime change or accepted paid batch progression.
+
 2026-10-06 follow-up: [payback audit and pocket progression candidate](reports/pacing/2026-10-06-payback/README.md). Uses independent matched full-game comparisons and preserves historical payouts. No optimal-policy or final balance claim; solo duration and increased survival remain OPEN.
 
 2026-10-06: [balance diagnosis](reports/pacing/2026-10-06-balance/README.md) tests six rejected numeric candidates, 35,000 physical roots and 488 labeled modeled sessions. No candidate accepted; progression quality and a stronger investment policy remain OPEN. Barry boundary and debug-trigger regressions pass.
@@ -302,6 +310,8 @@ Acceptance: reports for frozen candidate geometry/config.
 2026-10-05 follow-up: 40 matched runs per config find 26→36 wins after special-pin repair, with candidate successful medians 13–28 minutes. This is diagnostic, not an accepted win rate or pacing target. Next: price/max-bet progression and dominant burst policy, without undoing measured upgrade usefulness; see reports/pacing/2026-10-05-specials/README.md.
 Status: Candidate selected (2026-10-01): 6000 physical runs on selected config plus rejected candidate batches, versioned liquidity policy and honest report provenance; final dominance/event review remains open.
 Acceptance: reproducible artifact; no unacceptable dominant policy.
+
+2026-10-07: user authorized the paid 2→3→4→6 capacity candidate (5k/25k/1m) and late 40k/65k/100k caps for production playtesting. Legacy saves preserve six places; fresh runs exercise the new progression. T071 and final policy robustness remain open.
 
 ### T071 [P0] Real-session pacing playtests
 Status: Open: no human successful-run timing dataset. Simulation clock-equivalent fields do not satisfy this gate. Pages playtest tooling is documented in docs/PLATFORM_RELEASE.md; publication alone does not accept pacing.

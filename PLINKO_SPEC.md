@@ -43,7 +43,7 @@ Exact calibrated physics values live in `balance.v0.json -> plinko.physicsSeed`.
 
 ## 6. Atomic Drop lifecycle
 
-1. Validate: no Barry flow or terminal state, no active non-Plinko action, cash >0, and available concurrent capacity (`maxConcurrentDrops`, `maxActiveBalls`).
+1. Validate: no Barry flow or terminal state, no active non-Plinko action, cash >0, and available purchased concurrent capacity (`capacityLevels`, bounded by `maxConcurrentDrops`, `maxActiveBalls`).
 2. Debit one stake; snapshot dropId, RNG, upgrades, insurance and timing state.
 3. Advance configured action time through the scheduler; spawn one initial ball.
 4. Atomically persist debit, timing, RNG and shared solver/body checkpoint before acknowledging launch. Legacy cold committed saves still replay their original root.
@@ -200,3 +200,7 @@ No upgrade-price freeze before these reports exist.
 2026-10-06 playtest revision: every deflector pair moves 4 logical pixels downward so its inner face is shielded by the physical peg. Early Return uses the per-level retention above. The paid-board fingerprint includes the retention map and physical geometry; pre-revision paid worlds retain their exact old config and solver state until durably empty. Evidence and remaining balance limits: [implementation verification](reports/physics/2026-10-06-implementation/README.md).
 
 2026-10-06 progression candidate changes only purchased pocket multipliers (see BALANCE_V0.md and numeric config): stronger early center/inner pockets, lower late edge payouts. Pocket table is already included in the paid-board fingerprint. The resolver preserves the pre-change table, including all older known physical revisions, until paid roots finish. Physics and upgrade prices are unchanged.
+
+## 2026-10-07 user-authorized capacity progression
+
+New runs start with two paid-root places. Capacity upgrades unlock three, four, then six places; prices live in `balance.v0.json`. One click purchases one launch, never a free batch. Each finished lineage frees one place; descendants retain their root ownership and do not count as new paid launches. Purchases use the normal pending/Barry/event/terminal locks. Saves without `plinkoCapacityLevel` retain their previous six places; new/reset runs begin at level zero. Old paid drops settle unchanged, including stakes above a newly reduced limit. The track is absent for historical audit configs without `capacityLevels`.

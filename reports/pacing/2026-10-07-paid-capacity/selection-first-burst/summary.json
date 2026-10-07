@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "paidCapacity": [
+      {
+        "capacity": 3,
+        "price": 5000
+      },
+      {
+        "capacity": 4,
+        "price": 100000
+      },
+      {
+        "capacity": 6,
+        "price": 1000000
+      }
+    ],
+    "capacityPolicy": "first",
+    "purchaseAll": true,
+    "skipFinal": null,
+    "capacityLadder": null,
+    "capacitySemantics": "production capacity",
+    "batches": [
+      6
+    ],
+    "runnerHash": "0835ce810137bce2b567877ae104690c250c47ebaca2c53573c60ff83f7525bb",
+    "paybackPath": null,
+    "approach": "reserve",
+    "configHash": "de195bbd5b40a5c130526e952e211cb3fcd55ac8db419db6ea048473c3531bba",
+    "sourceRevision": "63bf0f812cc3d231b59f516bdd22aafd0e8b42ba",
+    "perVariant": 8,
+    "seedStart": 67128000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "burst",
+    "launchPolicy": "bounded bursts then drain",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "wins": 8,
+      "medianWinMinutes": 14.33361111111111,
+      "medianWinWork": 8.5,
+      "medianWinRecovery": 11,
+      "medianWinDrops": 208,
+      "medianAllMinutes": 14.33361111111111
+    }
+  ]
+}

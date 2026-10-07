@@ -103,9 +103,9 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 | 1 | 2 500 ₽ | 500 ₽ |
 | 2 | 12 500 ₽ | 1 800 ₽ |
 | 3 | 30 000 ₽ | 7 000 ₽ |
-| 4 | 60 000 ₽ | 250 000 ₽ |
-| 5 | 120 000 ₽ | 1 500 000 ₽ |
-| 6 | 240 000 ₽ | 6 000 000 ₽ |
+| 4 | 40 000 ₽ | 250 000 ₽ |
+| 5 | 65 000 ₽ | 1 500 000 ₽ |
+| 6 | 100 000 ₽ | 6 000 000 ₽ |
 
 **Price provenance:** 2026-10-05 economy candidate, SHA-256 `53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc`. See [selection and independent comparison](reports/pacing/2026-10-05-economy/README.md). First-level board prices, center and Insurance are unchanged. Other board tracks cost ×2/×4/×8/×12 at levels 2/3/4/5 relative to the previous config; effects and physics are unchanged. Purchased levels survive; future stakes use the new caps, while already-paid stakes retain their original amounts. Human pacing and continuous-burst dominance remain open.
 
@@ -140,3 +140,9 @@ Pocket upgrades now redistribute income from rare edges toward earlier regular r
 - Edge I/II/III: 16× / 22× / 32× (previously 25× / 50× / 100×).
 
 Prices, max bets, physical routes, base board and special effects are unchanged. Current paid roots retain the old multiplier table; the next paid world uses the candidate. [Payback and matched progression evidence](reports/pacing/2026-10-06-payback/README.md). This candidate improves sampled purchase-gap/final-phase distribution during concurrent play but increases modeled survival and slows solo play. The ~30-minute pacing and challenge gates remain OPEN; this is not a balance freeze.
+
+## 2026-10-07 paid capacity playtest candidate
+
+New runs start with two simultaneous paid launches. The “Больше шаров” track unlocks 3 / 4 / 6 places for 5,000 / 25,000 / 1,000,000 ₽. Each click still buys exactly one root; Splitter descendants do not consume paid-root places. Late stake caps are 40,000 / 65,000 / 100,000 ₽; existing max-bet upgrade prices are unchanged. Old saves without the capacity field retain six places, and already-paid roots retain their original stake and payout rules.
+
+This is a user-authorized playtest candidate, not accepted final balance. Diverse-seed simulation evidence and remaining policy/pacing risks are recorded in [the final candidate audit](reports/pacing/2026-10-07-final-check/README.md). Human pacing (T071), long gaps between upgrades and optimal purchase/launch policy remain open.

@@ -4,7 +4,7 @@ import { createInitialGameState } from '../src/core/state/GameState';
 import { runContinuousSession } from '../simulation/full-game/continuousSession';
 
 it('reuses freed slots, then drains every paid root before allowing a purchase', () => {
-  const initial = { ...createInitialGameState(balance, 67111001), cash: 100_000 };
+  const initial = { ...createInitialGameState(balance, 67111001), cash: 100_000, plinkoCapacityLevel: 3 };
   const result = runContinuousSession(initial, balance, .25, current => current.launches < 12
     ? { type:'PLINKO', fraction:.25 } : { type:'BUY_PLINKO_MAX_BET' });
   expect(result.launches).toBe(12);
@@ -19,7 +19,7 @@ it('reuses freed slots, then drains every paid root before allowing a purchase',
 });
 
 it('stops adding roots at a recovery intention, without discarding the paid root', () => {
-  const initial = { ...createInitialGameState(balance, 67111002), cash: 100_000 };
+  const initial = { ...createInitialGameState(balance, 67111002), cash: 100_000, plinkoCapacityLevel: 3 };
   const result = runContinuousSession(initial, balance, .5, () => ({type:'SLEEP'}));
   expect(result.launches).toBe(1);
   expect(result.settlements).toHaveLength(1);

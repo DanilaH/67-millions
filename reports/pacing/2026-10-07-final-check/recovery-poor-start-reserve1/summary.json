@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "strategy": "cheapest",
+    "reserveScale": 1,
+    "seedSampling": "sha256 seedStart:index first uint32, zero mapped to one",
+    "paidCapacity": [
+      {
+        "capacity": 3,
+        "price": 5000
+      },
+      {
+        "capacity": 4,
+        "price": 25000
+      },
+      {
+        "capacity": 6,
+        "price": 1000000
+      }
+    ],
+    "capacityPolicy": "cheapest",
+    "purchaseAll": true,
+    "skipFinal": null,
+    "capacityLadder": null,
+    "capacitySemantics": "production capacity",
+    "batches": [
+      6
+    ],
+    "runnerHash": "c9cfb67f66f3dd47d9a9bbe4796897a784974cc81b8fbc144209468fb6058128",
+    "paybackPath": null,
+    "approach": "reserve",
+    "configHash": "5119e064001cd6623968692bf629bdd7a029242096a6d39421c955c5712b7d85",
+    "sourceRevision": "83155d8b304d3575583a211fee35f676622c83f1",
+    "perVariant": 40,
+    "seedStart": 67132000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "continuous",
+    "launchPolicy": "recheck every 15 ticks; drain for recovery/event/purchase/victory; preserve liquidity reserve, drain on work intention; no purchases while active",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 40
+      },
+      "wins": 40,
+      "medianWinMinutes": 19.648611111111116,
+      "medianWinWork": 10,
+      "medianWinRecovery": 15.5,
+      "medianWinDrops": 262,
+      "medianAllMinutes": 19.648611111111116
+    }
+  ]
+}

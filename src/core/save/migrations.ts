@@ -59,6 +59,7 @@ const v2GameSchema = z.object({
 
 const v3GameSchema = v2GameSchema.extend({
   plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+  plinkoCapacityLevel: z.number().int().min(0).max(3).default(3),
   plinkoMaxBetLevel: z.number().int().nonnegative(),
 });
 
@@ -317,6 +318,7 @@ const addPlinkoDefaults = <T extends object>(game: T) => ({
   ...ZERO_DUMPSTER_STREAK,
   jobLevels: INITIAL_JOB_LEVELS,
   plinkoSelectedBetFraction: 1 as const,
+  plinkoCapacityLevel: 3,
   plinkoMaxBetLevel: 0,
   ...ZERO_GAME_POCKET_LEVELS,
   ...ZERO_GAME_SPECIAL_LEVELS,

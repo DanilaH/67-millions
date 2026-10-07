@@ -13,7 +13,7 @@ export type GameEvent =
   | 'near_bankruptcy' | 'main_debt_ready' | 'main_debt_paid';
 
 const upgrades = {
-  maxBet: 'plinkoMaxBetLevel', center: 'plinkoCenterLevel', mid: 'plinkoMidLevel',
+  capacity: 'plinkoCapacityLevel', maxBet: 'plinkoMaxBetLevel', center: 'plinkoCenterLevel', mid: 'plinkoMidLevel',
   jackpot: 'plinkoJackpotLevel', amplifier: 'plinkoAmplifierLevel', return: 'plinkoReturnLevel',
   splitter: 'plinkoSplitterLevel', jackpotBias: 'plinkoJackpotBiasLevel', insurance: 'plinkoInsuranceLevel',
 } as const;

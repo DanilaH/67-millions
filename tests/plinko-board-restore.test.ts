@@ -44,7 +44,7 @@ describe('paid board compatibility after calibration', () => {
     if (revision !== 'pockets' && revision !== 'feedback') old.plinko.splitter = structuredClone(legacySpecials.splitter);
     if (revision === 'physics' || revision === 'deflectors') old.plinko.physicsSeed = structuredClone(legacyPhysics);
     if (revision === 'deflectors') old.plinko.jackpotBias.forEach((l,i) => { l.deflectorPairs = structuredClone(legacyPairs[i]!); });
-    const original = createSharedWorld({ ...createInitialGameState(old, 67105001), cash: 100000, plinkoCenterLevel:2, plinkoMidLevel:3, plinkoJackpotLevel:3,
+    const original = createSharedWorld({ ...createInitialGameState(old, 67105001), cash: 100000, plinkoCapacityLevel: 3, plinkoCenterLevel:2, plinkoMidLevel:3, plinkoJackpotLevel:3,
       plinkoAmplifierLevel: 5, plinkoReturnLevel: returnLevel, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 }, old);
     for (let i=0;i<6;i++) { expect(original.launch(1)).toBe(true); for(let t=0;t<15;t++) original.step(); }
     const checkpoint = original.snapshot();

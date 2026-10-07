@@ -1,0 +1,520 @@
+{
+  "groups": [
+    {
+      "scenario": "price-100000-burst",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "winMinutesP10": 13.45638888888889,
+      "winMinutesP90": 17.362222222222222,
+      "allLongestGapP90": 3.390833333333333,
+      "allLongestGapMax": 3.6361111111111106,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.8611111111111107,
+      "lossSeeds": []
+    },
+    {
+      "scenario": "price-100000-continuous",
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 19
+      },
+      "winMinutesP10": 15.107777777777779,
+      "winMinutesP90": 21.65916666666666,
+      "allLongestGapP90": 4.379444444444446,
+      "allLongestGapMax": 5.80111111111111,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.4247222222222184,
+      "lossSeeds": [
+        477843731
+      ]
+    },
+    {
+      "scenario": "price-25000-burst",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "winMinutesP10": 14.221666666666666,
+      "winMinutesP90": 18.43361111111111,
+      "allLongestGapP90": 3.4644444444444438,
+      "allLongestGapMax": 4.655277777777778,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 2.0816666666666634,
+      "lossSeeds": []
+    },
+    {
+      "scenario": "price-25000-continuous",
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 19
+      },
+      "winMinutesP10": 15.922500000000003,
+      "winMinutesP90": 22.467777777777776,
+      "allLongestGapP90": 4.264444444444445,
+      "allLongestGapMax": 5.80111111111111,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.5566666666666684,
+      "lossSeeds": [
+        477843731
+      ]
+    },
+    {
+      "scenario": "price-50000-burst",
+      "outcomes": {
+        "VICTORY": 20
+      },
+      "winMinutesP10": 14.329444444444444,
+      "winMinutesP90": 18.02777777777778,
+      "allLongestGapP90": 3.390833333333333,
+      "allLongestGapMax": 3.6361111111111106,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 2.0797222222222214,
+      "lossSeeds": []
+    },
+    {
+      "scenario": "price-50000-continuous",
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 19
+      },
+      "winMinutesP10": 17.123055555555553,
+      "winMinutesP90": 20.753055555555555,
+      "allLongestGapP90": 5.198333333333335,
+      "allLongestGapMax": 6.445277777777778,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.5347222222222214,
+      "lossSeeds": [
+        343490132
+      ]
+    },
+    {
+      "scenario": "recovery-candidate-reserve0",
+      "outcomes": {
+        "BARRY_LOSS": 25,
+        "HP_DEATH": 1,
+        "VICTORY": 14
+      },
+      "winMinutesP10": 14.749722222222221,
+      "winMinutesP90": 20.263888888888893,
+      "allLongestGapP90": 5.469444444444444,
+      "allLongestGapMax": 7.886944444444447,
+      "initialPurchaseP90": 2.636111111111111,
+      "finalNoPurchaseP90": 7.015555555555555,
+      "lossSeeds": [
+        3611548061,
+        53515505,
+        1766446266,
+        1635156569,
+        266226300,
+        139329263,
+        44923939,
+        3101426912,
+        3929170258,
+        1912087509,
+        2154043303,
+        969198157,
+        2286903506,
+        3480343998,
+        2169461546,
+        2243762854,
+        4184682082,
+        257731858,
+        3670423801,
+        87474069,
+        3277907857,
+        145861132,
+        1284204064,
+        1338881220,
+        3963515394,
+        1567449600
+      ]
+    },
+    {
+      "scenario": "recovery-candidate-reserve1",
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 39
+      },
+      "winMinutesP10": 15.849166666666662,
+      "winMinutesP90": 22.11166666666667,
+      "allLongestGapP90": 4.310555555555556,
+      "allLongestGapMax": 6.003333333333334,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.5905555555555573,
+      "lossSeeds": [
+        3277907857
+      ]
+    },
+    {
+      "scenario": "recovery-poor-start-reserve0",
+      "outcomes": {
+        "BARRY_LOSS": 23,
+        "HP_DEATH": 2,
+        "VICTORY": 15
+      },
+      "winMinutesP10": 14.170555555555556,
+      "winMinutesP90": 22.70888888888889,
+      "allLongestGapP90": 5.02805555555556,
+      "allLongestGapMax": 8.792777777777781,
+      "initialPurchaseP90": 2.416388888888889,
+      "finalNoPurchaseP90": 5.226111111111109,
+      "lossSeeds": [
+        3611548061,
+        53515505,
+        1766446266,
+        1635156569,
+        139329263,
+        44923939,
+        3101426912,
+        1912087509,
+        2154043303,
+        969198157,
+        2286903506,
+        3480343998,
+        2169461546,
+        2243762854,
+        4184682082,
+        257731858,
+        3670423801,
+        87474069,
+        3277907857,
+        145861132,
+        1284204064,
+        1338881220,
+        2299677854,
+        3162661606,
+        1567449600
+      ]
+    },
+    {
+      "scenario": "recovery-poor-start-reserve1",
+      "outcomes": {
+        "VICTORY": 40
+      },
+      "winMinutesP10": 14.61361111111111,
+      "winMinutesP90": 23.488055555555555,
+      "allLongestGapP90": 4.2058333333333335,
+      "allLongestGapMax": 6.010000000000002,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.5886111111111099,
+      "lossSeeds": []
+    },
+    {
+      "scenario": "stress-cheapest-reserve0",
+      "outcomes": {
+        "BARRY_LOSS": 21,
+        "HP_DEATH": 1,
+        "VICTORY": 18
+      },
+      "winMinutesP10": 13.939999999999998,
+      "winMinutesP90": 23.900555555555552,
+      "allLongestGapP90": 4.429444444444445,
+      "allLongestGapMax": 7.44472222222222,
+      "initialPurchaseP90": 2.5186111111111114,
+      "finalNoPurchaseP90": 7.048333333333334,
+      "lossSeeds": [
+        4282720256,
+        256560347,
+        1283926200,
+        2834726383,
+        3199702198,
+        3090153939,
+        2855245301,
+        1310611398,
+        1781185941,
+        793342592,
+        2504952015,
+        547771961,
+        1435351719,
+        3057520989,
+        48983982,
+        630596433,
+        2465050986,
+        2520682074,
+        852571131,
+        2407774775,
+        289126845,
+        1163517056
+      ]
+    },
+    {
+      "scenario": "stress-cheapest-reserve1",
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 39
+      },
+      "winMinutesP10": 15.278055555555557,
+      "winMinutesP90": 21.994722222222222,
+      "allLongestGapP90": 4.17861111111111,
+      "allLongestGapMax": 5.779444444444442,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.6547222222222224,
+      "lossSeeds": [
+        1674652233
+      ]
+    },
+    {
+      "scenario": "stress-specials-first-reserve0",
+      "outcomes": {
+        "BARRY_LOSS": 30,
+        "HP_DEATH": 2,
+        "VICTORY": 8
+      },
+      "winMinutesP10": 16.468888888888888,
+      "winMinutesP90": 19.629166666666666,
+      "allLongestGapP90": 3.4741666666666666,
+      "allLongestGapMax": 5.740555555555558,
+      "initialPurchaseP90": 2.5186111111111114,
+      "finalNoPurchaseP90": 6.98027777777778,
+      "lossSeeds": [
+        4282720256,
+        256560347,
+        1283926200,
+        2834726383,
+        3199702198,
+        3060040993,
+        3090153939,
+        982426425,
+        2855245301,
+        1310611398,
+        1301390044,
+        1781185941,
+        1362912587,
+        793342592,
+        2504952015,
+        220076048,
+        547771961,
+        1435351719,
+        322094660,
+        3057520989,
+        200056781,
+        48983982,
+        630596433,
+        107977856,
+        2465050986,
+        2520682074,
+        392477257,
+        852571131,
+        2407774775,
+        289126845,
+        2235471949,
+        1163517056
+      ]
+    },
+    {
+      "scenario": "stress-specials-first-reserve1",
+      "outcomes": {
+        "VICTORY": 40
+      },
+      "winMinutesP10": 16.435555555555556,
+      "winMinutesP90": 24.203333333333333,
+      "allLongestGapP90": 4.581111111111111,
+      "allLongestGapMax": 5.138333333333331,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.6424999999999983,
+      "lossSeeds": []
+    },
+    {
+      "scenario": "stress-stake-first-reserve0",
+      "outcomes": {
+        "BARRY_LOSS": 29,
+        "HP_DEATH": 2,
+        "VICTORY": 9
+      },
+      "winMinutesP10": 14.496944444444443,
+      "winMinutesP90": 18.373055555555556,
+      "allLongestGapP90": 3.425555555555556,
+      "allLongestGapMax": 5.740555555555558,
+      "initialPurchaseP90": 2.5186111111111114,
+      "finalNoPurchaseP90": 5.839444444444444,
+      "lossSeeds": [
+        4282720256,
+        256560347,
+        1283926200,
+        2834726383,
+        3199702198,
+        3060040993,
+        3090153939,
+        982426425,
+        1310611398,
+        1301390044,
+        1781185941,
+        1362912587,
+        793342592,
+        2504952015,
+        220076048,
+        547771961,
+        1435351719,
+        322094660,
+        3057520989,
+        200056781,
+        48983982,
+        630596433,
+        107977856,
+        2465050986,
+        2520682074,
+        392477257,
+        852571131,
+        2407774775,
+        289126845,
+        2235471949,
+        1163517056
+      ]
+    },
+    {
+      "scenario": "stress-stake-first-reserve1",
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 39
+      },
+      "winMinutesP10": 15.387222222222222,
+      "winMinutesP90": 22.150555555555556,
+      "allLongestGapP90": 4.241388888888889,
+      "allLongestGapMax": 5.779444444444442,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 1.6102777777777781,
+      "lossSeeds": [
+        1674652233
+      ]
+    },
+    {
+      "scenario": "stress-stop-at-12-reserve0",
+      "outcomes": {
+        "BARRY_LOSS": 39,
+        "HP_DEATH": 1
+      },
+      "winMinutesP10": null,
+      "winMinutesP90": null,
+      "allLongestGapP90": 4.429444444444445,
+      "allLongestGapMax": 7.44472222222222,
+      "initialPurchaseP90": 2.5186111111111114,
+      "finalNoPurchaseP90": 47.6786111111111,
+      "lossSeeds": [
+        3749179945,
+        4282720256,
+        256560347,
+        1283926200,
+        2834726383,
+        3199702198,
+        3060040993,
+        3090153939,
+        1674652233,
+        982426425,
+        2855245301,
+        1310611398,
+        1301390044,
+        1739030539,
+        1781185941,
+        1362912587,
+        793342592,
+        2504952015,
+        220076048,
+        547771961,
+        3519291426,
+        1435351719,
+        322094660,
+        261725492,
+        3057520989,
+        4058814904,
+        3637452683,
+        200056781,
+        48983982,
+        2095224392,
+        630596433,
+        107977856,
+        2465050986,
+        2520682074,
+        392477257,
+        852571131,
+        2407774775,
+        289126845,
+        2235471949,
+        1163517056
+      ]
+    },
+    {
+      "scenario": "stress-stop-at-12-reserve1",
+      "outcomes": {
+        "BARRY_LOSS": 40
+      },
+      "winMinutesP10": null,
+      "winMinutesP90": null,
+      "allLongestGapP90": 4.17861111111111,
+      "allLongestGapMax": 5.779444444444442,
+      "initialPurchaseP90": 1.6333333333333333,
+      "finalNoPurchaseP90": 47.03416666666665,
+      "lossSeeds": [
+        3749179945,
+        4282720256,
+        256560347,
+        1283926200,
+        2834726383,
+        3199702198,
+        3060040993,
+        3090153939,
+        1674652233,
+        982426425,
+        2855245301,
+        1310611398,
+        1301390044,
+        1739030539,
+        1781185941,
+        1362912587,
+        793342592,
+        2504952015,
+        220076048,
+        547771961,
+        3519291426,
+        1435351719,
+        322094660,
+        261725492,
+        3057520989,
+        4058814904,
+        3637452683,
+        200056781,
+        48983982,
+        2095224392,
+        630596433,
+        107977856,
+        2465050986,
+        2520682074,
+        392477257,
+        852571131,
+        2407774775,
+        289126845,
+        2235471949,
+        1163517056
+      ]
+    }
+  ],
+  "pricePairs": [
+    {
+      "mode": "burst",
+      "price": 25000,
+      "commonWins": 20,
+      "deltaMinutes": 0.26166666666667027,
+      "deltaLongestGap": 0.0
+    },
+    {
+      "mode": "burst",
+      "price": 50000,
+      "commonWins": 20,
+      "deltaMinutes": -0.26263888888888953,
+      "deltaLongestGap": 0.0
+    },
+    {
+      "mode": "continuous",
+      "price": 25000,
+      "commonWins": 19,
+      "deltaMinutes": 0.48416666666666686,
+      "deltaLongestGap": 0.0
+    },
+    {
+      "mode": "continuous",
+      "price": 50000,
+      "commonWins": 18,
+      "deltaMinutes": 0.13708333333332945,
+      "deltaLongestGap": 0.0
+    }
+  ]
+}

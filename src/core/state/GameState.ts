@@ -65,6 +65,7 @@ export interface GameState {
   lastResolvedEventId: string | null;
   eventModifiers: EventModifiersState;
   plinkoSelectedBetFraction: 0.25 | 0.5 | 1;
+  plinkoCapacityLevel: number;
   plinkoMaxBetLevel: number;
   plinkoCenterLevel: number;
   plinkoMidLevel: number;
@@ -121,6 +122,7 @@ export const createInitialGameState = (
     foodPriceMultiplier: null,
   },
   plinkoSelectedBetFraction: 1,
+  plinkoCapacityLevel: 0,
   plinkoMaxBetLevel: 0,
   plinkoCenterLevel: 0,
   plinkoMidLevel: 0,

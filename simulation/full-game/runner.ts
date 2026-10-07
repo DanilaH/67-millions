@@ -1,3 +1,4 @@
+import { debitCash } from '../../src/core/economy/money';
 import { WorkMinigameClock } from '../../src/core/work/WorkMinigameClock';
 import { ActiveTimeAccumulator } from '../../src/core/time/ActiveTimeAccumulator';
 import type { BalanceConfig } from '../../src/config/balance.schema';
@@ -81,6 +82,7 @@ export type FullGameDecision =
   | { type: 'PLINKO'; fraction?: BetFraction }
   | { type: 'EVENT_CHOICE'; choice: EventChoiceId }
   | { type: 'BUY_JOB_UPGRADE'; jobId: JobId }
+  | { type: 'AUDIT_BUY_CAPACITY'; price:number; capacity:number }
   | { type: 'BUY_PLINKO_MAX_BET' }
   | { type: 'BUY_PLINKO_POCKET'; track: PocketUpgradeTrack }
   | { type: 'BUY_PLINKO_SPECIAL'; track: SpecialUpgradeTrack }
@@ -157,6 +159,7 @@ export interface FullGameRunnerOptions {
   maxDecisions?: number;
   maxGameMinutes?: number;
   execution?: {
+    onAuditCapacityPurchase?: (capacity:number) => void;
     decisionSeconds: number;
     workSeconds: (jobId: JobId) => number;
     plinko: (state: GameState, fraction: BetFraction) => {
@@ -785,6 +788,15 @@ export const runFullGame = (
       continue;
     }
 
+    if(decision.type==='AUDIT_BUY_CAPACITY'){
+      if(!options.execution?.onAuditCapacityPurchase || !Number.isInteger(decision.price) || decision.price<=0 || !Number.isInteger(decision.capacity)||decision.capacity<3||decision.capacity>6 || runner.game.eventModifiers.plinkoLockRemainingMinutes>0)throw Error('Invalid diagnostic capacity purchase');
+      const cash=debitCash(runner.game.cash,decision.price);
+      options.execution.onAuditCapacityPurchase(decision.capacity);
+      runner={...runner,game:{...runner.game,cash}};
+      counters.purchases++;
+      diagnostics.upgradeOrder.push(`audit:capacity:${decision.capacity}`);
+      continue;
+    }
     if (decision.type === 'BUY_PLINKO_MAX_BET') {
       counters.purchases += 1;
       const nextGame = purchaseMaxBetUpgrade(

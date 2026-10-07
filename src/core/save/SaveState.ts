@@ -60,6 +60,7 @@ const gameStateSchema = z.object({
     }).nullable(),
   }),
   plinkoSelectedBetFraction: z.union([z.literal(0.25), z.literal(0.5), z.literal(1)]),
+  plinkoCapacityLevel: z.number().int().min(0).max(3).default(3),
   plinkoMaxBetLevel: z.number().int().nonnegative(),
   plinkoCenterLevel: z.number().int().nonnegative(),
   plinkoMidLevel: z.number().int().nonnegative(),

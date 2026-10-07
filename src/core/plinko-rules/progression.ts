@@ -289,3 +289,25 @@ export const purchaseInsuranceUpgrade = (
     plinkoInsuranceLevel: next.level,
   }));
 };
+
+/** Historical configs without the track retain their original concurrency limit. */
+export const getLaunchCapacity = (
+  config: BalanceConfig,
+  state: Pick<GameState, 'plinkoCapacityLevel'>,
+): number => {
+  if (!config.plinko.capacityLevels) return config.plinko.maxConcurrentDrops;
+  const level = config.plinko.capacityLevels.find(entry => entry.level === state.plinkoCapacityLevel);
+  if (!level) throw new RangeError(`Unknown capacity level ${state.plinkoCapacityLevel}`);
+  return Math.min(level.capacity, config.plinko.maxConcurrentDrops);
+};
+
+export const purchaseCapacityUpgrade = (
+  state: GameState,
+  pending: PendingDrop | null,
+  config: BalanceConfig,
+): GameState => {
+  assertPurchasable(state, pending);
+  const next = config.plinko.capacityLevels?.find(entry => entry.level === state.plinkoCapacityLevel + 1);
+  if (!next) throw new Error('Capacity track is already maxed');
+  return buy(state, next.price, paid => ({ ...paid, plinkoCapacityLevel: next.level }));
+};

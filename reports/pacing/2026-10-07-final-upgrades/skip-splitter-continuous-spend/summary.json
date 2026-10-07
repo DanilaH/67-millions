@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "purchaseAll": true,
+    "skipFinal": "splitter",
+    "capacityLadder": null,
+    "capacitySemantics": "production capacity",
+    "batches": [
+      6
+    ],
+    "runnerHash": "bcb85a86b975de7bc8c53bace6f088ac0999d8c89f22744c19af62fcd2cdbc34",
+    "paybackPath": null,
+    "approach": "reserve",
+    "configHash": "de195bbd5b40a5c130526e952e211cb3fcd55ac8db419db6ea048473c3531bba",
+    "sourceRevision": "b2ea80e03ebdf18aeb0554305f5b8ce74ae7a7d0",
+    "perVariant": 12,
+    "seedStart": 67126000,
+    "archetype": "BASELINE_GROWTH",
+    "maxBetReserveBets": 1,
+    "decisionSeconds": 2,
+    "courierSecondsAssumed": 30,
+    "workTimers": "dishes/trash full configured duration, not measured human completion",
+    "launchSpacingSeconds": 0.25,
+    "mode": "continuous-spend",
+    "launchPolicy": "recheck every 15 ticks; drain for recovery/event/purchase/victory; reuse original fraction without cash reserve inside session; no purchases while active",
+    "fixedHz": 60,
+    "limitations": "No offline time; no loading/render/save latency. Decision delay and courier duration are assumptions; menu delay clock carry unified instead of per scene. Income drawdown diagnostics are not sampled inside shared bursts."
+  },
+  "summaries": [
+    {
+      "batch": 6,
+      "order": "original",
+      "outcomes": {
+        "VICTORY": 12
+      },
+      "wins": 12,
+      "medianWinMinutes": 11.48013888888889,
+      "medianWinWork": 7.5,
+      "medianWinRecovery": 13,
+      "medianWinDrops": 258,
+      "medianAllMinutes": 11.48013888888889
+    }
+  ]
+}

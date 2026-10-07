@@ -6,7 +6,7 @@ import {
   type PendingDrop,
 } from '../../core/plinko-rules/drop';
 import {
-  getMaxBetForLevel,
+  getMaxBetForLevel, getLaunchCapacity, purchaseCapacityUpgrade,
   derivePocketMultipliers,
   getPocketUpgradeLevels,
   purchaseInsuranceUpgrade,
@@ -28,6 +28,7 @@ export interface CasinoQuickBetPreview {
 }
 
 export type CasinoUpgradeId =
+  | 'capacity'
   | 'maxBet'
   | PocketUpgradeTrack
   | SpecialUpgradeTrack
@@ -85,7 +86,7 @@ const quickBetLock = (
   pendingDrop: PendingDrop | null,
   config: BalanceConfig,
 ): string | null => {
-  if (!canLaunchDrop(pendingDrop, config)) {
+  if (!canLaunchDrop(pendingDrop, config, state)) {
     return 'ДОСКА ЗАПОЛНЕНА — ДОЖДИСЬ ШАРА';
   }
   if (state.barryInterruptPending) {
@@ -166,6 +167,14 @@ const SPECS: readonly UpgradeSpec[] = [
         config,
         state.plinkoMaxBetLevel,
       ).toLocaleString('ru-RU')} ₽`,
+  },
+  {
+    id: 'capacity',
+    title: 'Больше шаров',
+    currentLevel: state => state.plinkoCapacityLevel,
+    levels: config => config.plinko.capacityLevels ?? [],
+    validate: purchaseCapacityUpgrade,
+    detail: (state, config) => `Одновременно: ${getLaunchCapacity(config, state)} · каждый шар оплачивается`,
   },
   {
     id: 'center',
@@ -292,6 +301,7 @@ const SPECS: readonly UpgradeSpec[] = [
 ];
 
 const describeNextEffect = (id: CasinoUpgradeId, state: GameState, config: BalanceConfig, nextLevel: number): string => {
+  if (id === 'capacity') return `Одновременно: ${getLaunchCapacity(config,state)} → ${getLaunchCapacity(config,{plinkoCapacityLevel:nextLevel})}\nКаждый шар — своя ставка`;
   if (id === 'maxBet') return `Ставка до ${getMaxBetForLevel(config, nextLevel).toLocaleString('ru-RU')} ₽\nШансы не меняются`;
   if (id === 'center' || id === 'mid' || id === 'jackpot') {
     const levels = getPocketUpgradeLevels(state);
@@ -325,7 +335,7 @@ export const buildCasinoUpgradePreviews = (
   pendingDrop: PendingDrop | null,
   config: BalanceConfig,
 ): CasinoUpgradePreview[] =>
-  SPECS.map((spec) => {
+  SPECS.filter(spec => spec.id !== 'capacity' || config.plinko.capacityLevels).map((spec) => {
     const currentLevel = spec.currentLevel(state);
     const levels = spec.levels(config);
     const maxLevel = levels.at(-1)?.level ?? 0;

@@ -35,7 +35,7 @@ describe('independent concurrent paid launches', () => {
       pending = removeSettledDrop(pending, pending.dropId);
     }
     for (let i = 0; i < 5; i += 1) pending = appendDrop(pending, shot(`cap-${i}`));
-    expect(canLaunchDrop(pending, balance)).toBe(false);
+    expect(canLaunchDrop(pending, balance, {plinkoCapacityLevel:3})).toBe(false);
   });
 
   it('waits for the final paid lineage at Barry and carries remaining action time', () => {

@@ -1,3 +1,4 @@
+import { getLaunchCapacity, purchaseCapacityUpgrade } from '../core/plinko-rules/progression';
 import { createBarryMinigameOverlay, type BarryMinigameOverlay } from './work/createBarryMinigameOverlay';
 import { createCasinoRoom } from './casino/createCasinoRoom';
 import { PersistentHud } from './ui/PersistentHud';
@@ -336,7 +337,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.boardConfig = resolvePendingBoardConfig(balance, this.save.pendingDrop);
     if (isPlinkoPerfMode() && new URLSearchParams(window.location.search).get('stress') === '24') {
       this.save = { version: SAVE_VERSION, activeAction: null, pendingDrop: null, game: {
-        ...createInitialGameState(this.boardConfig, 67072000), cash: 50_000_000,
+        ...createInitialGameState(this.boardConfig, 67072000), cash: 50_000_000, plinkoCapacityLevel: 3,
         plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3,
         plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5,
         plinkoJackpotBiasLevel: 4,
@@ -637,7 +638,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         g.lineBetween(bar.x - dx, bar.y - dy, bar.x + dx, bar.y + dy);
       }
     } else {
-      if (id === 'maxBet') g.strokeRoundedRect(352, 672, 577, 46, 8);
+      if (id === 'maxBet' || id === 'capacity') g.strokeRoundedRect(352, 672, 577, 46, 8);
       else g.strokeRoundedRect(22, 600, 296, 65, 8);
     }
     this.game.canvas.setAttribute('data-upgrade-highlight', id);
@@ -654,7 +655,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
       const purchased = buildCasinoUpgradePreviews(this.save.game, this.save.pendingDrop, this.boardConfig).find(preview => preview.id === id);
       let game = this.save.game;
 
-      if (id === 'maxBet') {
+      if (id === 'capacity') {
+        game = purchaseCapacityUpgrade(game, this.save.pendingDrop, this.boardConfig);
+      } else if (id === 'maxBet') {
         game = purchaseMaxBetUpgrade(
           game,
           this.save.pendingDrop,
@@ -721,7 +724,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     }
 
     try {
-      if (!canLaunchDrop(this.save.pendingDrop, this.boardConfig)) return;
+      if (!canLaunchDrop(this.save.pendingDrop, this.boardConfig, this.save.game)) return;
       const previous = this.save.pendingDrop;
       const dropId = `${this.save.game.clock.gameDayIndex}:${this.save.game.clock.minuteOfDay}:${this.save.game.rngState}`;
       const committed = commitBareDrop(this.save.game, null, this.boardConfig, dropId, fraction);
@@ -1198,7 +1201,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const snapshot = this.visualSnapshot;
     this.casinoHud?.render(this.save.game);
     this.infoText.setText([
-      `На доске: ${activeDrops(this.save.pendingDrop).length} / ${this.boardConfig.plinko.maxConcurrentDrops}`,
+      `На доске: ${activeDrops(this.save.pendingDrop).length} / ${getLaunchCapacity(this.boardConfig, this.save.game)}`,
       ...(snapshot?.insuranceArmed ? ['Щит готов'] : []),
     ]);
 

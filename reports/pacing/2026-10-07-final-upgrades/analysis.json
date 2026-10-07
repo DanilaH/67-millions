@@ -1,0 +1,6296 @@
+{
+  "summaries": [
+    {
+      "scenario": "buy-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.422777777777778,
+        "work": 9.0,
+        "drops": 211.0,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.6677777777777774
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.6905555555555551,
+        "return": 1.1686111111111108,
+        "amplifier": 1.0276388888888892
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.595694444444446,
+        "work": 7.5,
+        "drops": 263.0,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.4155555555555566
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.5027777777777791,
+        "return": 0.9888888888888898,
+        "amplifier": 0.7633333333333336
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 11.546944444444442,
+        "work": 7.0,
+        "drops": 191.0,
+        "longestGap": 1.6080555555555556,
+        "millionToEnd": 2.6626388888888877
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 20,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.660972222222223,
+        "return": 1.056111111111111,
+        "amplifier": 0.8844444444444424
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 9.989027777777778,
+        "work": 6.0,
+        "drops": 222.0,
+        "longestGap": 1.7504166666666667,
+        "millionToEnd": 2.702916666666667
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 20,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.6056944444444454,
+        "return": 0.9602777777777769,
+        "amplifier": 0.887916666666666
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 11.567777777777778,
+        "work": 7.0,
+        "drops": 187.5,
+        "longestGap": 1.6080555555555556,
+        "millionToEnd": 2.474722222222221
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 20,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": 1.3456944444444439,
+        "return": 0.8801388888888884,
+        "amplifier": 0.7241666666666671
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 9.853750000000002,
+        "work": 6.0,
+        "drops": 218.0,
+        "longestGap": 1.7504166666666667,
+        "millionToEnd": 2.739027777777778
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 20,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": 1.2151388888888883,
+        "return": 0.792361111111112,
+        "amplifier": 0.6348611111111122
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 11.51361111111111,
+        "work": 7.0,
+        "drops": 191.0,
+        "longestGap": 1.6080555555555556,
+        "millionToEnd": 2.5977777777777753
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 20,
+        "amplifier": 0
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.8465277777777764,
+        "return": 1.019166666666667,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 9.93847222222222,
+        "work": 6.0,
+        "drops": 222.5,
+        "longestGap": 1.7504166666666667,
+        "millionToEnd": 2.5806944444444446
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 20,
+        "amplifier": 0
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.6359722222222217,
+        "return": 0.898472222222221,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 11.655138888888889,
+        "work": 7.0,
+        "drops": 196.5,
+        "longestGap": 1.6080555555555556,
+        "millionToEnd": 2.6269444444444443
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 0,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.8197222222222216,
+        "return": null,
+        "amplifier": 1.1230555555555553
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 9.854861111111113,
+        "work": 6.0,
+        "drops": 218.0,
+        "longestGap": 1.7504166666666667,
+        "millionToEnd": 2.6145833333333344
+      },
+      "purchases": {
+        "splitter": 20,
+        "return": 0,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.5994444444444458,
+        "return": null,
+        "amplifier": 0.8343055555555563
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 11.412222222222223,
+        "work": 7.0,
+        "drops": 187.5,
+        "longestGap": 1.6080555555555556,
+        "millionToEnd": 2.3362499999999997
+      },
+      "purchases": {
+        "splitter": 0,
+        "return": 20,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": null,
+        "return": 0.9241666666666655,
+        "amplifier": 0.7097222222222204
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "runs": 20,
+      "wins": 20,
+      "medians": {
+        "minutes": 9.701111111111112,
+        "work": 6.0,
+        "drops": 213.0,
+        "longestGap": 1.7504166666666667,
+        "millionToEnd": 2.474305555555555
+      },
+      "purchases": {
+        "splitter": 0,
+        "return": 20,
+        "amplifier": 20
+      },
+      "remainingAfterPurchase": {
+        "splitter": null,
+        "return": 0.7650000000000006,
+        "amplifier": 0.7045833333333338
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.366527777777778,
+        "work": 9.0,
+        "drops": 208.5,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.32125
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 1.2279166666666654,
+        "return": 0.841388888888889,
+        "amplifier": 0.6979166666666652
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.463055555555556,
+        "work": 7.5,
+        "drops": 261.0,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.349722222222223
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 1.0934722222222226,
+        "return": 0.6879166666666663,
+        "amplifier": 0.5750000000000011
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.238333333333333,
+        "work": 9.0,
+        "drops": 206.5,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.29125
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.8781944444444445,
+        "return": 0.808472222222222,
+        "amplifier": 0.6309722222222209
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.48013888888889,
+        "work": 7.5,
+        "drops": 257.0,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.3384722222222227
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.9366666666666674,
+        "return": 0.7822222222222219,
+        "amplifier": 0.5987499999999981
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.355,
+        "work": 9.0,
+        "drops": 205.0,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.4098611111111117
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.6011111111111109,
+        "return": 1.023888888888889,
+        "amplifier": 0.8612499999999992
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.513472222222223,
+        "work": 7.5,
+        "drops": 261.0,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.339861111111112
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.6176388888888891,
+        "return": 0.9081944444444439,
+        "amplifier": 0.675416666666667
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.389444444444445,
+        "work": 9.0,
+        "drops": 214.0,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.511805555555555
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 0
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.7076388888888889,
+        "return": 1.0737499999999995,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.483472222222225,
+        "work": 7.5,
+        "drops": 263.0,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.363888888888891
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 12,
+        "amplifier": 0
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.6295833333333336,
+        "return": 0.901944444444446,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.352638888888889,
+        "work": 9.0,
+        "drops": 201.0,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.182777777777777
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 0,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.5881944444444436,
+        "return": null,
+        "amplifier": 0.8298611111111116
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.473333333333333,
+        "work": 7.5,
+        "drops": 258.5,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.374166666666668
+      },
+      "purchases": {
+        "splitter": 12,
+        "return": 0,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": 0.4647222222222247,
+        "return": null,
+        "amplifier": 0.8602777777777781
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 13.132916666666665,
+        "work": 9.0,
+        "drops": 204.5,
+        "longestGap": 2.1479166666666667,
+        "millionToEnd": 2.3412500000000005
+      },
+      "purchases": {
+        "splitter": 0,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": null,
+        "return": 0.9468055555555566,
+        "amplifier": 0.7209722222222226
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "runs": 12,
+      "wins": 12,
+      "medians": {
+        "minutes": 11.48013888888889,
+        "work": 7.5,
+        "drops": 258.0,
+        "longestGap": 2.388472222222222,
+        "millionToEnd": 2.2862500000000003
+      },
+      "purchases": {
+        "splitter": 0,
+        "return": 12,
+        "amplifier": 12
+      },
+      "remainingAfterPurchase": {
+        "splitter": null,
+        "return": 0.7783333333333333,
+        "amplifier": 0.5919444444444446
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "baseline": "buy-burst",
+      "candidate": "price-4000000-burst",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.15625,
+        "work": 0.0,
+        "drops": -4.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.15625
+      }
+    },
+    {
+      "baseline": "buy-burst",
+      "candidate": "price-6000000-burst",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.20194444444444493,
+        "work": 0.0,
+        "drops": -6.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.20194444444444493
+      }
+    },
+    {
+      "baseline": "buy-burst",
+      "candidate": "price-9000000-burst",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.12680555555555717,
+        "work": 0.0,
+        "drops": -5.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.12680555555555717
+      }
+    },
+    {
+      "baseline": "buy-burst",
+      "candidate": "skip-amplifier-burst",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.033333333333333215,
+        "work": 0.0,
+        "drops": 0.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.033333333333333215
+      }
+    },
+    {
+      "baseline": "buy-burst",
+      "candidate": "skip-return-burst",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.23958333333333304,
+        "work": 0.0,
+        "drops": -6.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.23958333333333304
+      }
+    },
+    {
+      "baseline": "buy-burst",
+      "candidate": "skip-splitter-burst",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.20722222222222175,
+        "work": 0.0,
+        "drops": -6.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.20722222222222175
+      }
+    },
+    {
+      "baseline": "buy-continuous-spend",
+      "candidate": "price-4000000-continuous-spend",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.09208333333333218,
+        "work": 0.0,
+        "drops": -1.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.09208333333333218
+      }
+    },
+    {
+      "baseline": "buy-continuous-spend",
+      "candidate": "price-6000000-continuous-spend",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.048333333333332895,
+        "work": 0.0,
+        "drops": -2.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.048333333333332895
+      }
+    },
+    {
+      "baseline": "buy-continuous-spend",
+      "candidate": "price-9000000-continuous-spend",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.06166666666666476,
+        "work": 0.0,
+        "drops": -1.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.06166666666666476
+      }
+    },
+    {
+      "baseline": "buy-continuous-spend",
+      "candidate": "skip-amplifier-continuous-spend",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.075277777777778,
+        "work": 0.0,
+        "drops": 0.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.075277777777778
+      }
+    },
+    {
+      "baseline": "buy-continuous-spend",
+      "candidate": "skip-return-continuous-spend",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.1022222222222231,
+        "work": 0.0,
+        "drops": -0.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.1022222222222231
+      }
+    },
+    {
+      "baseline": "buy-continuous-spend",
+      "candidate": "skip-splitter-continuous-spend",
+      "commonWins": 12,
+      "medianDelta": {
+        "minutes": -0.13375000000000004,
+        "work": 0.0,
+        "drops": -3.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.13375000000000004
+      }
+    },
+    {
+      "baseline": "holdout-buy-burst",
+      "candidate": "holdout-price-4000000-burst",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.08111111111111224,
+        "work": 0.0,
+        "drops": -3.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.08111111111111224
+      }
+    },
+    {
+      "baseline": "holdout-buy-burst",
+      "candidate": "holdout-skip-amplifier-burst",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.033333333333333215,
+        "work": 0.0,
+        "drops": 0.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.033333333333333215
+      }
+    },
+    {
+      "baseline": "holdout-buy-burst",
+      "candidate": "holdout-skip-return-burst",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.038194444444442865,
+        "work": 0.0,
+        "drops": 1.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.038194444444442865
+      }
+    },
+    {
+      "baseline": "holdout-buy-burst",
+      "candidate": "holdout-skip-splitter-burst",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.174027777777777,
+        "work": 0.0,
+        "drops": -6.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.174027777777777
+      }
+    },
+    {
+      "baseline": "holdout-buy-continuous-spend",
+      "candidate": "holdout-price-4000000-continuous-spend",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.04402777777777889,
+        "work": 0.0,
+        "drops": -3.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.04402777777777889
+      }
+    },
+    {
+      "baseline": "holdout-buy-continuous-spend",
+      "candidate": "holdout-skip-amplifier-continuous-spend",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.040277777777778745,
+        "work": 0.0,
+        "drops": 0.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.040277777777778745
+      }
+    },
+    {
+      "baseline": "holdout-buy-continuous-spend",
+      "candidate": "holdout-skip-return-continuous-spend",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.1404166666666682,
+        "work": 0.0,
+        "drops": -1.5,
+        "longestGap": 0.0,
+        "millionToEnd": -0.1404166666666682
+      }
+    },
+    {
+      "baseline": "holdout-buy-continuous-spend",
+      "candidate": "holdout-skip-splitter-continuous-spend",
+      "commonWins": 20,
+      "medianDelta": {
+        "minutes": -0.2077777777777774,
+        "work": 0.0,
+        "drops": -7.0,
+        "longestGap": 0.0,
+        "millionToEnd": -0.2077777777777774
+      }
+    }
+  ],
+  "rows": [
+    {
+      "scenario": "buy-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 16.997222222222224,
+      "work": 9,
+      "drops": 277,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 3.099166666666667,
+      "buys": {
+        "splitter": 16.144722222222224,
+        "return": 15.787222222222223,
+        "amplifier": 15.965000000000002
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 12.243888888888888,
+      "work": 7,
+      "drops": 202,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 3.065833333333332,
+      "buys": {
+        "splitter": 11.433055555555557,
+        "return": 10.893888888888888,
+        "amplifier": 11.19888888888889
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.509722222222221,
+      "work": 9,
+      "drops": 166,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.681666666666665,
+      "buys": {
+        "splitter": 10.766944444444444,
+        "return": 10.244444444444444,
+        "amplifier": 10.422777777777776
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.458333333333334,
+      "work": 6,
+      "drops": 225,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.992222222222223,
+      "buys": {
+        "splitter": 12.557777777777778,
+        "return": 12.01361111111111,
+        "amplifier": 12.351666666666665
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.06388888888889,
+      "work": 9,
+      "drops": 247,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.65388888888889,
+      "buys": {
+        "splitter": 13.251944444444446,
+        "return": 12.858611111111111,
+        "amplifier": 13.040833333333333
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.4725,
+      "work": 8,
+      "drops": 194,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 2.016388888888889,
+      "buys": {
+        "splitter": 11.550277777777778,
+        "return": 11.340555555555557,
+        "amplifier": 11.37388888888889
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 13.877500000000001,
+      "work": 11,
+      "drops": 228,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.377777777777778,
+      "buys": {
+        "splitter": 13.306111111111113,
+        "return": 12.94138888888889,
+        "amplifier": 12.974722222222223
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.435,
+      "work": 9,
+      "drops": 157,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 2.0933333333333337,
+      "buys": {
+        "splitter": 11.860833333333334,
+        "return": 11.435277777777777,
+        "amplifier": 11.46861111111111
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.387222222222222,
+      "work": 8,
+      "drops": 220,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.193888888888889,
+      "buys": {
+        "splitter": 12.922499999999998,
+        "return": 12.512222222222222,
+        "amplifier": 12.727222222222222
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 16.05666666666667,
+      "work": 9,
+      "drops": 275,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.717222222222224,
+      "buys": {
+        "splitter": 15.418333333333335,
+        "return": 14.502500000000001,
+        "amplifier": 14.921111111111113
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 9.215833333333334,
+      "work": 6,
+      "drops": 144,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 2.168055555555556,
+      "buys": {
+        "splitter": 8.679166666666667,
+        "return": 8.133611111111112,
+        "amplifier": 8.478333333333333
+      }
+    },
+    {
+      "scenario": "buy-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.354444444444445,
+      "work": 15,
+      "drops": 172,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 2.191111111111111,
+      "buys": {
+        "splitter": 13.875833333333334,
+        "return": 13.486666666666668,
+        "amplifier": 13.520000000000001
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.891111111111112,
+      "work": 4,
+      "drops": 278,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 2.352500000000001,
+      "buys": {
+        "splitter": 10.056111111111113,
+        "return": 9.686666666666667,
+        "amplifier": 10.02277777777778
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 11.009722222222221,
+      "work": 8,
+      "drops": 215,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.961944444444443,
+      "buys": {
+        "splitter": 10.409444444444443,
+        "return": 10.101666666666667,
+        "amplifier": 10.37611111111111
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.03361111111111,
+      "work": 8,
+      "drops": 206,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.830555555555554,
+      "buys": {
+        "splitter": 10.770000000000001,
+        "return": 9.943055555555556,
+        "amplifier": 10.189722222222223
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.405833333333334,
+      "work": 6,
+      "drops": 242,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.478611111111112,
+      "buys": {
+        "splitter": 10.899166666666668,
+        "return": 10.2225,
+        "amplifier": 10.519166666666669
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.126111111111111,
+      "work": 10,
+      "drops": 297,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.76138888888889,
+      "buys": {
+        "splitter": 13.513611111111112,
+        "return": 13.1075,
+        "amplifier": 13.284444444444444
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.904444444444444,
+      "work": 8,
+      "drops": 251,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.8083333333333336,
+      "buys": {
+        "splitter": 11.666944444444445,
+        "return": 11.286388888888888,
+        "amplifier": 11.490833333333333
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 17.04138888888889,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.235277777777778,
+      "buys": {
+        "splitter": 16.791944444444443,
+        "return": 16.366111111111113,
+        "amplifier": 16.399444444444445
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.3,
+      "work": 6,
+      "drops": 212,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.7252777777777784,
+      "buys": {
+        "splitter": 9.850277777777778,
+        "return": 9.309722222222224,
+        "amplifier": 9.615
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.976944444444445,
+      "work": 7,
+      "drops": 275,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.2650000000000006,
+      "buys": {
+        "splitter": 11.473333333333334,
+        "return": 11.2,
+        "amplifier": 11.440000000000001
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.785555555555558,
+      "work": 7,
+      "drops": 278,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.2772222222222247,
+      "buys": {
+        "splitter": 11.28361111111111,
+        "return": 10.798055555555555,
+        "amplifier": 10.831388888888888
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.680555555555555,
+      "work": 5,
+      "drops": 179,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.3513888888888888,
+      "buys": {
+        "splitter": 8.2725,
+        "return": 7.78638888888889,
+        "amplifier": 8.02638888888889
+      }
+    },
+    {
+      "scenario": "buy-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.769444444444446,
+      "work": 16,
+      "drops": 377,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.468055555555557,
+      "buys": {
+        "splitter": 18.076111111111114,
+        "return": 17.69277777777778,
+        "amplifier": 17.8625
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 11.526944444444442,
+      "work": 7,
+      "drops": 183,
+      "longestGap": 2.4088888888888893,
+      "millionToEnd": 2.495833333333332,
+      "buys": {
+        "splitter": 11.067777777777776,
+        "return": 10.306388888888888,
+        "amplifier": 10.654722222222222
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 14.190555555555557,
+      "work": 7,
+      "drops": 224,
+      "longestGap": 2.1991666666666663,
+      "millionToEnd": 2.248055555555556,
+      "buys": {
+        "splitter": 13.514166666666666,
+        "return": 12.810833333333335,
+        "amplifier": 12.986111111111112
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 13.013055555555555,
+      "work": 8,
+      "drops": 201,
+      "longestGap": 2.920277777777778,
+      "millionToEnd": 2.0561111111111092,
+      "buys": {
+        "splitter": 12.36111111111111,
+        "return": 12.117222222222221,
+        "amplifier": 12.327777777777778
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 17.246111111111112,
+      "work": 10,
+      "drops": 291,
+      "longestGap": 2.645,
+      "millionToEnd": 2.9622222222222234,
+      "buys": {
+        "splitter": 15.965,
+        "return": 15.592222222222222,
+        "amplifier": 15.799722222222222
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 12.261666666666667,
+      "work": 9,
+      "drops": 191,
+      "longestGap": 1.6641666666666668,
+      "millionToEnd": 3.588333333333333,
+      "buys": {
+        "splitter": 11.74611111111111,
+        "return": 11.374444444444444,
+        "amplifier": 11.571944444444444
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 13.529444444444444,
+      "work": 7,
+      "drops": 226,
+      "longestGap": 1.0666666666666667,
+      "millionToEnd": 2.809444444444443,
+      "buys": {
+        "splitter": 12.917499999999999,
+        "return": 12.4625,
+        "amplifier": 12.495833333333334
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 12.070833333333333,
+      "work": 8,
+      "drops": 187,
+      "longestGap": 1.5519444444444446,
+      "millionToEnd": 3.0136111111111124,
+      "buys": {
+        "splitter": 11.12888888888889,
+        "return": 10.3525,
+        "amplifier": 10.711666666666668
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 10.03638888888889,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.1180555555555551,
+      "millionToEnd": 2.1730555555555577,
+      "buys": {
+        "splitter": 9.366388888888888,
+        "return": 8.991111111111111,
+        "amplifier": 9.18861111111111
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 15.300833333333333,
+      "work": 11,
+      "drops": 225,
+      "longestGap": 2.9094444444444445,
+      "millionToEnd": 3.073611111111111,
+      "buys": {
+        "splitter": 14.834166666666667,
+        "return": 14.4925,
+        "amplifier": 14.525833333333333
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.807500000000001,
+      "work": 6,
+      "drops": 196,
+      "longestGap": 1.4058333333333328,
+      "millionToEnd": 2.086111111111112,
+      "buys": {
+        "splitter": 10.461944444444445,
+        "return": 10.079722222222221,
+        "amplifier": 10.256944444444445
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 9.305277777777777,
+      "work": 7,
+      "drops": 145,
+      "longestGap": 0.7538888888888889,
+      "millionToEnd": 3.62361111111111,
+      "buys": {
+        "splitter": 8.448055555555555,
+        "return": 8.094444444444443,
+        "amplifier": 8.268611111111111
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 10.761111111111111,
+      "work": 6,
+      "drops": 178,
+      "longestGap": 1.0911111111111111,
+      "millionToEnd": 2.4783333333333335,
+      "buys": {
+        "splitter": 9.7125,
+        "return": 9.506944444444445,
+        "amplifier": 9.679166666666667
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.131388888888889,
+      "work": 7,
+      "drops": 100,
+      "longestGap": 2.282777777777777,
+      "millionToEnd": 2.360277777777778,
+      "buys": {
+        "splitter": 7.6497222222222225,
+        "return": 7.114999999999999,
+        "amplifier": 7.47638888888889
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 9.39388888888889,
+      "work": 6,
+      "drops": 132,
+      "longestGap": 2.9277777777777776,
+      "millionToEnd": 2.4316666666666675,
+      "buys": {
+        "splitter": 8.90611111111111,
+        "return": 8.663611111111113,
+        "amplifier": 8.696944444444446
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 7.863611111111112,
+      "work": 3,
+      "drops": 164,
+      "longestGap": 1.1769444444444446,
+      "millionToEnd": 2.780555555555556,
+      "buys": {
+        "splitter": 6.839722222222222,
+        "return": 6.773055555555556,
+        "amplifier": 6.806388888888889
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 11.50527777777778,
+      "work": 8,
+      "drops": 196,
+      "longestGap": 1.1630555555555557,
+      "millionToEnd": 3.1977777777777803,
+      "buys": {
+        "splitter": 10.900833333333335,
+        "return": 10.509722222222223,
+        "amplifier": 10.699722222222222
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 14.473611111111108,
+      "work": 10,
+      "drops": 215,
+      "longestGap": 4.08,
+      "millionToEnd": 2.7663888888888852,
+      "buys": {
+        "splitter": 13.55611111111111,
+        "return": 13.14861111111111,
+        "amplifier": 13.334444444444443
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.566944444444443,
+      "work": 7,
+      "drops": 214,
+      "longestGap": 1.464166666666667,
+      "millionToEnd": 3.1308333333333316,
+      "buys": {
+        "splitter": 10.883333333333333,
+        "return": 10.636944444444445,
+        "amplifier": 10.670277777777779
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 9.499166666666667,
+      "work": 6,
+      "drops": 146,
+      "longestGap": 1.1088888888888888,
+      "millionToEnd": 2.55888888888889,
+      "buys": {
+        "splitter": 8.65138888888889,
+        "return": 8.085277777777778,
+        "amplifier": 8.410833333333333
+      }
+    },
+    {
+      "scenario": "holdout-buy-burst",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 12.609999999999998,
+      "work": 8,
+      "drops": 191,
+      "longestGap": 3.7469444444444444,
+      "millionToEnd": 1.7652777777777757,
+      "buys": {
+        "splitter": 12.068333333333332,
+        "return": 11.837777777777777,
+        "amplifier": 11.87111111111111
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 9.993055555555559,
+      "work": 5,
+      "drops": 222,
+      "longestGap": 2.213611111111111,
+      "millionToEnd": 3.4827777777777813,
+      "buys": {
+        "splitter": 9.38388888888889,
+        "return": 8.887777777777778,
+        "amplifier": 8.921111111111111
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 9.596666666666666,
+      "work": 7,
+      "drops": 168,
+      "longestGap": 2.2899999999999996,
+      "millionToEnd": 2.879722222222221,
+      "buys": {
+        "splitter": 9.26611111111111,
+        "return": 8.851388888888888,
+        "amplifier": 9.232777777777777
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 8.524444444444445,
+      "work": 5,
+      "drops": 179,
+      "longestGap": 1.3758333333333335,
+      "millionToEnd": 2.3016666666666667,
+      "buys": {
+        "splitter": 7.939166666666667,
+        "return": 7.681111111111111,
+        "amplifier": 7.714444444444444
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 11.730833333333335,
+      "work": 6,
+      "drops": 253,
+      "longestGap": 2.9541666666666666,
+      "millionToEnd": 2.2411111111111115,
+      "buys": {
+        "splitter": 11.240555555555556,
+        "return": 10.757222222222223,
+        "amplifier": 10.99777777777778
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 9.309166666666666,
+      "work": 5,
+      "drops": 222,
+      "longestGap": 2.006666666666667,
+      "millionToEnd": 1.945833333333332,
+      "buys": {
+        "splitter": 8.831388888888888,
+        "return": 8.630833333333333,
+        "amplifier": 8.664166666666667
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 10.83972222222222,
+      "work": 6,
+      "drops": 237,
+      "longestGap": 2.6727777777777777,
+      "millionToEnd": 2.0669444444444416,
+      "buys": {
+        "splitter": 10.201666666666664,
+        "return": 10.134999999999998,
+        "amplifier": 10.168333333333331
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 9.984999999999998,
+      "work": 6,
+      "drops": 223,
+      "longestGap": 2.3258333333333328,
+      "millionToEnd": 2.928333333333331,
+      "buys": {
+        "splitter": 9.351111111111111,
+        "return": 9.038055555555555,
+        "amplifier": 9.071388888888889
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 10.009999999999998,
+      "work": 5,
+      "drops": 230,
+      "longestGap": 1.76,
+      "millionToEnd": 2.5863888888888864,
+      "buys": {
+        "splitter": 9.452777777777778,
+        "return": 9.07388888888889,
+        "amplifier": 9.24611111111111
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 10.118333333333334,
+      "work": 7,
+      "drops": 182,
+      "longestGap": 1.4530555555555555,
+      "millionToEnd": 2.222500000000001,
+      "buys": {
+        "splitter": 9.634166666666665,
+        "return": 9.35138888888889,
+        "amplifier": 9.600833333333332
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.815,
+      "work": 6,
+      "drops": 233,
+      "longestGap": 1.4283333333333341,
+      "millionToEnd": 2.397777777777778,
+      "buys": {
+        "splitter": 10.212777777777777,
+        "return": 9.898333333333333,
+        "amplifier": 9.931666666666667
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 8.756666666666668,
+      "work": 4,
+      "drops": 217,
+      "longestGap": 1.249722222222222,
+      "millionToEnd": 3.3130555555555565,
+      "buys": {
+        "splitter": 7.700277777777777,
+        "return": 7.633611111111111,
+        "amplifier": 7.666944444444444
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 12.13138888888889,
+      "work": 6,
+      "drops": 251,
+      "longestGap": 1.506666666666667,
+      "millionToEnd": 2.7838888888888906,
+      "buys": {
+        "splitter": 11.4075,
+        "return": 11.044444444444446,
+        "amplifier": 11.07777777777778
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.523888888888889,
+      "work": 5,
+      "drops": 178,
+      "longestGap": 1.0166666666666666,
+      "millionToEnd": 3.4783333333333335,
+      "buys": {
+        "splitter": 7.856944444444445,
+        "return": 7.508333333333334,
+        "amplifier": 7.541666666666667
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 7.918333333333334,
+      "work": 5,
+      "drops": 137,
+      "longestGap": 1.9400000000000006,
+      "millionToEnd": 2.472777777777778,
+      "buys": {
+        "splitter": 7.202222222222223,
+        "return": 6.824722222222222,
+        "amplifier": 7.025833333333335
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 9.190833333333334,
+      "work": 6,
+      "drops": 173,
+      "longestGap": 1.3866666666666665,
+      "millionToEnd": 2.8288888888888897,
+      "buys": {
+        "splitter": 8.291944444444445,
+        "return": 8.026111111111112,
+        "amplifier": 8.258611111111112
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 14.081388888888888,
+      "work": 11,
+      "drops": 313,
+      "longestGap": 2.042777777777778,
+      "millionToEnd": 3.1508333333333347,
+      "buys": {
+        "splitter": 13.53111111111111,
+        "return": 13.263055555555555,
+        "amplifier": 13.497777777777777
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 11.994444444444445,
+      "work": 8,
+      "drops": 256,
+      "longestGap": 1.600833333333333,
+      "millionToEnd": 3.423055555555557,
+      "buys": {
+        "splitter": 11.078888888888889,
+        "return": 10.325,
+        "amplifier": 10.665555555555557
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.205555555555554,
+      "work": 6,
+      "drops": 263,
+      "longestGap": 1.7408333333333332,
+      "millionToEnd": 2.6752777777777776,
+      "buys": {
+        "splitter": 10.708888888888888,
+        "return": 9.755833333333332,
+        "amplifier": 9.998611111111108
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 8.125,
+      "work": 5,
+      "drops": 159,
+      "longestGap": 1.350833333333333,
+      "millionToEnd": 2.730555555555556,
+      "buys": {
+        "splitter": 7.207222222222222,
+        "return": 6.966388888888889,
+        "amplifier": 6.999722222222222
+      }
+    },
+    {
+      "scenario": "holdout-buy-continuous-spend",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 9.40222222222222,
+      "work": 6,
+      "drops": 194,
+      "longestGap": 1.7719444444444439,
+      "millionToEnd": 1.8863888888888871,
+      "buys": {
+        "splitter": 8.979999999999999,
+        "return": 8.776666666666666,
+        "amplifier": 8.809999999999999
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 11.394444444444444,
+      "work": 7,
+      "drops": 173,
+      "longestGap": 2.4088888888888893,
+      "millionToEnd": 2.3633333333333333,
+      "buys": {
+        "splitter": 9.98611111111111,
+        "return": 10.468055555555555,
+        "amplifier": 10.501388888888888
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 14.185,
+      "work": 7,
+      "drops": 224,
+      "longestGap": 2.1991666666666663,
+      "millionToEnd": 2.2424999999999997,
+      "buys": {
+        "splitter": 12.644722222222223,
+        "return": 12.980555555555556,
+        "amplifier": 13.19277777777778
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 12.965555555555557,
+      "work": 8,
+      "drops": 201,
+      "longestGap": 2.920277777777778,
+      "millionToEnd": 2.0086111111111116,
+      "buys": {
+        "splitter": 11.945277777777779,
+        "return": 12.280277777777776,
+        "amplifier": 12.31361111111111
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 17.314166666666665,
+      "work": 10,
+      "drops": 285,
+      "longestGap": 2.645,
+      "millionToEnd": 3.0302777777777763,
+      "buys": {
+        "splitter": 15.2625,
+        "return": 16.006944444444443,
+        "amplifier": 16.040277777777774
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 12.07611111111111,
+      "work": 9,
+      "drops": 184,
+      "longestGap": 1.6641666666666668,
+      "millionToEnd": 3.402777777777777,
+      "buys": {
+        "splitter": 11.341111111111111,
+        "return": 11.407777777777778,
+        "amplifier": 11.605277777777777
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 13.250833333333333,
+      "work": 7,
+      "drops": 214,
+      "longestGap": 1.0666666666666667,
+      "millionToEnd": 2.530833333333332,
+      "buys": {
+        "splitter": 12.293611111111112,
+        "return": 12.495833333333334,
+        "amplifier": 12.529166666666667
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 11.847499999999998,
+      "work": 8,
+      "drops": 183,
+      "longestGap": 1.5519444444444446,
+      "millionToEnd": 2.790277777777778,
+      "buys": {
+        "splitter": 10.319166666666666,
+        "return": 10.790833333333333,
+        "amplifier": 11.043055555555554
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 10.03638888888889,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.1180555555555551,
+      "millionToEnd": 2.1730555555555577,
+      "buys": {
+        "splitter": 8.957777777777778,
+        "return": 9.024444444444445,
+        "amplifier": 9.221944444444443
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 15.136111111111113,
+      "work": 11,
+      "drops": 220,
+      "longestGap": 2.9094444444444445,
+      "millionToEnd": 2.9088888888888906,
+      "buys": {
+        "splitter": 13.810833333333335,
+        "return": 14.423055555555555,
+        "amplifier": 14.660555555555556
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.791666666666666,
+      "work": 6,
+      "drops": 193,
+      "longestGap": 1.4058333333333328,
+      "millionToEnd": 2.070277777777777,
+      "buys": {
+        "splitter": 9.626388888888888,
+        "return": 10.08861111111111,
+        "amplifier": 10.412222222222223
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 8.928055555555556,
+      "work": 7,
+      "drops": 133,
+      "longestGap": 0.7538888888888889,
+      "millionToEnd": 3.246388888888889,
+      "buys": {
+        "splitter": 7.887222222222222,
+        "return": 8.259722222222221,
+        "amplifier": 8.293055555555556
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 10.701388888888888,
+      "work": 6,
+      "drops": 179,
+      "longestGap": 1.0911111111111111,
+      "millionToEnd": 2.41861111111111,
+      "buys": {
+        "splitter": 9.335277777777778,
+        "return": 9.860555555555555,
+        "amplifier": 10.230277777777777
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 7.995277777777778,
+      "work": 7,
+      "drops": 95,
+      "longestGap": 2.282777777777777,
+      "millionToEnd": 2.224166666666667,
+      "buys": {
+        "splitter": 6.770833333333333,
+        "return": 7.2797222222222215,
+        "amplifier": 7.479166666666667
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 9.29138888888889,
+      "work": 6,
+      "drops": 126,
+      "longestGap": 2.9277777777777776,
+      "millionToEnd": 2.3291666666666666,
+      "buys": {
+        "splitter": 8.493888888888888,
+        "return": 8.696944444444446,
+        "amplifier": 8.73027777777778
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 8.392222222222221,
+      "work": 3,
+      "drops": 173,
+      "longestGap": 1.1769444444444446,
+      "millionToEnd": 3.3091666666666653,
+      "buys": {
+        "splitter": 6.4688888888888885,
+        "return": 7.024166666666667,
+        "amplifier": 7.4494444444444445
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 11.366666666666667,
+      "work": 8,
+      "drops": 196,
+      "longestGap": 1.1630555555555557,
+      "millionToEnd": 3.059166666666668,
+      "buys": {
+        "splitter": 9.632222222222223,
+        "return": 10.447222222222223,
+        "amplifier": 10.639999999999999
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 14.45972222222222,
+      "work": 10,
+      "drops": 215,
+      "longestGap": 4.08,
+      "millionToEnd": 2.7524999999999977,
+      "buys": {
+        "splitter": 12.83111111111111,
+        "return": 13.320555555555556,
+        "amplifier": 13.542222222222222
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.741111111111111,
+      "work": 7,
+      "drops": 220,
+      "longestGap": 1.464166666666667,
+      "millionToEnd": 3.3049999999999997,
+      "buys": {
+        "splitter": 10.268888888888888,
+        "return": 10.670277777777779,
+        "amplifier": 10.883333333333333
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 9.33888888888889,
+      "work": 6,
+      "drops": 142,
+      "longestGap": 1.1088888888888888,
+      "millionToEnd": 2.398611111111113,
+      "buys": {
+        "splitter": 7.9141666666666675,
+        "return": 8.271666666666667,
+        "amplifier": 8.449722222222222
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-burst",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 12.609999999999998,
+      "work": 8,
+      "drops": 191,
+      "longestGap": 3.7469444444444444,
+      "millionToEnd": 1.7652777777777757,
+      "buys": {
+        "splitter": 11.450833333333332,
+        "return": 11.87111111111111,
+        "amplifier": 11.904444444444444
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 9.752500000000001,
+      "work": 5,
+      "drops": 214,
+      "longestGap": 2.213611111111111,
+      "millionToEnd": 3.2422222222222237,
+      "buys": {
+        "splitter": 8.65,
+        "return": 8.921111111111111,
+        "amplifier": 9.178055555555556
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 9.577222222222222,
+      "work": 7,
+      "drops": 165,
+      "longestGap": 2.2899999999999996,
+      "millionToEnd": 2.8602777777777773,
+      "buys": {
+        "splitter": 8.376666666666667,
+        "return": 9.129166666666666,
+        "amplifier": 9.1625
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 8.479166666666666,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.3758333333333335,
+      "millionToEnd": 2.256388888888888,
+      "buys": {
+        "splitter": 7.5038888888888895,
+        "return": 7.714444444444444,
+        "amplifier": 7.747777777777778
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 12.070833333333335,
+      "work": 6,
+      "drops": 273,
+      "longestGap": 2.9541666666666666,
+      "millionToEnd": 2.5811111111111114,
+      "buys": {
+        "splitter": 10.72388888888889,
+        "return": 11.020555555555555,
+        "amplifier": 11.053888888888888
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 9.309166666666666,
+      "work": 5,
+      "drops": 222,
+      "longestGap": 2.006666666666667,
+      "millionToEnd": 1.945833333333332,
+      "buys": {
+        "splitter": 8.322777777777778,
+        "return": 8.664166666666667,
+        "amplifier": 8.831388888888888
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 11.533055555555555,
+      "work": 6,
+      "drops": 262,
+      "longestGap": 2.6727777777777777,
+      "millionToEnd": 2.7602777777777767,
+      "buys": {
+        "splitter": 9.625555555555556,
+        "return": 10.061944444444444,
+        "amplifier": 10.294444444444444
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 9.975277777777778,
+      "work": 6,
+      "drops": 222,
+      "longestGap": 2.3258333333333328,
+      "millionToEnd": 2.9186111111111117,
+      "buys": {
+        "splitter": 8.800833333333333,
+        "return": 9.071388888888889,
+        "amplifier": 9.351111111111111
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 9.955,
+      "work": 5,
+      "drops": 224,
+      "longestGap": 1.76,
+      "millionToEnd": 2.5313888888888885,
+      "buys": {
+        "splitter": 8.779722222222222,
+        "return": 9.211944444444445,
+        "amplifier": 9.245277777777778
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 10.075555555555555,
+      "work": 7,
+      "drops": 178,
+      "longestGap": 1.4530555555555555,
+      "millionToEnd": 2.179722222222222,
+      "buys": {
+        "splitter": 9.12861111111111,
+        "return": 9.523888888888889,
+        "amplifier": 9.695555555555556
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.890277777777778,
+      "work": 6,
+      "drops": 233,
+      "longestGap": 1.4283333333333341,
+      "millionToEnd": 2.473055555555556,
+      "buys": {
+        "splitter": 9.638888888888888,
+        "return": 10.088055555555554,
+        "amplifier": 10.288055555555555
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 8.383333333333333,
+      "work": 4,
+      "drops": 188,
+      "longestGap": 1.249722222222222,
+      "millionToEnd": 2.9397222222222217,
+      "buys": {
+        "splitter": 7.4575,
+        "return": 7.654999999999999,
+        "amplifier": 7.688333333333333
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 12.14027777777778,
+      "work": 6,
+      "drops": 254,
+      "longestGap": 1.506666666666667,
+      "millionToEnd": 2.792777777777779,
+      "buys": {
+        "splitter": 10.870555555555557,
+        "return": 11.07777777777778,
+        "amplifier": 11.541666666666666
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.374166666666667,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.0166666666666666,
+      "millionToEnd": 3.328611111111112,
+      "buys": {
+        "splitter": 6.38,
+        "return": 7.625,
+        "amplifier": 7.658333333333333
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 7.917500000000001,
+      "work": 5,
+      "drops": 137,
+      "longestGap": 1.9400000000000006,
+      "millionToEnd": 2.4719444444444454,
+      "buys": {
+        "splitter": 6.634722222222223,
+        "return": 7.025000000000001,
+        "amplifier": 7.201388888888889
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 9.109444444444444,
+      "work": 6,
+      "drops": 166,
+      "longestGap": 1.3866666666666665,
+      "millionToEnd": 2.7474999999999996,
+      "buys": {
+        "splitter": 7.9927777777777775,
+        "return": 8.059444444444445,
+        "amplifier": 8.291944444444445
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 13.916666666666666,
+      "work": 11,
+      "drops": 302,
+      "longestGap": 2.042777777777778,
+      "millionToEnd": 2.9861111111111125,
+      "buys": {
+        "splitter": 12.686944444444444,
+        "return": 13.30888888888889,
+        "amplifier": 13.543611111111112
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 11.453055555555556,
+      "work": 8,
+      "drops": 239,
+      "longestGap": 1.600833333333333,
+      "millionToEnd": 2.8816666666666677,
+      "buys": {
+        "splitter": 9.94138888888889,
+        "return": 10.670555555555556,
+        "amplifier": 10.942499999999999
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 10.933055555555557,
+      "work": 6,
+      "drops": 254,
+      "longestGap": 1.7408333333333332,
+      "millionToEnd": 2.4027777777777803,
+      "buys": {
+        "splitter": 9.491666666666667,
+        "return": 9.889444444444443,
+        "amplifier": 10.2875
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 8.125,
+      "work": 5,
+      "drops": 159,
+      "longestGap": 1.350833333333333,
+      "millionToEnd": 2.730555555555556,
+      "buys": {
+        "splitter": 6.7924999999999995,
+        "return": 6.999722222222222,
+        "amplifier": 7.207222222222222
+      }
+    },
+    {
+      "scenario": "holdout-price-4000000-continuous-spend",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 9.349722222222221,
+      "work": 6,
+      "drops": 193,
+      "longestGap": 1.7719444444444439,
+      "millionToEnd": 1.8338888888888887,
+      "buys": {
+        "splitter": 8.555833333333332,
+        "return": 8.809999999999999,
+        "amplifier": 8.843333333333332
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 11.49361111111111,
+      "work": 7,
+      "drops": 183,
+      "longestGap": 2.4088888888888893,
+      "millionToEnd": 2.4624999999999986,
+      "buys": {
+        "splitter": 10.654722222222222,
+        "return": 10.306388888888888,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 14.157222222222224,
+      "work": 7,
+      "drops": 224,
+      "longestGap": 2.1991666666666663,
+      "millionToEnd": 2.214722222222223,
+      "buys": {
+        "splitter": 13.165000000000001,
+        "return": 12.810833333333335,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 12.979722222222222,
+      "work": 8,
+      "drops": 201,
+      "longestGap": 2.920277777777778,
+      "millionToEnd": 2.022777777777776,
+      "buys": {
+        "splitter": 12.327777777777778,
+        "return": 12.117222222222221,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 17.212777777777777,
+      "work": 10,
+      "drops": 291,
+      "longestGap": 2.645,
+      "millionToEnd": 2.9288888888888884,
+      "buys": {
+        "splitter": 15.799722222222222,
+        "return": 15.592222222222222,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 12.228333333333333,
+      "work": 9,
+      "drops": 191,
+      "longestGap": 1.6641666666666668,
+      "millionToEnd": 3.5549999999999997,
+      "buys": {
+        "splitter": 11.712777777777777,
+        "return": 11.374444444444444,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 13.49611111111111,
+      "work": 7,
+      "drops": 226,
+      "longestGap": 1.0666666666666667,
+      "millionToEnd": 2.77611111111111,
+      "buys": {
+        "splitter": 12.495833333333334,
+        "return": 12.4625,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 12.0375,
+      "work": 8,
+      "drops": 187,
+      "longestGap": 1.5519444444444446,
+      "millionToEnd": 2.980277777777779,
+      "buys": {
+        "splitter": 11.095555555555556,
+        "return": 10.3525,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 10.003055555555557,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.1180555555555551,
+      "millionToEnd": 2.1397222222222245,
+      "buys": {
+        "splitter": 9.18861111111111,
+        "return": 8.991111111111111,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 15.12388888888889,
+      "work": 11,
+      "drops": 223,
+      "longestGap": 2.9094444444444445,
+      "millionToEnd": 2.8966666666666683,
+      "buys": {
+        "splitter": 14.663333333333332,
+        "return": 14.4925,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.77611111111111,
+      "work": 6,
+      "drops": 197,
+      "longestGap": 1.4058333333333328,
+      "millionToEnd": 2.054722222222221,
+      "buys": {
+        "splitter": 10.428611111111111,
+        "return": 10.079722222222221,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 9.271944444444443,
+      "work": 7,
+      "drops": 145,
+      "longestGap": 0.7538888888888889,
+      "millionToEnd": 3.590277777777777,
+      "buys": {
+        "splitter": 8.414722222222222,
+        "return": 8.094444444444443,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 10.533333333333333,
+      "work": 6,
+      "drops": 175,
+      "longestGap": 1.0911111111111111,
+      "millionToEnd": 2.2505555555555556,
+      "buys": {
+        "splitter": 9.679166666666667,
+        "return": 9.506944444444445,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.098055555555556,
+      "work": 7,
+      "drops": 100,
+      "longestGap": 2.282777777777777,
+      "millionToEnd": 2.326944444444445,
+      "buys": {
+        "splitter": 7.47638888888889,
+        "return": 7.114999999999999,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 9.360555555555557,
+      "work": 6,
+      "drops": 132,
+      "longestGap": 2.9277777777777776,
+      "millionToEnd": 2.3983333333333343,
+      "buys": {
+        "splitter": 8.696944444444446,
+        "return": 8.663611111111113,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 7.830277777777779,
+      "work": 3,
+      "drops": 164,
+      "longestGap": 1.1769444444444446,
+      "millionToEnd": 2.7472222222222227,
+      "buys": {
+        "splitter": 6.806388888888889,
+        "return": 6.773055555555556,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 11.471944444444444,
+      "work": 8,
+      "drops": 196,
+      "longestGap": 1.1630555555555557,
+      "millionToEnd": 3.1644444444444453,
+      "buys": {
+        "splitter": 10.867500000000001,
+        "return": 10.509722222222223,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 14.440277777777775,
+      "work": 10,
+      "drops": 215,
+      "longestGap": 4.08,
+      "millionToEnd": 2.733055555555552,
+      "buys": {
+        "splitter": 13.334444444444443,
+        "return": 13.14861111111111,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.53361111111111,
+      "work": 7,
+      "drops": 214,
+      "longestGap": 1.464166666666667,
+      "millionToEnd": 3.0974999999999984,
+      "buys": {
+        "splitter": 10.670277777777779,
+        "return": 10.636944444444445,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 9.30111111111111,
+      "work": 6,
+      "drops": 142,
+      "longestGap": 1.1088888888888888,
+      "millionToEnd": 2.360833333333333,
+      "buys": {
+        "splitter": 8.410833333333333,
+        "return": 8.085277777777778,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-burst",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 12.576666666666664,
+      "work": 8,
+      "drops": 191,
+      "longestGap": 3.7469444444444444,
+      "millionToEnd": 1.7319444444444425,
+      "buys": {
+        "splitter": 11.87111111111111,
+        "return": 11.837777777777777,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 9.959722222222224,
+      "work": 5,
+      "drops": 224,
+      "longestGap": 2.213611111111111,
+      "millionToEnd": 3.4494444444444463,
+      "buys": {
+        "splitter": 9.350555555555557,
+        "return": 8.887777777777778,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 9.563333333333333,
+      "work": 7,
+      "drops": 168,
+      "longestGap": 2.2899999999999996,
+      "millionToEnd": 2.846388888888888,
+      "buys": {
+        "splitter": 9.232777777777777,
+        "return": 8.851388888888888,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 8.491111111111111,
+      "work": 5,
+      "drops": 179,
+      "longestGap": 1.3758333333333335,
+      "millionToEnd": 2.2683333333333335,
+      "buys": {
+        "splitter": 7.714444444444444,
+        "return": 7.681111111111111,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 11.579166666666667,
+      "work": 6,
+      "drops": 253,
+      "longestGap": 2.9541666666666666,
+      "millionToEnd": 2.089444444444444,
+      "buys": {
+        "splitter": 11.043055555555556,
+        "return": 10.757222222222223,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 9.275833333333333,
+      "work": 5,
+      "drops": 222,
+      "longestGap": 2.006666666666667,
+      "millionToEnd": 1.9124999999999988,
+      "buys": {
+        "splitter": 8.798055555555555,
+        "return": 8.630833333333333,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 10.806388888888886,
+      "work": 6,
+      "drops": 237,
+      "longestGap": 2.6727777777777777,
+      "millionToEnd": 2.0336111111111084,
+      "buys": {
+        "splitter": 10.168333333333331,
+        "return": 10.134999999999998,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 9.951666666666664,
+      "work": 6,
+      "drops": 223,
+      "longestGap": 2.3258333333333328,
+      "millionToEnd": 2.894999999999998,
+      "buys": {
+        "splitter": 9.317777777777776,
+        "return": 9.038055555555555,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 9.925277777777778,
+      "work": 5,
+      "drops": 230,
+      "longestGap": 1.76,
+      "millionToEnd": 2.501666666666666,
+      "buys": {
+        "splitter": 9.368055555555554,
+        "return": 9.07388888888889,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 10.071111111111112,
+      "work": 7,
+      "drops": 182,
+      "longestGap": 1.4530555555555555,
+      "millionToEnd": 2.1752777777777785,
+      "buys": {
+        "splitter": 9.641111111111112,
+        "return": 9.35138888888889,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.781666666666666,
+      "work": 6,
+      "drops": 233,
+      "longestGap": 1.4283333333333341,
+      "millionToEnd": 2.3644444444444446,
+      "buys": {
+        "splitter": 10.179444444444444,
+        "return": 9.898333333333333,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 8.69388888888889,
+      "work": 4,
+      "drops": 213,
+      "longestGap": 1.249722222222222,
+      "millionToEnd": 3.2502777777777796,
+      "buys": {
+        "splitter": 7.666944444444444,
+        "return": 7.633611111111111,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 12.098055555555558,
+      "work": 6,
+      "drops": 251,
+      "longestGap": 1.506666666666667,
+      "millionToEnd": 2.7505555555555574,
+      "buys": {
+        "splitter": 11.374166666666667,
+        "return": 11.044444444444446,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.490555555555556,
+      "work": 5,
+      "drops": 178,
+      "longestGap": 1.0166666666666666,
+      "millionToEnd": 3.4450000000000003,
+      "buys": {
+        "splitter": 7.823611111111111,
+        "return": 7.508333333333334,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 7.853888888888889,
+      "work": 5,
+      "drops": 137,
+      "longestGap": 1.9400000000000006,
+      "millionToEnd": 2.408333333333333,
+      "buys": {
+        "splitter": 7.025833333333335,
+        "return": 6.824722222222222,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 9.139166666666666,
+      "work": 6,
+      "drops": 173,
+      "longestGap": 1.3866666666666665,
+      "millionToEnd": 2.777222222222222,
+      "buys": {
+        "splitter": 8.269444444444444,
+        "return": 8.026111111111112,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 14.048055555555555,
+      "work": 11,
+      "drops": 313,
+      "longestGap": 2.042777777777778,
+      "millionToEnd": 3.1175000000000015,
+      "buys": {
+        "splitter": 13.497777777777777,
+        "return": 13.263055555555555,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 11.626944444444444,
+      "work": 8,
+      "drops": 245,
+      "longestGap": 1.600833333333333,
+      "millionToEnd": 3.0555555555555554,
+      "buys": {
+        "splitter": 10.97777777777778,
+        "return": 10.325,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.008888888888889,
+      "work": 6,
+      "drops": 263,
+      "longestGap": 1.7408333333333332,
+      "millionToEnd": 2.478611111111112,
+      "buys": {
+        "splitter": 10.23722222222222,
+        "return": 9.755833333333332,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 8.054166666666667,
+      "work": 5,
+      "drops": 159,
+      "longestGap": 1.350833333333333,
+      "millionToEnd": 2.659722222222223,
+      "buys": {
+        "splitter": 7.173888888888888,
+        "return": 6.966388888888889,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-amplifier-continuous-spend",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 9.323888888888888,
+      "work": 6,
+      "drops": 194,
+      "longestGap": 1.7719444444444439,
+      "millionToEnd": 1.8080555555555557,
+      "buys": {
+        "splitter": 8.809999999999999,
+        "return": 8.776666666666666,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 12.088055555555554,
+      "work": 7,
+      "drops": 202,
+      "longestGap": 2.4088888888888893,
+      "millionToEnd": 3.0569444444444436,
+      "buys": {
+        "splitter": 10.821388888888889,
+        "return": null,
+        "amplifier": 10.306388888888888
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 13.990833333333335,
+      "work": 7,
+      "drops": 217,
+      "longestGap": 2.1991666666666663,
+      "millionToEnd": 2.048333333333334,
+      "buys": {
+        "splitter": 13.124722222222223,
+        "return": null,
+        "amplifier": 12.810833333333335
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 12.941666666666666,
+      "work": 8,
+      "drops": 201,
+      "longestGap": 2.920277777777778,
+      "millionToEnd": 1.9847222222222207,
+      "buys": {
+        "splitter": 12.280277777777776,
+        "return": null,
+        "amplifier": 12.117222222222221
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 16.725555555555555,
+      "work": 10,
+      "drops": 273,
+      "longestGap": 2.645,
+      "millionToEnd": 2.4416666666666664,
+      "buys": {
+        "splitter": 15.786388888888888,
+        "return": null,
+        "amplifier": 15.592222222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 12.516944444444444,
+      "work": 9,
+      "drops": 196,
+      "longestGap": 1.6641666666666668,
+      "millionToEnd": 3.8436111111111106,
+      "buys": {
+        "splitter": 11.689166666666667,
+        "return": null,
+        "amplifier": 11.374444444444444
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 13.150833333333333,
+      "work": 7,
+      "drops": 214,
+      "longestGap": 1.0666666666666667,
+      "millionToEnd": 2.4308333333333323,
+      "buys": {
+        "splitter": 12.495833333333334,
+        "return": null,
+        "amplifier": 12.4625
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 11.863055555555555,
+      "work": 8,
+      "drops": 180,
+      "longestGap": 1.5519444444444446,
+      "millionToEnd": 2.805833333333334,
+      "buys": {
+        "splitter": 11.051388888888889,
+        "return": null,
+        "amplifier": 10.492222222222221
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 10.35388888888889,
+      "work": 5,
+      "drops": 193,
+      "longestGap": 1.1180555555555551,
+      "millionToEnd": 2.4905555555555567,
+      "buys": {
+        "splitter": 9.307777777777778,
+        "return": null,
+        "amplifier": 8.991111111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 15.41388888888889,
+      "work": 11,
+      "drops": 235,
+      "longestGap": 2.9094444444444445,
+      "millionToEnd": 3.1866666666666674,
+      "buys": {
+        "splitter": 14.663333333333332,
+        "return": null,
+        "amplifier": 14.4925
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 11.025277777777777,
+      "work": 6,
+      "drops": 209,
+      "longestGap": 1.4058333333333328,
+      "millionToEnd": 2.3038888888888884,
+      "buys": {
+        "splitter": 10.409166666666666,
+        "return": null,
+        "amplifier": 10.079722222222221
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 9.647777777777776,
+      "work": 7,
+      "drops": 163,
+      "longestGap": 0.7538888888888889,
+      "millionToEnd": 3.9661111111111094,
+      "buys": {
+        "splitter": 8.259722222222221,
+        "return": null,
+        "amplifier": 8.094444444444443
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 10.609999999999998,
+      "work": 6,
+      "drops": 181,
+      "longestGap": 1.0911111111111111,
+      "millionToEnd": 2.32722222222222,
+      "buys": {
+        "splitter": 10.029444444444444,
+        "return": null,
+        "amplifier": 9.506944444444445
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.377777777777778,
+      "work": 7,
+      "drops": 112,
+      "longestGap": 2.282777777777777,
+      "millionToEnd": 2.6066666666666674,
+      "buys": {
+        "splitter": 7.435833333333333,
+        "return": null,
+        "amplifier": 7.114999999999999
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 9.786666666666667,
+      "work": 6,
+      "drops": 150,
+      "longestGap": 2.9277777777777776,
+      "millionToEnd": 2.8244444444444445,
+      "buys": {
+        "splitter": 8.696944444444446,
+        "return": null,
+        "amplifier": 8.663611111111113
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 7.730277777777777,
+      "work": 3,
+      "drops": 164,
+      "longestGap": 1.1769444444444446,
+      "millionToEnd": 2.6472222222222213,
+      "buys": {
+        "splitter": 6.806388888888889,
+        "return": null,
+        "amplifier": 6.773055555555556
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 11.401944444444446,
+      "work": 8,
+      "drops": 196,
+      "longestGap": 1.1630555555555557,
+      "millionToEnd": 3.0944444444444468,
+      "buys": {
+        "splitter": 10.81611111111111,
+        "return": null,
+        "amplifier": 10.509722222222223
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 14.46861111111111,
+      "work": 10,
+      "drops": 212,
+      "longestGap": 4.08,
+      "millionToEnd": 2.761388888888888,
+      "buys": {
+        "splitter": 13.320555555555556,
+        "return": null,
+        "amplifier": 13.14861111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.447222222222223,
+      "work": 7,
+      "drops": 214,
+      "longestGap": 1.464166666666667,
+      "millionToEnd": 3.011111111111111,
+      "buys": {
+        "splitter": 10.670277777777779,
+        "return": null,
+        "amplifier": 10.636944444444445
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 9.208333333333334,
+      "work": 6,
+      "drops": 142,
+      "longestGap": 1.1088888888888888,
+      "millionToEnd": 2.2680555555555566,
+      "buys": {
+        "splitter": 8.408888888888889,
+        "return": null,
+        "amplifier": 8.085277777777778
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-burst",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 12.654722222222222,
+      "work": 8,
+      "drops": 197,
+      "longestGap": 3.7469444444444444,
+      "millionToEnd": 1.8100000000000005,
+      "buys": {
+        "splitter": 11.87111111111111,
+        "return": null,
+        "amplifier": 11.837777777777777
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 9.92638888888889,
+      "work": 5,
+      "drops": 223,
+      "longestGap": 2.213611111111111,
+      "millionToEnd": 3.416111111111113,
+      "buys": {
+        "splitter": 9.367222222222223,
+        "return": null,
+        "amplifier": 8.887777777777778
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 9.468333333333332,
+      "work": 7,
+      "drops": 165,
+      "longestGap": 2.2899999999999996,
+      "millionToEnd": 2.7513888888888873,
+      "buys": {
+        "splitter": 9.07861111111111,
+        "return": null,
+        "amplifier": 9.045277777777777
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 8.35138888888889,
+      "work": 5,
+      "drops": 174,
+      "longestGap": 1.3758333333333335,
+      "millionToEnd": 2.1286111111111117,
+      "buys": {
+        "splitter": 7.714444444444444,
+        "return": null,
+        "amplifier": 7.681111111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 11.51027777777778,
+      "work": 6,
+      "drops": 249,
+      "longestGap": 2.9541666666666666,
+      "millionToEnd": 2.020555555555557,
+      "buys": {
+        "splitter": 11.164722222222224,
+        "return": null,
+        "amplifier": 10.987222222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 9.562222222222223,
+      "work": 5,
+      "drops": 235,
+      "longestGap": 2.006666666666667,
+      "millionToEnd": 2.198888888888889,
+      "buys": {
+        "splitter": 8.798055555555555,
+        "return": null,
+        "amplifier": 8.630833333333333
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 10.60388888888889,
+      "work": 6,
+      "drops": 235,
+      "longestGap": 2.6727777777777777,
+      "millionToEnd": 1.8311111111111114,
+      "buys": {
+        "splitter": 10.168333333333331,
+        "return": null,
+        "amplifier": 10.134999999999998
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 9.783333333333333,
+      "work": 6,
+      "drops": 213,
+      "longestGap": 2.3258333333333328,
+      "millionToEnd": 2.7266666666666666,
+      "buys": {
+        "splitter": 9.277777777777777,
+        "return": null,
+        "amplifier": 9.038055555555555
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 9.988888888888887,
+      "work": 5,
+      "drops": 230,
+      "longestGap": 1.76,
+      "millionToEnd": 2.5652777777777755,
+      "buys": {
+        "splitter": 9.311666666666667,
+        "return": null,
+        "amplifier": 9.07388888888889
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 9.993055555555555,
+      "work": 7,
+      "drops": 179,
+      "longestGap": 1.4530555555555555,
+      "millionToEnd": 2.0972222222222223,
+      "buys": {
+        "splitter": 9.615555555555556,
+        "return": null,
+        "amplifier": 9.35138888888889
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 11.146666666666667,
+      "work": 6,
+      "drops": 259,
+      "longestGap": 1.4283333333333341,
+      "millionToEnd": 2.729444444444445,
+      "buys": {
+        "splitter": 10.171111111111111,
+        "return": null,
+        "amplifier": 9.898333333333333
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 8.37111111111111,
+      "work": 4,
+      "drops": 195,
+      "longestGap": 1.249722222222222,
+      "millionToEnd": 2.9274999999999993,
+      "buys": {
+        "splitter": 7.666944444444444,
+        "return": null,
+        "amplifier": 7.633611111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 12.00111111111111,
+      "work": 6,
+      "drops": 250,
+      "longestGap": 1.506666666666667,
+      "millionToEnd": 2.6536111111111094,
+      "buys": {
+        "splitter": 11.211388888888889,
+        "return": null,
+        "amplifier": 11.044444444444446
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.365277777777779,
+      "work": 5,
+      "drops": 178,
+      "longestGap": 1.0166666666666666,
+      "millionToEnd": 3.3197222222222234,
+      "buys": {
+        "splitter": 7.679444444444445,
+        "return": null,
+        "amplifier": 7.508333333333334
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 7.7938888888888895,
+      "work": 5,
+      "drops": 145,
+      "longestGap": 1.9400000000000006,
+      "millionToEnd": 2.3483333333333336,
+      "buys": {
+        "splitter": 7.025000000000001,
+        "return": null,
+        "amplifier": 6.824722222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 9.061944444444444,
+      "work": 6,
+      "drops": 172,
+      "longestGap": 1.3866666666666665,
+      "millionToEnd": 2.7,
+      "buys": {
+        "splitter": 8.280277777777778,
+        "return": null,
+        "amplifier": 8.026111111111112
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 13.835833333333335,
+      "work": 11,
+      "drops": 303,
+      "longestGap": 2.042777777777778,
+      "millionToEnd": 2.9052777777777816,
+      "buys": {
+        "splitter": 13.483888888888888,
+        "return": null,
+        "amplifier": 13.263055555555555
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 11.220555555555556,
+      "work": 8,
+      "drops": 231,
+      "longestGap": 1.600833333333333,
+      "millionToEnd": 2.649166666666668,
+      "buys": {
+        "splitter": 10.65861111111111,
+        "return": null,
+        "amplifier": 10.325
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 10.567499999999999,
+      "work": 6,
+      "drops": 243,
+      "longestGap": 1.7408333333333332,
+      "millionToEnd": 2.0372222222222227,
+      "buys": {
+        "splitter": 10.038611111111111,
+        "return": null,
+        "amplifier": 9.755833333333332
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 7.974444444444445,
+      "work": 5,
+      "drops": 158,
+      "longestGap": 1.350833333333333,
+      "millionToEnd": 2.580000000000001,
+      "buys": {
+        "splitter": 7.139166666666667,
+        "return": null,
+        "amplifier": 6.966388888888889
+      }
+    },
+    {
+      "scenario": "holdout-skip-return-continuous-spend",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 9.32722222222222,
+      "work": 6,
+      "drops": 197,
+      "longestGap": 1.7719444444444439,
+      "millionToEnd": 1.8113888888888878,
+      "buys": {
+        "splitter": 8.809999999999999,
+        "return": null,
+        "amplifier": 8.776666666666666
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 11.3525,
+      "work": 7,
+      "drops": 177,
+      "longestGap": 2.4088888888888893,
+      "millionToEnd": 2.3213888888888885,
+      "buys": {
+        "splitter": null,
+        "return": 10.306388888888888,
+        "amplifier": 10.654722222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 14.001944444444444,
+      "work": 7,
+      "drops": 218,
+      "longestGap": 2.1991666666666663,
+      "millionToEnd": 2.059444444444443,
+      "buys": {
+        "splitter": null,
+        "return": 12.810833333333335,
+        "amplifier": 12.986111111111112
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 12.792777777777777,
+      "work": 8,
+      "drops": 195,
+      "longestGap": 2.920277777777778,
+      "millionToEnd": 1.8358333333333317,
+      "buys": {
+        "splitter": null,
+        "return": 12.117222222222221,
+        "amplifier": 12.327777777777778
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 17.212777777777777,
+      "work": 10,
+      "drops": 291,
+      "longestGap": 2.645,
+      "millionToEnd": 2.9288888888888884,
+      "buys": {
+        "splitter": null,
+        "return": 15.592222222222222,
+        "amplifier": 15.799722222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 12.09,
+      "work": 9,
+      "drops": 185,
+      "longestGap": 1.6641666666666668,
+      "millionToEnd": 3.416666666666666,
+      "buys": {
+        "splitter": null,
+        "return": 11.374444444444444,
+        "amplifier": 11.571944444444444
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 13.071111111111112,
+      "work": 7,
+      "drops": 208,
+      "longestGap": 1.0666666666666667,
+      "millionToEnd": 2.351111111111111,
+      "buys": {
+        "splitter": null,
+        "return": 12.4625,
+        "amplifier": 12.495833333333334
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 11.868333333333332,
+      "work": 8,
+      "drops": 181,
+      "longestGap": 1.5519444444444446,
+      "millionToEnd": 2.811111111111112,
+      "buys": {
+        "splitter": null,
+        "return": 10.3525,
+        "amplifier": 10.711666666666668
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 10.003055555555557,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.1180555555555551,
+      "millionToEnd": 2.1397222222222245,
+      "buys": {
+        "splitter": null,
+        "return": 8.991111111111111,
+        "amplifier": 9.18861111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 15.127222222222223,
+      "work": 11,
+      "drops": 219,
+      "longestGap": 2.9094444444444445,
+      "millionToEnd": 2.9000000000000004,
+      "buys": {
+        "splitter": null,
+        "return": 14.4925,
+        "amplifier": 14.525833333333333
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.596388888888889,
+      "work": 6,
+      "drops": 190,
+      "longestGap": 1.4058333333333328,
+      "millionToEnd": 1.875,
+      "buys": {
+        "splitter": null,
+        "return": 10.079722222222221,
+        "amplifier": 10.256944444444445
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 9.271944444444443,
+      "work": 7,
+      "drops": 145,
+      "longestGap": 0.7538888888888889,
+      "millionToEnd": 3.590277777777777,
+      "buys": {
+        "splitter": null,
+        "return": 8.094444444444443,
+        "amplifier": 8.268611111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 10.393055555555554,
+      "work": 6,
+      "drops": 169,
+      "longestGap": 1.0911111111111111,
+      "millionToEnd": 2.1102777777777764,
+      "buys": {
+        "splitter": null,
+        "return": 9.506944444444445,
+        "amplifier": 9.679166666666667
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 7.94,
+      "work": 7,
+      "drops": 94,
+      "longestGap": 2.282777777777777,
+      "millionToEnd": 2.1688888888888895,
+      "buys": {
+        "splitter": null,
+        "return": 7.114999999999999,
+        "amplifier": 7.47638888888889
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 9.224722222222223,
+      "work": 6,
+      "drops": 126,
+      "longestGap": 2.9277777777777776,
+      "millionToEnd": 2.2625,
+      "buys": {
+        "splitter": null,
+        "return": 8.663611111111113,
+        "amplifier": 8.696944444444446
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 7.830277777777779,
+      "work": 3,
+      "drops": 164,
+      "longestGap": 1.1769444444444446,
+      "millionToEnd": 2.7472222222222227,
+      "buys": {
+        "splitter": null,
+        "return": 6.773055555555556,
+        "amplifier": 6.806388888888889
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 11.471944444444444,
+      "work": 8,
+      "drops": 196,
+      "longestGap": 1.1630555555555557,
+      "millionToEnd": 3.1644444444444453,
+      "buys": {
+        "splitter": null,
+        "return": 10.509722222222223,
+        "amplifier": 10.699722222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 14.440277777777775,
+      "work": 10,
+      "drops": 215,
+      "longestGap": 4.08,
+      "millionToEnd": 2.733055555555552,
+      "buys": {
+        "splitter": null,
+        "return": 13.14861111111111,
+        "amplifier": 13.334444444444443
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 11.211944444444445,
+      "work": 7,
+      "drops": 202,
+      "longestGap": 1.464166666666667,
+      "millionToEnd": 2.775833333333333,
+      "buys": {
+        "splitter": null,
+        "return": 10.636944444444445,
+        "amplifier": 10.670277777777779
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 9.15138888888889,
+      "work": 6,
+      "drops": 136,
+      "longestGap": 1.1088888888888888,
+      "millionToEnd": 2.211111111111113,
+      "buys": {
+        "splitter": null,
+        "return": 8.085277777777778,
+        "amplifier": 8.410833333333333
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-burst",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 12.576666666666664,
+      "work": 8,
+      "drops": 191,
+      "longestGap": 3.7469444444444444,
+      "millionToEnd": 1.7319444444444425,
+      "buys": {
+        "splitter": null,
+        "return": 11.837777777777777,
+        "amplifier": 11.87111111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127000,
+      "outcome": "VICTORY",
+      "minutes": 9.653055555555557,
+      "work": 5,
+      "drops": 211,
+      "longestGap": 2.213611111111111,
+      "millionToEnd": 3.1427777777777797,
+      "buys": {
+        "splitter": null,
+        "return": 8.887777777777778,
+        "amplifier": 8.921111111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127001,
+      "outcome": "VICTORY",
+      "minutes": 9.520833333333334,
+      "work": 7,
+      "drops": 167,
+      "longestGap": 2.2899999999999996,
+      "millionToEnd": 2.8038888888888893,
+      "buys": {
+        "splitter": null,
+        "return": 8.851388888888888,
+        "amplifier": 9.232777777777777
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127002,
+      "outcome": "VICTORY",
+      "minutes": 8.445833333333333,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.3758333333333335,
+      "millionToEnd": 2.223055555555555,
+      "buys": {
+        "splitter": null,
+        "return": 7.681111111111111,
+        "amplifier": 7.714444444444444
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127003,
+      "outcome": "VICTORY",
+      "minutes": 11.458055555555555,
+      "work": 6,
+      "drops": 244,
+      "longestGap": 2.9541666666666666,
+      "millionToEnd": 1.968333333333332,
+      "buys": {
+        "splitter": null,
+        "return": 10.757222222222223,
+        "amplifier": 10.99777777777778
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127004,
+      "outcome": "VICTORY",
+      "minutes": 9.1225,
+      "work": 5,
+      "drops": 215,
+      "longestGap": 2.006666666666667,
+      "millionToEnd": 1.7591666666666663,
+      "buys": {
+        "splitter": null,
+        "return": 8.630833333333333,
+        "amplifier": 8.664166666666667
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127005,
+      "outcome": "VICTORY",
+      "minutes": 10.612222222222222,
+      "work": 6,
+      "drops": 235,
+      "longestGap": 2.6727777777777777,
+      "millionToEnd": 1.8394444444444442,
+      "buys": {
+        "splitter": null,
+        "return": 10.134999999999998,
+        "amplifier": 10.168333333333331
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127006,
+      "outcome": "VICTORY",
+      "minutes": 9.749166666666667,
+      "work": 6,
+      "drops": 215,
+      "longestGap": 2.3258333333333328,
+      "millionToEnd": 2.692500000000001,
+      "buys": {
+        "splitter": null,
+        "return": 9.038055555555555,
+        "amplifier": 9.071388888888889
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127007,
+      "outcome": "VICTORY",
+      "minutes": 9.890277777777778,
+      "work": 5,
+      "drops": 224,
+      "longestGap": 1.76,
+      "millionToEnd": 2.466666666666666,
+      "buys": {
+        "splitter": null,
+        "return": 9.07388888888889,
+        "amplifier": 9.24611111111111
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127008,
+      "outcome": "VICTORY",
+      "minutes": 10.0225,
+      "work": 7,
+      "drops": 178,
+      "longestGap": 1.4530555555555555,
+      "millionToEnd": 2.126666666666668,
+      "buys": {
+        "splitter": null,
+        "return": 9.35138888888889,
+        "amplifier": 9.600833333333332
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127009,
+      "outcome": "VICTORY",
+      "minutes": 10.694444444444445,
+      "work": 6,
+      "drops": 227,
+      "longestGap": 1.4283333333333341,
+      "millionToEnd": 2.277222222222223,
+      "buys": {
+        "splitter": null,
+        "return": 9.898333333333333,
+        "amplifier": 9.931666666666667
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127010,
+      "outcome": "VICTORY",
+      "minutes": 8.6075,
+      "work": 4,
+      "drops": 208,
+      "longestGap": 1.249722222222222,
+      "millionToEnd": 3.1638888888888888,
+      "buys": {
+        "splitter": null,
+        "return": 7.633611111111111,
+        "amplifier": 7.666944444444444
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127011,
+      "outcome": "VICTORY",
+      "minutes": 11.899722222222222,
+      "work": 6,
+      "drops": 244,
+      "longestGap": 1.506666666666667,
+      "millionToEnd": 2.5522222222222215,
+      "buys": {
+        "splitter": null,
+        "return": 11.044444444444446,
+        "amplifier": 11.07777777777778
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127012,
+      "outcome": "VICTORY",
+      "minutes": 8.318888888888889,
+      "work": 5,
+      "drops": 175,
+      "longestGap": 1.0166666666666666,
+      "millionToEnd": 3.2733333333333334,
+      "buys": {
+        "splitter": null,
+        "return": 7.508333333333334,
+        "amplifier": 7.541666666666667
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127013,
+      "outcome": "VICTORY",
+      "minutes": 7.44638888888889,
+      "work": 5,
+      "drops": 126,
+      "longestGap": 1.9400000000000006,
+      "millionToEnd": 2.0008333333333344,
+      "buys": {
+        "splitter": null,
+        "return": 6.824722222222222,
+        "amplifier": 7.025833333333335
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127014,
+      "outcome": "VICTORY",
+      "minutes": 9.07611111111111,
+      "work": 6,
+      "drops": 166,
+      "longestGap": 1.3866666666666665,
+      "millionToEnd": 2.7141666666666664,
+      "buys": {
+        "splitter": null,
+        "return": 8.026111111111112,
+        "amplifier": 8.258611111111112
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127015,
+      "outcome": "VICTORY",
+      "minutes": 13.870833333333334,
+      "work": 11,
+      "drops": 302,
+      "longestGap": 2.042777777777778,
+      "millionToEnd": 2.94027777777778,
+      "buys": {
+        "splitter": null,
+        "return": 13.263055555555555,
+        "amplifier": 13.497777777777777
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127016,
+      "outcome": "VICTORY",
+      "minutes": 11.409166666666666,
+      "work": 8,
+      "drops": 239,
+      "longestGap": 1.600833333333333,
+      "millionToEnd": 2.8377777777777773,
+      "buys": {
+        "splitter": null,
+        "return": 10.325,
+        "amplifier": 10.665555555555557
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127017,
+      "outcome": "VICTORY",
+      "minutes": 10.869722222222219,
+      "work": 6,
+      "drops": 250,
+      "longestGap": 1.7408333333333332,
+      "millionToEnd": 2.3394444444444424,
+      "buys": {
+        "splitter": null,
+        "return": 9.755833333333332,
+        "amplifier": 9.998611111111108
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127018,
+      "outcome": "VICTORY",
+      "minutes": 7.876388888888888,
+      "work": 5,
+      "drops": 156,
+      "longestGap": 1.350833333333333,
+      "millionToEnd": 2.4819444444444443,
+      "buys": {
+        "splitter": null,
+        "return": 6.966388888888889,
+        "amplifier": 6.999722222222222
+      }
+    },
+    {
+      "scenario": "holdout-skip-splitter-continuous-spend",
+      "seed": 67127019,
+      "outcome": "VICTORY",
+      "minutes": 9.316388888888888,
+      "work": 6,
+      "drops": 193,
+      "longestGap": 1.7719444444444439,
+      "millionToEnd": 1.8005555555555555,
+      "buys": {
+        "splitter": null,
+        "return": 8.776666666666666,
+        "amplifier": 8.809999999999999
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 16.9025,
+      "work": 9,
+      "drops": 281,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 3.0044444444444434,
+      "buys": {
+        "splitter": 15.236666666666668,
+        "return": 15.853611111111112,
+        "amplifier": 16.02388888888889
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 12.014444444444443,
+      "work": 7,
+      "drops": 200,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 2.8363888888888873,
+      "buys": {
+        "splitter": 10.720277777777778,
+        "return": 11.234166666666665,
+        "amplifier": 11.2675
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.119166666666667,
+      "work": 9,
+      "drops": 155,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.2911111111111104,
+      "buys": {
+        "splitter": 9.928611111111111,
+        "return": 10.277777777777777,
+        "amplifier": 10.62361111111111
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.235833333333334,
+      "work": 6,
+      "drops": 220,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.7697222222222226,
+      "buys": {
+        "splitter": 11.980277777777777,
+        "return": 12.176388888888887,
+        "amplifier": 12.413055555555555
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.748611111111112,
+      "work": 9,
+      "drops": 239,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.3386111111111116,
+      "buys": {
+        "splitter": 12.565000000000001,
+        "return": 12.907222222222224,
+        "amplifier": 13.085000000000003
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.145000000000001,
+      "work": 8,
+      "drops": 185,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 1.68888888888889,
+      "buys": {
+        "splitter": 11.164166666666667,
+        "return": 11.37388888888889,
+        "amplifier": 11.407222222222224
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 13.740000000000002,
+      "work": 11,
+      "drops": 227,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.240277777777779,
+      "buys": {
+        "splitter": 12.053055555555556,
+        "return": 12.740000000000002,
+        "amplifier": 13.185555555555558
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.309722222222224,
+      "work": 9,
+      "drops": 152,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 1.9680555555555568,
+      "buys": {
+        "splitter": 11.275555555555554,
+        "return": 11.46861111111111,
+        "amplifier": 11.685833333333333
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.497222222222222,
+      "work": 8,
+      "drops": 217,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.3038888888888884,
+      "buys": {
+        "splitter": 12.34888888888889,
+        "return": 12.810277777777776,
+        "amplifier": 12.843611111111109
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 15.881666666666668,
+      "work": 9,
+      "drops": 269,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.5422222222222235,
+      "buys": {
+        "splitter": 14.32666666666667,
+        "return": 14.689444444444446,
+        "amplifier": 14.951944444444447
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 9.2,
+      "work": 6,
+      "drops": 142,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 2.152222222222221,
+      "buys": {
+        "splitter": 7.951944444444445,
+        "return": 8.292499999999999,
+        "amplifier": 8.467777777777778
+      }
+    },
+    {
+      "scenario": "price-4000000-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.354444444444445,
+      "work": 15,
+      "drops": 172,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 2.191111111111111,
+      "buys": {
+        "splitter": 13.146666666666668,
+        "return": 13.520000000000001,
+        "amplifier": 13.875833333333334
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.805000000000001,
+      "work": 4,
+      "drops": 278,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 2.2663888888888906,
+      "buys": {
+        "splitter": 9.508888888888889,
+        "return": 9.92,
+        "amplifier": 10.130833333333333
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 10.916944444444445,
+      "work": 8,
+      "drops": 209,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.8691666666666666,
+      "buys": {
+        "splitter": 10.017777777777777,
+        "return": 10.22,
+        "amplifier": 10.253333333333334
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 10.942222222222222,
+      "work": 8,
+      "drops": 203,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.739166666666666,
+      "buys": {
+        "splitter": 9.445833333333333,
+        "return": 10.006388888888889,
+        "amplifier": 10.265555555555556
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.283055555555556,
+      "work": 6,
+      "drops": 238,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.355833333333335,
+      "buys": {
+        "splitter": 9.949444444444445,
+        "return": 10.297500000000001,
+        "amplifier": 10.594166666666668
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.019722222222223,
+      "work": 10,
+      "drops": 297,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.655000000000001,
+      "buys": {
+        "splitter": 12.878333333333334,
+        "return": 13.273888888888889,
+        "amplifier": 13.307222222222224
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.863333333333333,
+      "work": 8,
+      "drops": 247,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.7672222222222231,
+      "buys": {
+        "splitter": 11.17611111111111,
+        "return": 11.539166666666665,
+        "amplifier": 11.572499999999998
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 17.041666666666668,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.235555555555557,
+      "buys": {
+        "splitter": 16.18861111111111,
+        "return": 16.399444444444445,
+        "amplifier": 16.756111111111114
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.12638888888889,
+      "work": 6,
+      "drops": 196,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.5516666666666676,
+      "buys": {
+        "splitter": 8.849166666666667,
+        "return": 9.5325,
+        "amplifier": 9.565833333333334
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.957222222222223,
+      "work": 7,
+      "drops": 275,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.245277777777778,
+      "buys": {
+        "splitter": 10.694166666666668,
+        "return": 11.278333333333334,
+        "amplifier": 11.527777777777779
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.643055555555556,
+      "work": 7,
+      "drops": 278,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.134722222222223,
+      "buys": {
+        "splitter": 10.627222222222223,
+        "return": 11.107777777777779,
+        "amplifier": 11.141111111111112
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.672777777777778,
+      "work": 5,
+      "drops": 188,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.3436111111111115,
+      "buys": {
+        "splitter": 7.627222222222222,
+        "return": 8.276111111111112,
+        "amplifier": 8.309444444444445
+      }
+    },
+    {
+      "scenario": "price-4000000-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.485277777777778,
+      "work": 16,
+      "drops": 364,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.183888888888889,
+      "buys": {
+        "splitter": 17.659444444444446,
+        "return": 17.726111111111113,
+        "amplifier": 17.895833333333332
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 17.120833333333334,
+      "work": 9,
+      "drops": 283,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 3.222777777777777,
+      "buys": {
+        "splitter": 15.787222222222223,
+        "return": 16.09277777777778,
+        "amplifier": 16.12611111111111
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 12.015833333333335,
+      "work": 7,
+      "drops": 199,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 2.837777777777779,
+      "buys": {
+        "splitter": 10.75361111111111,
+        "return": 11.195555555555556,
+        "amplifier": 11.402777777777777
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.119166666666667,
+      "work": 9,
+      "drops": 155,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.2911111111111104,
+      "buys": {
+        "splitter": 10.244444444444444,
+        "return": 10.277777777777777,
+        "amplifier": 10.62361111111111
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.235833333333334,
+      "work": 6,
+      "drops": 220,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.7697222222222226,
+      "buys": {
+        "splitter": 12.01361111111111,
+        "return": 12.176388888888887,
+        "amplifier": 12.413055555555555
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.70138888888889,
+      "work": 9,
+      "drops": 235,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.291388888888889,
+      "buys": {
+        "splitter": 12.858611111111111,
+        "return": 13.03638888888889,
+        "amplifier": 13.069722222222223
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.145000000000001,
+      "work": 8,
+      "drops": 185,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 1.68888888888889,
+      "buys": {
+        "splitter": 11.1975,
+        "return": 11.37388888888889,
+        "amplifier": 11.407222222222224
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 13.771388888888888,
+      "work": 11,
+      "drops": 223,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.2716666666666647,
+      "buys": {
+        "splitter": 12.94138888888889,
+        "return": 12.974722222222223,
+        "amplifier": 13.008055555555556
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.316944444444443,
+      "work": 9,
+      "drops": 153,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 1.9752777777777766,
+      "buys": {
+        "splitter": 11.435277777777777,
+        "return": 11.46861111111111,
+        "amplifier": 11.860833333333334
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.240833333333335,
+      "work": 8,
+      "drops": 214,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.047500000000001,
+      "buys": {
+        "splitter": 12.512222222222222,
+        "return": 12.71638888888889,
+        "amplifier": 12.749722222222223
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 15.875277777777779,
+      "work": 9,
+      "drops": 265,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.5358333333333345,
+      "buys": {
+        "splitter": 14.502500000000001,
+        "return": 14.535833333333334,
+        "amplifier": 15.254722222222224
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.9875,
+      "work": 6,
+      "drops": 138,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 1.9397222222222226,
+      "buys": {
+        "splitter": 8.133611111111112,
+        "return": 8.296666666666665,
+        "amplifier": 8.33
+      }
+    },
+    {
+      "scenario": "price-6000000-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.18361111111111,
+      "work": 15,
+      "drops": 165,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 2.0202777777777765,
+      "buys": {
+        "splitter": 13.486666666666668,
+        "return": 13.520000000000001,
+        "amplifier": 13.553333333333335
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.861111111111112,
+      "work": 4,
+      "drops": 276,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 2.3225000000000016,
+      "buys": {
+        "splitter": 9.686666666666667,
+        "return": 9.940277777777778,
+        "amplifier": 10.226111111111111
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 11.00361111111111,
+      "work": 8,
+      "drops": 212,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.9558333333333326,
+      "buys": {
+        "splitter": 10.101666666666667,
+        "return": 10.280833333333334,
+        "amplifier": 10.314166666666667
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 10.895555555555555,
+      "work": 8,
+      "drops": 203,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.692499999999999,
+      "buys": {
+        "splitter": 9.943055555555556,
+        "return": 9.97638888888889,
+        "amplifier": 10.223055555555556
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.241388888888888,
+      "work": 6,
+      "drops": 238,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.314166666666667,
+      "buys": {
+        "splitter": 10.2225,
+        "return": 10.255833333333333,
+        "amplifier": 10.552500000000002
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.115555555555556,
+      "work": 10,
+      "drops": 297,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.7508333333333344,
+      "buys": {
+        "splitter": 13.1075,
+        "return": 13.273888888888889,
+        "amplifier": 13.503055555555557
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.809999999999999,
+      "work": 8,
+      "drops": 247,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.7138888888888886,
+      "buys": {
+        "splitter": 11.286388888888888,
+        "return": 11.48583333333333,
+        "amplifier": 11.519166666666665
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 17.041666666666668,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.235555555555557,
+      "buys": {
+        "splitter": 16.221944444444446,
+        "return": 16.399444444444445,
+        "amplifier": 16.756111111111114
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.06388888888889,
+      "work": 6,
+      "drops": 196,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.4891666666666676,
+      "buys": {
+        "splitter": 8.8825,
+        "return": 9.5325,
+        "amplifier": 9.737222222222222
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.87888888888889,
+      "work": 7,
+      "drops": 267,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.166944444444445,
+      "buys": {
+        "splitter": 11.2,
+        "return": 11.233333333333333,
+        "amplifier": 11.473333333333334
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.718888888888891,
+      "work": 7,
+      "drops": 278,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.2105555555555583,
+      "buys": {
+        "splitter": 10.798055555555555,
+        "return": 10.831388888888888,
+        "amplifier": 11.049722222222222
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.68361111111111,
+      "work": 5,
+      "drops": 188,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.354444444444444,
+      "buys": {
+        "splitter": 7.78638888888889,
+        "return": 8.130833333333333,
+        "amplifier": 8.320277777777779
+      }
+    },
+    {
+      "scenario": "price-6000000-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.816666666666666,
+      "work": 16,
+      "drops": 377,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.5152777777777775,
+      "buys": {
+        "splitter": 17.69277777777778,
+        "return": 17.8625,
+        "amplifier": 18.23166666666667
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 16.997222222222224,
+      "work": 9,
+      "drops": 277,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 3.099166666666667,
+      "buys": {
+        "splitter": 15.998333333333335,
+        "return": 15.787222222222223,
+        "amplifier": 15.965000000000002
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 12.073055555555555,
+      "work": 7,
+      "drops": 196,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 2.8949999999999996,
+      "buys": {
+        "splitter": 11.433055555555557,
+        "return": 10.893888888888888,
+        "amplifier": 11.19888888888889
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.104444444444445,
+      "work": 9,
+      "drops": 154,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.2763888888888886,
+      "buys": {
+        "splitter": 10.766944444444444,
+        "return": 10.244444444444444,
+        "amplifier": 10.422777777777776
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.458333333333334,
+      "work": 6,
+      "drops": 225,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.992222222222223,
+      "buys": {
+        "splitter": 12.384999999999998,
+        "return": 12.01361111111111,
+        "amplifier": 12.351666666666665
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.882777777777779,
+      "work": 9,
+      "drops": 241,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.472777777777779,
+      "buys": {
+        "splitter": 13.251944444444446,
+        "return": 12.858611111111111,
+        "amplifier": 13.040833333333333
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.145000000000001,
+      "work": 8,
+      "drops": 185,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 1.68888888888889,
+      "buys": {
+        "splitter": 11.407222222222224,
+        "return": 11.340555555555557,
+        "amplifier": 11.37388888888889
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 13.877500000000001,
+      "work": 11,
+      "drops": 228,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.377777777777778,
+      "buys": {
+        "splitter": 13.306111111111113,
+        "return": 12.94138888888889,
+        "amplifier": 12.974722222222223
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.316944444444443,
+      "work": 9,
+      "drops": 153,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 1.9752777777777766,
+      "buys": {
+        "splitter": 11.860833333333334,
+        "return": 11.435277777777777,
+        "amplifier": 11.46861111111111
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.251666666666665,
+      "work": 8,
+      "drops": 214,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.058333333333332,
+      "buys": {
+        "splitter": 12.760555555555555,
+        "return": 12.512222222222222,
+        "amplifier": 12.727222222222222
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 15.884166666666669,
+      "work": 9,
+      "drops": 269,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.544722222222225,
+      "buys": {
+        "splitter": 15.418333333333335,
+        "return": 14.502500000000001,
+        "amplifier": 14.921111111111113
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 9.215833333333334,
+      "work": 6,
+      "drops": 144,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 2.168055555555556,
+      "buys": {
+        "splitter": 8.679166666666667,
+        "return": 8.133611111111112,
+        "amplifier": 8.478333333333333
+      }
+    },
+    {
+      "scenario": "price-9000000-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.510277777777778,
+      "work": 15,
+      "drops": 176,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 2.3469444444444445,
+      "buys": {
+        "splitter": 13.73027777777778,
+        "return": 13.486666666666668,
+        "amplifier": 13.520000000000001
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.851944444444447,
+      "work": 4,
+      "drops": 276,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 2.313333333333336,
+      "buys": {
+        "splitter": 10.056111111111113,
+        "return": 9.686666666666667,
+        "amplifier": 10.02277777777778
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 11.009722222222221,
+      "work": 8,
+      "drops": 215,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.961944444444443,
+      "buys": {
+        "splitter": 10.409444444444443,
+        "return": 10.101666666666667,
+        "amplifier": 10.37611111111111
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 10.949444444444445,
+      "work": 8,
+      "drops": 206,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.746388888888889,
+      "buys": {
+        "splitter": 10.223055555555556,
+        "return": 9.943055555555556,
+        "amplifier": 10.189722222222223
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.241388888888888,
+      "work": 6,
+      "drops": 238,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.314166666666667,
+      "buys": {
+        "splitter": 10.552500000000002,
+        "return": 10.2225,
+        "amplifier": 10.519166666666669
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.026111111111112,
+      "work": 10,
+      "drops": 296,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.66138888888889,
+      "buys": {
+        "splitter": 13.31777777777778,
+        "return": 13.1075,
+        "amplifier": 13.284444444444444
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.814999999999998,
+      "work": 8,
+      "drops": 249,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.7188888888888876,
+      "buys": {
+        "splitter": 11.524166666666666,
+        "return": 11.286388888888888,
+        "amplifier": 11.490833333333333
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 17.041666666666668,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.235555555555557,
+      "buys": {
+        "splitter": 16.756111111111114,
+        "return": 16.366111111111113,
+        "amplifier": 16.399444444444445
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.141666666666667,
+      "work": 6,
+      "drops": 205,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.566944444444445,
+      "buys": {
+        "splitter": 9.779444444444444,
+        "return": 9.309722222222224,
+        "amplifier": 9.615
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.962222222222222,
+      "work": 7,
+      "drops": 273,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.250277777777777,
+      "buys": {
+        "splitter": 11.473333333333334,
+        "return": 11.2,
+        "amplifier": 11.440000000000001
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.785555555555558,
+      "work": 7,
+      "drops": 278,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.2772222222222247,
+      "buys": {
+        "splitter": 11.28361111111111,
+        "return": 10.798055555555555,
+        "amplifier": 10.831388888888888
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.694722222222223,
+      "work": 5,
+      "drops": 179,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.3655555555555567,
+      "buys": {
+        "splitter": 8.059722222222224,
+        "return": 7.78638888888889,
+        "amplifier": 8.02638888888889
+      }
+    },
+    {
+      "scenario": "price-9000000-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.545,
+      "work": 16,
+      "drops": 368,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.243611111111113,
+      "buys": {
+        "splitter": 17.895833333333332,
+        "return": 17.69277777777778,
+        "amplifier": 17.8625
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 16.96388888888889,
+      "work": 9,
+      "drops": 277,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 3.065833333333332,
+      "buys": {
+        "splitter": 15.965000000000002,
+        "return": 15.787222222222223,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 12.315833333333334,
+      "work": 7,
+      "drops": 208,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 3.137777777777778,
+      "buys": {
+        "splitter": 11.54138888888889,
+        "return": 10.893888888888888,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.23111111111111,
+      "work": 9,
+      "drops": 161,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.4030555555555537,
+      "buys": {
+        "splitter": 10.590277777777777,
+        "return": 10.244444444444444,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.425,
+      "work": 6,
+      "drops": 225,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.9588888888888896,
+      "buys": {
+        "splitter": 12.351666666666665,
+        "return": 12.01361111111111,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.030555555555557,
+      "work": 9,
+      "drops": 247,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.6205555555555566,
+      "buys": {
+        "splitter": 13.218611111111112,
+        "return": 12.858611111111111,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.439166666666667,
+      "work": 8,
+      "drops": 194,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 1.9830555555555556,
+      "buys": {
+        "splitter": 11.37388888888889,
+        "return": 11.340555555555557,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 13.844166666666668,
+      "work": 11,
+      "drops": 228,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.344444444444445,
+      "buys": {
+        "splitter": 13.27277777777778,
+        "return": 12.94138888888889,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.460833333333335,
+      "work": 9,
+      "drops": 159,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 2.1191666666666684,
+      "buys": {
+        "splitter": 11.827499999999999,
+        "return": 11.435277777777777,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.35388888888889,
+      "work": 8,
+      "drops": 220,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.160555555555556,
+      "buys": {
+        "splitter": 12.727222222222222,
+        "return": 12.512222222222222,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 16.023333333333333,
+      "work": 9,
+      "drops": 275,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.683888888888889,
+      "buys": {
+        "splitter": 15.385000000000002,
+        "return": 14.502500000000001,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 9.182500000000001,
+      "work": 6,
+      "drops": 144,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 2.134722222222223,
+      "buys": {
+        "splitter": 8.645833333333334,
+        "return": 8.133611111111112,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.476944444444445,
+      "work": 15,
+      "drops": 176,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 2.3136111111111113,
+      "buys": {
+        "splitter": 13.696944444444446,
+        "return": 13.486666666666668,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.857777777777779,
+      "work": 4,
+      "drops": 278,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 2.3191666666666677,
+      "buys": {
+        "splitter": 10.02277777777778,
+        "return": 9.686666666666667,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 10.976388888888888,
+      "work": 8,
+      "drops": 215,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.9286111111111097,
+      "buys": {
+        "splitter": 10.37611111111111,
+        "return": 10.101666666666667,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 10.916111111111112,
+      "work": 8,
+      "drops": 206,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.713055555555556,
+      "buys": {
+        "splitter": 10.189722222222223,
+        "return": 9.943055555555556,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.281388888888891,
+      "work": 6,
+      "drops": 242,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.3541666666666696,
+      "buys": {
+        "splitter": 10.519166666666669,
+        "return": 10.2225,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 14.049166666666668,
+      "work": 10,
+      "drops": 297,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.6844444444444466,
+      "buys": {
+        "splitter": 13.365833333333335,
+        "return": 13.1075,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.819999999999999,
+      "work": 8,
+      "drops": 251,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.7238888888888884,
+      "buys": {
+        "splitter": 11.490833333333333,
+        "return": 11.286388888888888,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 17.008333333333333,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.202222222222222,
+      "buys": {
+        "splitter": 16.72277777777778,
+        "return": 16.366111111111113,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.226388888888888,
+      "work": 6,
+      "drops": 212,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.6516666666666655,
+      "buys": {
+        "splitter": 9.74611111111111,
+        "return": 9.309722222222224,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.974722222222223,
+      "work": 7,
+      "drops": 275,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.262777777777778,
+      "buys": {
+        "splitter": 11.482777777777779,
+        "return": 11.2,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.685555555555558,
+      "work": 7,
+      "drops": 278,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.177222222222225,
+      "buys": {
+        "splitter": 11.016388888888889,
+        "return": 10.798055555555555,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.70277777777778,
+      "work": 5,
+      "drops": 179,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.3736111111111127,
+      "buys": {
+        "splitter": 8.092777777777778,
+        "return": 7.78638888888889,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-amplifier-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.511666666666667,
+      "work": 16,
+      "drops": 368,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.210277777777778,
+      "buys": {
+        "splitter": 17.8625,
+        "return": 17.69277777777778,
+        "amplifier": null
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 16.680555555555557,
+      "work": 9,
+      "drops": 271,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 2.7825000000000006,
+      "buys": {
+        "splitter": 16.09277777777778,
+        "return": null,
+        "amplifier": 15.787222222222223
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 11.658055555555556,
+      "work": 7,
+      "drops": 184,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 2.4800000000000004,
+      "buys": {
+        "splitter": 11.357222222222221,
+        "return": null,
+        "amplifier": 11.036944444444446
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 10.855833333333331,
+      "work": 9,
+      "drops": 149,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.027777777777775,
+      "buys": {
+        "splitter": 10.43111111111111,
+        "return": null,
+        "amplifier": 10.244444444444444
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.436944444444444,
+      "work": 6,
+      "drops": 232,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.970833333333333,
+      "buys": {
+        "splitter": 12.487777777777778,
+        "return": null,
+        "amplifier": 12.143055555555554
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.625,
+      "work": 9,
+      "drops": 235,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.215,
+      "buys": {
+        "splitter": 13.03638888888889,
+        "return": null,
+        "amplifier": 12.858611111111111
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.251944444444442,
+      "work": 8,
+      "drops": 188,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 1.7958333333333307,
+      "buys": {
+        "splitter": 11.37388888888889,
+        "return": null,
+        "amplifier": 11.340555555555557
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 14.060277777777777,
+      "work": 11,
+      "drops": 240,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.5605555555555544,
+      "buys": {
+        "splitter": 13.119166666666668,
+        "return": null,
+        "amplifier": 12.94138888888889
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.096388888888889,
+      "work": 9,
+      "drops": 147,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 1.754722222222222,
+      "buys": {
+        "splitter": 11.6525,
+        "return": null,
+        "amplifier": 11.435277777777777
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.268333333333333,
+      "work": 8,
+      "drops": 214,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.0749999999999993,
+      "buys": {
+        "splitter": 12.835555555555555,
+        "return": null,
+        "amplifier": 12.512222222222222
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 15.831666666666669,
+      "work": 9,
+      "drops": 271,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.492222222222225,
+      "buys": {
+        "splitter": 14.893055555555556,
+        "return": null,
+        "amplifier": 14.502500000000001
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 9.198333333333332,
+      "work": 6,
+      "drops": 142,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 2.150555555555554,
+      "buys": {
+        "splitter": 8.538888888888888,
+        "return": null,
+        "amplifier": 8.133611111111112
+      }
+    },
+    {
+      "scenario": "skip-return-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.100277777777778,
+      "work": 15,
+      "drops": 166,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 1.9369444444444444,
+      "buys": {
+        "splitter": 13.654722222222224,
+        "return": null,
+        "amplifier": 13.486666666666668
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.531388888888891,
+      "work": 4,
+      "drops": 267,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 1.9927777777777802,
+      "buys": {
+        "splitter": 10.0625,
+        "return": null,
+        "amplifier": 9.686666666666667
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 10.9775,
+      "work": 8,
+      "drops": 211,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.929722222222221,
+      "buys": {
+        "splitter": 10.320277777777779,
+        "return": null,
+        "amplifier": 10.101666666666667
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.074444444444445,
+      "work": 8,
+      "drops": 224,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.871388888888889,
+      "buys": {
+        "splitter": 10.6875,
+        "return": null,
+        "amplifier": 9.943055555555556
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.307500000000001,
+      "work": 6,
+      "drops": 247,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.3802777777777795,
+      "buys": {
+        "splitter": 10.744166666666668,
+        "return": null,
+        "amplifier": 10.2225
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.989166666666668,
+      "work": 10,
+      "drops": 294,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.624444444444446,
+      "buys": {
+        "splitter": 13.426666666666668,
+        "return": null,
+        "amplifier": 13.1075
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.79833333333333,
+      "work": 8,
+      "drops": 251,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.70222222222222,
+      "buys": {
+        "splitter": 11.48583333333333,
+        "return": null,
+        "amplifier": 11.286388888888888
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 16.977500000000003,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.1713888888888917,
+      "buys": {
+        "splitter": 16.68777777777778,
+        "return": null,
+        "amplifier": 16.366111111111113
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.340833333333334,
+      "work": 6,
+      "drops": 218,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.766111111111112,
+      "buys": {
+        "splitter": 9.661111111111113,
+        "return": null,
+        "amplifier": 9.309722222222224
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.85388888888889,
+      "work": 7,
+      "drops": 266,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.1419444444444444,
+      "buys": {
+        "splitter": 11.432777777777778,
+        "return": null,
+        "amplifier": 11.2
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.639166666666666,
+      "work": 7,
+      "drops": 277,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.1308333333333334,
+      "buys": {
+        "splitter": 11.166111111111112,
+        "return": null,
+        "amplifier": 10.798055555555555
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.697222222222223,
+      "work": 5,
+      "drops": 195,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.3680555555555562,
+      "buys": {
+        "splitter": 8.276111111111112,
+        "return": null,
+        "amplifier": 7.78638888888889
+      }
+    },
+    {
+      "scenario": "skip-return-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.497500000000002,
+      "work": 16,
+      "drops": 367,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.196111111111113,
+      "buys": {
+        "splitter": 18.036944444444444,
+        "return": null,
+        "amplifier": 17.69277777777778
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 16.788611111111113,
+      "work": 9,
+      "drops": 271,
+      "longestGap": 3.0925000000000002,
+      "millionToEnd": 2.890555555555556,
+      "buys": {
+        "splitter": null,
+        "return": 15.787222222222223,
+        "amplifier": 15.965000000000002
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 12.039722222222222,
+      "work": 7,
+      "drops": 196,
+      "longestGap": 1.4799999999999993,
+      "millionToEnd": 2.8616666666666664,
+      "buys": {
+        "splitter": null,
+        "return": 10.893888888888888,
+        "amplifier": 11.19888888888889
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 11.071111111111112,
+      "work": 9,
+      "drops": 154,
+      "longestGap": 1.6966666666666668,
+      "millionToEnd": 2.2430555555555554,
+      "buys": {
+        "splitter": null,
+        "return": 10.244444444444444,
+        "amplifier": 10.422777777777776
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 13.047499999999998,
+      "work": 6,
+      "drops": 213,
+      "longestGap": 2.516944444444445,
+      "millionToEnd": 2.5813888888888865,
+      "buys": {
+        "splitter": null,
+        "return": 12.01361111111111,
+        "amplifier": 12.351666666666665
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.849444444444446,
+      "work": 9,
+      "drops": 241,
+      "longestGap": 2.272777777777778,
+      "millionToEnd": 2.4394444444444456,
+      "buys": {
+        "splitter": null,
+        "return": 12.858611111111111,
+        "amplifier": 13.040833333333333
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 12.111666666666668,
+      "work": 8,
+      "drops": 185,
+      "longestGap": 2.0230555555555556,
+      "millionToEnd": 1.6555555555555568,
+      "buys": {
+        "splitter": null,
+        "return": 11.340555555555557,
+        "amplifier": 11.37388888888889
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 13.844166666666668,
+      "work": 11,
+      "drops": 228,
+      "longestGap": 2.6277777777777778,
+      "millionToEnd": 3.344444444444445,
+      "buys": {
+        "splitter": null,
+        "return": 12.94138888888889,
+        "amplifier": 12.974722222222223
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 12.145277777777778,
+      "work": 9,
+      "drops": 147,
+      "longestGap": 2.3272222222222223,
+      "millionToEnd": 1.8036111111111115,
+      "buys": {
+        "splitter": null,
+        "return": 11.435277777777777,
+        "amplifier": 11.46861111111111
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 13.218333333333332,
+      "work": 8,
+      "drops": 214,
+      "longestGap": 1.6069444444444438,
+      "millionToEnd": 2.0249999999999986,
+      "buys": {
+        "splitter": null,
+        "return": 12.512222222222222,
+        "amplifier": 12.727222222222222
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 15.850833333333336,
+      "work": 9,
+      "drops": 269,
+      "longestGap": 1.73861111111111,
+      "millionToEnd": 4.511388888888892,
+      "buys": {
+        "splitter": null,
+        "return": 14.502500000000001,
+        "amplifier": 14.921111111111113
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 9.182500000000001,
+      "work": 6,
+      "drops": 144,
+      "longestGap": 0.9633333333333335,
+      "millionToEnd": 2.134722222222223,
+      "buys": {
+        "splitter": null,
+        "return": 8.133611111111112,
+        "amplifier": 8.478333333333333
+      }
+    },
+    {
+      "scenario": "skip-splitter-burst",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 14.15,
+      "work": 15,
+      "drops": 166,
+      "longestGap": 2.371111111111111,
+      "millionToEnd": 1.9866666666666664,
+      "buys": {
+        "splitter": null,
+        "return": 13.486666666666668,
+        "amplifier": 13.520000000000001
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126000,
+      "outcome": "VICTORY",
+      "minutes": 10.818611111111114,
+      "work": 4,
+      "drops": 276,
+      "longestGap": 2.3763888888888887,
+      "millionToEnd": 2.280000000000003,
+      "buys": {
+        "splitter": null,
+        "return": 9.686666666666667,
+        "amplifier": 10.02277777777778
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126001,
+      "outcome": "VICTORY",
+      "minutes": 10.87361111111111,
+      "work": 8,
+      "drops": 209,
+      "longestGap": 2.325277777777778,
+      "millionToEnd": 2.825833333333332,
+      "buys": {
+        "splitter": null,
+        "return": 10.101666666666667,
+        "amplifier": 10.37611111111111
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126002,
+      "outcome": "VICTORY",
+      "minutes": 10.862222222222222,
+      "work": 8,
+      "drops": 203,
+      "longestGap": 1.511944444444445,
+      "millionToEnd": 2.659166666666666,
+      "buys": {
+        "splitter": null,
+        "return": 9.943055555555556,
+        "amplifier": 10.189722222222223
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126003,
+      "outcome": "VICTORY",
+      "minutes": 11.208055555555555,
+      "work": 6,
+      "drops": 238,
+      "longestGap": 2.703333333333333,
+      "millionToEnd": 2.2808333333333337,
+      "buys": {
+        "splitter": null,
+        "return": 10.2225,
+        "amplifier": 10.519166666666669
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126004,
+      "outcome": "VICTORY",
+      "minutes": 13.892222222222223,
+      "work": 10,
+      "drops": 289,
+      "longestGap": 2.9433333333333334,
+      "millionToEnd": 2.5275000000000016,
+      "buys": {
+        "splitter": null,
+        "return": 13.1075,
+        "amplifier": 13.284444444444444
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126005,
+      "outcome": "VICTORY",
+      "minutes": 11.781666666666665,
+      "work": 8,
+      "drops": 249,
+      "longestGap": 2.400555555555556,
+      "millionToEnd": 1.6855555555555544,
+      "buys": {
+        "splitter": null,
+        "return": 11.286388888888888,
+        "amplifier": 11.490833333333333
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126006,
+      "outcome": "VICTORY",
+      "minutes": 16.943333333333335,
+      "work": 16,
+      "drops": 315,
+      "longestGap": 3.2702777777777783,
+      "millionToEnd": 2.137222222222224,
+      "buys": {
+        "splitter": null,
+        "return": 16.366111111111113,
+        "amplifier": 16.399444444444445
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126007,
+      "outcome": "VICTORY",
+      "minutes": 10.033333333333333,
+      "work": 6,
+      "drops": 202,
+      "longestGap": 1.7763888888888895,
+      "millionToEnd": 2.458611111111111,
+      "buys": {
+        "splitter": null,
+        "return": 9.309722222222224,
+        "amplifier": 9.615
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126008,
+      "outcome": "VICTORY",
+      "minutes": 11.845555555555556,
+      "work": 7,
+      "drops": 267,
+      "longestGap": 3.6105555555555564,
+      "millionToEnd": 2.1336111111111116,
+      "buys": {
+        "splitter": null,
+        "return": 11.2,
+        "amplifier": 11.440000000000001
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126009,
+      "outcome": "VICTORY",
+      "minutes": 11.752222222222224,
+      "work": 7,
+      "drops": 278,
+      "longestGap": 1.6669444444444452,
+      "millionToEnd": 2.2438888888888915,
+      "buys": {
+        "splitter": null,
+        "return": 10.798055555555555,
+        "amplifier": 10.831388888888888
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126010,
+      "outcome": "VICTORY",
+      "minutes": 8.620833333333334,
+      "work": 5,
+      "drops": 177,
+      "longestGap": 1.797777777777778,
+      "millionToEnd": 2.291666666666667,
+      "buys": {
+        "splitter": null,
+        "return": 7.78638888888889,
+        "amplifier": 8.02638888888889
+      }
+    },
+    {
+      "scenario": "skip-splitter-continuous-spend",
+      "seed": 67126011,
+      "outcome": "VICTORY",
+      "minutes": 18.451944444444447,
+      "work": 16,
+      "drops": 364,
+      "longestGap": 3.651666666666667,
+      "millionToEnd": 4.150555555555558,
+      "buys": {
+        "splitter": null,
+        "return": 17.69277777777778,
+        "amplifier": 17.8625
+      }
+    }
+  ]
+}

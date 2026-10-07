@@ -1,3 +1,4 @@
+import {getLaunchCapacity} from '../../src/core/plinko-rules/progression';
 import { dirname, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import type Phaser from 'phaser';
@@ -114,7 +115,7 @@ export const createSharedWorld = (initial: GameState, config: BalanceConfig, che
   }
   return {
     launch(fraction: BetFraction): boolean {
-      if (activeDrops(pending).length >= config.plinko.maxConcurrentDrops || balls.size >= config.plinko.maxActiveBalls || state.barryInterruptPending || state.terminalReason || state.cash <= 0) return false;
+      if (activeDrops(pending).length >= getLaunchCapacity(config,state) || balls.size >= config.plinko.maxActiveBalls || state.barryInterruptPending || state.terminalReason || state.cash <= 0) return false;
       const previous = pending;
       const committed = commitBareDrop(state, null, config, `audit:${launches}`, fraction);
       const timed = advancePendingDropTime(committed.state, committed.pendingDrop, config);

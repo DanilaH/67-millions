@@ -89,3 +89,5 @@ The panel hides during jobs and casino play so it cannot intercept touch paths.
 2026-10-06 balance diagnosis: [six rejected numeric candidates, physical ablation and Barry verification](reports/pacing/2026-10-06-balance/README.md). Economy is unchanged; T070 remains open. The map debug panel now supports a real current Barry payment and refreshes the live scene after commands without requiring reload.
 
 2026-10-06 payback follow-up: [progression candidate and explicit tradeoffs](reports/pacing/2026-10-06-payback/README.md). Purchased center/inner payouts improve and upgraded edge payouts are reduced; bare board, prices and physics stay unchanged. Concurrent-play purchase gaps shrink and the final economy phase grows in matched samples. Solo pacing and increased modeled survival remain open concerns. The debug click-through deployment failure was reproduced and fixed separately in `9006666`.
+
+2026-10-07: [paid-capacity playtest candidate and verification](reports/release/2026-10-07/PAID_CAPACITY.md). New runs start at two simultaneous paid roots; legacy saves retain six. This supersedes the free-capacity rule for new runs and does not accept final balance.

@@ -1,3 +1,4 @@
+import { getLaunchCapacity } from '../../src/core/plinko-rules/progression';
 import type { BalanceConfig } from '../../src/config/balance.schema';
 import type { GameState } from '../../src/core/state/GameState';
 import type { BetFraction } from '../../src/core/plinko-rules/drop';
@@ -33,7 +34,7 @@ export function runContinuousSession(
         continue;
       }
       // Capacity rejection is temporary. Paid roots keep resolving, so retry later.
-      if (world.launch(intention.fraction ?? fraction) && current.launches >= config.plinko.maxConcurrentDrops) refillLaunches++;
+      if (world.launch(intention.fraction ?? fraction) && current.launches >= getLaunchCapacity(config, current.state)) refillLaunches++;
     }
     const snapshot = world.snapshot();
     return { ...snapshot, seconds: ticks / 60, diagnostics: {

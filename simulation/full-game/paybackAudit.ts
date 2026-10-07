@@ -28,7 +28,7 @@ function buy(s:GameState,id:CasinoUpgradeId){return id==='maxBet'?purchaseMaxBet
 let state={...createInitialGameState(config,seed),cash:1e9};const stages:any[]=[];
 const fixed=process.argv[6]?JSON.parse(readFileSync(process.argv[6],'utf8')).stages.map((s:any)=>s.chosen.id) as CasinoUpgradeId[]:null;
 while(true){const base=measure(state),cap=getMaxBetForLevel(config,state.plinkoMaxBetLevel),baseRate=(base.mean-1)*cap*0.5/base.seconds;
- const options=buildCasinoUpgradePreviews(state,null,config).filter(p=>!p.maxed&&p.id!=='insurance');if(!options.length)break;
+ const options=buildCasinoUpgradePreviews(state,null,config).filter(p=>!p.maxed&&p.id!=='insurance'&&p.id!=='capacity');if(!options.length)break;
  const se=Math.sqrt(base.values.reduce((s,v)=>s+(v-base.mean)**2,0)/(count-1)/count);
  const activeOptions=fixed?options.filter(p=>p.id===fixed[stages.length]):options;
  const candidates=activeOptions.map(p=>{const next=buy(state,p.id),m=measure(next),rate=(m.mean-1)*getMaxBetForLevel(config,next.plinkoMaxBetLevel)*0.5/m.seconds,delta=rate-baseRate;return {id:p.id,level:p.currentLevel+1,price:p.nextPrice!,mean:m.mean,seconds:m.seconds,deltaRate:delta,score:p.id==='maxBet'&&base.mean-1<=1.96*se?-1e30:delta/p.nextPrice!,paybackSeconds:delta>0?p.nextPrice!/delta:null};}).sort((a,b)=>b.score-a.score);

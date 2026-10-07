@@ -7,7 +7,7 @@ import { createSharedWorld } from '../simulation/full-game/sharedWorld';
 it.each([false, true])('caps and independently settles six launches (legacy physics: %s)', legacy => {
   const config = structuredClone(balance);
   if (legacy) config.plinko.physicsSeed = structuredClone(legacyPhysics);
-  const state = { ...createInitialGameState(balance, 123), cash: 100000 };
+  const state = { ...createInitialGameState(balance, 123), cash: 100000, plinkoCapacityLevel: 3 };
   const world = createSharedWorld(state, config);
   for (let i=0;i<6;i++) expect(world.launch(1)).toBe(true);
   expect(world.launch(1)).toBe(false);
@@ -25,7 +25,7 @@ it.each([false, true])('caps and independently settles six launches (legacy phys
 });
 
 it('blocks launches at Barry and settles the already-paid world before payment', () => {
-  const state = { ...createInitialGameState(balance, 123), cash: 100000, clock: { gameDayIndex: 0, minuteOfDay: 539 } };
+  const state = { ...createInitialGameState(balance, 123), cash: 100000, plinkoCapacityLevel: 3, clock: { gameDayIndex: 0, minuteOfDay: 539 } };
   const world = createSharedWorld(state, balance);
   expect(world.launch(1)).toBe(true); expect(world.launch(1)).toBe(false);
   expect(world.snapshot().state.totalBarryPaid).toBe(0);
@@ -45,7 +45,7 @@ it('adds active skill time without replacing the shift action cost', async () =>
 });
 
 it('captures an immutable solver checkpoint while its source world keeps running', () => {
-  const world = createSharedWorld({ ...createInitialGameState(balance, 123), cash: 100000 }, balance);
+  const world = createSharedWorld({ ...createInitialGameState(balance, 123), cash: 100000, plinkoCapacityLevel: 3 }, balance);
   world.launch(1);
   for (let i=0;i<60;i++) world.step();
   const checkpoint = world.snapshot(); const encoded = JSON.stringify(checkpoint);
@@ -56,7 +56,7 @@ it('captures an immutable solver checkpoint while its source world keeps running
 
 
 it.each([false, true])('replays a shared checkpoint exactly (specials: %s)', special => {
-  const initial = { ...createInitialGameState(balance, 67105001), cash: 100000 };
+  const initial = { ...createInitialGameState(balance, 67105001), cash: 100000, plinkoCapacityLevel: 3 };
   if (special) Object.assign(initial, { plinkoCenterLevel: 2, plinkoMidLevel: 3, plinkoJackpotLevel: 3, plinkoAmplifierLevel: 5, plinkoReturnLevel: 4, plinkoSplitterLevel: 5, plinkoJackpotBiasLevel: 4 });
   const original = createSharedWorld(initial, balance);
   for (let i=0;i<6;i++) { original.launch(i%2 ? 1 : 0.25); for(let tick=0;tick<15;tick++) original.step(); }
