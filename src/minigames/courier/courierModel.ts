@@ -20,6 +20,10 @@ export interface CourierSession {
   seed: number;
   position: CourierPoint;
   nextRouteIndex: number;
+  travelDurationMs: number;
+  elapsedMs: number;
+  routeLength: number;
+  heading: number;
   start: CourierPoint;
   finish: CourierPoint;
   startRadius: number;
@@ -46,7 +50,6 @@ export const COURIER_INTERACTION = {
   finishRadius: 72,
   routeThickness: 18,
   courierHalfSize: 29,
-  speedPixelsPerSecond: 240,
   obstacleWidth: 120,
   obstacleHeight: 115,
   obstacleColumns: [390, 610, 830],
@@ -71,8 +74,11 @@ export const getCourierRules = (
   obstacleCountMin: number;
   obstacleCountMax: number;
   redrawsBeforeStart: number;
+  travelRealSeconds: number;
 } => {
   const minigame = config.work.jobs.courier.minigame;
+  const travelRealSeconds = getNumber(minigame.travelRealSeconds, 'travelRealSeconds');
+  if (travelRealSeconds <= 0) throw new RangeError('Courier travel duration must be positive');
   const obstacleCountMin = getNumber(
     minigame.obstacleCountMin,
     'obstacleCountMin',
@@ -109,6 +115,7 @@ export const getCourierRules = (
     obstacleCountMin,
     obstacleCountMax,
     redrawsBeforeStart,
+    travelRealSeconds,
   };
 };
 
@@ -173,6 +180,10 @@ export const createCourierSession = (
     seed,
     position: { ...COURIER_INTERACTION.start },
     nextRouteIndex: 1,
+    travelDurationMs: rules.travelRealSeconds * 1000,
+    elapsedMs: 0,
+    routeLength: 0,
+    heading: 0,
     start: { ...COURIER_INTERACTION.start },
     finish: { ...COURIER_INTERACTION.finish },
     startRadius: COURIER_INTERACTION.startRadius,
@@ -246,7 +257,7 @@ export const appendCourierRoutePoint = (
   };
 };
 
-/** An unfinished gesture is discarded; only reaching the finish commits a route. */
+/** An unfinished gesture is discarded; releasing in the finish commits a route. */
 export const cancelCourierRoute = (session: CourierSession): CourierSession =>
   session.started || session.result !== null ? session : { ...session, route: [] };
 
@@ -254,6 +265,14 @@ export const courierRouteReachesFinish = (session: CourierSession): boolean => {
   const last = session.route.at(-1);
   return session.route.length >= 2 && last !== undefined &&
     distanceSquared(last, session.finish) <= session.finishRadius ** 2;
+};
+
+/** Check the actual release point, even if the last accepted move was inside the zone. */
+export const releaseCourierRoute = (session: CourierSession, point: CourierPoint): CourierSession => {
+  const drawn = appendCourierRoutePoint(session, point);
+  return Number.isFinite(point.x) && Number.isFinite(point.y) &&
+    distanceSquared(point, session.finish) <= session.finishRadius ** 2 && courierRouteReachesFinish(drawn)
+    ? startCourierDelivery(drawn) : cancelCourierRoute(session);
 };
 
 export const redrawCourierRoute = (
@@ -309,7 +328,8 @@ export const startCourierDelivery = (session: CourierSession): CourierSession =>
   // Snap a route ending in the delivery zone to its visible destination.
   if (distanceSquared(last, session.finish) <= session.finishRadius ** 2 &&
       distanceSquared(last, session.finish) > 0) route.push({ ...session.finish });
-  return { ...session, started: true, route, position: { ...session.start }, nextRouteIndex: 1 };
+  const routeLength = route.slice(1).reduce((sum, p, i) => sum + Math.sqrt(distanceSquared(route[i]!, p)), 0);
+  return { ...session, started: true, route, routeLength, elapsedMs: 0, position: { ...session.start }, nextRouteIndex: 1 };
 };
 
 export const advanceCourierSession = (
@@ -317,12 +337,17 @@ export const advanceCourierSession = (
 ): CourierSession => {
   if (!Number.isFinite(deltaMs) || deltaMs < 0) throw new RangeError('Courier deltaMs must be finite and non-negative');
   if (!session.started || session.result !== null || deltaMs === 0) return session;
-  let remaining = deltaMs * COURIER_INTERACTION.speedPixelsPerSecond / 1000;
+  const elapsedMs = Math.min(session.travelDurationMs, session.elapsedMs + deltaMs);
+  // On the final frame drain rounding residue, still checking every swept segment.
+  let remaining = elapsedMs === session.travelDurationMs ? Infinity
+    : (elapsedMs - session.elapsedMs) * session.routeLength / session.travelDurationMs;
+  let heading = session.heading;
   let position = { ...session.position };
   let index = session.nextRouteIndex;
   while (index < session.route.length) {
     const target = session.route[index]!;
     const distance = Math.sqrt(distanceSquared(position, target));
+    if (distance > 0) heading = Math.atan2(target.y - position.y, target.x - position.x);
     const travel = Math.min(distance, remaining);
     const end = distance === 0 ? target : {
       x: position.x + (target.x - position.x) * travel / distance,
@@ -334,7 +359,7 @@ export const advanceCourierSession = (
       if (t !== null && (contact === null || t < contact)) contact = t;
     }
     if (contact !== null) return {
-      ...session, nextRouteIndex: index,
+      ...session, elapsedMs, heading, nextRouteIndex: index,
       position: { x: position.x + (end.x - position.x) * contact, y: position.y + (end.y - position.y) * contact },
       result: 'FAILURE', failureReason: 'Курьер врезался в препятствие',
     };
@@ -344,7 +369,7 @@ export const advanceCourierSession = (
     index += 1;
     if (remaining <= 0 && index < session.route.length) break;
   }
-  const next = { ...session, position, nextRouteIndex: index };
+  const next = { ...session, elapsedMs, heading, position, nextRouteIndex: index };
   if (index < session.route.length) return next;
   const arrived = distanceSquared(position, session.finish) < 0.000001;
   return { ...next, result: arrived ? 'SUCCESS' : 'FAILURE',

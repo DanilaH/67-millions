@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { sceneViewport } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualHex } from '../visual/visualTheme';
 import type { CasinoQuickBetPreview } from './casinoUiModel';
 
@@ -37,20 +38,29 @@ export const createCasinoBetPanel = (
   const draw = (): void => {
     const preview = previews.find(entry => entry.fraction === selected) ?? previews[0];
     if (!preview) return;
+    const compact = sceneViewport(scene).scale < 0.8;
     const locked = preview.lockedReason !== null;
+    title.setFontSize(compact ? 24 : 20);
+    drop.setPosition(compact ? 28 : 706, compact ? 506 : 675).setFixedSize(compact ? 284 : 220, compact ? 88 : 42).setPadding(0, compact ? 26 : 7);
+    const targets: Record<string, { x: number; y: number }> = { drop: { x: drop.x + drop.width / 2, y: drop.y + drop.height / 2 } };
     const reason = preview.lockedReason?.includes('DROP') ? 'Дождись конца броска' : preview.lockedReason?.includes('ВРЕМЕННО') ? 'Казино временно закрыто' : preview.lockedReason?.toLocaleLowerCase('ru-RU');
     amount.setText(locked ? reason! : '×1 — вернул ставку\nМеньше ×1 — потерял часть денег')
-      .setFontSize(17).setColor(visualHex('textMuted'));
-    drop.setText(`Бросить · ${(preview.amount ?? 0).toLocaleString('ru-RU')} ₽`).setFontSize(20);
+      .setFontSize(compact ? 24 : 17).setColor(visualHex('textMuted'));
+    drop.setText(`Бросить · ${(preview.amount ?? 0).toLocaleString('ru-RU')} ₽`).setFontSize(compact ? 25 : 20);
     drop.setAlpha(locked ? 0.4 : 1);
     buttons.forEach((button, index) => {
       const entry = previews[index];
-      button.setFontSize((entry?.label.length ?? 0) > 9 ? 12 : (entry?.label.length ?? 0) > 7 ? 14 : 17);
+      button.setPosition(compact ? 28 + index * 96 : 356 + index * 114, compact ? 410 : 675).setFixedSize(compact ? 92 : 106, compact ? 88 : 42).setPadding(0, compact ? 28 : 7);
+      targets[`fraction${index}`] = { x: button.x + button.width / 2, y: button.y + button.height / 2 };
+      button.setFontSize(compact ? 24 : (entry?.label.length ?? 0) > 9 ? 12 : (entry?.label.length ?? 0) > 7 ? 14 : 17);
       button.setText(entry?.label ?? '').setAlpha(locked ? 0.4 : 1)
         .setBackgroundColor(visualHex(entry?.fraction === selected ? 'mustard' : 'inkRaised'))
         .setColor(visualHex(entry?.fraction === selected ? 'inkDeep' : 'textMain'));
     });
+    scene.game.canvas.setAttribute('data-bet-targets', JSON.stringify(targets));
   };
+  scene.scale.on('resize', draw);
+  scene.events.once('shutdown', () => scene.scale.off('resize', draw));
   return { render: (next) => {
     previews = next;
     selected ??= next.find(entry => entry.selected)?.fraction ?? next[0]?.fraction ?? null;

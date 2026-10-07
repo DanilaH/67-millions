@@ -148,7 +148,8 @@ export const buildWorkPreviews = (
         `Успех +${effectivePayout.toLocaleString('ru-RU')} ₽ · провал: штраф до ${potentialFine.toLocaleString('ru-RU')} ₽, счастье ${formatSigned(config.work.failure.extraHappiness)}`,
         `${definition.durationMinutes} мин · ${definition.window} · энергия -${definition.energyCost} · счастье -${definition.happinessCost}`,
       ],
-      lockedReason: lock,
+      cta: 'Начать смену',
+      lockedReason: lock === 'Сейчас работа закрыта' ? `Приём: ${definition.window}` : lock,
     };
   });
 
@@ -163,7 +164,7 @@ export const buildWorkUpgradePreviews = (
   const payout = (value: number) => roundMoney(roundMoney(value * state.workPayoutMultiplier) * (state.eventModifiers.nextWorksPayoutMultiplier?.multiplier ?? 1)).toLocaleString('ru-RU');
   return {
     id: `work-upgrade:${jobId}`,
-    cta: 'КУПИТЬ →',
+    cta: next ? `Улучшить · ${next.upgradePrice.toLocaleString('ru-RU')} ₽` : 'Максимум',
     title: `${JOB_TITLES[jobId]} · ${next ? `L${current.level} → L${next.level}` : `L${current.level}`}`,
     summary: next ? [
       `${next.upgradePrice.toLocaleString('ru-RU')} ₽ · выплата ${payout(current.payout)} → ${payout(next.payout)} ₽`,
@@ -203,6 +204,7 @@ export const buildFoodPreviews = (
 
     return {
       id: `food:${entry.id}`,
+      cta: `Поесть · ${definition.price.toLocaleString('ru-RU')} ₽`,
       forecast: forecastRecovery(state, definition, config),
       title: content.title,
       summary: [
@@ -241,6 +243,7 @@ export const buildEntertainmentPreviews = (
 
     return {
       id: `entertainment:${entry.id}`,
+      cta: definition.price ? `Отдохнуть · ${definition.price.toLocaleString('ru-RU')} ₽` : 'Отдохнуть бесплатно',
       forecast: forecastRecovery(state, definition, config),
       title: content.title,
       summary: [
@@ -281,6 +284,7 @@ export const buildSleepPreviews = (
   const delta = forecast.state.needs;
   return [{
     id: 'sleep',
+    cta: `Спать до ${formatClockTime((state.clock.minuteOfDay + duration) % 1440)}`,
     title: 'СОН',
     forecast: { needs: { ...delta }, caption: forecast.state.terminalReason ? 'Опасно: здоровье закончится во сне' : 'После сна · прогноз без случайных событий' },
     summary: [
@@ -310,6 +314,7 @@ export const buildDumpsterPreviews = (
 
   return [{
     id: 'dumpster',
+    cta: 'Начать поиск',
     title: 'ПОРЫТЬСЯ',
     summary: [
       `0 ₽ · ${config.dumpster.durationMinutes} мин`,
@@ -334,6 +339,7 @@ export const buildShowerPreviews = (
   config: BalanceConfig,
 ): ActionPreview[] => [{
   id: 'shower',
+  cta: `Помыться · ${config.shower.price.toLocaleString('ru-RU')} ₽`,
   title: 'ДУШ',
   summary: [
     `${config.shower.price.toLocaleString('ru-RU')} ₽ · ${config.shower.durationMinutes} мин`,

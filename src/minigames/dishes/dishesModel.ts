@@ -129,6 +129,16 @@ export const getDishesCleanPercent = (
   return cleaned / session.spots.length;
 };
 
+export const getDishesCleanPlateCount = (session: DishesSession): number => {
+  const total = session.plates.map(() => 0);
+  const clean = session.plates.map(() => 0);
+  for (const spot of session.spots) {
+    total[spot.plateIndex]!++;
+    if (spot.cleaned) clean[spot.plateIndex]!++;
+  }
+  return total.filter((count, i) => count === 0 || clean[i]! / count >= session.successCleanPercent).length;
+};
+
 const distanceSquared = (
   left: DishesPoint,
   right: DishesPoint,
@@ -172,7 +182,7 @@ const finishIfThresholdReached = (
   session: DishesSession,
 ): DishesSession =>
   session.result === null &&
-  getDishesCleanPercent(session) >= session.successCleanPercent
+  getDishesCleanPlateCount(session) === session.plates.length
     ? { ...session, result: 'SUCCESS' }
     : session;
 
@@ -228,8 +238,7 @@ export const advanceDishesSession = (
   return {
     ...completed,
     result:
-      getDishesCleanPercent(completed) >=
-      completed.successCleanPercent
+      getDishesCleanPlateCount(completed) === completed.plates.length
         ? 'SUCCESS'
         : 'FAILURE',
   };

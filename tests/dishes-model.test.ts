@@ -5,6 +5,7 @@ import {
   advanceDishesSession,
   createDishesSession,
   getDishesCleanPercent,
+  getDishesCleanPlateCount,
   getDishesRemainingMs,
   getDishesRules,
   scrubDishes,
@@ -44,11 +45,9 @@ describe('Dishes minigame model', () => {
     expect(getDishesCleanPercent(scrubbed)).toBeGreaterThan(0);
   });
 
-  it('reaches SUCCESS as soon as at least 90% of dirt is scrubbed', () => {
+  it('reaches SUCCESS as soon as every plate reaches 90%', () => {
     let session = createDishesSession(balance);
-    const needed = Math.ceil(
-      session.spots.length * session.successCleanPercent,
-    );
+    const needed = session.spots.length;
 
     for (const spot of session.spots.slice(0, needed)) {
       session = scrubDishes(
@@ -114,4 +113,15 @@ describe('Dishes surface eraser regressions', () => {
     expect(dense.spots).toEqual(sparse.spots);
     expect(dense.result).toBeNull();
   });
+});
+
+
+it('does not let four clean plates compensate for a half-dirty fifth', () => {
+  const s = createDishesSession(balance);
+  const spots = s.spots.map((spot, i) => ({ ...spot, cleaned: spot.plateIndex !== 0 || i % 2 === 0 }));
+  const partial = { ...s, spots };
+  expect(getDishesCleanPercent(partial)).toBeGreaterThanOrEqual(0.9);
+  expect(getDishesCleanPlateCount(partial)).toBe(4);
+  expect(advanceDishesSession(partial, s.durationMs).result).toBe('FAILURE');
+  expect(scrubDishes(partial, s.plates[1]!, s.plates[1]!).result).toBeNull();
 });

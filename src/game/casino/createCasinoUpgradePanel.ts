@@ -18,7 +18,10 @@ export const createCasinoUpgradePanel = (
   let signature = '';
   let offset = 0;
   let drag: { y: number; offset: number; moved: boolean; scrollbar: boolean } | null = null;
-  const top = 170, bottom = 620, rowHeight = 116;
+  let compact = false, opened = false;
+  let top = 170, bottom = 620, rowHeight = 116;
+  let left = 935, right = 1265;
+  const toggle = scene.add.text(950, 144, 'Улучшения ↓', { fontFamily: VISUAL_FONT.sans, fontSize: '28px', color: visualHex('inkDeep'), backgroundColor: visualHex('mustard'), fixedWidth: 300, fixedHeight: 88, align: 'center', padding: { y: 24 } }).setInteractive({ useHandCursor: true }).on('pointerup', () => { opened = !opened; drag = null; draw(); scene.events.emit('casino-upgrades-toggle'); });
   const maxScroll = () => Math.max(0, previews.length * rowHeight - (bottom - top));
   const text = (x: number, y: number, value: string, size = 17) => scene.add.text(x, y, value, {
     fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, color: visualHex('textMain'),
@@ -31,43 +34,50 @@ export const createCasinoUpgradePanel = (
   container.add([background, title, status, track]);
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
+    const visible = !compact || opened;
+    background.setVisible(visible); title.setVisible(visible && !compact); status.setVisible(visible); track.setVisible(visible);
+    toggle.setVisible(compact).setText(opened ? 'Закрыть ×' : 'Улучшения ↓');
+    scene.game.canvas.setAttribute('data-upgrades-open', String(visible));
+    if (!visible) return;
     const pending = previews.some(p => p.lockedReason?.includes('DROP'));
     const currentId = previews[Math.floor(offset / rowHeight)]?.id;
     const group = currentId === 'insurance' ? 'Страховка' : ['amplifier', 'return', 'splitter', 'jackpotBias'].includes(currentId ?? '') ? 'Спецпины' : 'Ставки и выплаты';
     status.setText(pending ? 'Покупки — после бросков' : `${group} · листай ↓`);
     offset = Phaser.Math.Clamp(offset, 0, maxScroll());
     scene.game.canvas.setAttribute('data-upgrade-scroll', `${Math.round(offset)}`);
-    track.clear().fillStyle(visualColor('lineDirty')).fillRoundedRect(1250, top, 5, bottom - top, 2);
+    track.clear().fillStyle(visualColor('lineDirty')).fillRoundedRect(right - 15, top, 5, bottom - top, 2);
     const thumb = (bottom - top) ** 2 / Math.max(bottom - top, previews.length * rowHeight);
-    track.fillStyle(visualColor('mustard')).fillRoundedRect(1250, top + (bottom - top - thumb) * offset / Math.max(1, maxScroll()), 5, thumb, 2);
+    track.fillStyle(visualColor('mustard')).fillRoundedRect(right - 15, top + (bottom - top - thumb) * offset / Math.max(1, maxScroll()), 5, thumb, 2);
     previews.forEach((preview, index) => {
       const y = top + index * rowHeight - offset;
       if (y + rowHeight <= top || y >= bottom) return;
-      const cardTop = Math.max(top, y + 1), cardBottom = Math.min(bottom, y + 111);
-      const card = scene.add.rectangle(1096, (cardTop + cardBottom) / 2, 296, cardBottom - cardTop, visualColor('inkRaised'));
+      const cardTop = Math.max(top, y + 1), cardBottom = Math.min(bottom, y + rowHeight - 5);
+      const card = scene.add.rectangle((left + right) / 2 - 4, (cardTop + cardBottom) / 2, right - left - 34, cardBottom - cardTop, visualColor('inkRaised'));
       const groupColor = preview.id === 'insurance' ? 'bruise' : ['amplifier', 'return', 'splitter', 'jackpotBias'].includes(preview.id) ? 'cold' : 'mustard';
       card.setStrokeStyle(1, visualColor(groupColor));
-      const name = text(958, y + 6, preview.title, 19).setFontStyle('bold');
-      const level = text(1234, y + 7, `${preview.currentLevel}/${preview.maxLevel}`, 14).setOrigin(1, 0).setColor(visualHex('textMuted'));
-      const effect = text(958, y + 29, preview.nextEffect, 18).setWordWrapWidth(276);
-      const buy = text(1234, y + 82, preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, 17)
-        .setOrigin(1, 0).setPadding(12, 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
+      const name = text(left + 23, y + 10, preview.title, compact ? 30 : 19).setFontStyle('bold');
+      const level = text(right - 31, y + 10, `${preview.currentLevel}/${preview.maxLevel}`, compact ? 24 : 14).setOrigin(1, 0).setColor(visualHex('textMuted'));
+      const effect = text(left + 23, y + (compact ? 53 : 29), preview.nextEffect, compact ? 28 : 18).setWordWrapWidth(compact ? 500 : 276);
+      const buy = text(right - 31, y + (compact ? 80 : 82), preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, compact ? 28 : 17)
+        .setOrigin(1, 0).setFixedSize(compact ? 300 : 0, compact ? 88 : 0).setAlign('center').setPadding(12, compact ? 24 : 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
-      const hint = text(958, y + 82, preview.maxed ? '' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', 14).setWordWrapWidth(145).setColor(visualHex('textMuted'));
+      const hint = text(left + 23, y + (compact ? 130 : 82), preview.maxed ? '' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', compact ? 24 : 14).setWordWrapWidth(compact ? 480 : 145).setColor(visualHex('textMuted'));
       // Text must not escape the scroll window even on renderers that do not
       // support nested container masks. Partial rows keep their clipped backing.
       for (const object of [name, level, effect, buy, hint]) object.setVisible(object.y >= top && object.y + object.height <= bottom);
       container.add([card, name, level, effect, buy, hint]);
       dynamic.push(card, name, level, effect, buy, hint);
     });
+    container.bringToTop(toggle);
   };
+  container.add(toggle);
   const point = (pointer: Phaser.Input.Pointer) => {
     const p = logicalPointer(scene, pointer); return { x: p.x - container.x, y: p.y };
   };
   background.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-    if (parent && !parent.visible) return;
+    if ((parent && !parent.visible) || (compact && !opened)) return;
     const p = point(pointer);
-    if (p.y >= top && p.y <= bottom) drag = { y: p.y, offset, moved: false, scrollbar: p.x >= 1244 };
+    if (p.y >= top && p.y <= bottom) drag = { y: p.y, offset, moved: false, scrollbar: p.x >= right - 21 };
   });
   const move = (pointer: Phaser.Input.Pointer) => {
     if (!drag) return;
@@ -82,19 +92,27 @@ export const createCasinoUpgradePanel = (
     const gesture = drag; drag = null;
     if (!gesture || gesture.moved || gesture.scrollbar || (parent && !parent.visible)) return;
     const p = point(pointer);
-    if (p.y < top || p.y > bottom || p.x < 1138 || p.x > 1238) return;
+    if (p.y < top || p.y > bottom || p.x < (compact ? right - 331 : 1138) || p.x > right - 27) return;
     const position = p.y - top + offset;
+    const rowY = top + Math.floor(position / rowHeight) * rowHeight - offset;
+    // A partially clipped price is not a hidden purchase target.
+    if (rowY + (compact ? 80 : 82) < top || rowY + (compact ? 168 : 114) > bottom) return;
     const preview = previews[Math.floor(position / rowHeight)];
-    if (position % rowHeight >= 82 && position % rowHeight <= 114 && preview?.lockedReason === null) onPurchase(preview.id);
+    if (position % rowHeight >= (compact ? 80 : 82) && position % rowHeight <= (compact ? 168 : 114) && preview?.lockedReason === null) onPurchase(preview.id);
   };
   const cancel = () => { drag = null; };
   const wheel = (pointer: Phaser.Input.Pointer, _objects: Phaser.GameObjects.GameObject[], _dx: number, dy: number) => {
-    if (parent && !parent.visible) return;
+    if ((parent && !parent.visible) || (compact && !opened)) return;
     const p = point(pointer);
-    if (p.x >= 935 && p.x <= 1265 && p.y >= top && p.y <= bottom) { offset += dy; draw(); }
+    if (p.x >= left && p.x <= right && p.y >= top && p.y <= bottom) { offset += dy; draw(); }
   };
   const layout = () => {
     const view = sceneViewport(scene);
+    compact = view.scale < 0.8;
+    top = compact ? 242 : 170; bottom = compact ? 688 : 620; rowHeight = compact ? 184 : 116;
+    left = compact ? 350 : 935; right = 1265;
+    background.setPosition((left + right) / 2, compact ? 416 : 366).setSize(right - left, compact ? 568 : 532);
+    status.setPosition(left + 20, compact ? 175 : 142).setFontSize(compact ? 27 : 17);
     container.x = view.left + view.width - 1280;
     draw();
   };

@@ -3,7 +3,7 @@ import { createBarryMinigameOverlay, type BarryMinigameOverlay } from './work/cr
 import { createCasinoRoom } from './casino/createCasinoRoom';
 import { PersistentHud } from './ui/PersistentHud';
 import { PlinkoEffects } from './casino/PlinkoEffects';
-import { installScenePresentation } from './visual/scenePresentation';
+import { sceneViewport, installScenePresentation } from './visual/scenePresentation';
 import { activeDrops, appendDrop, canLaunchDrop, findBallDrop, recordDropPayout, removeSettledDrop } from '../core/plinko-rules/concurrentDrops';
 
 import { formatCasinoResult } from './casino/casinoPayoutToast';
@@ -111,7 +111,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private barryReceiptOpen = false;
   private boardConfig = balance;
   private effects?: PlinkoEffects;
-  private mapHud?: PersistentHud;
   private casinoHud?: PersistentHud;
   private upgradeHighlight?: Phaser.GameObjects.Graphics;
   private upgradeTween?: Phaser.Tweens.Tween;
@@ -133,7 +132,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private staticBoardGraphics?: Phaser.GameObjects.Graphics;
   private ballImages: Phaser.GameObjects.Image[] = [];
   private pegImages: Phaser.GameObjects.Image[] = [];
-  private mapLayer?: Phaser.GameObjects.Container;
   private visitResultText?: Phaser.GameObjects.Text;
   private visitDetails = false;
   private visitStake = 0;
@@ -141,9 +139,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private visitDrops = 0;
   private infoText?: Phaser.GameObjects.Text;
   private statusText?: Phaser.GameObjects.Text;
-  private mapText?: Phaser.GameObjects.Text;
-  private mapMessageText?: Phaser.GameObjects.Text;
-  private mapMode = false;
+  private exitRequested = false;
+  private leaveButton?: Phaser.GameObjects.Text;
   private leaving = false;
   private readonly idleTime = new ActiveTimeAccumulator(this.boardConfig.time.realSecondsPerGameMinute);
   private lastResultMessage = '';
@@ -173,7 +170,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.game.canvas.removeAttribute('data-barry-receipt');
       void this.enqueueSave(true).then(() => this.finishPaidWorld());
     });
-    this.mapMode = false;
+    this.exitRequested = false;
     this.leaving = false;
     this.lastResultMessage = '';
     this.visitDetails = false;
@@ -189,7 +186,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.casinoLayer = this.add.container(0, 0);
     createCasinoRoom(this, this.casinoLayer);
     this.casinoLayer.add(addProductionImage(this, 'casino', 640, 380, 600, 590).setVisible(false));
-    this.mapLayer = this.add.container(0, 0).setVisible(false);
 
     this.staticBoardGraphics = this.add.graphics();
     this.casinoLayer.add(this.staticBoardGraphics);
@@ -271,7 +267,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
     );
     this.matter.world.on('collisionstart', this.handleAudioCollision);
 
-    this.installMapLayer();
     this.tutorialCard = createTutorialCard(
       this,
       (step) => {
@@ -315,7 +310,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         if (minutes > 0) this.advanceCasinoTime(minutes);
       }
     }
-    if (!this.staticBoardGraphics || this.mapMode) return;
+    if (!this.staticBoardGraphics) return;
 
     this.effects?.render(this.balls.keys());
     let index = 0;
@@ -416,6 +411,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.drawStaticBoard();
     this.installPocketLabels();
     this.installCasinoControls();
+    const refreshLayout = () => this.renderAll();
+    this.scale.on('resize', refreshLayout);
+    this.events.on('casino-upgrades-toggle', refreshLayout);
+    this.events.once('shutdown', () => { this.scale.off('resize', refreshLayout); this.events.off('casino-upgrades-toggle', refreshLayout); });
 
     if (pendingAtLoad) {
       assertDropBoardCompatible(pendingAtLoad, this.boardConfig, this.save.game);
@@ -507,17 +506,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.casinoLayer,
     );
 
-    const leaveButton = this.add
-      .text(1040, 640, '[ НА КАРТУ ]', {
-        color: visualHex('textMain'),
-        backgroundColor: visualHex('inkRaised'),
-        fontFamily: VISUAL_FONT.sans,
-        fontSize: '17px',
-        padding: { x: 10, y: 8 },
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => this.leaveCasino());
-    this.casinoLayer.add(leaveButton);
+    this.leaveButton = this.add.text(28, 142, '← ГОРОД', {
+      color: visualHex('inkDeep'), backgroundColor: visualHex('mustard'),
+      fontFamily: VISUAL_FONT.sans, fontSize: '28px', fontStyle: 'bold',
+      fixedWidth: 284, fixedHeight: 88, align: 'center', padding: { y: 24 },
+    }).setInteractive({ useHandCursor: true }).on('pointerup', () => {
+      if (this.exitRequested) {
+        this.exitRequested = false;
+        this.showStatus('Выход отменён');
+        this.renderAll();
+      } else void this.leaveCasino();
+    });
+    this.casinoLayer.add(this.leaveButton);
+    this.game.canvas.setAttribute('data-casino-exit', JSON.stringify({ x: 170, y: 186 }));
   }
 
   private advanceCasinoTime(minutes: number, persist = true): void {
@@ -533,81 +534,16 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderAll();
   }
 
-  private installMapLayer(): void {
-    if (!this.mapLayer) return;
-    const map = addProductionImage(this, 'map', 640, 360, 1280, 720);
-    this.mapLayer.add(map);
-    const beforeHud = this.children.list.length;
-    this.mapHud = new PersistentHud(this, this.boardConfig);
-    this.mapLayer.add(this.children.list.slice(beforeHud));
-
-    const title = this.add
-      .text(40, 172, 'ШАРЫ ЕЩЁ НА ДОСКЕ', {
-        color: visualHex('textMain'),
-        fontFamily: VISUAL_FONT.sans,
-        fontSize: '24px',
-      })
-      .setOrigin(0, 0);
-
-    this.mapText = this.add
-      .text(40, 218, '', {
-        color: visualHex('textMain'),
-        fontFamily: VISUAL_FONT.mono,
-        fontSize: '18px',
-        lineSpacing: 6,
-      })
-      .setOrigin(0, 0);
-
-    this.mapMessageText = this.add
-      .text(40, 330, '', {
-        color: visualHex('textMuted'),
-        fontFamily: VISUAL_FONT.sans,
-        fontSize: '17px',
-        wordWrap: { width: 900 },
-      })
-      .setOrigin(0, 0);
-
-    const returnButton = this.add
-      .text(40, 620, '[ ВЕРНУТЬСЯ В КАЗИНО ]', {
-        color: visualHex('textMain'),
-        backgroundColor: visualHex('inkRaised'),
-        fontFamily: VISUAL_FONT.sans,
-        fontSize: '17px',
-        padding: { x: 10, y: 8 },
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerup', () => this.returnToCasino());
-
-    this.mapLayer.add([title, this.mapText, this.mapMessageText, returnButton]);
-  }
-
   private async leaveCasino(): Promise<void> {
     if (!this.save || this.leaving || this.barryReceiptOpen) return;
-
     if (!this.save.pendingDrop) {
       this.leaving = true;
       await this.enqueueSave(true);
       this.scene.start('bootstrap');
       return;
     }
-
-    this.game.canvas.setAttribute('aria-label', 'Карта: бросок продолжается');
-    this.mapMode = true;
-    this.casinoLayer?.setVisible(false);
-    this.mapLayer?.setVisible(true);
-    this.lastResultMessage =
-      'Бросок продолжается. После выплаты откроется карта. Можно вернуться и досмотреть.';
-    this.renderMap();
-    this.renderTutorial();
-  }
-
-  private returnToCasino(): void {
-    this.game.canvas.setAttribute('aria-label', 'Казино Plinko');
-    this.mapMode = false;
-    this.mapLayer?.setVisible(false);
-    this.casinoLayer?.setVisible(true);
-    this.renderCasino();
-    this.renderTutorial();
+    this.exitRequested = true;
+    this.renderAll();
   }
 
   private highlightUpgrade(id: CasinoUpgradeId): void {
@@ -717,7 +653,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
   }
 
   private async commitAndSpawn(fraction: BetFraction): Promise<void> {
-    if (!this.save || !this.repository || !this.runtime || !this.random || this.leaving || this.barryReceiptOpen) return;
+    if (!this.save || !this.repository || !this.runtime || !this.random || this.leaving || this.exitRequested || this.barryReceiptOpen) return;
     if (this.save.activeAction) {
       this.showStatus('Finish the active non-Plinko action first.');
       return;
@@ -977,15 +913,15 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private finishPaidWorld(): void {
     if (!this.save || this.save.pendingDrop || this.leaving || this.barryReceiptOpen) return;
-    if (!this.save.pendingDrop && this.boardConfig !== balance && !this.mapMode) {
+    if (!this.save.pendingDrop && this.boardConfig !== balance && !this.exitRequested) {
       // The old paid world is now durably empty; new launches use current geometry.
       this.scene.restart();
       return;
     }
 
-    if (this.mapMode && !this.save.pendingDrop) {
+    if (this.exitRequested && !this.save.pendingDrop) {
       this.time.delayedCall(250, () => {
-        if (this.mapMode && !this.save?.pendingDrop && !this.leaving) this.scene.start('bootstrap');
+        if (this.exitRequested && !this.save?.pendingDrop && !this.leaving) this.scene.start('bootstrap');
       });
     }
   }
@@ -1170,7 +1106,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
   private renderAll(): void {
     this.renderCasino();
-    this.renderMap();
     this.renderTutorial();
 
     if (this.save) {
@@ -1187,9 +1122,13 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private renderCasino(): void {
     if (!this.infoText || !this.save) return;
 
+    this.leaveButton?.setText(this.exitRequested ? 'ОТМЕНИТЬ ВЫХОД' : '← ГОРОД').setFontSize(this.exitRequested ? 23 : 28);
+    this.game.canvas.setAttribute('data-casino-exit-pending', String(this.exitRequested));
+    if (this.exitRequested) this.showStatus(`Выход после бросков · осталось ${activeDrops(this.save.pendingDrop).length}`);
+    const compact = sceneViewport(this).scale < 0.8;
     const net = this.visitPayout - this.visitStake;
     const hasTutorial = buildTutorialCard(deriveTutorialStep(loadTutorialProgress()), 'casino') !== null && this.save.pendingDrop === null;
-    this.visitResultText?.setPosition(28, hasTutorial ? 630 : 398);
+    this.visitResultText?.setVisible(!compact).setPosition(28, hasTutorial ? 630 : 398);
     this.visitResultText?.setText(this.visitDrops === 0 ? 'Итог появится после броска' : [
       `За визит: ${net >= 0 ? '+' : '−'}${Math.abs(net).toLocaleString('ru-RU')} ₽`,
       ...(this.visitDetails && !hasTutorial ? [
@@ -1200,7 +1139,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     ]);
     const snapshot = this.visualSnapshot;
     this.casinoHud?.render(this.save.game);
-    this.infoText.setText([
+    this.infoText.setY(242).setText([
       `На доске: ${activeDrops(this.save.pendingDrop).length} / ${getLaunchCapacity(this.boardConfig, this.save.game)}`,
       ...(snapshot?.insuranceArmed ? ['Щит готов'] : []),
     ]);
@@ -1210,7 +1149,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         this.save.game,
         this.save.pendingDrop,
         this.boardConfig,
-      ),
+      ).map(preview => this.exitRequested ? { ...preview, lockedReason: 'Выход после бросков' } : preview),
     );
     this.upgradePanel?.render(
       buildCasinoUpgradePreviews(
@@ -1225,23 +1164,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.resultText
         ?.setPosition(28, (this.visitResultText?.y ?? 398) + (this.visitResultText?.height ?? 60) + 12)
         .setText(this.lastResultMessage.replace(/^Итог/, 'Последний:'))
-        .setVisible(!hasTutorial && !this.visitDetails && !this.statusText?.text);
+        .setVisible(!compact && !hasTutorial && !this.visitDetails && !this.statusText?.text);
     }
-  }
-
-  private renderMap(): void {
-    if (!this.mapText || !this.mapMessageText || !this.save) return;
-
-    this.mapHud?.render(this.save.game);
-    this.mapText.setText(`${activeDrops(this.save.pendingDrop).length} бросков · вернись в казино, чтобы продолжить`)
-      .setBackgroundColor(visualHex('inkPanel')).setPadding(12, 10);
-
-    this.mapMessageText.setBackgroundColor(visualHex('inkPanel')).setPadding(12, 10).setText(
-      this.lastResultMessage ||
-        (this.save.pendingDrop
-          ? 'Действия на карте станут доступны после завершения бросков.'
-          : 'Броски завершены.'),
-    );
   }
 
   private renderTutorial(): void {
@@ -1249,7 +1173,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
 
     if (
       this.save.game.terminalReason !== null ||
-      this.save.game.victory || this.mapMode || this.save.pendingDrop !== null
+      this.save.game.victory || this.exitRequested || this.save.pendingDrop !== null ||
+      (sceneViewport(this).scale < 0.8 && this.game.canvas.getAttribute('data-upgrades-open') === 'true')
     ) {
       this.tutorialCard.render(null);
       return;
@@ -1262,7 +1187,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.tutorialCard.render(
       buildTutorialCard(
         step,
-        this.mapMode ? 'map' : 'casino',
+        this.exitRequested ? 'map' : 'casino',
       ),
     );
   }

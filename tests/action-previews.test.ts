@@ -33,7 +33,7 @@ describe('T056 action previews', () => {
     expect(dishes.summary.join(' ')).toContain('энергия -12');
     expect(dishes.summary.join(' ')).toContain('счастье -3');
     expect(dishes.lockedReason).toBe(
-      'Сейчас работа закрыта',
+      'Приём: 16:00-00:00',
     );
 
     expect(courier.summary.join(' ')).toContain('180 мин');

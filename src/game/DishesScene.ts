@@ -25,6 +25,7 @@ import {
   createDishesSession,
   DISHES_INTERACTION,
   getDishesCleanPercent,
+  getDishesCleanPlateCount,
   getDishesRemainingMs,
   scrubDishes,
   type DishesPoint,
@@ -107,7 +108,7 @@ export class DishesScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Зажми и води губкой по слою грязи. Нужно очистить минимум 90%.',
+        'Зажми и води губкой. Каждую тарелку нужно довести до отметки «ЧИСТО».',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
@@ -510,6 +511,7 @@ export class DishesScene extends Phaser.Scene {
       this.session.plates.forEach((plate, index) => {
         if (cleaned[index]! / total[index]! >= this.session!.successCleanPercent && !this.finishedPlates.has(index)) {
           this.finishedPlates.add(index);
+          this.add.text(plate.x, plate.y + plate.radius + 10, '✓ ЧИСТО', { fontFamily: VISUAL_FONT.sans, fontSize: '26px', color: visualHex('good'), backgroundColor: visualHex('inkPanel'), padding: { x: 8, y: 4 } }).setOrigin(0.5, 0).setDepth(2);
           showInteractionFeedback(this, plate.x, plate.y - plate.radius, 'ЧИСТО!');
         }
       });
@@ -528,19 +530,18 @@ export class DishesScene extends Phaser.Scene {
 
     const remainingSeconds =
       getDishesRemainingMs(this.session) / 1000;
-    const cleanPercent =
-      getDishesCleanPercent(this.session) * 100;
+    const cleanPlates = getDishesCleanPlateCount(this.session);
 
     this.timerText?.setText(
       `${remainingSeconds.toFixed(1)}s`,
     );
     this.progressText?.setText(
-      `ЧИСТО: ${Math.floor(cleanPercent)}%`,
+      `ЧИСТО: ${cleanPlates} из ${this.session.plates.length}`,
     );
 
     if (!this.completionInFlight) {
       this.messageText?.setText(
-        cleanPercent >= this.session.successCleanPercent * 100
+        cleanPlates === this.session.plates.length
           ? 'Готово!'
           : 'Веди пальцем или мышью по грязи.',
       );

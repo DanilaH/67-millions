@@ -174,7 +174,9 @@ try {
   }
   // High-density input is transformed back into logical map/minigame space.
   await load(fixture); await clickMap('work'); await ready('РАБОТА');
-  await click(760, 510); await ready('Курьерский маршрут');
+  const actionTargets = async () => JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'));
+  let targets = await actionTargets(); await click(targets.next.x, targets.next.y);
+  targets = await actionTargets(); await click(targets['work:courier'].x, targets['work:courier'].y); await ready('Курьерский маршрут');
   await page.screenshot({ path: `${output}/courier-1080p.png` });
   const move = async (x, y) => {
     const box = await page.locator('canvas').boundingBox();
@@ -229,7 +231,7 @@ try {
   await page.waitForTimeout(300);
   await clickMap('casino'); await ready('Казино Plinko');
   assert.equal(await page.locator('#debug-root').isVisible(), false, 'playtest controls stay off the casino board');
-  await click(1100, 660); await ready('Карта города');
+  await click(170, 186); await ready('Карта города');
   // Cross-check the node adapter against the actual Phaser scene from the same solver checkpoint.
   for (const { special, roots, spacing, name, slowFrames = false, returnLevel = 4, seed = 67105001 } of [
     { special: false, roots: 1, spacing: 0, name: 'base-first-tick' },
@@ -282,7 +284,7 @@ try {
     assert.deepEqual(actual.needs, expected.state.needs, 'node/Phaser needs parity');
   }
   assert.deepEqual(errors, []);
-  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier auto-start and cancelled incomplete gesture', 'post-cascade Barry receipt pauses input/time without duplicate charge', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360', 'exact node/browser cash RNG clock needs parity including delayed render frames'], errors }, null, 2));
+  writeFileSync(`${output}/result.json`, JSON.stringify({ status: 'passed', checks: ['1080p backing and map input', 'six free launches, mixed stakes and cap', 'mid-world exact payout, RNG, clock replay', 'no duplicate payout', 'six max-special cascades exact replay', 'legacy paid geometry resumes then switches to current board', '1080p courier starts on release and cancelled incomplete gesture', 'post-cascade Barry receipt pauses input/time without duplicate charge', 'debug add/remove/time/reset', 'collapsed debug does not cover casino exit at 640x360', 'exact node/browser cash RNG clock needs parity including delayed render frames'], errors }, null, 2));
   console.log('Playtest smoke passed');
 } catch (error) {
   const diagnosticPage=browser.contexts()[0]?.pages()[0];

@@ -25,8 +25,7 @@ import {
   canBeginCourierRoute,
   createCourierSession,
   cancelCourierRoute,
-  courierRouteReachesFinish,
-  startCourierDelivery,
+  releaseCourierRoute,
   advanceCourierSession,
   type CourierSession,
 } from '../minigames/courier/courierModel';
@@ -102,7 +101,7 @@ export class CourierScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Доведи линию от зелёной зоны до синей. Отпустишь раньше — линия исчезнет.',
+        'Проведи от зелёной зоны до синей и отпусти. Вне синей зоны маршрут отменится.',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
@@ -284,25 +283,16 @@ export class CourierScene extends Phaser.Scene {
       this.session,
       logicalPointer(this, pointer),
     );
-    if (courierRouteReachesFinish(this.session)) {
-      void this.startDelivery();
-      return;
-    }
     this.audio?.play('courierDraw');
     this.render();
   };
 
   private readonly handlePointerUp = (pointer: Phaser.Input.Pointer): void => {
     if (!this.drawing || !this.session) return;
-    if (!this.save?.game.barryInterruptPending) {
-      this.session = appendCourierRoutePoint(this.session, logicalPointer(this, pointer));
-      if (courierRouteReachesFinish(this.session)) {
-        void this.startDelivery();
-        return;
-      }
-    }
     this.drawing = false;
-    this.session = cancelCourierRoute(this.session);
+    this.session = this.save?.game.barryInterruptPending
+      ? cancelCourierRoute(this.session)
+      : releaseCourierRoute(this.session, logicalPointer(this, pointer));
     this.render();
   };
 
@@ -367,23 +357,6 @@ export class CourierScene extends Phaser.Scene {
     });
 
     await this.saveWriteChain;
-  }
-
-  private async startDelivery(): Promise<void> {
-    if (
-      !this.session ||
-      this.completionInFlight ||
-      !this.repository ||
-      !this.save ||
-      !isCourierAction(this.save.activeAction) ||
-      this.save.game.barryInterruptPending
-    ) {
-      return;
-    }
-
-    this.drawing = false;
-    this.session = startCourierDelivery(this.session);
-    this.render();
   }
 
   private async completeDelivery(): Promise<void> {
@@ -483,7 +456,8 @@ export class CourierScene extends Phaser.Scene {
     }
 
     this.courierImage ??= addProductionImage(this, 'courier-icon', this.session.start.x, this.session.start.y, 58, 58, 2);
-    this.courierImage.setPosition(this.session.position.x, this.session.position.y);
+    this.courierImage.setPosition(this.session.position.x, this.session.position.y).setRotation(this.session.heading + Math.PI / 2);
+    this.game.canvas.setAttribute('data-courier-started', String(this.session.started));
     graphics.fillStyle(visualColor('good'), 1);
     graphics.fillCircle(
       this.session.start.x,
@@ -543,7 +517,7 @@ export class CourierScene extends Phaser.Scene {
           ? 'Курьер в пути…'
           : this.session.route.length === 0
           ? 'Начни в зелёной зоне.'
-          : 'Доведи до синей зоны — курьер отправится сам.';
+          : 'Отпусти в синей зоне, чтобы отправить курьера.';
       this.statusText?.setText(suffix);
     }
   }

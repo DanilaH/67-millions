@@ -166,7 +166,8 @@
         "minigame": {
           "obstacleCountMin": 2,
           "obstacleCountMax": 4,
-          "redrawsBeforeStart": 1
+          "redrawsBeforeStart": 1,
+          "travelRealSeconds": 3
         },
         "levels": [
           {

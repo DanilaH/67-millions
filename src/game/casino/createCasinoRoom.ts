@@ -2,19 +2,12 @@ import type Phaser from 'phaser';
 import { productionArtKey } from '../visual/productionArt';
 import { isPlinkoPerfMode } from '../../app/perfMode';
 import { sceneViewport } from '../visual/scenePresentation';
-import { VISUAL_FONT, visualHex } from '../visual/visualTheme';
 
 /** A fixed-cost backdrop: walls, floor perspective, lamps and neighbouring machines. */
 export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects.Container): void => {
   const g = scene.add.graphics().setVisible(false);
   const key = '67m:casino-room';
   const image = scene.add.image(0, 0, '__WHITE').setVisible(false); parent.add(image);
-  const sign = scene.add.text(28, 145, 'ИГРОВОЙ ЗАЛ', {
-    fontFamily: VISUAL_FONT.sans, fontSize: '29px', fontStyle: 'bold', color: visualHex('mustard'),
-    stroke: '#211711', strokeThickness: 5,
-  });
-  const subtitle = scene.add.text(30, 181, 'PLINKO · АВТОМАТ № 67', { fontFamily: VISUAL_FONT.mono, fontSize: '16px', color: visualHex('paperOld') });
-  parent.add([sign, subtitle]);
   const draw = () => {
     const v = sceneViewport(scene), right = v.left + v.width, bottom = v.top + v.height;
     g.clear().save().translateCanvas(-v.left, -v.top);

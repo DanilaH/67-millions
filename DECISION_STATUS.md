@@ -80,3 +80,7 @@ No historical simulation percentage is canonical until reproduced by the reposit
 ## User-authorized revision — 2026-10-07
 
 Paid launch capacity is now a purchasable Plinko track: new runs start at two places and unlock 3/4/6. One click remains one paid launch, with no automatic or free batch. Legacy saves retain their six places. Capacity prices and late stake caps are TUNABLE playtest values; final pacing remains OPEN.
+
+## 2026-10-07 — UX first pass, user-authorized
+
+Courier: release in finish zone commits the route; full traversal takes 3 active seconds regardless of route length (collision may fail earlier). Dishes: clean threshold applies to every plate. Casino exit waits on the visible board, can be cancelled, and blocks new launches while requested. Existing Barry receipt precedes leaving. Action cards inspect; explicit CTAs spend/start. No Plinko/economy retuning in this pass.

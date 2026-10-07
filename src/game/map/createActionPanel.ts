@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { ActionPreview } from '../actions/actionPreviews';
+import { sceneViewport } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualColor, visualHex, type VisualColorToken } from '../visual/visualTheme';
 
 export interface ActionPanel {
@@ -16,83 +17,82 @@ export const createActionPanel = (
 ): ActionPanel => {
   const container = scene.add.container(0, 0).setDepth(200).setVisible(false);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
-  let lastSignature = '';
-  let currentTitle = '';
+  let lastSignature = '', currentTitle = '';
   let currentActions: ActionPreview[] = [];
+  let navigationAction: ActionPreview | undefined;
   let page = 0;
   let previewId: string | null = null;
-  const pageSize = 3;
-  const background = scene.add.rectangle(763, 380, 1006, 520, visualColor('inkDeep'), 0.985)
-    .setStrokeStyle(2, visualColor('lineDirty')).setInteractive();
   const text = (x: number, y: number, label: string, size: number, color: VisualColorToken = 'textMain') =>
-    scene.add.text(x, y, label, { fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, color: visualHex(color) });
-  const title = text(292, 135, '', 28).setFontStyle('bold');
-  const back = text(1234, 131, 'Закрыть', 24).setOrigin(1, 0)
-    .setBackgroundColor(visualHex('inkRaised')).setPadding(16, 10)
-    .setInteractive({ useHandCursor: true }).on('pointerup', onBack);
-  let navigationAction: ActionPreview | undefined;
-  const section = text(850, 131, '', 22).setOrigin(0.5, 0).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised')).setInteractive({ useHandCursor: true }).on('pointerup', () => { if (navigationAction) onAction(navigationAction); });
-  const count = text(763, 607, '', 22).setOrigin(0.5);
-  const previous = text(292, 590, '←', 24).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised'))
-    .setInteractive({ useHandCursor: true }).on('pointerup', () => { if (page > 0) { page--; draw(); } });
-  const next = text(1234, 590, '→', 24).setOrigin(1, 0).setPadding(16, 10).setBackgroundColor(visualHex('inkRaised'))
-    .setInteractive({ useHandCursor: true }).on('pointerup', () => { if ((page + 1) * pageSize < currentActions.length) { page++; draw(); } });
-  container.add([background, title, back, section, count, previous, next]);
-
+    scene.add.text(x, y, label, { fontFamily: VISUAL_FONT.sans, fontSize: size, color: visualHex(color) });
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
-    onPreview(currentActions.slice(page * pageSize, (page + 1) * pageSize).find(action => action.id === previewId) ?? null);
-    const single = currentActions.length === 1;
-    const width = single ? 740 : 906;
-    const left = 763 - width / 2;
-    const panelHeight = single ? 330 : 520;
-    background.setPosition(763, 120 + panelHeight / 2).setSize(width, panelHeight);
-    title.setPosition(left + 24, 135).setText(currentTitle);
-    back.setX(left + width - 20);
-    previous.setX(left + 24); next.setX(left + width - 20);
+    const compact = sceneViewport(scene).scale < 0.8;
+    const pageSize = 2;
+    const left = compact ? 28 : 310, width = compact ? 1224 : 906;
     const pages = Math.max(1, Math.ceil(currentActions.length / pageSize));
     page = Math.min(page, pages - 1);
-    count.setText(pages > 1 ? `${page + 1} / ${pages}` : '').setVisible(pages > 1);
-    previous.setVisible(pages > 1).setAlpha(page > 0 ? 1 : 0.35);
-    next.setVisible(pages > 1).setAlpha(page + 1 < pages ? 1 : 0.35);
+    const visible = currentActions.slice(page * pageSize, (page + 1) * pageSize);
+    onPreview(visible.find(action => action.id === previewId) ?? null);
+    const targets: Record<string, { x: number; y: number }> = {};
+    const add = (...objects: Phaser.GameObjects.GameObject[]) => { container.add(objects); dynamic.push(...objects); };
+    const button = (id: string, x: number, y: number, w: number, label: string, action: () => void, primary = false, enabled = true) => {
+      const h = compact ? 88 : 46;
+      const control = text(x, y, label, compact ? 28 : 21, primary ? 'inkDeep' : 'textMain')
+        .setFixedSize(w, h).setPadding(8, compact ? 24 : 10).setAlign('center')
+        .setBackgroundColor(visualHex(primary ? 'mustard' : 'inkRaised')).setAlpha(enabled ? 1 : 0.45);
+      if (enabled) control.setInteractive({ useHandCursor: true }).on('pointerup', action);
+      targets[id] = { x: x + w / 2, y: y + h / 2 }; add(control);
+    };
+    add(scene.add.rectangle(left + width / 2, 410, width, 568, visualColor('inkDeep'), 0.985)
+      .setStrokeStyle(2, visualColor('lineDirty')).setInteractive());
+    button('back', left + 16, 136, compact ? 230 : 150, '← Город', onBack);
+    add(text(left + (compact ? 270 : 184), 153, currentTitle, compact ? 32 : 26).setFontStyle('bold'));
+    if (navigationAction) button('section', left + width - (compact ? 320 : 245), 136, compact ? 304 : 229, navigationAction.title, () => onAction(navigationAction!));
+    const single = currentActions.length === 1;
+    visible.forEach((action, index) => {
+      const y = (compact ? 236 : 202) + index * 180;
+      const height = single ? (compact ? 356 : 340) : 168;
+      const ctaWidth = compact ? 320 : 262;
+      const contentWidth = width - ctaWidth - 88;
+      const card = scene.add.rectangle(left + width / 2, y + height / 2, width - 32, height, visualColor('inkPanel')).setStrokeStyle(1, visualColor('lineDirty'));
+      add(card, text(left + 28, y + 8, action.title, compact ? 30 : 24).setFontStyle('bold'),
+        text(left + 28, y + (compact ? 48 : 43), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 21)
+          .setWordWrapWidth(contentWidth).setLineSpacing(2));
+      const toggle = () => { previewId = previewId === action.id ? null : action.id; draw(); };
+      if (action.forecast) {
+        card.setInteractive({ useHandCursor: true }).on('pointerup', toggle)
+          .on('pointerover', () => { if (!previewId) onPreview(action); })
+          .on('pointerout', () => { if (!previewId) onPreview(null); });
+        add(text(left + 28, y + height - (compact ? 36 : 27), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 18, 'cold'));
+        targets[`preview:${action.id}`] = { x: left + 80, y: y + height - 16 };
+      }
+      const ctaX = left + width - ctaWidth - 28;
+      if (action.lockedReason) {
+        add(text(ctaX, y + 20, action.lockedReason, compact ? 28 : 22, 'warning').setWordWrapWidth(ctaWidth).setAlign('center'));
+      } else button(action.id, ctaX, y + (single ? height - (compact ? 110 : 68) : compact ? 56 : 58), ctaWidth, action.cta ?? 'Открыть', () => onAction(action), true);
+    });
+    if (pages > 1) {
+      button('previous', left + 16, 600, compact ? 180 : 100, '←', () => { page--; draw(); }, false, page > 0);
+      button('next', left + width - (compact ? 196 : 116), 600, compact ? 180 : 100, '→', () => { page++; draw(); }, false, page + 1 < pages);
+      add(text(left + width / 2, 625, `${page + 1} / ${pages}`, compact ? 30 : 24).setOrigin(0.5, 0));
+    }
     scene.game.canvas.setAttribute('aria-label', currentTitle);
     scene.game.canvas.setAttribute('data-panel-page', `${page + 1}`);
-    currentActions.slice(page * pageSize, (page + 1) * pageSize).forEach((action, index) => {
-      const y = 190 + index * 130;
-      const locked = action.lockedReason !== null;
-      const height = single ? 240 : 120;
-      const card = scene.add.rectangle(763, y + height / 2, width - 48, height, visualColor(locked ? 'inkPanel' : 'inkRaised'))
-        .setStrokeStyle(2, visualColor(locked ? 'lineDirty' : 'cold'));
-      const name = text(left + 36, y + 10, action.title, 24).setFontStyle('bold');
-      const lock = text(left + width - 36, y + 12, action.lockedReason ?? action.cta ?? 'ВЫБРАТЬ →', 20, locked ? 'warning' : 'mustard')
-        .setOrigin(1, 0).setWordWrapWidth(single ? 320 : 480).setAlign('right');
-      const summary = text(left + 36, y + 47, (currentActions.length === 1 ? action.summary : action.summary.slice(0, 2)).join('\n'), 22, 'textMain')
-        .setWordWrapWidth(width - (action.forecast && !single ? 280 : 72)).setLineSpacing(2);
-      if (!locked) card.setInteractive({ useHandCursor: true }).on('pointerup', () => onAction(action));
-      let previewButton: Phaser.GameObjects.Text | undefined;
-      if (action.forecast) {
-        const preview = text(left + width - 36, single ? y + height - 52 : y + 72, previewId === action.id ? 'Скрыть' : 'Прогноз', 22)
-          .setOrigin(1, 0).setPadding(16, 10).setBackgroundColor(visualHex('inkPanel'))
-          .setInteractive({ useHandCursor: true }).on('pointerup', () => { previewId = previewId === action.id ? null : action.id; draw(); });
-        previewButton = preview; container.add(preview); dynamic.push(preview);
-        if (!locked) card.on('pointerover', () => { if (!previewId) onPreview(action); }).on('pointerout', () => { if (!previewId) onPreview(null); });
-      }
-      container.add([card, name, lock, summary]);
-      dynamic.push(card, name, lock, summary);
-      if (previewButton) container.bringToTop(previewButton);
-    });
+    scene.game.canvas.setAttribute('data-action-targets', JSON.stringify(targets));
   };
+  const resize = () => { if (container.visible) draw(); };
+  scene.scale.on('resize', resize);
+  scene.events.once('shutdown', () => scene.scale.off('resize', resize));
   return {
     show: (heading, actions, navigation) => {
       navigationAction = navigation;
-      section.setText(navigation?.title ?? '').setVisible(navigation !== undefined);
       if (heading !== currentTitle || !container.visible) { page = 0; previewId = null; }
-      const signature = JSON.stringify([heading, actions]);
+      const signature = JSON.stringify([heading, actions, navigation]);
       if (signature === lastSignature && container.visible) return;
       currentTitle = heading; currentActions = actions; lastSignature = signature;
       draw(); container.setVisible(true);
     },
-    hide: () => { previewId = null; onPreview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); },
+    hide: () => { previewId = null; onPreview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); scene.game.canvas.removeAttribute('data-action-targets'); },
     isVisible: () => container.visible,
   };
 };

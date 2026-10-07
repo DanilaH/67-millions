@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { sceneViewport } from '../visual/scenePresentation';
 
 import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
 import type { TutorialCardModel } from './tutorialUiModel';
@@ -87,6 +88,14 @@ export const createTutorialCard = (
         return;
       }
 
+      if (casino) {
+        const compact = sceneViewport(scene).scale < 0.8;
+        container.setPosition(compact ? sceneViewport(scene).left + sceneViewport(scene).width - 350 : 0, compact ? -160 : 0);
+        panel.setSize(width, compact ? 340 : height).setY(y + (compact ? 340 : height) / 2);
+        title.setFontSize(compact ? 24 : 20);
+        body.setFontSize(compact ? 24 : 19).setY(y + (compact ? 45 : 34));
+        acknowledge.setY(y + (compact ? 250 : height - 48)).setFontSize(compact ? 26 : 17).setPadding(9, compact ? 24 : 13);
+      }
       currentAcknowledge = model.acknowledge;
       title.setText(model.title);
       body.setText(model.body);

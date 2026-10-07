@@ -110,6 +110,22 @@ try {
       const target = await page.locator('canvas').evaluate((canvas, id) => JSON.parse(canvas.dataset.mapTargets)[id], id);
       await click(target.x, target.y);
     };
+    const clickTarget = async (attribute, id) => {
+      const target = await page.locator('canvas').evaluate((canvas, { attribute, id }) => JSON.parse(canvas.getAttribute(attribute))[id], { attribute, id });
+      assert.ok(target, `missing ${attribute}: ${id}`);
+      await click(target.x, target.y);
+    };
+    const action = async id => {
+      for (let i = 0; i < 8; i++) {
+        const targets = JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'));
+        if (targets[id]) return clickTarget('data-action-targets', id);
+        assert.ok(targets.next, `action not available: ${id}`);
+        await clickTarget('data-action-targets', 'next');
+      }
+      assert.fail(`action not found: ${id}`);
+    };
+    const bet = id => clickTarget('data-bet-targets', id);
+    const exitCasino = () => click(170, 186);
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
     // Debug commands must update the live scene without reloading the page.
     await loadSave(fixture);
@@ -185,14 +201,14 @@ try {
     const career = structuredClone(fixture); career.game.cash = 100000;
     await loadSave(career);
     await clickMap('work'); await sceneReady('РАБОТА');
-    await click(850, 153); await sceneReady('УЛУЧШЕНИЯ РАБОТ');
+    await action('section'); await sceneReady('УЛУЧШЕНИЯ РАБОТ');
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, career.game.cash);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-upgrades.png` });
-    await click(760, 250);
+    await action('work-upgrade:dishes');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.jobLevels.dishes === 2);
-    await click(760, 250);
+    await action('work-upgrade:dishes');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.jobLevels.dishes === 3);
-    await click(760, 250);
+    await click(1100, 310);
     const careerSaved = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(careerSaved.game.cash, career.game.cash - balance.work.jobs.dishes.levels[1].upgradePrice - balance.work.jobs.dishes.levels[2].upgradePrice);
     await page.reload({ waitUntil: 'networkidle' }); await ready();
@@ -200,7 +216,7 @@ try {
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.jobLevels.dishes, 3);
     await clickMap('work'); await sceneReady('РАБОТА');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-level3.png` });
-    await click(1190, 153); await sceneReady('Карта города');
+    await action('back'); await sceneReady('Карта города');
     await clickMap('home'); await sceneReady('ДОМ / СОН');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-sleep-forecast.png` });
     // Page navigation and stake selection must never spend cash.
@@ -208,29 +224,29 @@ try {
     await loadSave(rich);
     await clickMap('food'); await sceneReady('ЕДА');
     const beforeForecast = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
-    await click(1140, 285);
+    await action(`preview:food:${balance.food[0].id}`);
     await page.waitForFunction(() => !!document.querySelector('canvas')?.getAttribute('data-needs-forecast'));
     const afterForecast = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(afterForecast.game.cash, beforeForecast.game.cash, 'forecast does not charge money');
     assert.equal(afterForecast.game.rngState, beforeForecast.game.rngState, 'forecast does not consume RNG');
     assert.equal(afterForecast.activeAction, null, 'forecast does not start an action');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-forecast.png` });
-    await click(1140, 285);
+    await action(`preview:food:${balance.food[0].id}`);
     await page.waitForFunction(() => !document.querySelector('canvas')?.getAttribute('data-needs-forecast'));
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page1.png` });
-    for (let number = 2; number <= 4; number++) {
-      await click(1170, 612);
+    for (let number = 2; number <= 5; number++) {
+      await action('next');
       await page.waitForFunction(number => document.querySelector('canvas')?.dataset.panelPage === String(number), number);
     }
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page4.png` });
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'food pagination does not buy anything');
-    await click(345, 612);
-    await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '3');
+    await action('previous');
+    await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '4');
     await page.waitForTimeout(3200);
-    assert.equal(await page.locator('canvas').getAttribute('data-panel-page'), '3', 'clock updates preserve selected page');
-    await click(345, 612); await click(345, 612);
+    assert.equal(await page.locator('canvas').getAttribute('data-panel-page'), '4', 'clock updates preserve selected page');
+    await action('previous'); await action('previous'); await action('previous');
     await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '1');
-    await click(760, 250);
+    await action(`food:${balance.food[0].id}`);
     await page.waitForFunction(() => document.querySelector('canvas')?.getAttribute('aria-description')?.includes('ХОЛОДНАЯ ЛАПША'));
     const afterFood = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(afterFood.game.cash, rich.game.cash - balance.food[0].price, 'food action charges advertised price once');
@@ -238,13 +254,15 @@ try {
     await loadSave(rich);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'casino fixture starts with the requested balance');
     await clickMap('casino'); await sceneReady('Казино Plinko');
+    if (touch) await click(1100, 188);
+    const scrollTop = touch ? 250 : 175;
     // Swipe through every row; releasing over a price must never buy.
     await move(1205, 590); await down(); await move(1205, 175, { steps: 12 }); await up();
     await move(1205, 590); await down(); await move(1205, 175, { steps: 12 }); await up();
     await page.waitForFunction(() => Number(document.querySelector('canvas')?.dataset.upgradeScroll) > 0);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-insurance.png` });
-    await move(1205, 175); await down(); await move(1205, 610, { steps: 12 }); await up();
-    await move(1205, 175); await down(); await move(1205, 610, { steps: 12 }); await up();
+    await move(1205, scrollTop); await down(); await move(1205, 610, { steps: 12 }); await up();
+    await move(1205, scrollTop); await down(); await move(1205, 610, { steps: 12 }); await up();
     await page.waitForFunction(() => document.querySelector('canvas')?.dataset.upgradeScroll === '0');
     if (!touch) {
       await move(1100, 400); await page.mouse.wheel(0, 300);
@@ -252,24 +270,24 @@ try {
       await page.mouse.wheel(0, -1000);
       await page.waitForFunction(() => document.querySelector('canvas')?.dataset.upgradeScroll === '0');
     }
-    await click(400, 695);
+    await bet('fraction0');
     const selectedOnly = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(selectedOnly.game.cash, rich.game.cash, 'fraction selection and upgrade scrolling do not spend');
     assert.equal(selectedOnly.pendingDrop, null, 'fraction selection alone does not throw');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-controls.png` });
-    await click(1000, 195);
+    await click(700 + (touch ? 0 : 300), touch ? 260 : 195);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'upgrade title does not purchase');
-    await click(1205, 270);
+    await click(1205, touch ? 360 : 270);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoMaxBetLevel === 1);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-upgrade-feedback.png` });
     const upgraded = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(upgraded.game.cash, rich.game.cash - balance.plinko.maxBetLevels[1].price, 'dedicated upgrade button buys once');
-    await click(810, 695);
+    await bet('drop');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop !== null);
     const thrown = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(thrown.pendingDrop.originalStake, 625, 'explicit throw uses selected fraction of new limit');
     assert.equal(thrown.game.cash, upgraded.game.cash - 625);
-    await click(1205, 270);
+    await click(1205, touch ? 360 : 270);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.plinkoMaxBetLevel, 1, 'upgrade locked during throw');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
     await click(150, 401);
@@ -287,7 +305,7 @@ try {
         return original.call(this, key, value);
       };
     });
-    await click(515, 225);
+    await action('dumpster');
     const recovery = page.locator('#save-recovery');
     await recovery.waitFor({ state: 'visible' });
     const beforeRetry = await page.evaluate(() => localStorage.getItem('67m.save'));
@@ -337,6 +355,8 @@ try {
       } else {
         await move(180, 365); await down();
         for (const point of [[180, 600], [1100, 600], [1100, 365]]) { await move(...point, { steps: 8 }); await page.waitForTimeout(25); }
+        await page.waitForTimeout(400);
+        assert.equal(await page.locator('canvas').getAttribute('data-courier-started'), 'false', 'reaching finish while held does not start');
         await up();
         await page.waitForTimeout(600);
         assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).activeAction?.result, null, 'courier still travelling, no instant result');
@@ -355,7 +375,7 @@ try {
       // Re-enter the same Scene instance through the map, without a page reload.
       await clickMap('work'); await sceneReady('РАБОТА');
       await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-work-panel.png` });
-      await click(760, job === 'courier' ? 510 : job === 'trash' ? 380 : 250);
+      await action(`work:${job}`);
       await page.waitForFunction(job => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === job, job);
       await sceneReady(jobLabels[job]);
       await playJob();
@@ -366,10 +386,10 @@ try {
     await loadSave(fixture);
     for (let cycle = 0; cycle < 3; cycle++) {
       await clickMap('casino'); await sceneReady('Казино Plinko');
-      await click(1100, 660); await sceneReady('Карта города');
+      await exitCasino(); await sceneReady('Карта города');
     }
     // A working map after exit must be able to launch a real action.
-    await clickMap('work'); await sceneReady('РАБОТА'); await click(760, 510);
+    await clickMap('work'); await sceneReady('РАБОТА'); await action('work:courier');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
     await loadSave(fixture); await clickMap('casino'); await sceneReady('Казино Plinko');
     await page.evaluate(() => {
@@ -391,14 +411,17 @@ try {
     const committed = commitBareDrop(fixture.game, null, balance, 'pages-restore', 1);
     await loadSave({ ...fixture, game: committed.state, pendingDrop: committed.pendingDrop });
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop?.physics?.fixedTicksElapsed >= 15, null, { timeout: 12000 });
-    await click(1100, 660); await page.waitForTimeout(100);
+    await exitCasino(); await page.waitForTimeout(100);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-pending-map.png` });
-    await click(150, 637); await page.waitForTimeout(100);
+    assert.equal(await page.locator('canvas').getAttribute('aria-label'), 'Казино Plinko', 'waiting exit keeps the board visible');
+    assert.equal(await page.locator('canvas').getAttribute('data-casino-exit-pending'), 'true');
+    await exitCasino(); await page.waitForTimeout(100);
     const checkpoint = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.ok(checkpoint.pendingDrop.physics.solver);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-plinko.png` });
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
     const uninterrupted = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+    await exitCasino(); await sceneReady('Карта города');
     await loadSave(checkpoint);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
     const restored = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
@@ -441,7 +464,8 @@ try {
     if (touch) await page.touchscreen.tap(entrance.x, entrance.y); else await page.mouse.click(entrance.x, entrance.y);
     await sceneReady('Казино Plinko');
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-wide-casino.png` });
-    const launch = widePoint(810, 695);
+    const launchTarget = JSON.parse(await page.locator('canvas').getAttribute('data-bet-targets')).drop;
+    const launch = widePoint(launchTarget.x, launchTarget.y);
     if (touch) await page.touchscreen.tap(launch.x, launch.y); else await page.mouse.click(launch.x, launch.y);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop !== null);
     await context.close();
@@ -449,7 +473,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'playtest panel visible on map, hidden during jobs/casino; perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'exit and return during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'playtest panel visible on map, hidden during jobs/casino; perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'queued casino exit and cancellation during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();

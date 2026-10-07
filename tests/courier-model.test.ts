@@ -4,6 +4,7 @@ import { balance } from '../src/config/balance';
 import {
   appendCourierRoutePoint,
   cancelCourierRoute,
+  releaseCourierRoute,
   courierRouteReachesFinish,
   startCourierDelivery,
   advanceCourierSession,
@@ -19,6 +20,7 @@ describe('Courier minigame model', () => {
       obstacleCountMin: 2,
       obstacleCountMax: 4,
       redrawsBeforeStart: 1,
+      travelRealSeconds: 3,
     });
 
     const session = createCourierSession(balance, 901);
@@ -171,7 +173,7 @@ describe('Courier physical traversal regressions', () => {
     const started = startCourierDelivery(session);
     const before = advanceCourierSession(started, 1000);
     expect(before.result).toBeNull();
-    expect(before.position.x).toBe(420);
+    expect(before.position.x).toBeCloseTo(180 + 920 / 3);
     const collided = advanceCourierSession(before, 1000);
     expect(collided.result).toBe('FAILURE');
     expect(collided.position.x).toBe(511); // box edge 540 minus sprite half-size 29
@@ -183,7 +185,7 @@ describe('Courier physical traversal regressions', () => {
   it('does not treat collinear but disjoint box edges as a collision', () => {
     let session = createCourierSession(balance, 905);
     session = { ...session, obstacles: [{ id: 'far', x: 900, y: 278.5, width: 120, height: 115 }], route: [session.start, { x: 300, y: 365 }] };
-    const ended = advanceCourierSession(startCourierDelivery(session), 1000);
+    const ended = advanceCourierSession(startCourierDelivery(session), 3000);
     expect(ended.position.x).toBe(300);
     expect(ended.failureReason).toBe('Маршрут закончился до точки доставки');
   });
@@ -220,5 +222,30 @@ describe('Courier continuous gesture', () => {
     expect(started.route.at(-1)).toEqual(initial.finish);
     expect(cancelCourierRoute(started)).toBe(started);
     expect(appendCourierRoutePoint(started, initial.start)).toBe(started);
+  });
+});
+
+
+describe('Courier release and fixed duration', () => {
+  it('waits at the finish while held and cancels releases outside it', () => {
+    let s = createCourierSession(balance, 905);
+    s = { ...s, obstacles: [], route: [s.start, s.finish] };
+    expect(advanceCourierSession(s, 5000).started).toBe(false);
+    expect(releaseCourierRoute(s, { x: 2000, y: 365 }).route).toEqual([]);
+    expect(releaseCourierRoute(s, { x: 900, y: 365 }).started).toBe(false);
+    expect(releaseCourierRoute(s, s.finish).started).toBe(true);
+  });
+  it.each([false, true])('finishes at three seconds regardless of path length (detour=%s)', detour => {
+    let s = createCourierSession(balance, 905);
+    s = startCourierDelivery({ ...s, obstacles: [], route: detour ? [s.start, { x: 180, y: 600 }, { x: 1100, y: 600 }, s.finish] : [s.start, s.finish] });
+    const whole = advanceCourierSession(s, 3000);
+    for (const ms of [16, 500, 333, 1000, 1150]) s = advanceCourierSession(s, ms);
+    expect(s.elapsedMs).toBe(2999);
+    expect(s.result).toBeNull();
+    s = advanceCourierSession(s, 1);
+    expect(s.result).toBe('SUCCESS');
+    expect(s.position).toEqual(whole.position);
+    expect(s.elapsedMs).toBe(3000);
+    expect(s.heading).toBeCloseTo(detour ? -Math.PI / 2 : 0);
   });
 });

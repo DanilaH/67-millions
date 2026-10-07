@@ -212,7 +212,7 @@ Acceptance: 5 bags; 25 sec; all accepted in dumpster; forgiving grab/target.
 ### T053 [P0] Courier
 2026-10-06 user revision: reaching the finish commits and starts the route immediately; releasing early discards the entire line without penalty. No separate Start/redraw buttons.
 Status: 2026-10-02: actual route traversal, sprite-size swept collision and arrival settlement; deterministic model and repeated mouse/touch shifts checked.
-Acceptance: draw one continuous route; start on reaching finish; cancel incomplete gestures; 2–4 obstacles; deterministic pass/fail.
+Acceptance: draw one continuous route; start only on release inside finish; three-second travel; cancel incomplete gestures; 2–4 obstacles; deterministic pass/fail.
 
 ### T054 [P1] Barry pause/resume across all minigames
 Acceptance: exact minigame state pauses in runtime; work transaction remains correct.
@@ -347,3 +347,5 @@ Acceptance: config hash recorded; production build and submission artifacts read
 Extends T057 casino UI, map/HUD presentation and persistence verification: free concurrent launches, independent settlements, capped effects, full-screen map, vector stat icons, denser rendering and opt-in preview debug controls. Implemented; browser/deployment evidence is recorded in `reports/release/2026-10-02/FREE_LAUNCHES.md`. Real-device performance and new pacing/balance remain open.
 
 2026-10-05 fixed-tick repair: collision effects now complete synchronously after each solver step and before persistence; save latency cannot postpone them into another tick. Local browser payout/RNG/clock/needs parity (including delayed render frames) and 42,000 effect reruns pass. This supersedes the V1 scheduling blocker above. CI, Pages deployment and live verification all passed in run 37328078720; published executable `5bf6c6806dd709f6d17800cd7893cecbedffb160`. See [evidence and historical-save limits](reports/physics/2026-10-05-fixed-tick/README.md). Economy acceptance remains open.
+
+2026-10-07 UX follow-up (T051/T053/T056/T057): every dish must reach clean state; courier starts on release, follows route heading and travels for three seconds. Dedicated action CTAs; work locks show hours; two readable cards per page; prominent casino exit with cancellable wait on the visible board. Compact-screen bet controls and expandable upgrade panel use larger targets. Economy and Plinko physics unchanged.
