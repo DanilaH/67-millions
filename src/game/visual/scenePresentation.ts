@@ -29,3 +29,8 @@ export const logicalPointer = (scene: Phaser.Scene, pointer: Phaser.Input.Pointe
   scene.cameras.main.getWorldPoint(pointer.x, pointer.y);
 
 export const sceneViewport = (scene: Phaser.Scene) => resolveGameViewport(scene.scale.width, scene.scale.height);
+
+/** Input/readability follow CSS pixels; backing resolution may be kept at 1280 on a phone. */
+export const isCompactViewport = (scene: Phaser.Scene): boolean =>
+  resolveGameViewport(scene.game.canvas.clientWidth || scene.scale.width,
+    scene.game.canvas.clientHeight || scene.scale.height).scale < 0.8;

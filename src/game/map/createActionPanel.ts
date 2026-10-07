@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 import type { ActionPreview } from '../actions/actionPreviews';
-import { sceneViewport } from '../visual/scenePresentation';
+import { isCompactViewport } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualColor, visualHex, type VisualColorToken } from '../visual/visualTheme';
+
+export const ACTION_PANEL_VISIBILITY_EVENT = 'action-panel-visibility';
 
 export interface ActionPanel {
   show(title: string, actions: ActionPreview[], navigation?: ActionPreview): void;
@@ -19,6 +21,7 @@ export const createActionPanel = (
   const dynamic: Phaser.GameObjects.GameObject[] = [];
   // Keep controls alive across clock refreshes/page turns so consecutive taps
   // cannot hit a destroyed object while Phaser refreshes its input list.
+  const cards = new Map<string, Phaser.GameObjects.Rectangle>();
   const controls = new Map<string, Phaser.GameObjects.Text>();
   const handlers = new Map<string, () => void>();
   let lastSignature = '', currentTitle = '';
@@ -31,8 +34,9 @@ export const createActionPanel = (
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
     controls.forEach(control => control.setVisible(false));
+    cards.forEach(card => card.setVisible(false));
     handlers.clear();
-    const compact = sceneViewport(scene).scale < 0.8;
+    const compact = isCompactViewport(scene);
     const pageSize = 2;
     const left = compact ? 28 : 310, width = compact ? 1224 : 906;
     const pages = Math.max(1, Math.ceil(currentActions.length / pageSize));
@@ -69,15 +73,24 @@ export const createActionPanel = (
       const height = single ? (compact ? 356 : 340) : 168;
       const ctaWidth = compact ? 320 : 262;
       const contentWidth = width - ctaWidth - 88;
-      const card = scene.add.rectangle(left + width / 2, y + height / 2, width - 32, height, visualColor('inkPanel')).setStrokeStyle(1, visualColor('lineDirty'));
-      add(card, text(left + 28, y + 8, action.title, compact ? 30 : 24).setFontStyle('bold'),
+      let card = cards.get(action.id);
+      if (!card) {
+        card = scene.add.rectangle(0, 0, 1, 1, visualColor('inkPanel')).setStrokeStyle(1, visualColor('lineDirty'));
+        cards.set(action.id, card); container.add(card);
+        card.on('pointerup', () => handlers.get(`preview:${action.id}`)?.())
+          .on('pointerover', () => handlers.get(`hover:${action.id}`)?.())
+          .on('pointerout', () => { if (!previewId) onPreview(null); });
+      }
+      card.setPosition(left + width / 2, y + height / 2).setSize(width - 32, height).setVisible(true);
+      container.bringToTop(card);
+      add(text(left + 28, y + 8, action.title, compact ? 30 : 24).setFontStyle('bold'),
         text(left + 28, y + (compact ? 48 : 43), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 21)
           .setWordWrapWidth(contentWidth).setLineSpacing(2));
       const toggle = () => { previewId = previewId === action.id ? null : action.id; draw(); };
       if (action.forecast) {
-        card.setInteractive({ useHandCursor: true }).on('pointerup', toggle)
-          .on('pointerover', () => { if (!previewId) onPreview(action); })
-          .on('pointerout', () => { if (!previewId) onPreview(null); });
+        card.setInteractive({ useHandCursor: true });
+        handlers.set(`preview:${action.id}`, toggle);
+        handlers.set(`hover:${action.id}`, () => { if (!previewId) onPreview(action); });
         add(text(left + 28, y + height - (compact ? 36 : 27), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 18, 'cold'));
         targets[`preview:${action.id}`] = { x: left + 80, y: y + height - 16 };
       }
@@ -98,7 +111,11 @@ export const createActionPanel = (
   };
   const resize = () => { if (container.visible) draw(); };
   scene.scale.on('resize', resize);
-  scene.events.once('shutdown', () => scene.scale.off('resize', resize));
+  scene.events.once('shutdown', () => {
+    scene.scale.off('resize', resize);
+    scene.game.canvas.removeAttribute('data-action-targets');
+    scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT);
+  });
   return {
     show: (heading, actions, navigation) => {
       navigationAction = navigation;
@@ -107,8 +124,9 @@ export const createActionPanel = (
       if (signature === lastSignature && container.visible) return;
       currentTitle = heading; currentActions = actions; lastSignature = signature;
       draw(); container.setVisible(true);
+      scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT);
     },
-    hide: () => { previewId = null; onPreview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); scene.game.canvas.removeAttribute('data-action-targets'); },
+    hide: () => { previewId = null; onPreview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); scene.game.canvas.removeAttribute('data-action-targets'); scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT); },
     isVisible: () => container.visible,
   };
 };

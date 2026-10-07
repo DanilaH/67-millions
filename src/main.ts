@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { ACTION_PANEL_VISIBILITY_EVENT } from './game/map/createActionPanel';
 import { EndRunAds, END_RUN_ADS_KEY } from './app/EndRunAds';
 import { GameAnalytics, GAME_ANALYTICS_KEY } from './app/analytics/GameAnalytics';
 
@@ -121,8 +122,9 @@ try {
     },
   );
 
-  const updateDebugVisibility = () => debug.setVisible(game.scene.isActive('bootstrap'));
+  const updateDebugVisibility = () => debug.setVisible(game.scene.isActive('bootstrap') && !game.canvas.hasAttribute('data-action-targets'));
   game.events.on(GAME_PRESENTABLE_EVENT, updateDebugVisibility);
+  game.events.on(ACTION_PANEL_VISIBILITY_EVENT, updateDebugVisibility);
   updateDebugVisibility();
 
   void presentable.then(async () => {
@@ -141,6 +143,7 @@ try {
     removeBlockedListener();
     disposeSceneAudioRuntime();
     game.events.off(GAME_PRESENTABLE_EVENT, updateDebugVisibility);
+    game.events.off(ACTION_PANEL_VISIBILITY_EVENT, updateDebugVisibility);
     debug.destroy();
     viewport.destroy();
     saveRecovery.destroy();

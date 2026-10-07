@@ -97,7 +97,11 @@ try {
       rect = await page.locator('canvas').boundingBox(); assert.ok(rect);
     };
     const sceneReady = async label => {
-      try { await page.waitForFunction(label => document.querySelector('canvas')?.getAttribute('aria-label') === label, label); }
+      try {
+        await page.waitForFunction(label => document.querySelector('canvas')?.getAttribute('aria-label') === label, label);
+        // Phaser installs new interactive objects on the next frame after rendering a panel.
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      }
       catch (error) {
         await page.screenshot({ path: `${output}/failed-scene.png` });
         console.error('scene transition', label, await page.locator('canvas').getAttribute('aria-label'), errors);
@@ -223,6 +227,7 @@ try {
     const rich = structuredClone(fixture); rich.game.cash = 100000;
     await loadSave(rich);
     await clickMap('food'); await sceneReady('ЕДА');
+    assert.equal(await page.locator('#debug-root').isVisible(), false, 'playtest panel cannot cover shop controls');
     const beforeForecast = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     await action(`preview:food:${balance.food[0].id}`);
     await page.waitForFunction(() => !!document.querySelector('canvas')?.getAttribute('data-needs-forecast'));
@@ -254,7 +259,15 @@ try {
     await loadSave(rich);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'casino fixture starts with the requested balance');
     await clickMap('casino'); await sceneReady('Казино Plinko');
-    if (touch) await click(1100, 188);
+    if (touch) {
+      const bounds = JSON.parse(await page.locator('canvas').getAttribute('data-bet-targets'));
+      for (const target of Object.values(bounds)) {
+        assert.ok(target.width * rect.width / 1280 >= 44 && target.height * rect.height / 720 >= 44, 'bet controls are at least 44 CSS pixels');
+      }
+      assert.equal(await page.locator('canvas').getAttribute('data-upgrades-open'), 'false', 'phone upgrades start collapsed');
+      await click(1100, 188);
+      assert.equal(await page.locator('canvas').getAttribute('data-upgrades-open'), 'true');
+    }
     const scrollTop = touch ? 250 : 175;
     // Swipe through every row; releasing over a price must never buy.
     for (let i = 0; i < 4; i++) { await move(1205, 610); await down(); await move(1205, scrollTop, { steps: 12 }); await up(); }
@@ -319,7 +332,7 @@ try {
     await recovery.waitFor({ state: 'hidden' });
     const reservedSearch = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(reservedSearch.activeAction.kind, 'DUMPSTER');
-    assert.equal(reservedSearch.game.needs.energy, fixture.game.needs.energy - balance.dumpster.energyCost, 'retry charges search once');
+    assert.equal(reservedSearch.game.needs.energy, JSON.parse(beforeRetry).game.needs.energy - balance.dumpster.energyCost, 'retry charges search once relative to the pre-action checkpoint');
     await page.reload({ waitUntil: 'networkidle' }); await ready();
     await sceneReady('Поиск в помойке');
     const resumedSearch = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));

@@ -3,7 +3,7 @@ import { createBarryMinigameOverlay, type BarryMinigameOverlay } from './work/cr
 import { createCasinoRoom } from './casino/createCasinoRoom';
 import { PersistentHud } from './ui/PersistentHud';
 import { PlinkoEffects } from './casino/PlinkoEffects';
-import { sceneViewport, installScenePresentation } from './visual/scenePresentation';
+import { isCompactViewport, sceneViewport, installScenePresentation } from './visual/scenePresentation';
 import { activeDrops, appendDrop, canLaunchDrop, findBallDrop, recordDropPayout, removeSettledDrop } from '../core/plinko-rules/concurrentDrops';
 
 import { formatCasinoResult } from './casino/casinoPayoutToast';
@@ -1125,7 +1125,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.leaveButton?.setText(this.exitRequested ? 'ОТМЕНИТЬ ВЫХОД' : '← ГОРОД').setFontSize(this.exitRequested ? 23 : 28);
     this.game.canvas.setAttribute('data-casino-exit-pending', String(this.exitRequested));
     if (this.exitRequested) this.showStatus(`Выход после бросков · осталось ${activeDrops(this.save.pendingDrop).length}`);
-    const compact = sceneViewport(this).scale < 0.8;
+    const compact = isCompactViewport(this);
     const net = this.visitPayout - this.visitStake;
     const hasTutorial = buildTutorialCard(deriveTutorialStep(loadTutorialProgress()), 'casino') !== null && this.save.pendingDrop === null;
     this.visitResultText?.setVisible(!compact || !this.statusText?.text).setFontSize(compact ? 22 : 19).setPosition(28, compact ? 610 : hasTutorial ? 630 : 398);
@@ -1174,7 +1174,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (
       this.save.game.terminalReason !== null ||
       this.save.game.victory || this.exitRequested || this.save.pendingDrop !== null ||
-      (sceneViewport(this).scale < 0.8 && this.game.canvas.getAttribute('data-upgrades-open') === 'true')
+      (isCompactViewport(this) && this.game.canvas.getAttribute('data-upgrades-open') === 'true')
     ) {
       this.tutorialCard.render(null);
       return;
@@ -1196,7 +1196,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.statusText?.setText(message);
     if (message) {
       this.resultText?.setVisible(false);
-      if (sceneViewport(this).scale < 0.8) this.visitResultText?.setVisible(false);
+      if (isCompactViewport(this)) this.visitResultText?.setVisible(false);
     }
   }
 

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { sceneViewport } from '../visual/scenePresentation';
+import { isCompactViewport, sceneViewport } from '../visual/scenePresentation';
 import type { NeedsForecast } from '../actions/needsForecast';
 import type { BalanceConfig } from '../../config/balance.schema';
 import type { GameState } from '../../core/state/GameState';
@@ -110,7 +110,7 @@ export class PersistentHud {
     this.heading[3]!.setText(hud.cash >= hud.mainDebt ? 'Долг можно погасить' : 'Цель: 67 млн ₽').setColor(visualHex('mustard'));
     this.heading.forEach((heading, index) => {
       const maxWidth = [210, 300, 455, 194][index]!;
-      const base = (view.scale < 0.8 ? [26, 32, 26, 26] : [16, 23, 17, 16])[index]!;
+      const base = (isCompactViewport(this.scene) ? [26, 32, 26, 26] : [16, 23, 17, 16])[index]!;
       heading.setFontSize(base);
       if (heading.width > maxWidth) heading.setFontSize(Math.max(12, Math.floor(base * maxWidth / heading.width)));
     });

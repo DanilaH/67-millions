@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { logicalPointer, sceneViewport } from '../visual/scenePresentation';
+import { isCompactViewport, logicalPointer, sceneViewport } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
 import type { CasinoUpgradeId, CasinoUpgradePreview } from './casinoUiModel';
 
@@ -108,7 +108,7 @@ export const createCasinoUpgradePanel = (
   };
   const layout = () => {
     const view = sceneViewport(scene);
-    compact = view.scale < 0.8;
+    compact = isCompactViewport(scene);
     top = compact ? 242 : 170; bottom = compact ? 688 : 620; rowHeight = compact ? 184 : 116;
     left = compact ? 350 : 935; right = 1265;
     background.setPosition((left + right) / 2, compact ? 416 : 366).setSize(right - left, compact ? 568 : 532);

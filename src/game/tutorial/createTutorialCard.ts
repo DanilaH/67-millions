@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { sceneViewport } from '../visual/scenePresentation';
+import { isCompactViewport, sceneViewport } from '../visual/scenePresentation';
 
 import { VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
 import type { TutorialCardModel } from './tutorialUiModel';
@@ -89,7 +89,7 @@ export const createTutorialCard = (
       }
 
       if (casino) {
-        const compact = sceneViewport(scene).scale < 0.8;
+        const compact = isCompactViewport(scene);
         container.setPosition(compact ? sceneViewport(scene).left + sceneViewport(scene).width - 350 : 0, compact ? -160 : 0);
         panel.setSize(width, compact ? 340 : height).setY(y + (compact ? 340 : height) / 2);
         title.setFontSize(compact ? 24 : 20);
