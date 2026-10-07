@@ -176,3 +176,5 @@ After the last paid casino ball resolves, a successful automatic daily Barry pay
 ### UX follow-up — 2026-10-07
 
 Action locations use a continuous scroll list (touch drag, wheel, or up/down controls), not pages. Descriptions inspect; only dedicated CTAs spend/start. Dragging over a CTA never commits it. Timed action previews state finish time or whether the Barry boundary occurs before completion. The countdown is the primary timing cue; current clock and principal remain available in the HUD. Casino upgrade descriptions compare installed/next values and can highlight the affected board positions without purchasing. On compact screens inspection closes the upgrade panel so the highlight is visible. Existing action/work result feedback is reused.
+
+Mobile HUD: cash and next Barry payment are primary; day/time and principal remain secondary but visible. Tapping a need gives its value and recovery advice. On the map a separate CTA opens food/home/entertainment without buying or starting the action. Work lists initially put available shifts first and preserve that order until the panel is reopened.

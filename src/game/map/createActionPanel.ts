@@ -26,6 +26,7 @@ export const createActionPanel = (
   const handlers = new Map<string, () => void>();
   let lastSignature = '', currentTitle = '';
   let currentActions: ActionPreview[] = [];
+  let actionOrder: string[] = [];
   let navigationAction: ActionPreview | undefined;
   let offset = 0;
   let drag: { y: number; offset: number; moved: boolean } | null = null;
@@ -157,10 +158,16 @@ export const createActionPanel = (
   return {
     show: (heading, actions, navigation) => {
       navigationAction = navigation;
-      if (heading !== currentTitle || !container.visible) { offset = 0; previewId = null; drag = null; suppressTap = false; }
+      if (heading !== currentTitle || !container.visible) {
+        offset = 0; previewId = null; drag = null; suppressTap = false;
+        // Available shifts first on entry; clock refreshes never move a CTA under a finger.
+        const ordered = actions.every(action => action.id.startsWith('work:'))
+          ? [...actions].sort((a, b) => Number(a.lockedReason !== null) - Number(b.lockedReason !== null)) : actions;
+        actionOrder = ordered.map(action => action.id);
+      }
       const signature = JSON.stringify([heading, actions, navigation]);
       if (signature === lastSignature && container.visible) return;
-      currentTitle = heading; currentActions = actions; lastSignature = signature;
+      currentTitle = heading; currentActions = [...actions].sort((a, b) => actionOrder.indexOf(a.id) - actionOrder.indexOf(b.id)); lastSignature = signature;
       draw(); container.setVisible(true);
       scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT);
     },

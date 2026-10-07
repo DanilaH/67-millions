@@ -96,6 +96,15 @@ export const createTutorialCard = (
         body.setFontSize(compact ? 24 : 19).setY(y + (compact ? 45 : 34));
         acknowledge.setY(y + (compact ? 250 : height - 48)).setFontSize(compact ? 26 : 17).setPadding(9, compact ? 24 : 13);
       }
+      if (!casino) {
+        const compact = isCompactViewport(scene);
+        const cardY = compact ? 548 : y;
+        const cardHeight = compact ? 160 : height;
+        panel.setPosition(x + width / 2, cardY + cardHeight / 2).setSize(width, cardHeight);
+        title.setPosition(x + 16, cardY + 10).setFontSize(compact ? 28 : 20);
+        body.setPosition(x + 16, cardY + (compact ? 48 : 34)).setFontSize(compact ? 26 : 19).setWordWrapWidth(compact ? width - 230 : width - 190);
+        acknowledge.setPosition(x + width - 16, cardY + (compact ? 56 : height - 48)).setFontSize(compact ? 25 : 17).setPadding(12, compact ? 26 : 13);
+      }
       currentAcknowledge = model.acknowledge;
       title.setText(model.title);
       body.setText(model.body);

@@ -165,7 +165,7 @@ export class BootstrapScene extends Phaser.Scene {
       this.audio = null;
     });
 
-    this.hud = new PersistentHud(this, balance);
+    this.hud = new PersistentHud(this, balance, need => this.selectLocation(need === 'energy' ? 'home' : need === 'happiness' ? 'entertainment' : 'food'));
     this.mapView = createMainMapView(
       this,
       balance,

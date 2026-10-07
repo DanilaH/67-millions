@@ -131,6 +131,24 @@ try {
     const bet = id => clickTarget('data-bet-targets', id);
     const exitCasino = () => click(170, 186);
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    if (touch) {
+      await loadSave(fixture);
+      const needTargets = JSON.parse(await page.locator('canvas').getAttribute('data-hud-needs'));
+      for (const target of Object.values(needTargets)) assert.ok(target.width * rect.width / 1280 >= 44 && target.height * rect.height / 720 >= 44, 'need controls are at least 44 CSS pixels');
+      await click(needTargets.satiety.x, needTargets.satiety.y);
+      await click(1100, 180); await sceneReady('ЕДА');
+      const inspected = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+      assert.equal(inspected.game.cash, fixture.game.cash, 'need shortcut only opens a location');
+      assert.equal(inspected.activeAction, null, 'need shortcut never starts a paid action');
+      await action('back'); await sceneReady('Карта города');
+      await clickMap('work'); await sceneReady('РАБОТА');
+      const jobs = JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'));
+      assert.ok(jobs['work:courier']?.y < 400, 'available morning job appears in the first row');
+      const jobY = jobs['work:courier'].y;
+      await page.waitForTimeout(3200);
+      assert.equal(JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'))['work:courier'].y, jobY, 'clock refresh keeps job order stable');
+      await page.screenshot({ path: `${output}/touch-first-available-work.png` });
+    }
     // Debug commands must update the live scene without reloading the page.
     await loadSave(fixture);
     await page.locator('#debug-root summary').click();
