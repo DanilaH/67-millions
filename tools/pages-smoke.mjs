@@ -412,6 +412,9 @@ try {
     // A working map after exit must be able to launch a real action.
     await clickMap('work'); await sceneReady('РАБОТА'); await action('work:courier');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction?.actionId === 'courier');
+    // The action is durable before its Scene finishes loading. Wait for the actual
+    // playable scene before replacing the fixture, so we do not abort its assets.
+    await sceneReady('Курьерский маршрут');
     await loadSave(fixture); await clickMap('casino'); await sceneReady('Казино Plinko');
     await page.evaluate(() => {
       window.__smokeFrames = { count: 0, start: performance.now(), running: true };
@@ -499,7 +502,7 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
   assert.deepEqual(serviceRequests, []);
-  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'large food cards and persistent pagination; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'playtest panel visible on map, hidden during jobs/casino; perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'queued casino exit and cancellation during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
+  const result = { status: 'passed', url, publishedVersion, platform: 'mock/localStorage; no SDK stubs', inputs: ['mouse 1280x720', 'CDP touch 640x360'], checks: ['reserved food/work/sleep reload; exact Barry remainder; event modal input locks and long labels; late Barry amounts', 'work upgrade L2/L3 purchase, maximum lock, persisted reload and sleep forecast', 'scrollable food cards, drag-safe purchase and persistent offset; all upgrade rows; selection does not spend; explicit throw; single upgrade purchase and active-drop lock', 'save failure pauses; repeated retry and Escape; immutable resumed search without duplicate cost; 3-second rummage and exact 45 minutes', 'fresh startup and reload', 'subpath assets without failed requests', 'playtest panel visible on map, hidden during jobs/casino; perf disabled', 'three jobs twice each without reload and payouts', 'casino exit/re-entry three times and map action', 'casino idle clock and exact Barry boundary; modal blocks input; failed payment can restart', 'queued casino exit and cancellation during pending Drop', 'courier remains unresolved while travelling', 'cold/mid-Drop exact payout and RNG restore', 'no duplicate settled payout', 'restart without ads', 'portrait blocker and logical canvas'], errors, failures, serviceRequests };
   writeFileSync(`${output}/result.json`, JSON.stringify(result, null, 2)); console.log(JSON.stringify(result));
 } finally {
   await browser?.close();
