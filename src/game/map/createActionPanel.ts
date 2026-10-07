@@ -17,6 +17,10 @@ export const createActionPanel = (
 ): ActionPanel => {
   const container = scene.add.container(0, 0).setDepth(200).setVisible(false);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
+  // Keep controls alive across clock refreshes/page turns so consecutive taps
+  // cannot hit a destroyed object while Phaser refreshes its input list.
+  const controls = new Map<string, Phaser.GameObjects.Text>();
+  const handlers = new Map<string, () => void>();
   let lastSignature = '', currentTitle = '';
   let currentActions: ActionPreview[] = [];
   let navigationAction: ActionPreview | undefined;
@@ -26,6 +30,8 @@ export const createActionPanel = (
     scene.add.text(x, y, label, { fontFamily: VISUAL_FONT.sans, fontSize: size, color: visualHex(color) });
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
+    controls.forEach(control => control.setVisible(false));
+    handlers.clear();
     const compact = sceneViewport(scene).scale < 0.8;
     const pageSize = 2;
     const left = compact ? 28 : 310, width = compact ? 1224 : 906;
@@ -37,11 +43,20 @@ export const createActionPanel = (
     const add = (...objects: Phaser.GameObjects.GameObject[]) => { container.add(objects); dynamic.push(...objects); };
     const button = (id: string, x: number, y: number, w: number, label: string, action: () => void, primary = false, enabled = true) => {
       const h = compact ? 88 : 46;
-      const control = text(x, y, label, compact ? 28 : 21, primary ? 'inkDeep' : 'textMain')
+      let control = controls.get(id);
+      if (!control) {
+        control = text(x, y, label, compact ? 28 : 21);
+        control.on('pointerup', () => handlers.get(id)?.());
+        controls.set(id, control); container.add(control);
+      }
+      control.setPosition(x, y).setText(label).setFontSize(compact ? 28 : 21)
+        .setColor(visualHex(primary ? 'inkDeep' : 'textMain'))
         .setFixedSize(w, h).setPadding(8, compact ? 24 : 10).setAlign('center')
-        .setBackgroundColor(visualHex(primary ? 'mustard' : 'inkRaised')).setAlpha(enabled ? 1 : 0.45);
-      if (enabled) control.setInteractive({ useHandCursor: true }).on('pointerup', action);
-      targets[id] = { x: x + w / 2, y: y + h / 2 }; add(control);
+        .setBackgroundColor(visualHex(primary ? 'mustard' : 'inkRaised')).setAlpha(enabled ? 1 : 0.45).setVisible(true);
+      if (enabled) { control.setInteractive({ useHandCursor: true }); handlers.set(id, action); }
+      else control.disableInteractive();
+      container.bringToTop(control);
+      targets[id] = { x: x + w / 2, y: y + h / 2 };
     };
     add(scene.add.rectangle(left + width / 2, 410, width, 568, visualColor('inkDeep'), 0.985)
       .setStrokeStyle(2, visualColor('lineDirty')).setInteractive());
@@ -76,6 +91,7 @@ export const createActionPanel = (
       button('next', left + width - (compact ? 196 : 116), 600, compact ? 180 : 100, '→', () => { page++; draw(); }, false, page + 1 < pages);
       add(text(left + width / 2, 625, `${page + 1} / ${pages}`, compact ? 30 : 24).setOrigin(0.5, 0));
     }
+    controls.forEach(control => { if (control.visible) container.bringToTop(control); });
     scene.game.canvas.setAttribute('aria-label', currentTitle);
     scene.game.canvas.setAttribute('data-panel-page', `${page + 1}`);
     scene.game.canvas.setAttribute('data-action-targets', JSON.stringify(targets));

@@ -413,6 +413,9 @@ try {
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-pending-map.png` });
     assert.equal(await page.locator('canvas').getAttribute('aria-label'), 'Казино Plinko', 'waiting exit keeps the board visible');
     assert.equal(await page.locator('canvas').getAttribute('data-casino-exit-pending'), 'true');
+    const cashDuringExit = (await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash;
+    await bet('drop');
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, cashDuringExit, 'queued exit blocks new paid launches');
     await exitCasino(); await page.waitForTimeout(100);
     const checkpoint = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.ok(checkpoint.pendingDrop.physics.solver);
@@ -421,11 +424,13 @@ try {
     const uninterrupted = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     await exitCasino(); await sceneReady('Карта города');
     await loadSave(checkpoint);
+    await exitCasino();
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
     const restored = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
     assert.equal(restored.game.cash, uninterrupted.game.cash);
     assert.equal(restored.game.rngState, uninterrupted.game.rngState);
     assert.deepEqual(restored.game.clock, uninterrupted.game.clock, 'passive cascade clock restores without charging an extra minute');
+    await sceneReady('Карта города');
     await page.reload({ waitUntil: 'networkidle' }); await ready();
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, restored.game.cash);
     const due = structuredClone(fixture); due.game.clock.minuteOfDay = 539;
