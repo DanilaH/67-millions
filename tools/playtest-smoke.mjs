@@ -86,6 +86,8 @@ try {
   await click(810, 695); await click(810, 695); await click(810, 695);
   assert.equal((await save()).game.cash, 99000, 'fresh board only charges for two available places');
   assert.equal((await save()).pendingDrop.additionalDrops.length, 1, 'third launch is blocked');
+  // Let the live checkpoint writer finish before replacing storage for another scenario.
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).pendingDrop === null, null, { timeout: 20000 });
   const fixture = createSaveState({ ...createInitialGameState(balance, 670123), cash: 100000, plinkoCapacityLevel: 3 });
   await load(fixture);
   assert.equal(await page.locator('canvas').evaluate(c => c.width), 1920, '1080p uses a native 1920px backing store');
