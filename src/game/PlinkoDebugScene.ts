@@ -1,3 +1,4 @@
+import { getAmplifierPins, getReturnPins, getSplitterPins, type AmplifierPinCount } from '../core/plinko-rules/specialPinLayout';
 import { getLaunchCapacity, purchaseCapacityUpgrade } from '../core/plinko-rules/progression';
 import { createBarryMinigameOverlay, type BarryMinigameOverlay } from './work/createBarryMinigameOverlay';
 import { createCasinoRoom } from './casino/createCasinoRoom';
@@ -504,6 +505,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
         void this.purchaseUpgrade(id);
       },
       this.casinoLayer,
+      id => this.highlightUpgrade(id, true),
     );
 
     this.leaveButton = this.add.text(28, 142, '← ГОРОД', {
@@ -546,7 +548,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.renderAll();
   }
 
-  private highlightUpgrade(id: CasinoUpgradeId): void {
+  private highlightUpgrade(id: CasinoUpgradeId, inspectNext = false): void {
     if (!this.runtime || !this.visualSnapshot || !this.casinoLayer) return;
     this.upgradeTween?.stop();
     this.upgradeHighlight?.destroy();
@@ -563,18 +565,25 @@ export class PlinkoDebugScene extends Phaser.Scene {
         if (label) g.strokeRoundedRect(label.x - 21, label.y - 5, 42, 32, 5);
       }
     } else if (id === 'amplifier' || id === 'return' || id === 'splitter') {
-      for (const peg of this.runtime.layout.pegs) {
-        if (snapshot.pegRoles[peg.id] === id) g.strokeCircle(peg.x, peg.y, 13);
-      }
+      const previews = this.save ? buildCasinoUpgradePreviews(this.save.game, this.save.pendingDrop, this.boardConfig) : [];
+      const preview = previews.find(entry => entry.id === id);
+      const level = preview ? Math.min(preview.currentLevel + (inspectNext ? 1 : 0), preview.maxLevel) : 1;
+      const count = this.boardConfig.plinko.amplifier.find(entry => entry.level === level)?.count ?? 1;
+      const pins = id === 'amplifier' ? getAmplifierPins(this.boardConfig, count as AmplifierPinCount)
+        : id === 'return' ? getReturnPins(this.boardConfig, level) : getSplitterPins(this.boardConfig);
+      for (const peg of pins) g.strokeCircle(peg.x, peg.y, 13);
     } else if (id === 'jackpotBias') {
-      for (const bar of deriveJackpotBiasGeometry(this.boardConfig, snapshot.specialLevels.jackpotBiasLevel)) {
+      for (const bar of deriveJackpotBiasGeometry(this.boardConfig, Math.min(snapshot.specialLevels.jackpotBiasLevel + (inspectNext ? 1 : 0), this.boardConfig.plinko.jackpotBias.at(-1)!.level))) {
         const dx = Math.cos(bar.angleRadians) * bar.length / 2;
         const dy = Math.sin(bar.angleRadians) * bar.length / 2;
         g.lineStyle(bar.thickness + 5, visualColor('mustard'), 0.65);
         g.lineBetween(bar.x - dx, bar.y - dy, bar.x + dx, bar.y + dy);
       }
     } else {
-      if (id === 'maxBet' || id === 'capacity') g.strokeRoundedRect(352, 672, 577, 46, 8);
+      if (id === 'maxBet' || id === 'capacity') {
+        if (isCompactViewport(this)) g.strokeRoundedRect(24, 238, 296, 350, 8);
+        else g.strokeRoundedRect(352, 672, 577, 46, 8);
+      }
       else g.strokeRoundedRect(22, 600, 296, 65, 8);
     }
     this.game.canvas.setAttribute('data-upgrade-highlight', id);

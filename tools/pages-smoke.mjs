@@ -120,7 +120,7 @@ try {
       await click(target.x, target.y);
     };
     const action = async id => {
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 12; i++) {
         const targets = JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'));
         if (targets[id]) return clickTarget('data-action-targets', id);
         assert.ok(targets.next, `action not available: ${id}`);
@@ -239,18 +239,23 @@ try {
     await action(`preview:food:${balance.food[0].id}`);
     await page.waitForFunction(() => !document.querySelector('canvas')?.getAttribute('data-needs-forecast'));
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page1.png` });
-    for (let number = 2; number <= 5; number++) {
+    // A drag beginning over a purchase target scrolls but never buys.
+    const firstTarget = JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'))[`food:${balance.food[0].id}`];
+    await move(firstTarget.x, firstTarget.y); await down(); await move(firstTarget.x, firstTarget.y - 100, { steps: 12 }); await up();
+    await page.waitForFunction(() => Number(document.querySelector('canvas')?.dataset.panelScroll) > 0);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'drag over purchase never spends');
+    for (let i = 0; i < 12; i++) {
+      const targets = JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'));
+      if (targets[`food:${balance.food.at(-1).id}`]) break;
       await action('next');
-      await page.waitForFunction(number => document.querySelector('canvas')?.dataset.panelPage === String(number), number);
     }
-    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-page4.png` });
-    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'food pagination does not buy anything');
-    await action('previous');
-    await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '4');
+    assert.ok(JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'))[`food:${balance.food.at(-1).id}`], 'last food reachable');
+    const savedScroll = await page.locator('canvas').getAttribute('data-panel-scroll');
     await page.waitForTimeout(3200);
-    assert.equal(await page.locator('canvas').getAttribute('data-panel-page'), '4', 'clock updates preserve selected page');
-    await action('previous'); await action('previous'); await action('previous');
-    await page.waitForFunction(() => document.querySelector('canvas')?.dataset.panelPage === '1');
+    assert.equal(await page.locator('canvas').getAttribute('data-panel-scroll'), savedScroll, 'clock refresh preserves scroll');
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'scrolling does not buy anything');
+    await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-food-last.png` });
+    for (let i = 0; i < 12 && Number(await page.locator('canvas').getAttribute('data-panel-scroll')) > 0; i++) await action('previous');
     await action(`food:${balance.food[0].id}`);
     await page.waitForFunction(() => document.querySelector('canvas')?.getAttribute('aria-description')?.includes('ХОЛОДНАЯ ЛАПША'));
     const afterFood = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
@@ -288,6 +293,11 @@ try {
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-controls.png` });
     await click(700 + (touch ? 0 : 300), touch ? 260 : 195);
     assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, rich.game.cash, 'upgrade title does not purchase');
+    assert.equal(await page.locator('canvas').getAttribute('data-upgrade-highlight'), 'maxBet', 'inspection highlights without buying');
+    if (touch) {
+      assert.equal(await page.locator('canvas').getAttribute('data-upgrades-open'), 'false', 'inspection reveals board on phone');
+      await click(1100, 185);
+    }
     await click(1205, touch ? 360 : 270);
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoMaxBetLevel === 1);
     await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-upgrade-feedback.png` });

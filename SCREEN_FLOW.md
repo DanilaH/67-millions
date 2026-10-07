@@ -172,3 +172,7 @@ Restart = полностью новая партия без permanent upgrades/m
 ### Playtest correction — 2026-10-06
 
 After the last paid casino ball resolves, a successful automatic daily Barry payment opens a blocking receipt showing the amount charged and remaining cash. The receipt pauses idle time and blocks launches, upgrades and exit until acknowledged. Closing it does not perform a second economic transaction; the payment is already saved. A failed payment continues to the existing game-over flow.
+
+### UX follow-up — 2026-10-07
+
+Action locations use a continuous scroll list (touch drag, wheel, or up/down controls), not pages. Descriptions inspect; only dedicated CTAs spend/start. Dragging over a CTA never commits it. Timed action previews state finish time or whether the Barry boundary occurs before completion. The countdown is the primary timing cue; current clock and principal remain available in the HUD. Casino upgrade descriptions compare installed/next values and can highlight the affected board positions without purchasing. On compact screens inspection closes the upgrade panel so the highlight is visible. Existing action/work result feedback is reused.

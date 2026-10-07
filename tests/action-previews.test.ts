@@ -4,6 +4,7 @@ import { balance } from '../src/config/balance';
 import { startSleep } from '../src/core/sleep/sleep';
 import { createInitialGameState } from '../src/core/state/GameState';
 import {
+  actionTiming,
   buildDumpsterPreviews,
   buildEntertainmentPreviews,
   buildFoodPreviews,
@@ -189,4 +190,16 @@ describe('work upgrade access and sleep forecasts', () => {
     state.needs.health = 0.01; state.needs.satiety = 0;
     expect(buildSleepPreviews(state, null, null, balance)[0]!.summary.join(' ')).toContain('ОПАСНО');
   });
+});
+
+it('warns at the Barry boundary without changing the run, including overnight actions', () => {
+  const state = createInitialGameState(balance, 42);
+  state.clock.minuteOfDay = 8 * 60 + 30;
+  const before = structuredClone(state);
+  expect(actionTiming(state, 29, balance)).toContain('08:59');
+  expect(actionTiming(state, 30, balance)).toContain('Барри');
+  expect(actionTiming(state, 120, balance)).toContain('Барри');
+  expect(state).toEqual(before);
+  state.clock.minuteOfDay = 23 * 60 + 30;
+  expect(actionTiming(state, 60, balance)).toContain('00:30');
 });

@@ -187,3 +187,13 @@ describe('T057 casino UI model', () => {
     expect(consumeCasinoPayoutToast()).toBeNull();
   });
 });
+
+it('describes return placement from the actual physics config', () => {
+  const config = structuredClone(balance);
+  config.plinko.returnPhysics.horizontalRetentionByLevel = [1, 1, 0.5, 0.5];
+  const state = createInitialGameState(config, 123);
+  const preview = () => buildCasinoUpgradePreviews(state, null, config).find(entry => entry.id === 'return')!;
+  expect(preview().nextEffect).toContain('над местом касания');
+  state.plinkoReturnLevel = 2;
+  expect(preview().nextEffect).toContain('ближе к центру');
+});

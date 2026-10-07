@@ -10,6 +10,7 @@ export const createCasinoUpgradePanel = (
   scene: Phaser.Scene,
   onPurchase: (id: CasinoUpgradeId) => void,
   parent?: Phaser.GameObjects.Container,
+  onInspect: (id: CasinoUpgradeId) => void = () => {},
 ): CasinoUpgradePanel => {
   const container = scene.add.container(0, 0).setDepth(20);
   parent?.add(container);
@@ -61,7 +62,7 @@ export const createCasinoUpgradePanel = (
       const buy = text(right - 31, y + (compact ? 80 : 82), preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, compact ? 28 : 17)
         .setOrigin(1, 0).setFixedSize(compact ? 300 : 0, compact ? 88 : 0).setAlign('center').setPadding(12, compact ? 24 : 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
-      const hint = text(left + 23, y + (compact ? 130 : 82), preview.maxed ? '' : preview.lockedReason === null ? 'Купить →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', compact ? 24 : 14).setWordWrapWidth(compact ? 480 : 145).setColor(visualHex('textMuted'));
+      const hint = text(left + 23, y + (compact ? 130 : 82), preview.maxed ? '' : preview.lockedReason === null ? 'Осмотреть →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', compact ? 24 : 14).setWordWrapWidth(compact ? 480 : 145).setColor(visualHex('textMuted'));
       // Text must not escape the scroll window even on renderers that do not
       // support nested container masks. Partial rows keep their clipped backing.
       for (const object of [name, level, effect, buy, hint]) object.setVisible(object.y >= top && object.y + object.height <= bottom);
@@ -92,9 +93,15 @@ export const createCasinoUpgradePanel = (
     const gesture = drag; drag = null;
     if (!gesture || gesture.moved || gesture.scrollbar || (parent && !parent.visible)) return;
     const p = point(pointer);
-    if (p.y < top || p.y > bottom || p.x < (compact ? right - 331 : 1138) || p.x > right - 27) return;
+    if (p.y < top || p.y > bottom || p.x < left || p.x > right - 27) return;
     const position = p.y - top + offset;
     const rowY = top + Math.floor(position / rowHeight) * rowHeight - offset;
+    const selected = previews[Math.floor(position / rowHeight)];
+    if (selected && p.x < (compact ? right - 331 : 1138)) {
+      onInspect(selected.id);
+      if (compact) { opened = false; draw(); scene.events.emit('casino-upgrades-toggle'); }
+      return;
+    }
     // A partially clipped price is not a hidden purchase target.
     if (rowY + (compact ? 80 : 82) < top || rowY + (compact ? 168 : 114) > bottom) return;
     const preview = previews[Math.floor(position / rowHeight)];

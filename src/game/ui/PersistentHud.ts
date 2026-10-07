@@ -59,7 +59,7 @@ export class PersistentHud {
       if (!this.latestState) return;
       const hud = deriveHudSnapshot(this.latestState, this.config);
       const missing = Math.max(0, hud.nextBarry - hud.cash);
-      show(`До Барри: ${formatBarryCountdown(hud.minutesUntilBarry)} · платёж ${hud.nextBarry.toLocaleString('ru-RU')} ₽\n${missing ? `Не хватает ${missing.toLocaleString('ru-RU')} ₽` : 'Денег на ближайший платёж хватает.'}`);
+      show(`Сейчас ${hud.time} · день ${hud.day} · Барри в ${this.config.barry.time}\nДо Барри: ${formatBarryCountdown(hud.minutesUntilBarry)} · платёж ${hud.nextBarry.toLocaleString('ru-RU')} ₽\n${missing ? `Не хватает ${missing.toLocaleString('ru-RU')} ₽` : 'Денег на ближайший платёж хватает.'}`);
     });
     this.heading[3]!.setInteractive({ useHandCursor: true }).on('pointerup', () => show('Основной долг: 67 000 000 ₽. Погашается целиком на карте.\nЕжедневные платежи Барри не уменьшают основной долг.'));
     this.statusText.on('pointerup', () => show('Запах: прими душ, чтобы снять статус.'));
@@ -97,20 +97,21 @@ export class PersistentHud {
     const view = sceneViewport(this.scene);
     this.heading[0]!.setX(view.left + 30); this.heading[1]!.setX(view.left + 254);
     this.heading[3]!.setX(view.left + view.width - 230);
+    this.heading[2]!.setX(view.left + 574);
     this.statusText.setX(view.left + 534); this.forecastText.setX(view.left + 534);
     this.detail.setX(view.left + 24);
     const g = this.graphics.clear();
     g.fillStyle(visualColor('inkPanel'), 0.94); g.fillRoundedRect(view.left + 14, 12, view.width - 28, 48, 14);
     this.heading[0]!.setText(`День ${hud.day} · ${hud.time}`);
     this.heading[1]!.setText(`${hud.cash.toLocaleString('ru-RU')} ₽`);
-    const due = hud.minutesUntilBarry === 0 ? 'сейчас' : hud.minutesUntilBarry <= 180 ? `через ${formatBarryCountdown(hud.minutesUntilBarry)}` : 'в 09:00';
+    const due = hud.minutesUntilBarry === 0 ? 'сейчас' : `через ${formatBarryCountdown(hud.minutesUntilBarry)}`;
     const shortfall = Math.max(0, hud.nextBarry - hud.cash);
     this.heading[2]!.setText(`Барри ${due} · ${hud.nextBarry.toLocaleString('ru-RU')} ₽`)
       .setColor(visualHex(shortfall > 0 && hud.minutesUntilBarry <= 180 ? 'warning' : 'textMain'));
     this.heading[3]!.setText(hud.cash >= hud.mainDebt ? 'Долг можно погасить' : 'Цель: 67 млн ₽').setColor(visualHex('mustard'));
     this.heading.forEach((heading, index) => {
       const maxWidth = [210, 300, 455, 194][index]!;
-      const base = (isCompactViewport(this.scene) ? [26, 32, 26, 26] : [16, 23, 17, 16])[index]!;
+      const base = (isCompactViewport(this.scene) ? [22, 32, 26, 24] : [16, 23, 19, 16])[index]!;
       heading.setFontSize(base);
       if (heading.width > maxWidth) heading.setFontSize(Math.max(12, Math.floor(base * maxWidth / heading.width)));
     });

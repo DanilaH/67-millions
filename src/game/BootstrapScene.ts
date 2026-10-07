@@ -1160,7 +1160,7 @@ export class BootstrapScene extends Phaser.Scene {
   private showResultFeedback(message: string): void {
     this.resultTimer?.remove();
     this.game.canvas.setAttribute('aria-description', message);
-    this.payoutToastText?.setText(message).setBackgroundColor(visualHex(message.startsWith('ПРОВАЛ') || message.includes('итог −') ? 'rust' : 'mold')).setVisible(true);
+    this.payoutToastText?.setText(message).setBackgroundColor(visualHex(message.startsWith('ПРОВАЛ') || message.includes('Итог −') ? 'rust' : 'mold')).setVisible(true);
     this.renderTutorial();
     this.resultTimer = this.time.delayedCall(7000, () => {
       this.payoutToastText?.setVisible(false);

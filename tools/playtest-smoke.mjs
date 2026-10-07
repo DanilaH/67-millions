@@ -175,7 +175,7 @@ try {
   // High-density input is transformed back into logical map/minigame space.
   await load(fixture); await clickMap('work'); await ready('РАБОТА');
   const actionTargets = async () => JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'));
-  let targets = await actionTargets(); await click(targets.next.x, targets.next.y);
+  let targets = await actionTargets(); if (!targets['work:courier']) await click(targets.next.x, targets.next.y);
   targets = await actionTargets(); await click(targets['work:courier'].x, targets['work:courier'].y); await ready('Курьерский маршрут');
   await page.screenshot({ path: `${output}/courier-1080p.png` });
   const move = async (x, y) => {

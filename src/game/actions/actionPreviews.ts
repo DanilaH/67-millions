@@ -35,6 +35,7 @@ export interface ActionPreview {
   title: string;
   cta?: string;
   forecast?: NeedsForecast;
+  timing?: string;
   summary: string[];
   lockedReason: string | null;
 }
@@ -107,6 +108,14 @@ const formatSigned = (
 ): string =>
   `${value >= 0 ? '+' : ''}${Number.isInteger(value) ? value : value.toFixed(1)}${suffix}`;
 
+/** Warn before spending; no simulated payout or needs are treated as guaranteed. */
+export const actionTiming = (state: GameState, duration: number, config: BalanceConfig): string => {
+  const until = minutesUntilClockTime(state.clock, config.barry.time);
+  return state.barryInterruptPending || duration >= until
+    ? `Барри до конца действия · платёж в ${config.barry.time}`
+    : `Закончишь к ${formatClockTime(state.clock.minuteOfDay + duration)}`;
+};
+
 const JOB_TITLES: Record<JobId, string> = {
   dishes: 'ПОСУДА',
   trash: 'МУСОР',
@@ -149,6 +158,7 @@ export const buildWorkPreviews = (
         `${definition.durationMinutes} мин · ${definition.window} · энергия -${definition.energyCost} · счастье -${definition.happinessCost}`,
       ],
       cta: 'Начать смену',
+      timing: actionTiming(state, definition.durationMinutes, config),
       lockedReason: lock === 'Сейчас работа закрыта' ? `Приём: ${definition.window}` : lock,
     };
   });
@@ -206,6 +216,7 @@ export const buildFoodPreviews = (
       id: `food:${entry.id}`,
       cta: `Поесть · ${definition.price.toLocaleString('ru-RU')} ₽`,
       forecast: forecastRecovery(state, definition, config),
+      timing: actionTiming(state, definition.durationMinutes, config),
       title: content.title,
       summary: [
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
@@ -245,6 +256,7 @@ export const buildEntertainmentPreviews = (
       id: `entertainment:${entry.id}`,
       cta: definition.price ? `Отдохнуть · ${definition.price.toLocaleString('ru-RU')} ₽` : 'Отдохнуть бесплатно',
       forecast: forecastRecovery(state, definition, config),
+      timing: actionTiming(state, definition.durationMinutes, config),
       title: content.title,
       summary: [
         `${definition.price.toLocaleString('ru-RU')} ₽ · ${definition.durationMinutes} мин`,
@@ -315,6 +327,7 @@ export const buildDumpsterPreviews = (
   return [{
     id: 'dumpster',
     cta: 'Начать поиск',
+    timing: actionTiming(state, config.dumpster.durationMinutes, config),
     title: 'ПОРЫТЬСЯ',
     summary: [
       `0 ₽ · ${config.dumpster.durationMinutes} мин`,
@@ -341,6 +354,7 @@ export const buildShowerPreviews = (
   id: 'shower',
   cta: `Помыться · ${config.shower.price.toLocaleString('ru-RU')} ₽`,
   title: 'ДУШ',
+  timing: actionTiming(state, config.shower.durationMinutes, config),
   summary: [
     `${config.shower.price.toLocaleString('ru-RU')} ₽ · ${config.shower.durationMinutes} мин`,
     'Смывает статус ВОНЮЧИЙ',

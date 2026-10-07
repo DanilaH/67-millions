@@ -302,7 +302,7 @@ const SPECS: readonly UpgradeSpec[] = [
 
 const describeNextEffect = (id: CasinoUpgradeId, state: GameState, config: BalanceConfig, nextLevel: number): string => {
   if (id === 'capacity') return `Одновременно: ${getLaunchCapacity(config,state)} → ${getLaunchCapacity(config,{plinkoCapacityLevel:nextLevel})}\nКаждый шар — своя ставка`;
-  if (id === 'maxBet') return `Ставка до ${getMaxBetForLevel(config, nextLevel).toLocaleString('ru-RU')} ₽\nШансы не меняются`;
+  if (id === 'maxBet') return `Лимит: ${getMaxBetForLevel(config, state.plinkoMaxBetLevel).toLocaleString('ru-RU')} → ${getMaxBetForLevel(config, nextLevel).toLocaleString('ru-RU')} ₽\nШансы не меняются`;
   if (id === 'center' || id === 'mid' || id === 'jackpot') {
     const levels = getPocketUpgradeLevels(state);
     const next = { ...levels, [`${id}Level`]: nextLevel };
@@ -315,19 +315,23 @@ const describeNextEffect = (id: CasinoUpgradeId, state: GameState, config: Balan
   }
   if (id === 'amplifier') {
     const next = config.plinko.amplifier.find(entry => entry.level === nextLevel)!;
-    return `Пинов: ${next.count} · сила шара ×${next.multiplier}`;
+    const before = config.plinko.amplifier.find(entry => entry.level === state.plinkoAmplifierLevel);
+    return `Пинов: ${before?.count ?? 0} → ${next.count}\nСила: ×${before?.multiplier ?? 1} → ×${next.multiplier}`;
   }
-  if (id === 'return') return `Точек возврата: ${getReturnPins(config, nextLevel).length}\nОтправляют шар наверх`;
+  if (id === 'return') return `Точек: ${(state.plinkoReturnLevel ? getReturnPins(config, state.plinkoReturnLevel).length : 0)} → ${getReturnPins(config, nextLevel).length}\n${(config.plinko.returnPhysics.horizontalRetentionByLevel?.[nextLevel - 1] ?? config.plinko.returnPhysics.horizontalRetention) === 1 ? 'Возврат над местом касания' : 'Возврат ближе к центру'}`;
   if (id === 'splitter') {
     const next = config.plinko.splitter.find(entry => entry.level === nextLevel)!;
-    return `Два шара вместо одного\nСила каждого: ${Math.round(next.childValue * 100)}%`;
+    const before = config.plinko.splitter.find(entry => entry.level === state.plinkoSplitterLevel);
+    return before ? `Два шара · сила каждого\n${Math.round(before.childValue * 100)}% → ${Math.round(next.childValue * 100)}%` : `Один шар → два\nСила каждого: ${Math.round(next.childValue * 100)}%`;
   }
   if (id === 'jackpotBias') {
     const next = config.plinko.jackpotBias.find(entry => entry.level === nextLevel)!;
-    return `Пар направляющих: ${next.deflectorPairs.length}\nОтклоняют шары к краям`;
+    const before = config.plinko.jackpotBias.find(entry => entry.level === state.plinkoJackpotBiasLevel);
+    return `Пар направляющих: ${before?.deflectorPairs.length ?? 0} → ${next.deflectorPairs.length}\nОтклоняют к краям`;
   }
   const next = config.plinko.insurance.find(entry => entry.level === nextLevel)!;
-  return `После ${next.lossesNeeded} проигрышей:\nвозврат от ${Math.round(next.floor * 100)}% ставки`;
+  const before = config.plinko.insurance.find(entry => entry.level === state.plinkoInsuranceLevel);
+  return before ? `Проигрышей: ${before.lossesNeeded} → ${next.lossesNeeded}\nВозврат: ${Math.round(before.floor * 100)}% → ${Math.round(next.floor * 100)}%` : `После ${next.lossesNeeded} проигрышей:\nвозврат от ${Math.round(next.floor * 100)}% ставки`;
 };
 
 export const buildCasinoUpgradePreviews = (

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { ActionPreview } from '../actions/actionPreviews';
-import { isCompactViewport } from '../visual/scenePresentation';
+import { isCompactViewport, logicalPointer } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualColor, visualHex, type VisualColorToken } from '../visual/visualTheme';
 
 export const ACTION_PANEL_VISIBILITY_EVENT = 'action-panel-visibility';
@@ -27,7 +27,12 @@ export const createActionPanel = (
   let lastSignature = '', currentTitle = '';
   let currentActions: ActionPreview[] = [];
   let navigationAction: ActionPreview | undefined;
-  let page = 0;
+  let offset = 0;
+  let drag: { y: number; offset: number; moved: boolean } | null = null;
+  let suppressTap = false;
+  let scrollTop = 236, scrollBottom = 588;
+  let rowHeight = 180;
+  const maxScroll = () => Math.max(0, currentActions.length * rowHeight - (scrollBottom - scrollTop));
   let previewId: string | null = null;
   const text = (x: number, y: number, label: string, size: number, color: VisualColorToken = 'textMain') =>
     scene.add.text(x, y, label, { fontFamily: VISUAL_FONT.sans, fontSize: size, color: visualHex(color) });
@@ -37,12 +42,12 @@ export const createActionPanel = (
     cards.forEach(card => card.setVisible(false));
     handlers.clear();
     const compact = isCompactViewport(scene);
-    const pageSize = 2;
     const left = compact ? 28 : 310, width = compact ? 1224 : 906;
-    const pages = Math.max(1, Math.ceil(currentActions.length / pageSize));
-    page = Math.min(page, pages - 1);
-    const visible = currentActions.slice(page * pageSize, (page + 1) * pageSize);
-    onPreview(visible.find(action => action.id === previewId) ?? null);
+    rowHeight = compact || currentActions.some(action => action.id.startsWith('work:')) ? 180 : 126;
+    scrollTop = compact ? 236 : 202;
+    scrollBottom = 588;
+    offset = Phaser.Math.Clamp(offset, 0, maxScroll());
+    onPreview(currentActions.find(action => action.id === previewId) ?? null);
     const targets: Record<string, { x: number; y: number }> = {};
     const add = (...objects: Phaser.GameObjects.GameObject[]) => { container.add(objects); dynamic.push(...objects); };
     const button = (id: string, x: number, y: number, w: number, label: string, action: () => void, primary = false, enabled = true) => {
@@ -50,7 +55,7 @@ export const createActionPanel = (
       let control = controls.get(id);
       if (!control) {
         control = text(x, y, label, compact ? 28 : 21);
-        control.on('pointerup', () => handlers.get(id)?.());
+        control.on('pointerup', () => { if (!suppressTap) handlers.get(id)?.(); });
         controls.set(id, control); container.add(control);
       }
       control.setPosition(x, y).setText(label).setFontSize(compact ? 28 : 21)
@@ -68,58 +73,91 @@ export const createActionPanel = (
     add(text(left + (compact ? 270 : 184), 153, currentTitle, compact ? 32 : 26).setFontStyle('bold'));
     if (navigationAction) button('section', left + width - (compact ? 320 : 245), 136, compact ? 304 : 229, navigationAction.title, () => onAction(navigationAction!));
     const single = currentActions.length === 1;
-    visible.forEach((action, index) => {
-      const y = (compact ? 236 : 202) + index * 180;
-      const height = single ? (compact ? 356 : 340) : 168;
+    currentActions.forEach((action, index) => {
+      const y = scrollTop + index * rowHeight - offset;
+      if (!single && (y + rowHeight - 12 <= scrollTop || y >= scrollBottom)) return;
+      const rowStart = dynamic.length;
+      const height = single ? (compact ? 356 : 340) : rowHeight - 12;
       const ctaWidth = compact ? 320 : 262;
       const contentWidth = width - ctaWidth - 88;
       let card = cards.get(action.id);
       if (!card) {
         card = scene.add.rectangle(0, 0, 1, 1, visualColor('inkPanel')).setStrokeStyle(1, visualColor('lineDirty'));
         cards.set(action.id, card); container.add(card);
-        card.on('pointerup', () => handlers.get(`preview:${action.id}`)?.())
+        card.on('pointerup', () => { if (!suppressTap) handlers.get(`preview:${action.id}`)?.(); })
           .on('pointerover', () => handlers.get(`hover:${action.id}`)?.())
           .on('pointerout', () => { if (!previewId) onPreview(null); });
       }
-      card.setPosition(left + width / 2, y + height / 2).setSize(width - 32, height).setVisible(true);
+      const clippedTop = Math.max(scrollTop, y), clippedBottom = Math.min(scrollBottom, y + height);
+      card.setPosition(left + width / 2, (clippedTop + clippedBottom) / 2).setSize(width - 32, clippedBottom - clippedTop).setVisible(true);
       container.bringToTop(card);
-      add(text(left + 28, y + 8, action.title, compact ? 30 : 24).setFontStyle('bold'),
-        text(left + 28, y + (compact ? 48 : 43), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 21)
+      add(text(left + 28, y + 8, action.title, compact ? 30 : 22).setFontStyle('bold'),
+        text(left + 28, y + (compact ? 48 : 36), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 18)
           .setWordWrapWidth(contentWidth).setLineSpacing(2));
       const toggle = () => { previewId = previewId === action.id ? null : action.id; draw(); };
       if (action.forecast) {
         card.setInteractive({ useHandCursor: true });
         handlers.set(`preview:${action.id}`, toggle);
         handlers.set(`hover:${action.id}`, () => { if (!previewId) onPreview(action); });
-        add(text(left + 28, y + height - (compact ? 36 : 27), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 18, 'cold'));
-        targets[`preview:${action.id}`] = { x: left + 80, y: y + height - 16 };
+        add(text(left + 28, y + height - (compact ? 36 : 23), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 16, 'cold'));
+        if (y >= scrollTop && y + height <= scrollBottom) targets[`preview:${action.id}`] = { x: left + 80, y: y + height - 16 };
       }
       const ctaX = left + width - ctaWidth - 28;
+      if (action.timing) add(text(ctaX, y + 4, action.timing, compact ? 21 : 16, action.timing.startsWith('Барри') ? 'warning' : 'textMuted').setWordWrapWidth(ctaWidth));
       if (action.lockedReason) {
-        add(text(ctaX, y + 20, action.lockedReason, compact ? 28 : 22, 'warning').setWordWrapWidth(ctaWidth).setAlign('center'));
+        add(text(ctaX, y + 56, action.lockedReason, compact ? 28 : 22, 'warning').setWordWrapWidth(ctaWidth).setAlign('center'));
       } else button(action.id, ctaX, y + (single ? height - (compact ? 110 : 68) : compact ? 56 : 58), ctaWidth, action.cta ?? 'Открыть', () => onAction(action), true);
+      for (const object of dynamic.slice(rowStart)) {
+        if (object instanceof Phaser.GameObjects.Text && (object.y < scrollTop || object.y + object.height > scrollBottom)) object.setVisible(false);
+      }
+      const cta = controls.get(action.id);
+      if (cta && (cta.y < scrollTop || cta.y + cta.height > scrollBottom)) { cta.setVisible(false).disableInteractive(); delete targets[action.id]; }
     });
-    if (pages > 1) {
-      button('previous', left + 16, 600, compact ? 180 : 100, '←', () => { page--; draw(); }, false, page > 0);
-      button('next', left + width - (compact ? 196 : 116), 600, compact ? 180 : 100, '→', () => { page++; draw(); }, false, page + 1 < pages);
-      add(text(left + width / 2, 625, `${page + 1} / ${pages}`, compact ? 30 : 24).setOrigin(0.5, 0));
+    if (maxScroll() > 0) {
+      button('previous', left + 16, 600, compact ? 180 : 100, '↑', () => { offset -= rowHeight; draw(); }, false, offset > 0);
+      button('next', left + width - (compact ? 196 : 116), 600, compact ? 180 : 100, '↓', () => { offset += rowHeight; draw(); }, false, offset < maxScroll());
+      add(text(left + width / 2, 625, 'Листай список ↕', compact ? 26 : 22).setOrigin(0.5, 0));
+      const trackHeight = scrollBottom - scrollTop;
+      const thumbHeight = trackHeight * trackHeight / (currentActions.length * rowHeight);
+      add(scene.add.rectangle(left + width - 8, scrollTop + trackHeight / 2, 4, trackHeight, visualColor('lineDirty')),
+        scene.add.rectangle(left + width - 8, scrollTop + thumbHeight / 2 + (trackHeight - thumbHeight) * offset / maxScroll(), 6, thumbHeight, visualColor('mustard')));
     }
     controls.forEach(control => { if (control.visible) container.bringToTop(control); });
     scene.game.canvas.setAttribute('aria-label', currentTitle);
-    scene.game.canvas.setAttribute('data-panel-page', `${page + 1}`);
+    scene.game.canvas.setAttribute('data-panel-scroll', `${Math.round(offset)}`);
     scene.game.canvas.setAttribute('data-action-targets', JSON.stringify(targets));
   };
+  const inside = (pointer: Phaser.Input.Pointer) => {
+    const p = logicalPointer(scene, pointer);
+    return container.visible && p.x >= (isCompactViewport(scene) ? 28 : 310) && p.x <= 1252 && p.y >= scrollTop && p.y <= scrollBottom;
+  };
+  const down = (pointer: Phaser.Input.Pointer) => {
+    suppressTap = false;
+    if (inside(pointer)) drag = { y: logicalPointer(scene, pointer).y, offset, moved: false };
+  };
+  const move = (pointer: Phaser.Input.Pointer) => {
+    if (!drag || !pointer.isDown) return;
+    const delta = logicalPointer(scene, pointer).y - drag.y;
+    if (Math.abs(delta) > 8) drag.moved = suppressTap = true;
+    if (drag.moved) { offset = drag.offset - delta; draw(); }
+  };
+  const up = () => { drag = null; };
+  const wheel = (pointer: Phaser.Input.Pointer, _objects: unknown[], _dx: number, dy: number) => {
+    if (inside(pointer)) { offset += dy; draw(); }
+  };
+  scene.input.on('pointerdown', down).on('pointermove', move).on('pointerup', up).on('gameout', up).on('wheel', wheel);
   const resize = () => { if (container.visible) draw(); };
   scene.scale.on('resize', resize);
   scene.events.once('shutdown', () => {
     scene.scale.off('resize', resize);
+    scene.input.off('pointerdown', down).off('pointermove', move).off('pointerup', up).off('gameout', up).off('wheel', wheel);
     scene.game.canvas.removeAttribute('data-action-targets');
     scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT);
   });
   return {
     show: (heading, actions, navigation) => {
       navigationAction = navigation;
-      if (heading !== currentTitle || !container.visible) { page = 0; previewId = null; }
+      if (heading !== currentTitle || !container.visible) { offset = 0; previewId = null; drag = null; suppressTap = false; }
       const signature = JSON.stringify([heading, actions, navigation]);
       if (signature === lastSignature && container.visible) return;
       currentTitle = heading; currentActions = actions; lastSignature = signature;
