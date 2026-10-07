@@ -148,6 +148,18 @@ try {
       await page.waitForTimeout(3200);
       assert.equal(JSON.parse(await page.locator('canvas').getAttribute('data-action-targets'))['work:courier'].y, jobY, 'clock refresh keeps job order stable');
       await page.screenshot({ path: `${output}/touch-first-available-work.png` });
+      const payable = structuredClone(fixture); payable.game.cash = 67000000;
+      await loadSave(payable);
+      const payoff = JSON.parse(await page.locator('canvas').getAttribute('data-principal-target'));
+      await page.screenshot({path:`${output}/touch-principal-button.png`});
+      await click(payoff.x, payoff.y);
+      assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 67000000, 'payoff button first opens confirmation');
+      await click(640, 654);
+      assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.victory, false, 'cancelling payoff preserves the run');
+      await click(payoff.x, payoff.y); await click(640, 606);
+      await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.victory);
+      assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 0, 'confirmed payoff deducts principal exactly once');
+
     }
     // Debug commands must update the live scene without reloading the page.
     await loadSave(fixture);

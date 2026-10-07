@@ -1,5 +1,5 @@
 import { applyDebugCommand, type DebugCommand } from '../core/state/debugCommands';
-import { installScenePresentation } from './visual/scenePresentation';
+import { installScenePresentation, isCompactViewport, sceneViewport } from './visual/scenePresentation';
 import { consumeWorkFeedback, formatActionFeedback, elapsedFeedbackMinutes } from './actions/actionFeedback';
 import { formatCasinoResult } from './casino/casinoPayoutToast';
 import Phaser from 'phaser';
@@ -214,6 +214,10 @@ export class BootstrapScene extends Phaser.Scene {
       .on('pointerup', () =>
         this.guard(() => this.openPrincipalConfirmation()),
       );
+
+    const resizeHudActions = () => this.render();
+    this.scale.on('resize', resizeHudActions);
+    this.events.once('shutdown', () => this.scale.off('resize', resizeHudActions));
 
     this.runEndOverlay = createRunEndOverlay(this, {
       onRestart: () => { void this.restart().catch((error: unknown) => this.showMessage(String(error))); },
@@ -1031,10 +1035,18 @@ export class BootstrapScene extends Phaser.Scene {
 
     this.mapView.setEnabled(!navigationLocked);
     this.mapView.renderState(this.state);
+    const compact = isCompactViewport(this);
+    const view = sceneViewport(this);
+    this.principalButton?.setPosition(compact ? view.left + 248 : view.left + view.width - 40, compact ? 500 : 66)
+      .setText(compact ? 'ПОГАСИТЬ\n67 МЛН ₽' : '[ ПОГАСИТЬ 67М ]')
+      .setFontSize(compact ? 24 : 13).setPadding(8, compact ? 14 : 5).setFixedSize(compact ? 220 : 0, compact ? 88 : 0).setAlign('center');
     this.principalButton?.setVisible(
-      !navigationLocked &&
+      !navigationLocked && (!compact || this.selectedLocation === null) &&
         canPayMainDebt(this.state),
     );
+
+    if (compact && this.principalButton?.visible) this.game.canvas.setAttribute('data-principal-target', JSON.stringify({ x: view.left + 138, y: 544 }));
+    else this.game.canvas.removeAttribute('data-principal-target');
 
     if (navigationLocked && this.actionPanel?.isVisible()) {
       this.closeActionPanel();
