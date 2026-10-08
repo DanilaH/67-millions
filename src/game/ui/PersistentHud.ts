@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { fitPanelText } from './fitPanelText';
 import { isCompactViewport, sceneViewport } from '../visual/scenePresentation';
 import type { NeedsForecast } from '../actions/needsForecast';
 import type { BalanceConfig } from '../../config/balance.schema';
@@ -183,7 +184,7 @@ export class PersistentHud {
     this.heading[2]!.setColor(visualHex(hud.cash < hud.nextBarry && hud.minutesUntilBarry <= 180 ? 'warning' : 'mustard'));
     this.statusText.setPosition(left + 332, 102).setFontSize(20).setText(hud.statuses.length ? 'Запах · нужен душ' : '').setVisible(hud.statuses.length > 0);
     this.forecastText.setPosition(left + 24, 130).setFontSize(22).setText(this.forecast?.caption ?? '').setVisible(!!this.forecast);
-    const targets: Record<string, {x: number; y: number; width: number; height: number}> = {};
+    const targets: Record<string, {x: number; y: number; width: number; height: number; textWidth: number; textHeight: number}> = {};
     hud.needs.forEach((need, index) => {
       const x = needsLeft + index * 144;
       const low = need.value <= this.config.needs.lowThreshold;
@@ -193,7 +194,7 @@ export class PersistentHud {
       const label = low ? {health: 'Опасно', satiety: 'Голоден', energy: 'Устал', happiness: 'Грусть'}[need.id]
         : {health: 'Здоровье', satiety: 'Сытость', energy: 'Энергия', happiness: 'Счастье'}[need.id];
       const value = this.forecast ? `${Math.round(need.value)}→${Math.round(this.forecast.needs[need.id])}` : `${Math.round(need.value)}`;
-      this.needTexts[index]!.setPosition(x + 9, 61).setFontSize(24).setText(`${label}\n${value}`).setColor(visualHex('textMain'));
+      const needText = fitPanelText(this.needTexts[index]!.setPosition(x + 9, 61).setFontSize(24).setText(`${label}\n${value}`).setColor(visualHex('textMain')), 118, 52, false);
       g.fillStyle(visualColor('inkDeep')).fillRoundedRect(x + 47, 42, 78, 10, 3);
       const current = 78 * Phaser.Math.Clamp(need.value / this.config.needs.max, 0, 1);
       if (current > 0) g.fillStyle(color).fillRect(x + 47, 42, current, 10);
@@ -205,7 +206,7 @@ export class PersistentHud {
       // Phaser's existing rectangular hit area must follow the resized zone.
       const area = this.needZones[index]!.input?.hitArea as Phaser.Geom.Rectangle | undefined;
       area?.setSize(136, 96);
-      targets[need.id] = {x: x + 68, y: 72, width: 136, height: 96};
+      targets[need.id] = {x: x + 68, y: 72, width: 136, height: 96, textWidth: needText.width, textHeight: needText.height};
     });
     this.scene.game.canvas.setAttribute('data-hud-needs', JSON.stringify(targets));
   }

@@ -135,6 +135,10 @@ try {
       await loadSave(fixture);
       const needTargets = JSON.parse(await page.locator('canvas').getAttribute('data-hud-needs'));
       for (const target of Object.values(needTargets)) assert.ok(target.width * rect.width / 1280 >= 44 && target.height * rect.height / 720 >= 44, 'need controls are at least 44 CSS pixels');
+      for (const target of Object.values(needTargets)) {
+        assert.ok(target.textWidth <= target.width - 18, 'need label stays inside tile padding');
+        assert.ok(target.textHeight <= 52, 'need label and value stay inside tile height');
+      }
       await click(needTargets.satiety.x, needTargets.satiety.y);
       await click(1100, 180); await sceneReady('ЕДА');
       const inspected = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
