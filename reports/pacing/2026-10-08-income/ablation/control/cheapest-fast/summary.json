@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "incomeEstimator": null,
+    "configHash": "4864d56d75e4b319aaf5241fb9da4c325a31d589c5bdb194fc7697a0e14b6778",
+    "revision": "ae090552338bdbb7d186aa01cbb7e770762f15a3",
+    "sources": {
+      "simulation/full-game/marginalIncome.ts": "4836601a1b1ac180cb4473ec8dbdf332c696a322d727546238d4e55f36caade0",
+      "simulation/full-game/adversarialAudit.ts": "a536d22b0d7970df2e3ccf11ce06f0247a7be5b2af4fe7a673885eb62e3694ba",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "cheapest",
+    "mode": "continuous",
+    "pace": "fast",
+    "count": 16,
+    "seedStart": 67150000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 0.25,
+      "workSeconds": {
+        "courier": 6,
+        "trash": 5,
+        "dishes": 8
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 16
+  },
+  "wins": 16,
+  "medianWinMinutes": 11.056666666666668,
+  "p10WinMinutes": 8.775555555555554,
+  "p90WinMinutes": 12.666944444444447,
+  "minimumWinMinutes": 8.25361111111111,
+  "medianAllMinutes": 11.056666666666668,
+  "medianWinWork": 10,
+  "medianWinDrops": 237.5,
+  "fastestSeed": 1753533267
+}

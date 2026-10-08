@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "incomeEstimator": null,
+    "configHash": "6136616f91e4947ef5ebbf8e361e13995b708b93cb959395e97aad0b9fd49e46",
+    "revision": "ae090552338bdbb7d186aa01cbb7e770762f15a3",
+    "sources": {
+      "simulation/full-game/marginalIncome.ts": "4836601a1b1ac180cb4473ec8dbdf332c696a322d727546238d4e55f36caade0",
+      "simulation/full-game/adversarialAudit.ts": "b3b9068786979c63c7a905dea5b2a9ff013550d12959945f91d3a7e2f15a2fc9",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "insurance-first",
+    "mode": "continuous",
+    "pace": "fast",
+    "count": 32,
+    "seedStart": 67148000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 0.25,
+      "workSeconds": {
+        "courier": 6,
+        "trash": 5,
+        "dishes": 8
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 31,
+    "BARRY_LOSS": 1
+  },
+  "wins": 31,
+  "medianWinMinutes": 11.247222222222224,
+  "p10WinMinutes": 9.083333333333334,
+  "p90WinMinutes": 13.99638888888889,
+  "minimumWinMinutes": 8.124722222222221,
+  "medianAllMinutes": 11.209444444444443,
+  "medianWinWork": 10,
+  "medianWinDrops": 288,
+  "fastestSeed": 1952071755
+}

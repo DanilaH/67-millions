@@ -13,8 +13,9 @@ import { createBaselinePolicy, deterministicPolicyRoll } from './policies';
 import { runFullGame, type FullGameDecision, type FullGamePolicyContext, type FullGameRunResult } from './runner';
 import { runContinuousSession } from './continuousSession';
 import { createSharedWorld } from './sharedWorld';
+import { createMarginalIncomeEstimator } from './marginalIncome';
 
-const strategies = ['cheapest', 'skip-finals', 'skip-splitter', 'thin-reserve', 'insurance-first', 'insurance-cycle', 'stake-first', 'specials-first', 'hoard-12', 'worker', 'casino-only', 'ignore-needs'] as const;
+const strategies = ['cheapest', 'skip-finals', 'skip-splitter', 'thin-reserve', 'insurance-first', 'insurance-cycle', 'stake-first', 'specials-first', 'hoard-12', 'worker', 'casino-only', 'ignore-needs', 'income', 'income-insurance', 'income-path', 'income-path-insurance', 'skip-late-stakes'] as const;
 type Strategy = typeof strategies[number];
 const strategy = process.argv[2] as Strategy;
 const count = Number(process.argv[3] ?? 24);
@@ -27,6 +28,10 @@ const raw = readFileSync(process.argv[8] ?? 'balance.v0.json', 'utf8');
 const config = parseBalanceConfig(JSON.parse(raw));
 const hash = (s: string) => createHash('sha256').update(s).digest('hex');
 const configHash = hash(raw);
+const incomeCount = Number(process.argv[9] ?? 128);
+const incomeSeed = Number(process.argv[10] ?? 67146000);
+const incomeCache = process.argv[11] ?? `${output}/income-cache.json`;
+const income = strategy.startsWith('income') ? createMarginalIncomeEstimator(config,incomeCount,incomeSeed,incomeCache) : null;
 const buy = (id: CasinoUpgradeId): FullGameDecision => id === 'capacity' ? {type:'BUY_PLINKO_CAPACITY'}
   : id === 'insurance' ? {type:'BUY_PLINKO_INSURANCE'} : id === 'maxBet' ? {type:'BUY_PLINKO_MAX_BET'}
   : id === 'center' || id === 'mid' || id === 'jackpot' ? {type:'BUY_PLINKO_POCKET',track:id}
@@ -53,11 +58,14 @@ for (let index = 0; index < count; index++) {
     if (s.eventModifiers.plinkoLockRemainingMinutes === 0 && strategy !== 'casino-only' && !(strategy === 'hoard-12' && boardLevels >= 12)) {
       const choices = buildCasinoUpgradePreviews(s,null,config)
         .filter(p => !p.maxed && p.lockedReason === null && p.nextPrice !== null)
-        .filter(p => strategy.startsWith('insurance') || p.id !== 'insurance')
+        .filter(p => strategy.startsWith('insurance') || strategy.startsWith('income') && strategy.endsWith('insurance') || p.id !== 'insurance')
         .filter(p => !(strategy === 'skip-finals' && ['amplifier','return','splitter'].includes(p.id) && p.currentLevel === config.plinko[p.id as 'amplifier'|'return'|'splitter'].at(-1)!.level-1))
         .filter(p => !(strategy === 'skip-splitter' && p.id === 'splitter' && p.currentLevel === config.plinko.splitter.at(-1)!.level-1))
+        .filter(p => !(strategy === 'skip-late-stakes' && p.id === 'maxBet' && p.currentLevel >= 3))
         .filter(p => s.cash-p.nextPrice! >= reserve + getMaxBetForLevel(config,s.plinkoMaxBetLevel+(p.id==='maxBet'?1:0))*0.25)
-        .sort((a,b)=>rank(a.id)-rank(b.id)||a.nextPrice!-b.nextPrice!);
+        .map(p => ({...p, score:income ? (p.id==='insurance'&&strategy.startsWith('income')&&strategy.endsWith('insurance')?Infinity:income(s,p.id,p.nextPrice!,strategy.includes('path'))) : 0}))
+        .filter(p => !income || p.score > -Infinity)
+        .sort((a,b)=>income ? b.score-a.score||a.nextPrice!-b.nextPrice! : rank(a.id)-rank(b.id)||a.nextPrice!-b.nextPrice!);
       if (choices[0]) return buy(choices[0].id);
     }
     if (s.eventModifiers.plinkoLockRemainingMinutes === 0 && s.cash > 0) {
@@ -107,8 +115,8 @@ for (let index = 0; index < count; index++) {
   process.stderr.write(`${strategy}/${mode}/${pace} ${index+1}/${count}: ${result.outcome}\n`);
 }
 mkdirSync(output,{recursive:true});
-const sources=Object.fromEntries(['simulation/full-game/adversarialAudit.ts','simulation/full-game/runner.ts','simulation/full-game/sharedWorld.ts','simulation/full-game/continuousSession.ts','src/core/plinko-rules/insurance.ts'].map(p=>[p,hash(readFileSync(p,'utf8'))]));
-const metadata={configHash,revision:execSync('git rev-parse HEAD').toString().trim(),sources,strategy,mode,pace,count,seedStart,seedSampling:'SHA256(seedStart:index) first uint32; matched seeds across strategies',model:'shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement',timing:{decisionSeconds:pace==='fast'?0.25:2,workSeconds:pace==='fast'?{courier:6,trash:5,dishes:8}:{courier:12,trash:15,dishes:18},launchSpacingSeconds:0.25},limitations:'Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades.'};
+const sources=Object.fromEntries(['simulation/full-game/marginalIncome.ts','simulation/full-game/adversarialAudit.ts','simulation/full-game/runner.ts','simulation/full-game/sharedWorld.ts','simulation/full-game/continuousSession.ts','src/core/plinko-rules/insurance.ts'].map(p=>[p,hash(readFileSync(p,'utf8'))]));
+const metadata={incomeEstimator:income?{count:incomeCount,seedStart:incomeSeed,cache:incomeCache,model:'normalized-paired-single-root-capacity-proxy-v2',lookahead:strategy.includes('path')?'entire same-track chain; cumulative prerequisite cost':'one level'}:null,configHash,revision:execSync('git rev-parse HEAD').toString().trim(),sources,strategy,mode,pace,count,seedStart,seedSampling:'SHA256(seedStart:index) first uint32; matched seeds across strategies',model:'shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement',timing:{decisionSeconds:pace==='fast'?0.25:2,workSeconds:pace==='fast'?{courier:6,trash:5,dishes:8}:{courier:12,trash:15,dishes:18},launchSpacingSeconds:0.25},limitations:'Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades.'};
 writeFileSync(`${output}/runs.json.gz`,gzipSync(JSON.stringify({metadata,runs})));
 const minutes=(r:typeof runs[number])=>Object.values(r.result.diagnostics.activeSeconds!).reduce((a,b)=>a+b,0)/60;
 const wins=runs.filter(r=>r.result.outcome==='VICTORY');

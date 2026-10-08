@@ -1,0 +1,28 @@
+{
+  "sources": [
+    {
+      "candidate": "control",
+      "hash": "ccfd7782a9d023fdcc0e63204195003d622d1e4c556bcf38b07d9edca3875d42",
+      "boards": 415
+    },
+    {
+      "candidate": "caps-only",
+      "hash": "5cfba34693c41ef1362ff90071bd2d641dbe314b3ba60079c553291a9e18f50d",
+      "boards": 415
+    },
+    {
+      "candidate": "coupled",
+      "hash": "bafbab5ad4a909aa4ca78421341bdca3a58375adb46b6f1d53e4ab703dbcdac2",
+      "boards": 427
+    }
+  ],
+  "candidates": [
+    "control",
+    "coupled"
+  ],
+  "boardsPreloaded": 443,
+  "count": 128,
+  "seedStart": 67146000,
+  "projectionHash": "58ecc309494e106f630904e033428959a522afd4a67133959d36508cba5ff11a",
+  "limitations": "Ranking probe seeds reused; full-game holdout RNG seeds must be fresh. Reused boards are not newly executed probes."
+}
