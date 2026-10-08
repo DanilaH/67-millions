@@ -644,4 +644,4 @@ A visual change should be rejected if any answer is “no”:
 
 ### Work scene frame and trash container — 2026-10-08
 
-Painted work backgrounds share one rounded clipped frame. The trash receiving container is a separate painted sprite, with runtime instructions and count. Its outline marks the existing forgiving receiving area; holding a bag in that area highlights it and asks for release. Source/provenance: `assets-src/trash-bin.png`, `assets-src/trash-bin.prompt.txt`; generated with the built-in OpenAI image tool, not a commissioned painting. The sprite is encoded by the normal WebP/AVIF pipeline. No timing or input geometry changes.
+Painted work backgrounds share one rounded clipped frame. The trash receiving container is the one already painted into the background, traced with a light outline that turns gold when a held bag enters the existing forgiving receiving area. The compact drop cue/count sits below it. No extra bin sprite is loaded or overlaid. No timing or input geometry changes.

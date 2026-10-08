@@ -57,7 +57,6 @@ export class TrashScene extends Phaser.Scene {
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
-  private binImage: Phaser.GameObjects.Image | undefined;
   private targetText?: Phaser.GameObjects.Text;
   private bagOutlines: Phaser.GameObjects.Image[][] = [];
   private bagImages: Phaser.GameObjects.Image[] = [];
@@ -67,7 +66,7 @@ export class TrashScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    preloadProductionArt(this, ['trash', 'bag', 'bin', 'barry-due', 'barry-paid']);
+    preloadProductionArt(this, ['trash', 'bag', 'barry-due', 'barry-paid']);
   }
 
   public create(): void {
@@ -80,7 +79,6 @@ export class TrashScene extends Phaser.Scene {
     this.heldBagId = null;
     this.bagImages = [];
     this.bagOutlines = [];
-    this.binImage = undefined;
     createWorkBackdrop(this, 'trash');
     const width = balance.plinko.geometry.logicalViewportWidth;
 
@@ -488,20 +486,22 @@ export class TrashScene extends Phaser.Scene {
     const target = this.session.target;
     const held = this.session.bags.find(bag => bag.id === this.heldBagId);
     const ready = !!held && isTrashTargetAcceptingPoint(this.session, held);
-    const { x, y, width, height } = target;
-    if (!this.binImage) {
-      const image = addProductionImage(this, 'bin', x + width / 2 - 12, 0, width + 24, height, -0.25);
-      image.setScale((width + 24) / image.width);
-      image.setY(y + height - image.displayHeight / 2);
-      this.binImage = image;
-    }
-    this.binImage.setTint(ready ? 0xffe6a3 : 0xffffff);
-    // Reveal the existing forgiving receiving area while dragging.
-    if (held) graphics.lineStyle(ready ? 5 : 2, visualColor(ready ? 'mustard' : 'good'), ready ? 1 : 0.55)
-      .strokeRoundedRect(x + 3, y + 3, width - 6, height - 6, 16);
-    graphics.fillStyle(visualColor('inkPanel'), 0.95).fillRoundedRect(x, y + height + 36, width, 48, 9);
+    const { x, width } = target;
+    // Trace the container already painted into the backdrop, rather than add a second bin.
+    graphics.lineStyle(ready ? 5 : 3, visualColor(ready ? 'mustard' : 'paperOld'), ready ? 1 : 0.85);
+    graphics.beginPath();
+    graphics.moveTo(822, 292);
+    graphics.lineTo(849, 214);
+    graphics.lineTo(888, 199);
+    graphics.lineTo(1176, 142);
+    graphics.lineTo(1176, 388);
+    graphics.lineTo(1108, 423);
+    graphics.lineTo(830, 405);
+    graphics.closePath();
+    graphics.strokePath();
+    graphics.fillStyle(visualColor('inkPanel'), 0.95).fillRoundedRect(x, 444, width, 48, 9);
     const accepted = getAcceptedTrashBagCount(this.session);
-    this.targetText?.setPosition(x + width / 2, y + height + 43)
+    this.targetText?.setPosition(x + width / 2, 451)
       .setText(`${ready ? 'Отпусти' : 'Тащи сюда ↑'} · ${accepted}/${this.session.bags.length}`)
       .setColor(visualHex(ready ? 'mustard' : 'textMain'));
 
