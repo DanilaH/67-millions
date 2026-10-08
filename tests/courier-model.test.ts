@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+import { courierSmokeRoute } from '../tools/courier-smoke-route';
 import { balance } from '../src/config/balance';
 import {
+  courierSegmentCrossesBuilding,
+  courierRouteCrossesBuilding,
   appendCourierRoutePoint,
   cancelCourierRoute,
   releaseCourierRoute,
@@ -66,8 +69,10 @@ describe('Courier minigame model', () => {
 
     const safeRoute = [
       session.start,
-      { x: session.start.x, y: 600 },
-      { x: session.finish.x, y: 600 },
+      { x: 360, y: 365 }, { x: 360, y: 430 },
+      { x: 360, y: 600 },
+      { x: 940, y: 600 },
+      { x: 940, y: 430 }, { x: 940, y: 365 },
       session.finish,
     ];
 
@@ -114,7 +119,7 @@ describe('Courier minigame model', () => {
     );
     session = appendCourierRoutePoint(
       session,
-      { x: 300, y: 580 },
+      { x: 300, y: 400 },
     );
 
     const resolved = resolveCourierRoute(session);
@@ -129,8 +134,10 @@ describe('Courier minigame model', () => {
 
     for (const point of [
       session.start,
-      { x: session.start.x, y: 600 },
-      { x: session.finish.x, y: 600 },
+      { x: 360, y: 365 }, { x: 360, y: 430 },
+      { x: 360, y: 600 },
+      { x: 940, y: 600 },
+      { x: 940, y: 430 }, { x: 940, y: 365 },
       session.finish,
     ]) {
       session = appendCourierRoutePoint(
@@ -155,7 +162,7 @@ describe('Courier minigame model', () => {
 describe('Courier physical traversal regressions', () => {
   it('starts at pickup and reaches the delivery point only after travelling', () => {
     let session = createCourierSession(balance, 905);
-    for (const p of [session.start, { x: 180, y: 600 }, { x: 1100, y: 600 }, session.finish]) session = appendCourierRoutePoint(session, p);
+    for (const p of [session.start, { x: 360, y: 365 }, { x: 360, y: 430 }, { x: 360, y: 600 }, { x: 940, y: 600 }, { x: 940, y: 430 }, { x: 940, y: 365 }, session.finish]) session = appendCourierRoutePoint(session, p);
     session = startCourierDelivery(session);
     expect(session.result).toBeNull();
     expect(session.position).toEqual(session.start);
@@ -176,7 +183,7 @@ describe('Courier physical traversal regressions', () => {
     expect(before.position.x).toBeCloseTo(180 + 920 / 3);
     const collided = advanceCourierSession(before, 1000);
     expect(collided.result).toBe('FAILURE');
-    expect(collided.position.x).toBe(511); // box edge 540 minus sprite half-size 29
+    expect(collided.position.x).toBe(504); // box edge 540 minus the enlarged sprite half-size 36
     const giantFrame = advanceCourierSession(started, 10_000);
     expect(giantFrame.position).toEqual(collided.position);
     expect(advanceCourierSession(collided, 1000)).toBe(collided);
@@ -237,7 +244,7 @@ describe('Courier release and fixed duration', () => {
   });
   it.each([false, true])('finishes at three seconds regardless of path length (detour=%s)', detour => {
     let s = createCourierSession(balance, 905);
-    s = startCourierDelivery({ ...s, obstacles: [], route: detour ? [s.start, { x: 180, y: 600 }, { x: 1100, y: 600 }, s.finish] : [s.start, s.finish] });
+    s = startCourierDelivery({ ...s, obstacles: [], route: detour ? [s.start, { x: 360, y: 365 }, { x: 360, y: 430 }, { x: 360, y: 600 }, { x: 940, y: 600 }, { x: 940, y: 430 }, { x: 940, y: 365 }, s.finish] : [s.start, s.finish] });
     const whole = advanceCourierSession(s, 3000);
     for (const ms of [16, 500, 333, 1000, 1150]) s = advanceCourierSession(s, ms);
     expect(s.elapsedMs).toBe(2999);
@@ -246,6 +253,39 @@ describe('Courier release and fixed duration', () => {
     expect(s.result).toBe('SUCCESS');
     expect(s.position).toEqual(whole.position);
     expect(s.elapsedMs).toBe(3000);
-    expect(s.heading).toBeCloseTo(detour ? -Math.PI / 2 : 0);
+    expect(s.heading).toBeCloseTo(0);
+  });
+});
+
+
+describe('Painted building footprints', () => {
+  it('marks a stroke through a building and rejects its release without failing the shift', () => {
+    const s = createCourierSession(balance, 905);
+    const route = [s.start, { x: 180, y: 600 }, { x: 1100, y: 600 }, s.finish];
+    const drawn = { ...s, route };
+    expect(courierRouteCrossesBuilding(drawn)).toBe(true);
+    const released = releaseCourierRoute(drawn, s.finish);
+    expect(released.started).toBe(false);
+    expect(released.result).toBeNull();
+    expect(released.route).toEqual([]);
+    expect(released.redrawsRemaining).toBe(s.redrawsRemaining);
+    expect(resolveCourierRoute(drawn).result).toBe('FAILURE');
+  });
+  it('allows street strokes but rejects a grazing character footprint and a sparse crossing', () => {
+    expect(courierSegmentCrossesBuilding({x: 180, y: 365}, {x: 1100, y: 365})).toBe(false);
+    expect(courierSegmentCrossesBuilding({x: 340, y: 500}, {x: 340, y: 600})).toBe(true);
+    expect(courierSegmentCrossesBuilding({x: 180, y: 400}, {x: 180, y: 600})).toBe(true);
+    expect(courierSegmentCrossesBuilding({x: 360, y: 400}, {x: 360, y: 600})).toBe(false);
+  });
+});
+
+
+describe('Courier street reachability', () => {
+  it('retains a traversable route across 1000 deterministic crate layouts', () => {
+    for (let seed = 1; seed <= 1000; seed++) {
+      const session = createCourierSession(balance, seed);
+      const route = courierSmokeRoute(session);
+      expect(resolveCourierRoute({ ...session, route }).result, `seed ${seed}`).toBe('SUCCESS');
+    }
   });
 });

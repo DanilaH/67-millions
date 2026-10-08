@@ -645,3 +645,7 @@ A visual change should be rejected if any answer is “no”:
 ### Work scene frame and trash container — 2026-10-08
 
 Painted work backgrounds share one rounded clipped frame. The trash receiving container is the one already painted into the background, traced with a light outline that turns gold when a held bag enters the existing forgiving receiving area. The compact drop cue/count sits below it. No extra bin sprite is loaded or overlaid. No timing or input geometry changes.
+
+### Work object readability — 2026-10-08
+
+Five larger plates share the counter surface; dark stains contrast with a lighter continuous removable grease film, preserving visible dirt wherever cleaning counts. Bag sprites and grab zones are larger. Courier endpoint rings show the street beneath them and have text labels; the enlarged courier follows the path. Four painted building footprints are blocked, with red route segments and a release hint instead of silently walking over roofs.

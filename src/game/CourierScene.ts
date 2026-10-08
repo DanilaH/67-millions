@@ -22,6 +22,8 @@ import {
   type BarryMinigameOverlay,
 } from './work/createBarryMinigameOverlay';
 import {
+  courierSegmentCrossesBuilding,
+  courierRouteCrossesBuilding,
   appendCourierRoutePoint,
   canBeginCourierRoute,
   createCourierSession,
@@ -112,6 +114,12 @@ export class CourierScene extends Phaser.Scene {
       .setOrigin(0.5, 0);
 
     this.graphics = this.add.graphics().setDepth(1);
+    const zoneLabel = (x: number, text: string, color: string) => this.add.text(x, 450, text, {
+      fontFamily: VISUAL_FONT.sans, fontSize: '26px', fontStyle: 'bold', color,
+      backgroundColor: visualHex('inkPanel'), padding: { x: 10, y: 4 },
+    }).setOrigin(0.5, 0).setDepth(2);
+    zoneLabel(180, 'СТАРТ', visualHex('good'));
+    zoneLabel(1100, 'ФИНИШ', visualHex('cold'));
     this.barryOverlay = createBarryMinigameOverlay(
       this,
       balance,
@@ -125,7 +133,7 @@ export class CourierScene extends Phaser.Scene {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
         fontSize: '26px',
-        wordWrap: { width: 640 },
+        wordWrap: { width: 1120 },
         align: 'center',
       })
       .setOrigin(0.5, 0);
@@ -291,6 +299,9 @@ export class CourierScene extends Phaser.Scene {
   private readonly handlePointerUp = (pointer: Phaser.Input.Pointer): void => {
     if (!this.drawing || !this.session) return;
     this.drawing = false;
+    if (courierRouteCrossesBuilding(this.session)) {
+      showInteractionFeedback(this, 640, 575, 'ОБЪЕДЬ ЗДАНИЯ', 'warning');
+    }
     this.session = this.save?.game.barryInterruptPending
       ? cancelCourierRoute(this.session)
       : releaseCourierRoute(this.session, logicalPointer(this, pointer));
@@ -451,44 +462,18 @@ export class CourierScene extends Phaser.Scene {
       );
     }
 
-    this.courierImage ??= addProductionImage(this, 'courier-icon', this.session.start.x, this.session.start.y, 58, 58, 2);
+    this.courierImage ??= addProductionImage(this, 'courier-icon', this.session.start.x, this.session.start.y, 72, 72, 2);
     this.courierImage.setPosition(this.session.position.x, this.session.position.y).setRotation(this.session.heading + Math.PI / 2);
     this.game.canvas.setAttribute('data-courier-started', String(this.session.started));
-    graphics.fillStyle(visualColor('good'), 1);
-    graphics.fillCircle(
-      this.session.start.x,
-      this.session.start.y,
-      this.session.startRadius,
-    );
-    graphics.fillStyle(visualColor('inkDeep'), 1);
-    graphics.fillCircle(
-      this.session.start.x,
-      this.session.start.y,
-      22,
-    );
-
-    graphics.fillStyle(visualColor('cold'), 1);
-    graphics.fillCircle(
-      this.session.finish.x,
-      this.session.finish.y,
-      this.session.finishRadius,
-    );
-    graphics.fillStyle(visualColor('inkDeep'), 1);
-    graphics.fillCircle(
-      this.session.finish.x,
-      this.session.finish.y,
-      24,
-    );
+    for (const [point, radius, color] of [
+      [this.session.start, this.session.startRadius, visualColor('good')],
+      [this.session.finish, this.session.finishRadius, visualColor('cold')],
+    ] as const) {
+      graphics.fillStyle(color, 0.12).fillCircle(point.x, point.y, radius);
+      graphics.lineStyle(5, color, 1).strokeCircle(point.x, point.y, radius);
+    }
 
     if (this.session.route.length > 0) {
-      graphics.lineStyle(
-        this.session.routeThickness,
-        this.session.result === 'FAILURE'
-          ? visualColor('warning')
-          : visualColor('mustard'),
-        0.9,
-      );
-
       for (
         let index = 1;
         index < this.session.route.length;
@@ -496,6 +481,9 @@ export class CourierScene extends Phaser.Scene {
       ) {
         const previous = this.session.route[index - 1]!;
         const point = this.session.route[index]!;
+        graphics.lineStyle(this.session.routeThickness,
+          courierSegmentCrossesBuilding(previous, point) || this.session.result === 'FAILURE'
+            ? visualColor('warning') : visualColor('mustard'), 0.9);
         graphics.strokeLineShape(
           new Phaser.Geom.Line(
             previous.x,
@@ -513,6 +501,8 @@ export class CourierScene extends Phaser.Scene {
           ? 'Курьер в пути…'
           : this.session.route.length === 0
           ? 'Начни в зелёной зоне.'
+          : courierRouteCrossesBuilding(this.session)
+          ? 'Здесь здание — рисуй по улице.'
           : 'Отпусти в синей зоне, чтобы отправить курьера.';
       this.statusText?.setText(suffix);
     }

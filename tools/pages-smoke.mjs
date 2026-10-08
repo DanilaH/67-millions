@@ -10,6 +10,8 @@ import { startFood } from '../src/core/actions/foodEntertainment.ts';
 import { startSleep } from '../src/core/sleep/sleep.ts';
 import { startWork } from '../src/core/work/work.ts';
 import { createDishesSession } from '../src/minigames/dishes/dishesModel.ts';
+import { courierSmokeRoute } from './courier-smoke-route.ts';
+import { createCourierSession } from '../src/minigames/courier/courierModel.ts';
 import { createTrashSession } from '../src/minigames/trash/trashModel.ts';
 import { commitBareDrop } from '../src/core/plinko-rules/drop.ts';
 
@@ -415,9 +417,9 @@ try {
       if (job === 'courier') await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-${job}-start.png` });
       if (job === 'dishes') {
         for (const plate of createDishesSession(balance).plates) {
-          await move(plate.x - 65, plate.y - 45); await down();
-          for (const [row, offset] of [-45, 0, 45].entries()) {
-            await move(plate.x + (row % 2 === 0 ? 65 : -65), plate.y + offset, { steps: 6 });
+          await move(plate.x - 78, plate.y - 52); await down();
+          for (const [row, offset] of [-52, 0, 52].entries()) {
+            await move(plate.x + (row % 2 === 0 ? 78 : -78), plate.y + offset, { steps: 6 });
             await page.waitForTimeout(25);
           }
           await up();
@@ -427,7 +429,11 @@ try {
         for (const bag of session.bags) { await move(bag.x, bag.y); await down(); await move(session.target.x + 150, session.target.y + 150, { steps: 6 }); await up(); await page.waitForTimeout(30); }
       } else {
         await move(180, 365); await down();
-        for (const point of [[180, 600], [1100, 600], [1100, 365]]) { await move(...point, { steps: 8 }); await page.waitForTimeout(25); }
+        const current = await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')));
+        const action = current.activeAction;
+        const mixed = current.game.rngState ^ Math.imul(action.startedAtGameDayIndex + 1, 0x9e3779b1) ^ Math.imul(action.startedAtMinuteOfDay + 1, 0x85ebca6b) ^ Math.imul(action.level, 0xc2b2ae35);
+        const route = courierSmokeRoute(createCourierSession(balance, (mixed >>> 0) || 1));
+        for (const point of route.slice(1)) { await move(point.x, point.y, { steps: 8 }); await page.waitForTimeout(25); }
         await page.waitForTimeout(400);
         assert.equal(await page.locator('canvas').getAttribute('data-courier-started'), 'false', 'reaching finish while held does not start');
         await up();

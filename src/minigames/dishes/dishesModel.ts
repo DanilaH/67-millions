@@ -30,16 +30,16 @@ export interface DishesSession {
 }
 
 export const DISHES_INTERACTION = {
-  plateRadius: 74,
-  scrubRadius: 34,
+  plateRadius: 88,
+  scrubRadius: 40,
   dirtCellSize: 3,
   dirtRadiusRatio: 0.82,
   plates: [
-    { x: 330, y: 250 },
-    { x: 640, y: 250 },
-    { x: 950, y: 250 },
-    { x: 485, y: 500 },
-    { x: 795, y: 500 },
+    { x: 220, y: 425 },
+    { x: 430, y: 425 },
+    { x: 640, y: 425 },
+    { x: 850, y: 425 },
+    { x: 1060, y: 425 },
   ],
 } as const;
 

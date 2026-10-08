@@ -49,14 +49,24 @@ export const COURIER_INTERACTION = {
   startRadius: 62,
   finishRadius: 72,
   routeThickness: 18,
-  courierHalfSize: 29,
+  courierHalfSize: 36,
   obstacleWidth: 120,
   obstacleHeight: 115,
-  obstacleColumns: [390, 610, 830],
+  // Leave a character-width street passage between the western buildings and crates.
+  obstacleColumns: [470, 610, 830],
   obstacleYMin: 180,
   obstacleYMax: 500,
   obstacleClearanceFromEndpoints: 100,
 } as const;
+
+// Footprints of the four buildings painted into the street backdrop. The road
+// and sidewalks remain traversable; these do not count as random crate hazards.
+export const COURIER_BUILDINGS: readonly CourierObstacle[] = [
+  { id: 'building-nw', x: 210, y: 170, width: 220, height: 116 },
+  { id: 'building-ne', x: 1080, y: 170, width: 200, height: 116 },
+  { id: 'building-sw', x: 210, y: 537, width: 220, height: 200 },
+  { id: 'building-se', x: 1080, y: 542, width: 200, height: 190 },
+];
 
 const getNumber = (
   value: string | number | boolean | undefined,
@@ -272,7 +282,8 @@ export const releaseCourierRoute = (session: CourierSession, point: CourierPoint
   const drawn = appendCourierRoutePoint(session, point);
   return Number.isFinite(point.x) && Number.isFinite(point.y) &&
     distanceSquared(point, session.finish) <= session.finishRadius ** 2 && courierRouteReachesFinish(drawn)
-    ? startCourierDelivery(drawn) : cancelCourierRoute(session);
+    ? courierRouteCrossesBuilding(drawn) ? cancelCourierRoute(drawn) : startCourierDelivery(drawn)
+    : cancelCourierRoute(session);
 };
 
 export const redrawCourierRoute = (
@@ -294,7 +305,7 @@ export const redrawCourierRoute = (
   };
 };
 
-// Swept square collider matches the 58 × 58 courier sprite. Slab clipping
+// Swept square collider matches the 72 × 72 courier sprite. Slab clipping
 // returns the first contact, including at low FPS; disjoint collinear edges
 // cannot produce the false collisions of the previous orientation test.
 const contactFraction = (
@@ -320,6 +331,12 @@ const contactFraction = (
   }
   return enter;
 };
+
+export const courierSegmentCrossesBuilding = (start: CourierPoint, end: CourierPoint): boolean =>
+  COURIER_BUILDINGS.some(building => contactFraction(start, end, building) !== null);
+
+export const courierRouteCrossesBuilding = (session: CourierSession): boolean =>
+  session.route.some((point, index) => index > 0 && courierSegmentCrossesBuilding(session.route[index - 1]!, point));
 
 export const startCourierDelivery = (session: CourierSession): CourierSession => {
   if (session.started || session.result !== null || session.route.length < 2) return session;
@@ -354,7 +371,7 @@ export const advanceCourierSession = (
       y: position.y + (target.y - position.y) * travel / distance,
     };
     let contact: number | null = null;
-    for (const obstacle of session.obstacles) {
+    for (const obstacle of session.obstacles.concat(COURIER_BUILDINGS)) {
       const t = contactFraction(position, end, obstacle);
       if (t !== null && (contact === null || t < contact)) contact = t;
     }

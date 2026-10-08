@@ -30,7 +30,7 @@ export interface TrashSession {
 }
 
 export const TRASH_INTERACTION = {
-  grabRadius: 58,
+  grabRadius: 72,
   target: {
     x: 880,
     y: 185,
@@ -39,11 +39,11 @@ export const TRASH_INTERACTION = {
     forgivingMargin: 42,
   },
   bagPositions: [
-    { x: 220, y: 180 },
-    { x: 390, y: 180 },
+    { x: 220, y: 215 },
+    { x: 420, y: 215 },
     { x: 260, y: 360 },
     { x: 450, y: 385 },
-    { x: 335, y: 550 },
+    { x: 335, y: 535 },
   ],
 } as const;
 

@@ -506,10 +506,10 @@ export class TrashScene extends Phaser.Scene {
       .setColor(visualHex(ready ? 'mustard' : 'textMain'));
 
     for (const [index, bag] of this.session.bags.entries()) {
-      const image = this.bagImages[index] ?? (this.bagImages[index] = addProductionImage(this, 'bag', bag.x, bag.y, 90, 110, 1));
+      const image = this.bagImages[index] ?? (this.bagImages[index] = addProductionImage(this, 'bag', bag.x, bag.y, 120, 146, 1));
       // Offset alpha silhouettes create a crisp outline without per-sprite filter passes.
       const outlines = this.bagOutlines[index] ?? (this.bagOutlines[index] = BAG_OUTLINE_OFFSETS.map(() =>
-        addProductionImage(this, 'bag', bag.x, bag.y, 90, 110, 0.75)));
+        addProductionImage(this, 'bag', bag.x, bag.y, 120, 146, 0.75)));
       const outlineWidth = bag.id === this.heldBagId ? 4 : 3;
       outlines.forEach((outline, i) => outline.setVisible(!bag.accepted)
         .setPosition(bag.x + BAG_OUTLINE_OFFSETS[i]![0] * outlineWidth, bag.y + BAG_OUTLINE_OFFSETS[i]![1] * outlineWidth)

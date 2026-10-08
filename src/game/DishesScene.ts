@@ -84,7 +84,7 @@ export class DishesScene extends Phaser.Scene {
     this.finishedPlates.clear();
     const dirtKey = '67m:dishes-dirt';
     if (this.textures.exists(dirtKey)) this.textures.remove(dirtKey);
-    const tileSize = 128;
+    const tileSize = 192;
     this.dirtTexture = this.textures.createCanvas(dirtKey, tileSize * DISHES_INTERACTION.plates.length, tileSize)!;
     DISHES_INTERACTION.plates.forEach((plate, index) => {
       const frame = `plate-${index}`;
@@ -489,8 +489,8 @@ export class DishesScene extends Phaser.Scene {
         total[spot.plateIndex]!++;
         if (spot.cleaned) cleaned[spot.plateIndex]!++;
         const plate = this.session.plates[spot.plateIndex]!;
-        const x = spot.x - plate.x + 64 + spot.plateIndex * 128 - size / 2;
-        const y = spot.y - plate.y + 64 - size / 2;
+        const x = spot.x - plate.x + 96 + spot.plateIndex * 192 - size / 2;
+        const y = spot.y - plate.y + 96 - size / 2;
         if (this.renderedSpots !== null) {
           if (spot.cleaned && !this.renderedSpots[index]!.cleaned) context.clearRect(x, y, size, size);
           continue;
@@ -499,8 +499,14 @@ export class DishesScene extends Phaser.Scene {
         // Continuous greasy film with deterministic mottling and fine grain.
         const grain = Math.sin(spot.x * 12.9898 + spot.y * 78.233) * 43758.5453;
         const noise = grain - Math.floor(grain);
-        const stain = (Math.sin(spot.x * 0.073) * Math.cos(spot.y * 0.097) + 1) / 2;
-        context.fillStyle = `rgba(${75 + Math.floor(noise * 28)}, ${43 + Math.floor(stain * 27)}, 24, ${0.72 + stain * 0.24})`;
+        const dx = spot.x - plate.x;
+        const dy = spot.y - plate.y;
+        const stain = Math.max(
+          Math.exp(-((dx + 27) ** 2 + (dy + 20) ** 2) / 620),
+          Math.exp(-((dx - 25) ** 2 + (dy - 22) ** 2) / 480),
+          Math.exp(-((dx - 24) ** 2 + (dy + 35) ** 2) / 300),
+        );
+        context.fillStyle = `rgba(${75 + Math.floor(noise * 28)}, ${43 + Math.floor(stain * 27)}, 24, ${0.28 + stain * 0.7})`;
         context.fillRect(x, y, size, size);
       }
       this.session.plates.forEach((plate, index) => {
