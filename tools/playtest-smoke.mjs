@@ -1,4 +1,6 @@
 import { createSharedWorld } from '../simulation/full-game/sharedWorld.ts';
+import { courierSmokeRoute } from './courier-smoke-route.ts';
+import { createCourierSession } from '../src/minigames/courier/courierModel.ts';
 import { chromium } from 'playwright';
 import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -186,8 +188,14 @@ try {
   await move(180, 600); await page.mouse.down(); await move(1100, 365); await page.mouse.up();
   await page.waitForTimeout(1000);
   assert.equal((await save()).activeAction?.result, null, 'cancelled line cannot continue from its old endpoint');
+  const courierSave = await save();
+  const courierAction = courierSave.activeAction;
+  const courierSeed = courierSave.game.rngState ^ Math.imul(courierAction.startedAtGameDayIndex + 1, 0x9e3779b1) ^ Math.imul(courierAction.startedAtMinuteOfDay + 1, 0x85ebca6b) ^ Math.imul(courierAction.level, 0xc2b2ae35);
+  const streetRoute = courierSmokeRoute(createCourierSession(balance, (courierSeed >>> 0) || 1));
   await move(180, 365); await page.mouse.down();
-  for (const [x, y] of [[180, 600], [1100, 600], [1100, 365]]) await move(x, y);
+  for (const point of streetRoute.slice(1)) await move(point.x, point.y);
+  await page.waitForTimeout(400);
+  assert.equal(await page.locator('canvas').getAttribute('data-courier-started'), 'false', 'courier waits for release at finish');
   await page.mouse.up();
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).activeAction === null, null, { timeout: 15000 });
   assert.ok((await save()).game.cash > fixture.game.cash, '1080p courier pointer path reaches its endpoint');

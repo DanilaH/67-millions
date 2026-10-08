@@ -23,7 +23,7 @@ const output = process.argv[5] ?? `reports/pacing/2026-10-08-adversarial/${strat
 const mode = process.argv[6] ?? 'continuous';
 const pace = process.argv[7] ?? 'fast';
 if (!strategies.includes(strategy) || !Number.isInteger(count) || count < 1 || !Number.isInteger(seedStart) || seedStart < 1 || !['burst', 'continuous'].includes(mode) || !['fast', 'ordinary'].includes(pace)) throw Error('Invalid audit arguments');
-const raw = readFileSync('balance.v0.json', 'utf8');
+const raw = readFileSync(process.argv[8] ?? 'balance.v0.json', 'utf8');
 const config = parseBalanceConfig(JSON.parse(raw));
 const hash = (s: string) => createHash('sha256').update(s).digest('hex');
 const configHash = hash(raw);
