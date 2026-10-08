@@ -357,3 +357,5 @@ Extends T057 casino UI, map/HUD presentation and persistence verification: free 
 2026-10-08 T056/T057 follow-up: removed the action-list footer banner, recovered list height, and bounded action/upgrade titles, summaries, lock reasons and price labels to prevent panel overflow. Gameplay and economy unchanged.
 
 2026-10-08 audited UX fixes (T056/T057): upgrade purchasing uses the actual fully visible price bounds; clipped prices cannot spend. Barry and run-end dialogs gain mobile typography and 44 CSS-pixel buttons, confirmation/cancel remain inside the panel, and unaffordable Barry explicitly warns about defeat. Work instructions are shorter/larger and timers use Russian units. Action-list compaction and forecast redesign remain follow-ups; economy/physics unchanged.
+
+2026-10-08 T056 action-panel follow-up: sleep, shower and dumpster windows fit their content instead of retaining the full list backdrop. Forecast captions stay inside the action-menu header; HUD arrows and coloured projections appear only for rounded values that change. Health/Barry warnings and all costs remain visible. No economy/physics change.

@@ -38,6 +38,13 @@ export const createActionPanel = (
   let previewId: string | null = null;
   const text = (x: number, y: number, label: string, size: number, color: VisualColorToken = 'textMain') =>
     scene.add.text(x, y, label, { fontFamily: VISUAL_FONT.sans, fontSize: size, color: visualHex(color) });
+  const forecastLabel = text(0, 0, '', 20, 'mustard').setVisible(false);
+  container.add(forecastLabel);
+  const preview = (action: ActionPreview | null) => {
+    onPreview(action);
+    forecastLabel.setText(action?.forecast?.caption ?? '').setVisible(!!action?.forecast);
+    fitPanelText(forecastLabel, isCompactViewport(scene) ? 1168 : 850, 28, false);
+  };
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
     controls.forEach(control => control.setVisible(false));
@@ -46,10 +53,14 @@ export const createActionPanel = (
     const compact = isCompactViewport(scene);
     const left = compact ? 28 : 310, width = compact ? 1224 : 906;
     rowHeight = compact || currentActions.some(action => action.id.startsWith('work:')) ? 180 : 152;
-    scrollTop = compact ? 236 : 202;
-    scrollBottom = 688;
+    const single = currentActions.length === 1;
+    const hasForecast = currentActions.some(action => action.forecast);
+    const singleHeight = hasForecast ? (compact ? 260 : 230) : (compact ? 190 : 166);
+    scrollTop = hasForecast ? (compact ? 268 : 220) : (compact ? 236 : 202);
+    scrollBottom = single ? scrollTop + singleHeight : 688;
+    forecastLabel.setPosition(left + 28, compact ? 232 : 188).setFontSize(compact ? 22 : 17);
     offset = Phaser.Math.Clamp(offset, 0, maxScroll());
-    onPreview(currentActions.find(action => action.id === previewId) ?? null);
+    preview(currentActions.find(action => action.id === previewId) ?? null);
     const listWidth = width - (maxScroll() > 0 ? (compact ? 100 : 60) : 0);
     const targets: Record<string, { x: number; y: number }> = {};
     const add = (...objects: Phaser.GameObjects.GameObject[]) => { container.add(objects); dynamic.push(...objects); };
@@ -70,17 +81,16 @@ export const createActionPanel = (
       container.bringToTop(control);
       targets[id] = { x: x + w / 2, y: y + h / 2 };
     };
-    add(scene.add.rectangle(left + width / 2, 410, width, 568, visualColor('inkDeep'), 0.985)
+    add(scene.add.rectangle(left + width / 2, (126 + scrollBottom + 12) / 2, width, scrollBottom + 12 - 126, visualColor('inkDeep'), 0.985)
       .setStrokeStyle(2, visualColor('lineDirty')).setInteractive());
     button('back', left + 16, 136, compact ? 230 : 150, '← Город', onBack);
     add(text(left + (compact ? 270 : 184), 153, currentTitle, compact ? 32 : 26).setFontStyle('bold'));
     if (navigationAction) button('section', left + width - (compact ? 320 : 245), 136, compact ? 304 : 229, navigationAction.title, () => onAction(navigationAction!));
-    const single = currentActions.length === 1;
     currentActions.forEach((action, index) => {
       const y = scrollTop + index * rowHeight - offset;
       if (!single && (y + rowHeight - 12 <= scrollTop || y >= scrollBottom)) return;
       const rowStart = dynamic.length;
-      const height = single ? (compact ? 356 : 340) : rowHeight - 12;
+      const height = single ? singleHeight : rowHeight - 12;
       const ctaWidth = compact ? 320 : 262;
       const contentWidth = listWidth - ctaWidth - 72;
       let card = cards.get(action.id);
@@ -89,7 +99,7 @@ export const createActionPanel = (
         cards.set(action.id, card); container.add(card);
         card.on('pointerup', () => { if (!suppressTap) handlers.get(`preview:${action.id}`)?.(); })
           .on('pointerover', () => handlers.get(`hover:${action.id}`)?.())
-          .on('pointerout', () => { if (!previewId) onPreview(null); });
+          .on('pointerout', () => { if (!previewId) preview(null); });
       }
       const clippedTop = Math.max(scrollTop, y), clippedBottom = Math.min(scrollBottom, y + height);
       card.setPosition(left + listWidth / 2, (clippedTop + clippedBottom) / 2).setSize(listWidth - 32, clippedBottom - clippedTop).setVisible(true);
@@ -101,8 +111,8 @@ export const createActionPanel = (
       if (action.forecast) {
         card.setInteractive({ useHandCursor: true });
         handlers.set(`preview:${action.id}`, toggle);
-        handlers.set(`hover:${action.id}`, () => { if (!previewId) onPreview(action); });
-        add(fitPanelText(text(left + 28, y + height - (compact ? 36 : 23), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 16, 'cold'), contentWidth, compact ? 30 : 20, false));
+        handlers.set(`hover:${action.id}`, () => { if (!previewId) preview(action); });
+        add(fitPanelText(text(left + 28, y + height - (compact ? 36 : 23), previewId === action.id ? 'Скрыть прогноз ↑' : 'Показать прогноз ↑', compact ? 24 : 16, 'cold'), contentWidth, compact ? 30 : 20, false));
         if (y >= scrollTop && y + height <= scrollBottom) targets[`preview:${action.id}`] = { x: left + 80, y: y + height - 16 };
       }
       const ctaX = left + listWidth - ctaWidth - 28;
@@ -124,6 +134,7 @@ export const createActionPanel = (
       add(scene.add.rectangle(left + width - (compact ? 52 : 32), scrollTop + trackHeight / 2, 4, trackHeight, visualColor('lineDirty')),
         scene.add.rectangle(left + width - (compact ? 52 : 32), scrollTop + thumbHeight / 2 + (trackHeight - thumbHeight) * offset / maxScroll(), 6, thumbHeight, visualColor('mustard')));
     }
+    container.bringToTop(forecastLabel);
     controls.forEach(control => { if (control.visible) container.bringToTop(control); });
     scene.game.canvas.setAttribute('aria-label', currentTitle);
     scene.game.canvas.setAttribute('data-panel-scroll', `${Math.round(offset)}`);
@@ -172,7 +183,7 @@ export const createActionPanel = (
       draw(); container.setVisible(true);
       scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT);
     },
-    hide: () => { previewId = null; onPreview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); scene.game.canvas.removeAttribute('data-action-targets'); scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT); },
+    hide: () => { previewId = null; preview(null); container.setVisible(false); dynamic.splice(0).forEach(object => object.destroy()); scene.game.canvas.removeAttribute('data-action-targets'); scene.game.events.emit(ACTION_PANEL_VISIBILITY_EVENT); },
     isVisible: () => container.visible,
   };
 };

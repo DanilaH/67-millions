@@ -180,3 +180,7 @@ Action locations use a continuous scroll list (touch drag, wheel, or up/down con
 Mobile HUD: cash and next Barry payment are primary; day/time and principal remain secondary but visible. Tapping a need gives its value and recovery advice. On the map a separate CTA opens food/home/entertainment without buying or starting the action. Work lists initially put available shifts first and preserve that order until the panel is reopened.
 
 2026-10-08 panel overflow correction: action lists use the former footer space for cards, with up/down controls in a narrow side rail. No dedicated “scroll the list” banner. Card text and price labels are measured against their allocated slots; titles stay clear of CTAs/levels and wrapped lock reasons stay within their row.
+
+### Action windows and needs forecast (2026-10-08)
+
+Single-action sleep, shower and dumpster windows use shorter content-sized panels with the existing town/back and action buttons. Selecting or hovering a forecast shows its explanation inside the action-menu header; the HUD highlights only needs whose rounded value changes. Forecasting never starts an action or spends money. Existing danger and Barry-interruption captions remain visible.

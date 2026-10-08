@@ -38,7 +38,6 @@ export class PersistentHud {
   private forecast: NeedsForecast | null = null;
   private readonly forecastFade = { value: 1 };
   private forecastTween?: Phaser.Tweens.Tween;
-  private readonly forecastText: Phaser.GameObjects.Text;
   private latestNeeds: HudNeed[] = [];
   private latestState?: GameState;
   private detailTimer?: Phaser.Time.TimerEvent;
@@ -50,7 +49,6 @@ export class PersistentHud {
       color: visualHex('textMain'), fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, fontStyle: 'bold',
     }).setDepth(depth + 1);
     this.heading = [text(30, 25, 16), text(254, 22, 23), text(574, 25, 17), text(1050, 25, 16)];
-    this.forecastText = text(534, 103, 16).setColor(visualHex('mustard')).setBackgroundColor(visualHex('inkPanel')).setVisible(false);
     this.needTexts = Array.from({ length: 4 }, (_, index) => text(66 + index * 122, 82, 17));
     this.statusText = text(534, 80, 19).setInteractive({ useHandCursor: true });
     this.detail = text(24, 136, 22).setPadding(12, 10).setBackgroundColor(visualHex('inkPanel')).setWordWrapWidth(1160).setVisible(false);
@@ -112,7 +110,7 @@ export class PersistentHud {
     this.heading[0]!.setX(view.left + 30); this.heading[1]!.setX(view.left + 254);
     this.heading[3]!.setX(view.left + view.width - 230);
     this.heading[2]!.setX(view.left + 574);
-    this.statusText.setX(view.left + 534); this.forecastText.setX(view.left + 534);
+    this.statusText.setX(view.left + 534);
     this.detail.setX(view.left + 24);
     const compact = isCompactViewport(this.scene);
     this.needAction.setPosition(view.left + view.width - 324, 136);
@@ -122,7 +120,7 @@ export class PersistentHud {
       return;
     }
     this.heading[0]!.setY(25); this.heading[1]!.setY(22); this.heading[2]!.setY(25); this.heading[3]!.setY(25);
-    this.forecastText.setY(103).setFontSize(16); this.statusText.setY(80).setFontSize(19);
+    this.statusText.setY(80).setFontSize(19);
     this.scene.game.canvas.removeAttribute('data-hud-needs');
     const g = this.graphics.clear();
     g.fillStyle(visualColor('inkPanel'), 0.94); g.fillRoundedRect(view.left + 14, 12, view.width - 28, 48, 14);
@@ -140,7 +138,6 @@ export class PersistentHud {
       if (heading.width > maxWidth) heading.setFontSize(Math.max(12, Math.floor(base * maxWidth / heading.width)));
     });
     this.statusText.setText(hud.statuses.length ? 'Запах · нужен душ' : '').setVisible(hud.statuses.length > 0);
-    this.forecastText.setText(this.forecast?.caption ?? '').setVisible(this.forecast !== null);
     hud.needs.forEach((need, index) => {
       const x = view.left + 24 + index * 122;
       this.needTexts[index]!.setX(x + 42);
@@ -155,13 +152,13 @@ export class PersistentHud {
       g.fillStyle(visualColor('inkRaised'), 1); g.fillRoundedRect(x + 41, low || this.forecast ? 108 : 92, 56, 8, 3);
       const width = 56 * Phaser.Math.Clamp(need.value / this.config.needs.max, 0, 1);
       if (width > 0) { g.fillStyle(color, 1); g.fillRoundedRect(x + 41, low || this.forecast ? 108 : 92, width, 8, 3); }
-      if (this.forecast) {
+      if (this.forecast && Math.round(this.forecast.needs[need.id]) !== Math.round(need.value)) {
         const value = this.forecast.needs[need.id];
         const projected = 56 * Phaser.Math.Clamp(value / this.config.needs.max, 0, 1);
         const from = Math.min(width, projected);
         g.fillStyle(visualColor(value >= need.value ? 'mustard' : 'warning'), this.forecastFade.value * 0.85);
         g.fillRect(x + 41 + from, 109, Math.max(2, Math.abs(projected - width)), 6);
-        this.needTexts[index]!.setText(`${Math.round(need.value)}→${Math.round(value)}`).setFontSize(16);
+        this.needTexts[index]!.setText(`${Math.round(need.value)}→${Math.round(value)}`).setFontSize(16).setColor(visualHex(value > need.value ? 'mustard' : 'warning'));
       }
     });
   }
@@ -183,7 +180,6 @@ export class PersistentHud {
     fit(2, left + 332, 24, `Барри ${due}\n${hud.nextBarry.toLocaleString('ru-RU')} ₽`, 30, needsLeft - left - 352);
     this.heading[2]!.setColor(visualHex(hud.cash < hud.nextBarry && hud.minutesUntilBarry <= 180 ? 'warning' : 'mustard'));
     this.statusText.setPosition(left + 332, 102).setFontSize(20).setText(hud.statuses.length ? 'Запах · нужен душ' : '').setVisible(hud.statuses.length > 0);
-    this.forecastText.setPosition(left + 24, 130).setFontSize(22).setText(this.forecast?.caption ?? '').setVisible(!!this.forecast);
     const targets: Record<string, {x: number; y: number; width: number; height: number; textWidth: number; textHeight: number}> = {};
     hud.needs.forEach((need, index) => {
       const x = needsLeft + index * 144;
@@ -193,12 +189,13 @@ export class PersistentHud {
       drawNeedIcon(g, need.id, x + 23, 47, color);
       const label = low ? {health: 'Опасно', satiety: 'Голоден', energy: 'Устал', happiness: 'Грусть'}[need.id]
         : {health: 'Здоровье', satiety: 'Сытость', energy: 'Энергия', happiness: 'Счастье'}[need.id];
-      const value = this.forecast ? `${Math.round(need.value)}→${Math.round(this.forecast.needs[need.id])}` : `${Math.round(need.value)}`;
-      const needText = fitPanelText(this.needTexts[index]!.setPosition(x + 9, 61).setFontSize(24).setText(`${label}\n${value}`).setColor(visualHex('textMain')), 118, 52, false);
+      const changed = this.forecast && Math.round(this.forecast.needs[need.id]) !== Math.round(need.value);
+      const value = changed ? `${Math.round(need.value)}→${Math.round(this.forecast!.needs[need.id])}` : `${Math.round(need.value)}`;
+      const needText = fitPanelText(this.needTexts[index]!.setPosition(x + 9, 61).setFontSize(24).setText(`${label}\n${value}`).setColor(visualHex(changed ? (this.forecast!.needs[need.id] > need.value ? 'mustard' : 'warning') : 'textMain')), 118, 52, false);
       g.fillStyle(visualColor('inkDeep')).fillRoundedRect(x + 47, 42, 78, 10, 3);
       const current = 78 * Phaser.Math.Clamp(need.value / this.config.needs.max, 0, 1);
       if (current > 0) g.fillStyle(color).fillRect(x + 47, 42, current, 10);
-      if (this.forecast) {
+      if (this.forecast && Math.round(this.forecast.needs[need.id]) !== Math.round(need.value)) {
         const projected = 78 * Phaser.Math.Clamp(this.forecast.needs[need.id] / this.config.needs.max, 0, 1);
         g.fillStyle(visualColor(projected >= current ? 'mustard' : 'warning'), this.forecastFade.value).fillRect(x + 47 + Math.min(current, projected), 42, Math.max(2, Math.abs(projected - current)), 10);
       }
