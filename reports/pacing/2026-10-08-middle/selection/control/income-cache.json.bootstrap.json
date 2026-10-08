@@ -1,0 +1,13 @@
+{
+  "sourceConfig": "balance.v0.json",
+  "sourceCache": "reports/pacing/2026-10-08-income/holdout/control/income-cache.json",
+  "sourceConfigHash": "4864d56d75e4b319aaf5241fb9da4c325a31d589c5bdb194fc7697a0e14b6778",
+  "sourceCacheHash": "0512b2c3c1a39350b5b38a4b8eaeb0da97b822e0c920cc6099bdcc5a91825b35",
+  "targetConfigHash": "4864d56d75e4b319aaf5241fb9da4c325a31d589c5bdb194fc7697a0e14b6778",
+  "projectionHash": "8afcff35fcbc71cfa0de19d4e142ac7c098ea00017cc8b53db1a771dfbff2d6e",
+  "boardsPreloaded": 491,
+  "count": 128,
+  "seedStart": 67146000,
+  "model": "normalized-paired-single-root-capacity-proxy-v2",
+  "limitations": "Reused probes are not new executions. Ranking seeds reused; full-game seeds must be fresh."
+}

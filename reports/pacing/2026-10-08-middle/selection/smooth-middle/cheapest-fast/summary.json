@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "incomeEstimator": null,
+    "configHash": "9ff656bf6871f96cc8a59c60bc32e73bbdabba09fa7be39593c164530a8527d8",
+    "revision": "db81e1fd82641c7aabb680919993d4e9f60535ff",
+    "sources": {
+      "simulation/full-game/marginalIncome.ts": "4836601a1b1ac180cb4473ec8dbdf332c696a322d727546238d4e55f36caade0",
+      "simulation/full-game/adversarialAudit.ts": "a536d22b0d7970df2e3ccf11ce06f0247a7be5b2af4fe7a673885eb62e3694ba",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "cheapest",
+    "mode": "continuous",
+    "pace": "fast",
+    "count": 8,
+    "seedStart": 67151000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 0.25,
+      "workSeconds": {
+        "courier": 6,
+        "trash": 5,
+        "dishes": 8
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 8
+  },
+  "wins": 8,
+  "medianWinMinutes": 13.384999999999998,
+  "p10WinMinutes": 10.499166666666667,
+  "p90WinMinutes": 14.960833333333332,
+  "minimumWinMinutes": 10.499166666666667,
+  "medianAllMinutes": 13.384999999999998,
+  "medianWinWork": 8.5,
+  "medianWinDrops": 325,
+  "fastestSeed": 1990501422
+}

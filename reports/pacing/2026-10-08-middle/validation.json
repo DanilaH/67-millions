@@ -1,0 +1,10 @@
+{
+  "changedPhysicalProbeConfigRejected": true,
+  "wrongCacheIdentityRejected": true,
+  "auditStrictTypecheck": "passed",
+  "marginalIncomeTests": "passed",
+  "pythonSyntax": "passed",
+  "projectTypecheck": "passed",
+  "qualifiedSessions": 720,
+  "distinctFullGameSeeds": 48
+}

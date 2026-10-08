@@ -1,0 +1,13 @@
+{
+  "sourceConfig": "reports/pacing/2026-10-08-middle/configs/priced-middle.json",
+  "sourceCache": "reports/pacing/2026-10-08-middle/selection/priced-middle/income-cache.json",
+  "sourceConfigHash": "b8319d654659dfb2745dde91e75aca2623f5e20efddc74208d34fb18fcda45ce",
+  "sourceCacheHash": "583f9d364b4ab36d071312ecc9dd8df8bdc2525a2108627001be67fd476068f4",
+  "targetConfigHash": "b8319d654659dfb2745dde91e75aca2623f5e20efddc74208d34fb18fcda45ce",
+  "projectionHash": "8afcff35fcbc71cfa0de19d4e142ac7c098ea00017cc8b53db1a771dfbff2d6e",
+  "boardsPreloaded": 515,
+  "count": 128,
+  "seedStart": 67146000,
+  "model": "normalized-paired-single-root-capacity-proxy-v2",
+  "limitations": "Reused probes are not new executions. Ranking seeds reused; full-game seeds must be fresh."
+}

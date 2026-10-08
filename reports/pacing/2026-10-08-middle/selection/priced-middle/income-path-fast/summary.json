@@ -1,0 +1,50 @@
+{
+  "metadata": {
+    "incomeEstimator": {
+      "count": 128,
+      "seedStart": 67146000,
+      "cache": "reports/pacing/2026-10-08-middle/selection/priced-middle/income-cache.json",
+      "model": "normalized-paired-single-root-capacity-proxy-v2",
+      "lookahead": "entire same-track chain; cumulative prerequisite cost"
+    },
+    "configHash": "b8319d654659dfb2745dde91e75aca2623f5e20efddc74208d34fb18fcda45ce",
+    "revision": "db81e1fd82641c7aabb680919993d4e9f60535ff",
+    "sources": {
+      "simulation/full-game/marginalIncome.ts": "4836601a1b1ac180cb4473ec8dbdf332c696a322d727546238d4e55f36caade0",
+      "simulation/full-game/adversarialAudit.ts": "a536d22b0d7970df2e3ccf11ce06f0247a7be5b2af4fe7a673885eb62e3694ba",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "income-path",
+    "mode": "continuous",
+    "pace": "fast",
+    "count": 8,
+    "seedStart": 67151000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 0.25,
+      "workSeconds": {
+        "courier": 6,
+        "trash": 5,
+        "dishes": 8
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 8
+  },
+  "wins": 8,
+  "medianWinMinutes": 18.86819444444444,
+  "p10WinMinutes": 14.781666666666666,
+  "p90WinMinutes": 21.103333333333342,
+  "minimumWinMinutes": 14.781666666666666,
+  "medianAllMinutes": 18.86819444444444,
+  "medianWinWork": 10,
+  "medianWinDrops": 409,
+  "fastestSeed": 704353709
+}
