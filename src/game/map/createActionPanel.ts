@@ -44,6 +44,9 @@ export const createActionPanel = (
     onPreview(action);
     forecastLabel.setText(action?.forecast?.caption ?? '').setVisible(!!action?.forecast);
     fitPanelText(forecastLabel, isCompactViewport(scene) ? 1168 : 850, 28, false);
+    cards.forEach((card, id) => card.setStrokeStyle(action?.id === id ? 3 : 1,
+      visualColor(action?.id === id ? 'mustard' : 'lineDirty')));
+    scene.game.canvas.setAttribute('data-preview-action', action?.id ?? '');
   };
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
@@ -104,9 +107,10 @@ export const createActionPanel = (
       const clippedTop = Math.max(scrollTop, y), clippedBottom = Math.min(scrollBottom, y + height);
       card.setPosition(left + listWidth / 2, (clippedTop + clippedBottom) / 2).setSize(listWidth - 32, clippedBottom - clippedTop).setVisible(true);
       container.bringToTop(card);
-      add(fitPanelText(text(left + 28, y + 8, action.title, compact ? 30 : 22).setFontStyle('bold'), contentWidth, compact ? 36 : 28, false),
-        fitPanelText(text(left + 28, y + (compact ? 48 : 36), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 18)
-          .setLineSpacing(2), contentWidth, height - (compact ? 48 : 36) - (action.forecast ? (compact ? 42 : 28) : 12)));
+      if (!single) add(fitPanelText(text(left + 28, y + 8, action.title, compact ? 30 : 22).setFontStyle('bold'), contentWidth, compact ? 36 : 28, false));
+      const summaryTop = single ? 12 : compact ? 48 : 36;
+      add(fitPanelText(text(left + 28, y + summaryTop, (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 18)
+          .setLineSpacing(2), contentWidth, height - summaryTop - (action.forecast ? (compact ? 42 : 28) : 12)));
       const toggle = () => { previewId = previewId === action.id ? null : action.id; draw(); };
       if (action.forecast) {
         card.setInteractive({ useHandCursor: true });

@@ -301,8 +301,15 @@ export const buildSleepPreviews = (
     forecast: { needs: { ...delta }, caption: forecast.state.terminalReason ? 'Опасно: здоровье закончится во сне' : 'После сна · прогноз без случайных событий' },
     summary: [
       `Бесплатно · проснёшься в ${formatClockTime((state.clock.minuteOfDay + duration) % 1440)}`,
-      `Энергия ${Math.round(state.needs.energy)} → ${Math.round(delta.energy)} · здоровье ${Math.round(state.needs.health)} → ${Math.round(delta.health)}`,
-      `Сытость ${Math.round(state.needs.satiety)} → ${Math.round(delta.satiety)} · сон до ${duration} мин`,
+      [
+        ['energy', 'Энергия'], ['health', 'Здоровье'], ['satiety', 'Сытость'], ['happiness', 'Счастье'],
+      ].flatMap(([id, label]) => {
+        const need = id as keyof typeof delta;
+        const before = Math.round(state.needs[need]), after = Math.round(delta[need]);
+        return before === after ? [] : [`${label} ${before} → ${after}`];
+      }).join(' · ') || 'Потребности не изменятся',
+      ...(state.needs.energy >= config.needs.max ? ['Энергия уже полная — сон не прибавит энергии.'] : []),
+      `Сон до ${duration} мин`,
       forecast.state.terminalReason ? 'ОПАСНО: здоровье закончится во сне' : duration < config.sleep.fullSleepHours * 60 ? 'Барри прервёт сон в 09:00. Недосып снижает доход работ.' : 'Полный сон. После пробуждения можно вернуться к делам.',
     ],
     lockedReason: lock,
@@ -331,7 +338,12 @@ export const buildDumpsterPreviews = (
     title: 'ПОРЫТЬСЯ',
     summary: [
       `0 ₽ · ${config.dumpster.durationMinutes} мин`,
-      `энергия -${cost.energySpent} · счастье -${cost.happinessSpent.toFixed(1)} · HP -${cost.healthSpent.toFixed(1)}`,
+      [
+        ['энергия', cost.energySpent], ['счастье', cost.happinessSpent], ['здоровье', cost.healthSpent],
+      ].flatMap(([label, amount]) => {
+        const value = Math.round(Number(amount) * 10) / 10;
+        return value === 0 ? [] : [`${label} ${formatSigned(-value)}`];
+      }).join(' · ') || 'Без затрат потребностей',
       `пусто: ${Math.round(emptyChance * 100)}% · статус ВОНЮЧИЙ`,
     ],
     lockedReason: validate(() => {

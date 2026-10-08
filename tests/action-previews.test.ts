@@ -137,14 +137,14 @@ describe('T056 action previews', () => {
     )[0]!;
 
     expect(preview.lockedReason).toBeNull();
-    expect(preview.summary.join(' ')).toContain(
-      'энергия -0',
+    expect(preview.summary.join(' ')).not.toContain(
+      'энергия',
+    );
+    expect(preview.summary.join(' ')).not.toContain(
+      'счастье',
     );
     expect(preview.summary.join(' ')).toContain(
-      'счастье -0.0',
-    );
-    expect(preview.summary.join(' ')).toContain(
-      'HP -7.5',
+      'здоровье -7.5',
     );
   });
 
