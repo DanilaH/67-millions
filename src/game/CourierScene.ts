@@ -101,11 +101,11 @@ export class CourierScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Проведи от зелёной зоны до синей и отпусти. Вне синей зоны маршрут отменится.',
+        'Доведи линию от зелёной зоны до синей и отпусти.',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
-          fontSize: '17px',
+          fontSize: '26px',
         },
       )
       .setOrigin(0.5, 0);
@@ -123,7 +123,7 @@ export class CourierScene extends Phaser.Scene {
       .text(width / 2, 646, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
-        fontSize: '17px',
+        fontSize: '26px',
         wordWrap: { width: 640 },
         align: 'center',
       })

@@ -108,11 +108,11 @@ export class DishesScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Зажми и води губкой. Каждую тарелку нужно довести до отметки «ЧИСТО».',
+        'Зажми и отмой все 5 тарелок до «ЧИСТО».',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
-          fontSize: '17px',
+          fontSize: '26px',
         },
       )
       .setOrigin(0.5, 0);
@@ -137,7 +137,7 @@ export class DishesScene extends Phaser.Scene {
       .text(width / 2, 662, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
-        fontSize: '20px',
+        fontSize: '26px',
       })
       .setOrigin(0.5, 0);
 
@@ -533,7 +533,7 @@ export class DishesScene extends Phaser.Scene {
     const cleanPlates = getDishesCleanPlateCount(this.session);
 
     this.timerText?.setText(
-      `${remainingSeconds.toFixed(1)}s`,
+      `${remainingSeconds.toFixed(1)} сек`,
     );
     this.progressText?.setText(
       `ЧИСТО: ${cleanPlates} из ${this.session.plates.length}`,

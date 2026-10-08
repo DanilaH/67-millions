@@ -158,13 +158,31 @@ try {
       await page.screenshot({path:`${output}/touch-principal-button.png`});
       await click(payoff.x, payoff.y);
       assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 67000000, 'payoff button first opens confirmation');
-      await click(640, 654);
+      await clickTarget('data-end-targets', 'secondary');
       assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.victory, false, 'cancelling payoff preserves the run');
-      await click(payoff.x, payoff.y); await click(640, 606);
+      await click(payoff.x, payoff.y); await clickTarget('data-end-targets', 'primary');
       await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.victory);
       assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 0, 'confirmed payoff deducts principal exactly once');
 
     }
+    // Visible price bounds are also the purchase bounds, including the final row.
+    const insuranceFixture = structuredClone(fixture); insuranceFixture.game.cash = 100000;
+    await loadSave(insuranceFixture); await clickMap('casino'); await sceneReady('Казино Plinko');
+    if (touch) await click(1100, 180);
+    for (let i = 0; i < 8; i++) { await move(1205, 610); await down(); await move(1205, touch ? 250 : 175, {steps:12}); await up(); }
+    const lastBuy = JSON.parse(await page.locator('canvas').getAttribute('data-upgrade-buy-targets')).insurance;
+    assert.ok(lastBuy, 'insurance price is visible at the end of the list');
+    assert.ok(lastBuy.y + lastBuy.height / 2 <= (touch ? 688 : 620), 'whole purchase button fits scroll window');
+    await page.screenshot({path:`${output}/${touch?'touch':'mouse'}-insurance-purchase.png`});
+    await move(1205, 300); await down(); await move(1205, 340, {steps:8}); await up();
+    assert.equal(JSON.parse(await page.locator('canvas').getAttribute('data-upgrade-buy-targets')).insurance, undefined, 'clipped price has no purchase target');
+    await click(1200, touch ? 680 : 610);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 100000, 'blank clipped price area cannot spend money');
+    await move(1205, 610); await down(); await move(1205, touch ? 250 : 175, {steps:12}); await up();
+    await clickTarget('data-upgrade-buy-targets', 'insurance');
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('67m.save')).game.plinkoInsuranceLevel === 1);
+    assert.equal((await page.evaluate(() => JSON.parse(localStorage.getItem('67m.save')))).game.cash, 100000 - balance.plinko.insurance.find(level => level.level === 1).price, 'visible price purchases once');
+
     // Debug commands must update the live scene without reloading the page.
     await loadSave(fixture);
     await page.locator('#debug-root summary').click();

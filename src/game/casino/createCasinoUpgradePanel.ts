@@ -48,6 +48,7 @@ export const createCasinoUpgradePanel = (
   parent?.add(container);
   const dynamic: Phaser.GameObjects.GameObject[] = [];
   let previews: CasinoUpgradePreview[] = [];
+  const purchaseTargets = new Map<CasinoUpgradeId, {x: number; y: number; width: number; height: number}>();
   let signature = '';
   let offset = 0;
   let drag: { y: number; offset: number; moved: boolean; scrollbar: boolean } | null = null;
@@ -67,12 +68,15 @@ export const createCasinoUpgradePanel = (
   container.add([background, title, status, track]);
   const draw = (): void => {
     dynamic.splice(0).forEach(object => object.destroy());
+    purchaseTargets.clear();
+    scene.game.canvas.removeAttribute('data-upgrade-buy-targets');
     const visible = !compact || opened;
     background.setVisible(visible); title.setVisible(visible && !compact); status.setVisible(visible); track.setVisible(visible);
     toggle.setVisible(compact).setText(opened ? 'Закрыть ×' : 'Улучшения ↓');
     scene.game.canvas.setAttribute('data-upgrades-open', String(visible));
     if (!visible) return;
     const pending = previews.some(p => p.lockedReason?.includes('DROP'));
+    offset = Phaser.Math.Clamp(offset, 0, maxScroll());
     const currentId = previews[Math.floor(offset / rowHeight)]?.id;
     const group = currentId === 'insurance' ? 'Страховка' : ['amplifier', 'return', 'splitter', 'jackpotBias'].includes(currentId ?? '') ? 'Спецпины' : 'Ставки и выплаты';
     fitPanelText(status.setFontSize(compact ? 27 : 17).setText(pending ? 'Покупки — после бросков' : group), compact ? 550 : 290, compact ? 56 : 24);
@@ -99,16 +103,19 @@ export const createCasinoUpgradePanel = (
       const meaning = text(left + (compact ? 90 : 23), y + (compact ? 89 : 58), explanation.join(' · '), compact ? 23 : 16).setColor(visualHex('textMuted'));
       fitPanelText(meaning, effectWidth, compact ? 32 : 22, false);
       const buy = fitPanelText(text(right - 31, y + (compact ? 80 : 82), preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, compact ? 28 : 17), compact ? 276 : 148, compact ? 48 : 22, false)
-        .setOrigin(1, 0).setFixedSize(compact ? 300 : 0, compact ? 88 : 0).setAlign('center').setPadding(12, compact ? 24 : 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
+        .setOrigin(1, 0).setAlign('center').setPadding(12, compact ? 24 : 5).setFixedSize(compact ? 300 : 172, compact ? 88 : 32).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
       const hint = text(left + 23, y + (compact ? 130 : 82), preview.maxed ? '' : preview.lockedReason === null ? 'Осмотреть →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', compact ? 24 : 14).setColor(visualHex('textMuted'));
       fitPanelText(hint, buy.x - buy.width - hint.x - 12, compact ? 44 : 30);
       // Text must not escape the scroll window even on renderers that do not
       // support nested container masks. Partial rows keep their clipped backing.
       for (const object of [name, level, effect, meaning, buy, hint]) object.setVisible(object.y >= top && object.y + object.height <= bottom);
+      buy.setVisible(buy.visible && buy.y >= cardTop && buy.y + buy.height <= cardBottom);
+      if (buy.visible && preview.lockedReason === null) purchaseTargets.set(preview.id, {x: buy.x - buy.width, y: buy.y, width: buy.width, height: buy.height});
       container.add([card, icon, name, level, effect, meaning, buy, hint]);
       dynamic.push(card, icon, name, level, effect, meaning, buy, hint);
     });
+    scene.game.canvas.setAttribute('data-upgrade-buy-targets', JSON.stringify(Object.fromEntries([...purchaseTargets].map(([id, r]) => [id, {...r, x: r.x + container.x + r.width / 2, y: r.y + r.height / 2}]))));
     container.bringToTop(toggle);
   };
   container.add(toggle);
@@ -135,17 +142,15 @@ export const createCasinoUpgradePanel = (
     const p = point(pointer);
     if (p.y < top || p.y > bottom || p.x < left || p.x > right - 27) return;
     const position = p.y - top + offset;
-    const rowY = top + Math.floor(position / rowHeight) * rowHeight - offset;
     const selected = previews[Math.floor(position / rowHeight)];
+    const target = selected && purchaseTargets.get(selected.id);
+    if (target && p.x >= target.x && p.x <= target.x + target.width && p.y >= target.y && p.y <= target.y + target.height) { onPurchase(selected!.id); return; }
     if (selected && p.x < (compact ? right - 331 : 1138)) {
       onInspect(selected.id);
       if (compact) { opened = false; draw(); scene.events.emit('casino-upgrades-toggle'); }
       return;
     }
-    // A partially clipped price is not a hidden purchase target.
-    if (rowY + (compact ? 80 : 82) < top || rowY + (compact ? 168 : 114) > bottom) return;
-    const preview = previews[Math.floor(position / rowHeight)];
-    if (position % rowHeight >= (compact ? 80 : 82) && position % rowHeight <= (compact ? 168 : 114) && preview?.lockedReason === null) onPurchase(preview.id);
+
   };
   const cancel = () => { drag = null; };
   const wheel = (pointer: Phaser.Input.Pointer, _objects: Phaser.GameObjects.GameObject[], _dx: number, dy: number) => {
@@ -156,7 +161,7 @@ export const createCasinoUpgradePanel = (
   const layout = () => {
     const view = sceneViewport(scene);
     compact = isCompactViewport(scene);
-    top = compact ? 242 : 170; bottom = compact ? 688 : 620; rowHeight = compact ? 184 : 116;
+    top = compact ? 242 : 170; bottom = compact ? 688 : 620; rowHeight = compact ? 184 : 120;
     left = compact ? 350 : 935; right = 1265;
     background.setPosition((left + right) / 2, compact ? 416 : 366).setSize(right - left, compact ? 568 : 532);
     status.setPosition(left + 20, compact ? 175 : 142).setFontSize(compact ? 27 : 17);

@@ -90,11 +90,11 @@ export class TrashScene extends Phaser.Scene {
       .text(
         width / 2,
         66,
-        'Перетащи все 5 мешков в контейнер. Зоны захвата и приёма расширены.',
+        'Перетащи все 5 мешков в контейнер.',
         {
           color: visualHex('textMuted'),
           fontFamily: VISUAL_FONT.sans,
-          fontSize: '17px',
+          fontSize: '26px',
         },
       )
       .setOrigin(0.5, 0);
@@ -119,7 +119,7 @@ export class TrashScene extends Phaser.Scene {
       .text(width / 2, 662, '', {
         color: visualHex('textMain'),
         fontFamily: VISUAL_FONT.sans,
-        fontSize: '20px',
+        fontSize: '26px',
       })
       .setOrigin(0.5, 0);
 
@@ -527,7 +527,7 @@ export class TrashScene extends Phaser.Scene {
       getAcceptedTrashBagCount(this.session);
 
     this.timerText?.setText(
-      `${remainingSeconds.toFixed(1)}s`,
+      `${remainingSeconds.toFixed(1)} сек`,
     );
     this.progressText?.setText(
       `В КОНТЕЙНЕРЕ: ${accepted}/${this.session.bags.length}`,

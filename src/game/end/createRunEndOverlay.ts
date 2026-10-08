@@ -1,5 +1,7 @@
 import { balance } from '../../config/balance';
 import Phaser from 'phaser';
+import { isCompactViewport, sceneViewport } from '../visual/scenePresentation';
+import { fitPanelText } from '../ui/fitPanelText';
 
 import { VISUAL_FONT, VISUAL_METRICS, visualColor, visualHex } from '../visual/visualTheme';
 
@@ -138,6 +140,26 @@ export const createRunEndOverlay = (
     secondary,
   ]);
 
+  const layout = () => {
+    const compact = isCompactViewport(scene), confirm = mode === 'principal-confirm';
+    const w = compact ? 1120 : 900;
+    shade.setSize(sceneViewport(scene).width, height);
+    panel.setSize(w, confirm ? 500 : 620).setPosition(640, confirm ? 410 : 360);
+    fitPanelText(title.setPosition(640, confirm ? 188 : 80).setFontSize(34), w - 48, 48, false);
+    fitPanelText(reason.setPosition(640, confirm ? 248 : 140).setFontSize(compact ? 26 : 20), w - 64, 72);
+    fitPanelText(stats.setPosition(640 - w / 2 + 32, confirm ? 344 : 226).setFontSize(compact ? 24 : 18).setLineSpacing(compact ? 6 : 9), w - 64, 300);
+    const button = (control: Phaser.GameObjects.Text, x: number, buttonWidth: number) => {
+      fitPanelText(control.setFontSize(compact ? 28 : 22), buttonWidth - 32, 42, false);
+      control.setPadding(16, (88 - control.height) / 2).setFixedSize(buttonWidth, 88).setAlign('center').setPosition(x, 556);
+      (control.input?.hitArea as Phaser.Geom.Rectangle | undefined)?.setSize(buttonWidth, 88);
+    };
+    button(primary, confirm ? 860 : 640, 400);
+    button(secondary, 420, 400);
+    scene.game.canvas.setAttribute('data-end-targets', JSON.stringify({primary:{x:primary.x,y:600},secondary:{x:secondary.x,y:600}}));
+  };
+  scene.scale.on('resize', layout);
+  scene.events.once('shutdown', () => {scene.scale.off('resize', layout);scene.game.canvas.removeAttribute('data-end-targets');});
+
   return {
     showSummary: (summary) => {
       mode = 'summary';
@@ -153,7 +175,7 @@ export const createRunEndOverlay = (
         summary.stats
           .map(
             (stat) =>
-              `${stat.label.padEnd(23, ' ')} ${stat.value}`,
+              `${stat.label}: ${stat.value}`,
           )
           .join('\n'),
       );
@@ -161,6 +183,7 @@ export const createRunEndOverlay = (
         .setText('[ НОВЫЙ ЗАБЕГ ]')
         .setBackgroundColor(visualHex('mold'));
       secondary.setVisible(false);
+      layout();
       container.setVisible(true);
     },
 
@@ -172,21 +195,23 @@ export const createRunEndOverlay = (
       reason.setText(confirmation.warning);
       stats.setText(
         [
-          `Сейчас              ${confirmation.cashBefore.toLocaleString('ru-RU')} ₽`,
-          `Погашение          ${confirmation.amount.toLocaleString('ru-RU')} ₽`,
-          `Останется          ${confirmation.cashAfter.toLocaleString('ru-RU')} ₽`,
+          `Сейчас: ${confirmation.cashBefore.toLocaleString('ru-RU')} ₽`,
+          `Погашение: ${confirmation.amount.toLocaleString('ru-RU')} ₽`,
+          `Останется: ${confirmation.cashAfter.toLocaleString('ru-RU')} ₽`,
         ].join('\n'),
       );
       primary
         .setText('[ ПОДТВЕРДИТЬ ]')
         .setBackgroundColor(visualHex('rust'));
       secondary.setVisible(true);
+      layout();
       container.setVisible(true);
     },
 
     hide: () => {
       mode = 'hidden';
       container.setVisible(false);
+      scene.game.canvas.removeAttribute('data-end-targets');
     },
 
     getMode: () => mode,
