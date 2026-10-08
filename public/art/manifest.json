@@ -231,13 +231,34 @@
         "x": 1,
         "y": 1
       }
+    },
+    {
+      "id": "bin",
+      "source": "assets-src/trash-bin.png",
+      "sourceWidth": 1448,
+      "sourceHeight": 1086,
+      "sourceSha256": "91609254b2c962e46d931ea7fb311c643ce132baa4005afa555ef192a764df70",
+      "width": 512,
+      "height": 384,
+      "alpha": true,
+      "category": "interactable",
+      "loadClass": "scene",
+      "webp": "art/bin.webp",
+      "avif": "art/bin.avif",
+      "logicalFrame": "untrimmed; consistent across states",
+      "sourceCell": null,
+      "generation": {
+        "tool": "OpenAI image generation",
+        "date": "2026-10-08",
+        "prompt": "assets-src/trash-bin.prompt.txt"
+      }
     }
   ],
   "budget": {
-    "count": 11,
-    "encodedBytes": 830728,
-    "pixels": 4151224,
-    "estimatedRgbaBytes": 16604896,
+    "count": 12,
+    "encodedBytes": 877442,
+    "pixels": 4347832,
+    "estimatedRgbaBytes": 17391328,
     "categories": {
       "background": {
         "count": 5,
@@ -252,10 +273,10 @@
         "estimatedRgbaBytes": 3250800
       },
       "interactable": {
-        "count": 4,
-        "encodedBytes": 125286,
-        "pixels": 589824,
-        "estimatedRgbaBytes": 2359296
+        "count": 5,
+        "encodedBytes": 172000,
+        "pixels": 786432,
+        "estimatedRgbaBytes": 3145728
       }
     }
   }

@@ -641,3 +641,7 @@ A visual change should be rejected if any answer is “no”:
 6. Event frame/vignette pass.
 7. Late-game Plinko readability pass.
 8. Actual key-art master review/export.
+
+### Work scene frame and trash container — 2026-10-08
+
+Painted work backgrounds share one rounded clipped frame. The trash receiving container is a separate painted sprite, with runtime instructions and count. Its outline marks the existing forgiving receiving area; holding a bag in that area highlights it and asks for release. Source/provenance: `assets-src/trash-bin.png`, `assets-src/trash-bin.prompt.txt`; generated with the built-in OpenAI image tool, not a commissioned painting. The sprite is encoded by the normal WebP/AVIF pipeline. No timing or input geometry changes.

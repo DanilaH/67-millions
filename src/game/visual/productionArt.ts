@@ -3,7 +3,7 @@ import { sceneViewport } from './scenePresentation';
 import { isPlinkoPerfMode } from '../../app/perfMode';
 import { runtimeImageRequestPath } from '../../app/runtimeImages';
 
-export type ProductionArtId = 'map' | 'barry-due' | 'barry-paid' | 'dishes' | 'trash' | 'courier' | 'casino' | 'plate' | 'bag' | 'crate' | 'courier-icon';
+export type ProductionArtId = 'map' | 'barry-due' | 'barry-paid' | 'dishes' | 'trash' | 'courier' | 'casino' | 'plate' | 'bag' | 'bin' | 'crate' | 'courier-icon';
 export const productionArtKey = (id: ProductionArtId): string => `67m:art:${id}`;
 
 export const preloadProductionArt = (scene: Phaser.Scene, ids: readonly ProductionArtId[]): void => {

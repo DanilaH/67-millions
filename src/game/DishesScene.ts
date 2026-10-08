@@ -1,3 +1,4 @@
+import { createWorkBackdrop } from './work/createWorkBackdrop';
 import { installScenePresentation, logicalPointer } from './visual/scenePresentation';
 import { publishWorkFeedback } from './actions/actionFeedback';
 import { showInteractionFeedback } from './work/showInteractionFeedback';
@@ -90,7 +91,7 @@ export class DishesScene extends Phaser.Scene {
       this.dirtTexture!.add(frame, 0, index * tileSize, 0, tileSize, tileSize);
       this.add.image(plate.x, plate.y, dirtKey, frame).setDepth(1);
     });
-    addProductionImage(this, 'dishes', 640, 375, 1080, 525);
+    createWorkBackdrop(this, 'dishes');
     const width = balance.plinko.geometry.logicalViewportWidth;
 
     this.audio = new SceneAudio(this, 'work');
@@ -472,12 +473,6 @@ export class DishesScene extends Phaser.Scene {
 
     const graphics = this.graphics;
     graphics.clear();
-
-    graphics.fillStyle(visualColor('inkPanel'), 0.12);
-    graphics.fillRoundedRect(150, 112, 980, 500, 36);
-
-    graphics.lineStyle(5, visualColor('lineDirty'), 1);
-    graphics.strokeRoundedRect(150, 112, 980, 500, 36);
 
     this.session.plates.forEach((plate, index) => {
       const image = this.plateImages[index] ?? (this.plateImages[index] = addProductionImage(this, 'plate', plate.x, plate.y, plate.radius * 2.25, plate.radius * 2.25, 0));

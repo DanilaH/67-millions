@@ -1,3 +1,4 @@
+import { createWorkBackdrop } from './work/createWorkBackdrop';
 import { installScenePresentation, logicalPointer } from './visual/scenePresentation';
 import { publishWorkFeedback } from './actions/actionFeedback';
 import { showInteractionFeedback } from './work/showInteractionFeedback';
@@ -27,6 +28,7 @@ import {
   findTrashBagAtPoint,
   getAcceptedTrashBagCount,
   getTrashRemainingMs,
+  isTrashTargetAcceptingPoint,
   moveTrashBag,
   type TrashSession,
 } from '../minigames/trash/trashModel';
@@ -53,6 +55,9 @@ export class TrashScene extends Phaser.Scene {
   private barryOverlay?: BarryMinigameOverlay;
   private audio: SceneAudio | null = null;
 
+  private binImage: Phaser.GameObjects.Image | undefined;
+  private targetText?: Phaser.GameObjects.Text;
+  private targetCount?: Phaser.GameObjects.Text;
   private bagImages: Phaser.GameObjects.Image[] = [];
 
   public constructor() {
@@ -60,7 +65,7 @@ export class TrashScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    preloadProductionArt(this, ['trash', 'bag', 'barry-due', 'barry-paid']);
+    preloadProductionArt(this, ['trash', 'bag', 'bin', 'barry-due', 'barry-paid']);
   }
 
   public create(): void {
@@ -72,7 +77,8 @@ export class TrashScene extends Phaser.Scene {
     this.minigameClock = new WorkMinigameClock(balance);
     this.heldBagId = null;
     this.bagImages = [];
-    addProductionImage(this, 'trash', 640, 375, 1080, 525);
+    this.binImage = undefined;
+    createWorkBackdrop(this, 'trash');
     const width = balance.plinko.geometry.logicalViewportWidth;
 
     this.audio = new SceneAudio(this, 'work');
@@ -124,6 +130,8 @@ export class TrashScene extends Phaser.Scene {
       .setOrigin(0.5, 0);
 
     this.graphics = this.add.graphics();
+    this.targetText = this.add.text(0, 0, '', { fontFamily: VISUAL_FONT.sans, fontSize: 28, fontStyle: 'bold', align: 'center', color: visualHex('textMain') }).setOrigin(0.5, 0).setDepth(0.5);
+    this.targetCount = this.add.text(0, 0, '', { fontFamily: VISUAL_FONT.mono, fontSize: 32, color: visualHex('paperOld') }).setOrigin(0.5, 0).setDepth(0.5);
     this.barryOverlay = createBarryMinigameOverlay(
       this,
       balance,
@@ -475,35 +483,19 @@ export class TrashScene extends Phaser.Scene {
     const graphics = this.graphics;
     graphics.clear();
 
-    graphics.fillStyle(visualColor('inkPanel'), 0.12);
-    graphics.fillRoundedRect(80, 120, 650, 510, 32);
-    graphics.lineStyle(4, visualColor('lineDirty'), 1);
-    graphics.strokeRoundedRect(80, 120, 650, 510, 32);
-
     const target = this.session.target;
-    graphics.fillStyle(visualColor('mold'), 0.58);
-    graphics.fillRoundedRect(
-      target.x,
-      target.y,
-      target.width,
-      target.height,
-      20,
-    );
-    graphics.lineStyle(7, visualColor('good'), 0.9);
-    graphics.strokeRoundedRect(
-      target.x,
-      target.y,
-      target.width,
-      target.height,
-      20,
-    );
-    graphics.fillStyle(visualColor('mold'), 0.82);
-    graphics.fillRect(
-      target.x - 12,
-      target.y - 24,
-      target.width + 24,
-      32,
-    );
+    const held = this.session.bags.find(bag => bag.id === this.heldBagId);
+    const ready = !!held && isTrashTargetAcceptingPoint(this.session, held);
+    const { x, y, width, height } = target;
+    this.binImage ??= addProductionImage(this, 'bin', x + width / 2 - 12, y + height / 2 - 5, width + 24, height + 88, -0.25);
+    this.binImage.setTint(ready ? 0xffe6a3 : 0xffffff);
+    // The outline denotes the forgiving body's drop area, not a narrow opening.
+    graphics.lineStyle(ready ? 6 : 2, visualColor(ready ? 'mustard' : 'good'), ready ? 1 : 0.65)
+      .strokeRoundedRect(x, y, width, height, 16);
+    graphics.fillStyle(visualColor('inkPanel'), 0.93).fillRoundedRect(x + 22, y + 96, width - 44, 130, 12);
+    this.targetText?.setPosition(x + width / 2, y + 110).setText(ready ? 'ОТПУСТИ\nМЕШОК ↓' : 'ТАЩИ СЮДА ↓')
+      .setColor(visualHex(ready ? 'mustard' : 'textMain'));
+    this.targetCount?.setPosition(x + width / 2, y + 182).setText(`${getAcceptedTrashBagCount(this.session)} / ${this.session.bags.length}`);
 
     for (const [index, bag] of this.session.bags.entries()) {
       const image = this.bagImages[index] ?? (this.bagImages[index] = addProductionImage(this, 'bag', bag.x, bag.y, 90, 110, 1));

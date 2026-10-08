@@ -1,3 +1,4 @@
+import { createWorkBackdrop } from './work/createWorkBackdrop';
 import { installScenePresentation, logicalPointer } from './visual/scenePresentation';
 import { publishWorkFeedback } from './actions/actionFeedback';
 import { showInteractionFeedback } from './work/showInteractionFeedback';
@@ -83,7 +84,7 @@ export class CourierScene extends Phaser.Scene {
     this.drawing = false;
     this.obstacleImages = [];
     this.courierImage = undefined;
-    addProductionImage(this, 'courier', 640, 375, 1080, 525);
+    createWorkBackdrop(this, 'courier');
     const width = balance.plinko.geometry.logicalViewportWidth;
 
     this.audio = new SceneAudio(this, 'work');
@@ -428,11 +429,6 @@ export class CourierScene extends Phaser.Scene {
 
     const graphics = this.graphics;
     graphics.clear();
-
-    graphics.fillStyle(visualColor('inkPanel'), 0.12);
-    graphics.fillRoundedRect(100, 105, 1080, 525, 28);
-    graphics.lineStyle(4, visualColor('lineDirty'), 1);
-    graphics.strokeRoundedRect(100, 105, 1080, 525, 28);
 
     for (const [index, obstacle] of this.session.obstacles.entries()) {
       const image = this.obstacleImages[index] ?? (this.obstacleImages[index] = addProductionImage(this, 'crate', obstacle.x, obstacle.y, obstacle.width, obstacle.height, 0));

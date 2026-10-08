@@ -17,6 +17,8 @@ await encode('map','assets-src/map.png',1509,780,null,'background','startup');
 for(const [i,id] of ['barry-due','barry-paid'].entries()) await encode(id,'assets-src/barry-states.png',630,645,{columns:2,rows:1,x:i,y:0},'character','startup');
 for(const [i,id] of ['dishes','trash','courier','casino'].entries()) await encode(id,'assets-src/scene-atlas.png',836,470,{columns:2,rows:2,x:i%2,y:Math.floor(i/2)},'background','scene');
 for(const [i,id] of ['plate','bag','crate','courier-icon'].entries()) await encode(id,'assets-src/interactables.png',384,384,{columns:2,rows:2,x:i%2,y:Math.floor(i/2)},'interactable','scene');
+await encode('bin','assets-src/trash-bin.png',512,384,null,'interactable','scene');
+assets.find(asset=>asset.id==='bin').generation = {tool:'OpenAI image generation',date:'2026-10-08',prompt:'assets-src/trash-bin.prompt.txt'};
 const pairs=assets.map(asset=>({id:asset.id,input:`public/${asset.webp}`,output:`public/${asset.avif}`,category:asset.category}));
 await buildAvifCompanions(pairs,{quality:asset=>asset.category==='character'?65:58,effort:5,concurrency:2});
 const validation=await validateAvifCompanions(pairs);
