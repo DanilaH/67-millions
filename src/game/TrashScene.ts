@@ -33,6 +33,8 @@ import {
   type TrashSession,
 } from '../minigames/trash/trashModel';
 
+const BAG_OUTLINE_OFFSETS = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]] as const;
+
 const isTrashAction = (
   action: SaveState['activeAction'],
 ): action is WorkActiveAction =>
@@ -57,7 +59,7 @@ export class TrashScene extends Phaser.Scene {
 
   private binImage: Phaser.GameObjects.Image | undefined;
   private targetText?: Phaser.GameObjects.Text;
-  private targetCount?: Phaser.GameObjects.Text;
+  private bagOutlines: Phaser.GameObjects.Image[][] = [];
   private bagImages: Phaser.GameObjects.Image[] = [];
 
   public constructor() {
@@ -77,6 +79,7 @@ export class TrashScene extends Phaser.Scene {
     this.minigameClock = new WorkMinigameClock(balance);
     this.heldBagId = null;
     this.bagImages = [];
+    this.bagOutlines = [];
     this.binImage = undefined;
     createWorkBackdrop(this, 'trash');
     const width = balance.plinko.geometry.logicalViewportWidth;
@@ -130,8 +133,7 @@ export class TrashScene extends Phaser.Scene {
       .setOrigin(0.5, 0);
 
     this.graphics = this.add.graphics();
-    this.targetText = this.add.text(0, 0, '', { fontFamily: VISUAL_FONT.sans, fontSize: 28, fontStyle: 'bold', align: 'center', color: visualHex('textMain') }).setOrigin(0.5, 0).setDepth(0.5);
-    this.targetCount = this.add.text(0, 0, '', { fontFamily: VISUAL_FONT.mono, fontSize: 32, color: visualHex('paperOld') }).setOrigin(0.5, 0).setDepth(0.5);
+    this.targetText = this.add.text(0, 0, '', { fontFamily: VISUAL_FONT.sans, fontSize: 26, fontStyle: 'bold', align: 'center', color: visualHex('textMain') }).setOrigin(0.5, 0).setDepth(0.5);
     this.barryOverlay = createBarryMinigameOverlay(
       this,
       balance,
@@ -487,19 +489,32 @@ export class TrashScene extends Phaser.Scene {
     const held = this.session.bags.find(bag => bag.id === this.heldBagId);
     const ready = !!held && isTrashTargetAcceptingPoint(this.session, held);
     const { x, y, width, height } = target;
-    this.binImage ??= addProductionImage(this, 'bin', x + width / 2 - 12, y + height / 2 - 5, width + 24, height + 88, -0.25);
+    if (!this.binImage) {
+      const image = addProductionImage(this, 'bin', x + width / 2 - 12, 0, width + 24, height, -0.25);
+      image.setScale((width + 24) / image.width);
+      image.setY(y + height - image.displayHeight / 2);
+      this.binImage = image;
+    }
     this.binImage.setTint(ready ? 0xffe6a3 : 0xffffff);
-    // The outline denotes the forgiving body's drop area, not a narrow opening.
-    graphics.lineStyle(ready ? 6 : 2, visualColor(ready ? 'mustard' : 'good'), ready ? 1 : 0.65)
-      .strokeRoundedRect(x, y, width, height, 16);
-    graphics.fillStyle(visualColor('inkPanel'), 0.93).fillRoundedRect(x + 22, y + 96, width - 44, 130, 12);
-    this.targetText?.setPosition(x + width / 2, y + 110).setText(ready ? 'ОТПУСТИ\nМЕШОК ↓' : 'ТАЩИ СЮДА ↓')
+    // Reveal the existing forgiving receiving area while dragging.
+    if (held) graphics.lineStyle(ready ? 5 : 2, visualColor(ready ? 'mustard' : 'good'), ready ? 1 : 0.55)
+      .strokeRoundedRect(x + 3, y + 3, width - 6, height - 6, 16);
+    graphics.fillStyle(visualColor('inkPanel'), 0.95).fillRoundedRect(x, y + height + 36, width, 48, 9);
+    const accepted = getAcceptedTrashBagCount(this.session);
+    this.targetText?.setPosition(x + width / 2, y + height + 43)
+      .setText(`${ready ? 'Отпусти' : 'Тащи сюда ↑'} · ${accepted}/${this.session.bags.length}`)
       .setColor(visualHex(ready ? 'mustard' : 'textMain'));
-    this.targetCount?.setPosition(x + width / 2, y + 182).setText(`${getAcceptedTrashBagCount(this.session)} / ${this.session.bags.length}`);
 
     for (const [index, bag] of this.session.bags.entries()) {
       const image = this.bagImages[index] ?? (this.bagImages[index] = addProductionImage(this, 'bag', bag.x, bag.y, 90, 110, 1));
-      image.setVisible(!bag.accepted).setPosition(bag.x, bag.y).setTint(bag.id === this.heldBagId ? 0xd0a74b : 0xffffff);
+      // Offset alpha silhouettes create a crisp outline without per-sprite filter passes.
+      const outlines = this.bagOutlines[index] ?? (this.bagOutlines[index] = BAG_OUTLINE_OFFSETS.map(() =>
+        addProductionImage(this, 'bag', bag.x, bag.y, 90, 110, 0.75)));
+      const outlineWidth = bag.id === this.heldBagId ? 4 : 3;
+      outlines.forEach((outline, i) => outline.setVisible(!bag.accepted)
+        .setPosition(bag.x + BAG_OUTLINE_OFFSETS[i]![0] * outlineWidth, bag.y + BAG_OUTLINE_OFFSETS[i]![1] * outlineWidth)
+        .setTint(visualColor(bag.id === this.heldBagId ? 'mustard' : 'paperOld')).setTintMode(Phaser.TintModes.FILL));
+      image.setVisible(!bag.accepted).setPosition(bag.x, bag.y).setTint(bag.id === this.heldBagId ? 0xffe6a3 : 0xffffff);
       if (bag.accepted) continue;
 
       const held = bag.id === this.heldBagId;
@@ -515,9 +530,6 @@ export class TrashScene extends Phaser.Scene {
 
     const remainingSeconds =
       getTrashRemainingMs(this.session) / 1000;
-    const accepted =
-      getAcceptedTrashBagCount(this.session);
-
     this.timerText?.setText(
       `${remainingSeconds.toFixed(1)} сек`,
     );
