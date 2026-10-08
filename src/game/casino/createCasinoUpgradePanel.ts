@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { fitPanelText } from '../ui/fitPanelText';
 import { isCompactViewport, logicalPointer, sceneViewport } from '../visual/scenePresentation';
 import { SPECIAL_PIN_STYLE, VISUAL_FONT, visualColor, visualHex } from '../visual/visualTheme';
 import type { CasinoUpgradeId, CasinoUpgradePreview } from './casinoUiModel';
@@ -74,7 +75,7 @@ export const createCasinoUpgradePanel = (
     const pending = previews.some(p => p.lockedReason?.includes('DROP'));
     const currentId = previews[Math.floor(offset / rowHeight)]?.id;
     const group = currentId === 'insurance' ? 'Страховка' : ['amplifier', 'return', 'splitter', 'jackpotBias'].includes(currentId ?? '') ? 'Спецпины' : 'Ставки и выплаты';
-    status.setText(pending ? 'Покупки — после бросков' : `${group} · листай ↓`);
+    fitPanelText(status.setFontSize(compact ? 27 : 17).setText(pending ? 'Покупки — после бросков' : group), compact ? 550 : 290, compact ? 56 : 24);
     offset = Phaser.Math.Clamp(offset, 0, maxScroll());
     scene.game.canvas.setAttribute('data-upgrade-scroll', `${Math.round(offset)}`);
     track.clear().fillStyle(visualColor('lineDirty')).fillRoundedRect(right - 15, top, 5, bottom - top, 2);
@@ -90,16 +91,18 @@ export const createCasinoUpgradePanel = (
       const icon = upgradeIcon(scene, preview.id, left + (compact ? 44 : 34), y + (compact ? 34 : 20), compact ? 1.4 : 0.7).setVisible(y + 2 >= top && y + (compact ? 60 : 36) <= bottom);
       const name = text(left + (compact ? 90 : 56), y + 10, preview.title, compact ? 30 : 19).setFontStyle('bold');
       const level = text(right - 31, y + 10, `${preview.currentLevel}/${preview.maxLevel}`, compact ? 24 : 14).setOrigin(1, 0).setColor(visualHex('textMuted'));
+      fitPanelText(name, level.x - level.width - name.x - 12, compact ? 38 : 25, false);
       const [change, ...explanation] = preview.nextEffect.split('\n');
       const effect = text(left + (compact ? 90 : 23), y + (compact ? 53 : 35), change!, compact ? 28 : 18).setColor(visualHex('mustard'));
       const effectWidth = compact ? 430 : 276;
-      if (effect.width > effectWidth) effect.setFontSize(Math.floor((compact ? 28 : 18) * effectWidth / effect.width));
+      fitPanelText(effect, effectWidth, compact ? 34 : 23, false);
       const meaning = text(left + (compact ? 90 : 23), y + (compact ? 89 : 58), explanation.join(' · '), compact ? 23 : 16).setColor(visualHex('textMuted'));
-      if (meaning.width > effectWidth) meaning.setFontSize(Math.floor((compact ? 23 : 16) * effectWidth / meaning.width));
-      const buy = text(right - 31, y + (compact ? 80 : 82), preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, compact ? 28 : 17)
+      fitPanelText(meaning, effectWidth, compact ? 32 : 22, false);
+      const buy = fitPanelText(text(right - 31, y + (compact ? 80 : 82), preview.maxed ? 'Максимум' : `${preview.nextPrice!.toLocaleString('ru-RU')} ₽`, compact ? 28 : 17), compact ? 276 : 148, compact ? 48 : 22, false)
         .setOrigin(1, 0).setFixedSize(compact ? 300 : 0, compact ? 88 : 0).setAlign('center').setPadding(12, compact ? 24 : 7).setBackgroundColor(visualHex(preview.lockedReason ? 'inkPanel' : 'mustard'))
         .setColor(visualHex(preview.lockedReason ? 'textMuted' : 'inkDeep'));
-      const hint = text(left + 23, y + (compact ? 130 : 82), preview.maxed ? '' : preview.lockedReason === null ? 'Осмотреть →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', compact ? 24 : 14).setWordWrapWidth(compact ? 480 : 145).setColor(visualHex('textMuted'));
+      const hint = text(left + 23, y + (compact ? 130 : 82), preview.maxed ? '' : preview.lockedReason === null ? 'Осмотреть →' : pending ? '' : preview.lockedReason?.startsWith('Не хватает') ? preview.lockedReason : 'Недоступно', compact ? 24 : 14).setColor(visualHex('textMuted'));
+      fitPanelText(hint, buy.x - buy.width - hint.x - 12, compact ? 44 : 30);
       // Text must not escape the scroll window even on renderers that do not
       // support nested container masks. Partial rows keep their clipped backing.
       for (const object of [name, level, effect, meaning, buy, hint]) object.setVisible(object.y >= top && object.y + object.height <= bottom);

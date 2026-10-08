@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { fitPanelText } from '../ui/fitPanelText';
 import type { ActionPreview } from '../actions/actionPreviews';
 import { isCompactViewport, logicalPointer } from '../visual/scenePresentation';
 import { VISUAL_FONT, visualColor, visualHex, type VisualColorToken } from '../visual/visualTheme';
@@ -31,7 +32,7 @@ export const createActionPanel = (
   let offset = 0;
   let drag: { y: number; offset: number; moved: boolean } | null = null;
   let suppressTap = false;
-  let scrollTop = 236, scrollBottom = 588;
+  let scrollTop = 236, scrollBottom = 688;
   let rowHeight = 180;
   const maxScroll = () => Math.max(0, currentActions.length * rowHeight - (scrollBottom - scrollTop));
   let previewId: string | null = null;
@@ -44,11 +45,12 @@ export const createActionPanel = (
     handlers.clear();
     const compact = isCompactViewport(scene);
     const left = compact ? 28 : 310, width = compact ? 1224 : 906;
-    rowHeight = compact || currentActions.some(action => action.id.startsWith('work:')) ? 180 : 126;
+    rowHeight = compact || currentActions.some(action => action.id.startsWith('work:')) ? 180 : 152;
     scrollTop = compact ? 236 : 202;
-    scrollBottom = 588;
+    scrollBottom = 688;
     offset = Phaser.Math.Clamp(offset, 0, maxScroll());
     onPreview(currentActions.find(action => action.id === previewId) ?? null);
+    const listWidth = width - (maxScroll() > 0 ? (compact ? 100 : 60) : 0);
     const targets: Record<string, { x: number; y: number }> = {};
     const add = (...objects: Phaser.GameObjects.GameObject[]) => { container.add(objects); dynamic.push(...objects); };
     const button = (id: string, x: number, y: number, w: number, label: string, action: () => void, primary = false, enabled = true) => {
@@ -59,9 +61,9 @@ export const createActionPanel = (
         control.on('pointerup', () => { if (!suppressTap) handlers.get(id)?.(); });
         controls.set(id, control); container.add(control);
       }
-      control.setPosition(x, y).setText(label).setFontSize(compact ? 28 : 21)
+      fitPanelText(control.setPosition(x, y).setText(label).setFontSize(compact ? 28 : 21), w - 16, h - 20, false)
         .setColor(visualHex(primary ? 'inkDeep' : 'textMain'))
-        .setFixedSize(w, h).setPadding(8, compact ? 24 : 10).setAlign('center')
+        .setPadding(8, Math.floor((h - control.height) / 2)).setFixedSize(w, h).setAlign('center')
         .setBackgroundColor(visualHex(primary ? 'mustard' : 'inkRaised')).setAlpha(enabled ? 1 : 0.45).setVisible(true);
       if (enabled) { control.setInteractive({ useHandCursor: true }); handlers.set(id, action); }
       else control.disableInteractive();
@@ -80,7 +82,7 @@ export const createActionPanel = (
       const rowStart = dynamic.length;
       const height = single ? (compact ? 356 : 340) : rowHeight - 12;
       const ctaWidth = compact ? 320 : 262;
-      const contentWidth = width - ctaWidth - 88;
+      const contentWidth = listWidth - ctaWidth - 72;
       let card = cards.get(action.id);
       if (!card) {
         card = scene.add.rectangle(0, 0, 1, 1, visualColor('inkPanel')).setStrokeStyle(1, visualColor('lineDirty'));
@@ -90,23 +92,23 @@ export const createActionPanel = (
           .on('pointerout', () => { if (!previewId) onPreview(null); });
       }
       const clippedTop = Math.max(scrollTop, y), clippedBottom = Math.min(scrollBottom, y + height);
-      card.setPosition(left + width / 2, (clippedTop + clippedBottom) / 2).setSize(width - 32, clippedBottom - clippedTop).setVisible(true);
+      card.setPosition(left + listWidth / 2, (clippedTop + clippedBottom) / 2).setSize(listWidth - 32, clippedBottom - clippedTop).setVisible(true);
       container.bringToTop(card);
-      add(text(left + 28, y + 8, action.title, compact ? 30 : 22).setFontStyle('bold'),
-        text(left + 28, y + (compact ? 48 : 36), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 18)
-          .setWordWrapWidth(contentWidth).setLineSpacing(2));
+      add(fitPanelText(text(left + 28, y + 8, action.title, compact ? 30 : 22).setFontStyle('bold'), contentWidth, compact ? 36 : 28, false),
+        fitPanelText(text(left + 28, y + (compact ? 48 : 36), (single ? action.summary : action.summary.slice(0, 2)).join('\n'), compact ? 25 : 18)
+          .setLineSpacing(2), contentWidth, height - (compact ? 48 : 36) - (action.forecast ? (compact ? 42 : 28) : 12)));
       const toggle = () => { previewId = previewId === action.id ? null : action.id; draw(); };
       if (action.forecast) {
         card.setInteractive({ useHandCursor: true });
         handlers.set(`preview:${action.id}`, toggle);
         handlers.set(`hover:${action.id}`, () => { if (!previewId) onPreview(action); });
-        add(text(left + 28, y + height - (compact ? 36 : 23), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 16, 'cold'));
+        add(fitPanelText(text(left + 28, y + height - (compact ? 36 : 23), previewId === action.id ? 'Нажми, чтобы скрыть прогноз ↑' : 'Нажми на карточку: прогноз ↑', compact ? 24 : 16, 'cold'), contentWidth, compact ? 30 : 20, false));
         if (y >= scrollTop && y + height <= scrollBottom) targets[`preview:${action.id}`] = { x: left + 80, y: y + height - 16 };
       }
-      const ctaX = left + width - ctaWidth - 28;
-      if (action.timing) add(text(ctaX, y + 4, action.timing, compact ? 21 : 16, action.timing.startsWith('Барри') ? 'warning' : 'textMuted').setWordWrapWidth(ctaWidth));
+      const ctaX = left + listWidth - ctaWidth - 28;
+      if (action.timing) add(fitPanelText(text(ctaX, y + 4, action.timing, compact ? 21 : 16, action.timing.startsWith('Барри') ? 'warning' : 'textMuted'), ctaWidth, 46));
       if (action.lockedReason) {
-        add(text(ctaX, y + 56, action.lockedReason, compact ? 28 : 22, 'warning').setWordWrapWidth(ctaWidth).setAlign('center'));
+        add(fitPanelText(text(ctaX, y + 56, action.lockedReason, compact ? 28 : 22, 'warning').setAlign('center'), ctaWidth, height - 68));
       } else button(action.id, ctaX, y + (single ? height - (compact ? 110 : 68) : compact ? 56 : 58), ctaWidth, action.cta ?? 'Открыть', () => onAction(action), true);
       for (const object of dynamic.slice(rowStart)) {
         if (object instanceof Phaser.GameObjects.Text && (object.y < scrollTop || object.y + object.height > scrollBottom)) object.setVisible(false);
@@ -115,13 +117,12 @@ export const createActionPanel = (
       if (cta && (cta.y < scrollTop || cta.y + cta.height > scrollBottom)) { cta.setVisible(false).disableInteractive(); delete targets[action.id]; }
     });
     if (maxScroll() > 0) {
-      button('previous', left + 16, 600, compact ? 180 : 100, '↑', () => { offset -= rowHeight; draw(); }, false, offset > 0);
-      button('next', left + width - (compact ? 196 : 116), 600, compact ? 180 : 100, '↓', () => { offset += rowHeight; draw(); }, false, offset < maxScroll());
-      add(text(left + width / 2, 625, 'Листай список ↕', compact ? 26 : 22).setOrigin(0.5, 0));
-      const trackHeight = scrollBottom - scrollTop;
-      const thumbHeight = trackHeight * trackHeight / (currentActions.length * rowHeight);
-      add(scene.add.rectangle(left + width - 8, scrollTop + trackHeight / 2, 4, trackHeight, visualColor('lineDirty')),
-        scene.add.rectangle(left + width - 8, scrollTop + thumbHeight / 2 + (trackHeight - thumbHeight) * offset / maxScroll(), 6, thumbHeight, visualColor('mustard')));
+      button('previous', left + width - (compact ? 96 : 56), scrollBottom - (compact ? 188 : 104), compact ? 88 : 48, '↑', () => { offset -= rowHeight; draw(); }, false, offset > 0);
+      button('next', left + width - (compact ? 96 : 56), scrollBottom - (compact ? 88 : 46), compact ? 88 : 48, '↓', () => { offset += rowHeight; draw(); }, false, offset < maxScroll());
+      const trackHeight = scrollBottom - scrollTop - (compact ? 204 : 120);
+      const thumbHeight = trackHeight * (scrollBottom - scrollTop) / (currentActions.length * rowHeight);
+      add(scene.add.rectangle(left + width - (compact ? 52 : 32), scrollTop + trackHeight / 2, 4, trackHeight, visualColor('lineDirty')),
+        scene.add.rectangle(left + width - (compact ? 52 : 32), scrollTop + thumbHeight / 2 + (trackHeight - thumbHeight) * offset / maxScroll(), 6, thumbHeight, visualColor('mustard')));
     }
     controls.forEach(control => { if (control.visible) container.bringToTop(control); });
     scene.game.canvas.setAttribute('aria-label', currentTitle);
