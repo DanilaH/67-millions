@@ -37,6 +37,7 @@ import {
 } from '../../src/core/plinko-rules/dropTiming';
 import {
   purchaseInsuranceUpgrade,
+  purchaseCapacityUpgrade,
   purchaseMaxBetUpgrade,
   purchasePocketUpgrade,
   purchaseSpecialUpgrade,
@@ -84,6 +85,7 @@ export type FullGameDecision =
   | { type: 'BUY_JOB_UPGRADE'; jobId: JobId }
   | { type: 'AUDIT_BUY_CAPACITY'; price:number; capacity:number }
   | { type: 'BUY_PLINKO_MAX_BET' }
+  | { type: 'BUY_PLINKO_CAPACITY' }
   | { type: 'BUY_PLINKO_POCKET'; track: PocketUpgradeTrack }
   | { type: 'BUY_PLINKO_SPECIAL'; track: SpecialUpgradeTrack }
   | { type: 'BUY_PLINKO_INSURANCE' }
@@ -795,6 +797,13 @@ export const runFullGame = (
       runner={...runner,game:{...runner.game,cash}};
       counters.purchases++;
       diagnostics.upgradeOrder.push(`audit:capacity:${decision.capacity}`);
+      continue;
+    }
+    if (decision.type === 'BUY_PLINKO_CAPACITY') {
+      const nextGame = purchaseCapacityUpgrade(runner.game, null, config);
+      counters.purchases += 1;
+      diagnostics.upgradeOrder.push(`plinko:capacity:L${nextGame.plinkoCapacityLevel}`);
+      runner = { ...runner, game: nextGame };
       continue;
     }
     if (decision.type === 'BUY_PLINKO_MAX_BET') {

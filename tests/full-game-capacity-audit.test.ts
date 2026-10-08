@@ -20,3 +20,17 @@ describe('diagnostic paid capacity',()=>{
   expect(()=>runFullGame(balance,policy(200),model,{seed:123,configHash:'audit',execution})).toThrow('Invalid diagnostic capacity purchase');
  });
 });
+
+describe('production capacity in full-game simulation', () => {
+ const realPolicy: FullGamePolicy = {id:'real-capacity',decide:({counters})=>counters.purchases===0?{type:'BUY_PLINKO_CAPACITY'}:{type:'STOP'}};
+ it('uses the production price and durable level without an audit callback', () => {
+  const config = {...balance,game:{...balance.game,startCash:10000}};
+  const r=runFullGame(config,realPolicy,model,{seed:123,configHash:'audit'});
+  expect(r.state.plinkoCapacityLevel).toBe(1);
+  expect(r.state.cash).toBe(10000-balance.plinko.capacityLevels![1]!.price);
+  expect(r.diagnostics.upgradeOrder).toEqual(['plinko:capacity:L1']);
+ });
+ it('rejects a production slot purchase when its actual price is unaffordable', () => {
+  expect(()=>runFullGame(balance,realPolicy,model,{seed:123,configHash:'audit'})).toThrow('Insufficient cash');
+ });
+});

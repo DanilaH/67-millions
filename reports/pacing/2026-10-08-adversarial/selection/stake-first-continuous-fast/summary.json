@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "configHash": "4864d56d75e4b319aaf5241fb9da4c325a31d589c5bdb194fc7697a0e14b6778",
+    "revision": "8ca5148f594cf3008888efb53819a6af613e7f0e",
+    "sources": {
+      "simulation/full-game/adversarialAudit.ts": "02f0c1b65dc454d3130563b39d1ee4e229a21d19c8f87eb979cec392e459874e",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "stake-first",
+    "mode": "continuous",
+    "pace": "fast",
+    "count": 12,
+    "seedStart": 67141000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 0.25,
+      "workSeconds": {
+        "courier": 6,
+        "trash": 5,
+        "dishes": 8
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 12
+  },
+  "wins": 12,
+  "medianWinMinutes": 11.624444444444446,
+  "p10WinMinutes": 8.943333333333335,
+  "p90WinMinutes": 13.795833333333329,
+  "minimumWinMinutes": 8.372777777777777,
+  "medianAllMinutes": 11.624444444444446,
+  "medianWinWork": 10,
+  "medianWinDrops": 274.5,
+  "fastestSeed": 3867683136
+}
