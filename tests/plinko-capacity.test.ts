@@ -22,7 +22,7 @@ it.each([[0, 2], [1, 3], [2, 4], [3, 6]])('enforces capacity level %s in the sha
 it('buys and persists 3/4/6 places at the advertised prices', () => {
   let state = { ...createInitialGameState(balance, 123), cash: 2000000 };
   expect(getLaunchCapacity(balance, state)).toBe(2);
-  for (const [price, capacity] of [[5000, 3], [25000, 4], [1000000, 6]]) {
+  for (const [price, capacity] of [[5000, 3], [25000, 4], [300000, 6]]) {
     const before = state;
     state = purchaseCapacityUpgrade(state, null, balance);
     expect(state.cash).toBe(before.cash - price!);

@@ -1,0 +1,3305 @@
+{
+  "runs": 672,
+  "distinctFullGameSeeds": 32,
+  "groups": [
+    {
+      "group": "holdout/caps-only/cheapest-fast",
+      "count": 24,
+      "wins": 23,
+      "outcomes": {
+        "HP_DEATH": 1,
+        "VICTORY": 23
+      },
+      "winnerMedians": {
+        "minutes": 17.717222222222222,
+        "firstMillionMinutes": 9.489444444444445,
+        "finalPhaseMinutes": 8.880277777777772,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.9836111111111108,
+        "finalNoPurchaseMinutes": 3.606388888888891,
+        "work": 9,
+        "workMinutes": 0.9166666666666666,
+        "idleMinutes": 0.0,
+        "drops": 652,
+        "casinoPurchases": 35
+      },
+      "fastestWinMinutes": 13.044722222222225,
+      "allLongestGapP90": 2.8627777777777768,
+      "allLongestGapMax": 3.3747222222222226,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 0.225,
+        "3": 2.506944444444444,
+        "4": 7.479722222222222,
+        "5": 10.731666666666666,
+        "6": 12.523055555555553
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 54,
+        "recovered": 54,
+        "medianRecoveredMinutes": 0.1925000000000002,
+        "recoveredP90Minutes": 0.46583333333333266
+      }
+    },
+    {
+      "group": "holdout/caps-only/income-path-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 21.365555555555552,
+        "firstMillionMinutes": 13.491527777777776,
+        "finalPhaseMinutes": 6.901249999999999,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.486944444444444,
+        "finalNoPurchaseMinutes": 4.090833333333334,
+        "work": 9.0,
+        "workMinutes": 0.875,
+        "idleMinutes": 0.0,
+        "drops": 666.5,
+        "casinoPurchases": 32.0
+      },
+      "fastestWinMinutes": 13.619999999999997,
+      "allLongestGapP90": 5.630277777777778,
+      "allLongestGapMax": 10.665,
+      "winnerStakeUnlockMedians": {
+        "1": 5.467916666666666,
+        "2": 6.047083333333332,
+        "3": 6.777916666666666,
+        "4": 12.428055555555556,
+        "5": 14.942638888888883,
+        "6": 16.34097222222222
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.8143014139400013,
+        "2": 5.225188072147204,
+        "3": 8.067191337965987,
+        "4": 22.96690338585388,
+        "5": 30.055456526044733,
+        "6": 79.47972258512216
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 49,
+        "recovered": 49,
+        "medianRecoveredMinutes": 0.188611111111112,
+        "recoveredP90Minutes": 0.5747222222222225
+      }
+    },
+    {
+      "group": "holdout/caps-only/income-path-insurance-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 22.73277777777778,
+        "firstMillionMinutes": 15.301666666666666,
+        "finalPhaseMinutes": 7.035833333333335,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.1977777777777776,
+        "finalNoPurchaseMinutes": 4.18875,
+        "work": 9.5,
+        "workMinutes": 0.9416666666666667,
+        "idleMinutes": 0.0,
+        "drops": 670.0,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 13.948333333333332,
+      "allLongestGapP90": 5.1611111111111105,
+      "allLongestGapMax": 6.503611111111112,
+      "winnerStakeUnlockMedians": {
+        "1": 5.7991666666666655,
+        "2": 6.650694444444444,
+        "3": 7.186666666666667,
+        "4": 13.705277777777779,
+        "5": 16.617222222222225,
+        "6": 18.46666666666667
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 4.424038977978988,
+        "3": 7.532672602049415,
+        "4": 22.71555988335653,
+        "5": 38.75591500059732,
+        "6": 79.47972258512216
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 34,
+        "recovered": 34,
+        "medianRecoveredMinutes": 0.1856944444444442,
+        "recoveredP90Minutes": 0.36916666666666725
+      }
+    },
+    {
+      "group": "holdout/caps-only/insurance-first-fast",
+      "count": 24,
+      "wins": 23,
+      "outcomes": {
+        "HP_DEATH": 1,
+        "VICTORY": 23
+      },
+      "winnerMedians": {
+        "minutes": 19.529722222222226,
+        "firstMillionMinutes": 10.513055555555557,
+        "finalPhaseMinutes": 8.625277777777777,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.9422222222222216,
+        "finalNoPurchaseMinutes": 3.6722222222222247,
+        "work": 9,
+        "workMinutes": 0.9666666666666667,
+        "idleMinutes": 0.0,
+        "drops": 659,
+        "casinoPurchases": 38
+      },
+      "fastestWinMinutes": 14.42083333333333,
+      "allLongestGapP90": 3.6236111111111104,
+      "allLongestGapMax": 4.157499999999998,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 0.5836111111111111,
+        "3": 3.5066666666666664,
+        "4": 9.105277777777777,
+        "5": 11.421388888888888,
+        "6": 12.886944444444449
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 32,
+        "recovered": 32,
+        "medianRecoveredMinutes": 0.10402777777777791,
+        "recoveredP90Minutes": 0.2888888888888886
+      }
+    },
+    {
+      "group": "holdout/caps-only/stake-first-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 17.902638888888895,
+        "firstMillionMinutes": 9.411805555555556,
+        "finalPhaseMinutes": 8.489999999999995,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.9823611111111106,
+        "finalNoPurchaseMinutes": 3.603333333333332,
+        "work": 9.0,
+        "workMinutes": 0.925,
+        "idleMinutes": 0.0,
+        "drops": 641.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 14.066388888888884,
+      "allLongestGapP90": 3.161388888888891,
+      "allLongestGapMax": 4.216111111111109,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 0.21666666666666667,
+        "3": 0.9834722222222223,
+        "4": 7.06375,
+        "5": 9.655,
+        "6": 11.90138888888889
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": null,
+        "3": 18.42472677595628,
+        "4": 92.84054745872162,
+        "5": 58.13387250089598,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 63,
+        "recovered": 63,
+        "medianRecoveredMinutes": 0.18444444444444438,
+        "recoveredP90Minutes": 0.5388888888888895
+      }
+    },
+    {
+      "group": "holdout/control/cheapest-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 10.800972222222223,
+        "firstMillionMinutes": 7.643194444444443,
+        "finalPhaseMinutes": 3.5147222222222236,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.6361111111111115,
+        "finalNoPurchaseMinutes": 1.0612500000000011,
+        "work": 10.0,
+        "workMinutes": 1.0666666666666667,
+        "idleMinutes": 0.0,
+        "drops": 256.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 7.102222222222223,
+      "allLongestGapP90": 2.5199999999999982,
+      "allLongestGapMax": 3.830833333333333,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.0640277777777778,
+        "3": 2.7863888888888892,
+        "4": 7.069166666666668,
+        "5": 8.184861111111111,
+        "6": 8.964166666666667
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 2.1346808062675313,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 105,
+        "recovered": 105,
+        "medianRecoveredMinutes": 0.18222222222222134,
+        "recoveredP90Minutes": 0.5280555555555547
+      }
+    },
+    {
+      "group": "holdout/control/income-path-fast",
+      "count": 24,
+      "wins": 23,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 23
+      },
+      "winnerMedians": {
+        "minutes": 15.784444444444452,
+        "firstMillionMinutes": 12.06777777777778,
+        "finalPhaseMinutes": 2.657222222222223,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.276388888888888,
+        "finalNoPurchaseMinutes": 1.526666666666667,
+        "work": 10,
+        "workMinutes": 1.0666666666666667,
+        "idleMinutes": 0.0,
+        "drops": 308,
+        "casinoPurchases": 31
+      },
+      "fastestWinMinutes": 7.0505555555555555,
+      "allLongestGapP90": 5.630277777777778,
+      "allLongestGapMax": 10.665,
+      "winnerStakeUnlockMedians": {
+        "1": 5.080555555555555,
+        "2": 6.205833333333333,
+        "3": 7.0522222222222215,
+        "4": 11.549999999999994,
+        "5": 12.278611111111111,
+        "6": 13.809722222222218
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.8143014139400013,
+        "2": 1.306297018036801,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 10.934505165723897,
+        "6": 18.166793733742207
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 118,
+        "recovered": 118,
+        "medianRecoveredMinutes": 0.18833333333333258,
+        "recoveredP90Minutes": 0.6241666666666674
+      }
+    },
+    {
+      "group": "holdout/control/income-path-insurance-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 15.94875,
+        "firstMillionMinutes": 13.55444444444444,
+        "finalPhaseMinutes": 2.7623611111111117,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.269166666666668,
+        "finalNoPurchaseMinutes": 1.454861111111109,
+        "work": 12.0,
+        "workMinutes": 1.2333333333333334,
+        "idleMinutes": 0.0,
+        "drops": 327.0,
+        "casinoPurchases": 34.0
+      },
+      "fastestWinMinutes": 9.493055555555552,
+      "allLongestGapP90": 4.666666666666667,
+      "allLongestGapMax": 6.503611111111112,
+      "winnerStakeUnlockMedians": {
+        "1": 5.7991666666666655,
+        "2": 6.696249999999999,
+        "3": 8.152222222222221,
+        "4": 12.578055555555554,
+        "5": 13.944305555555555,
+        "6": 14.61597222222222
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 1.106009744494747,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 11.035241569395534,
+        "6": 18.261412259053717
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 78,
+        "recovered": 78,
+        "medianRecoveredMinutes": 0.18152777777777943,
+        "recoveredP90Minutes": 0.6836111111111108
+      }
+    },
+    {
+      "group": "holdout/control/insurance-first-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 11.329027777777778,
+        "firstMillionMinutes": 7.564722222222223,
+        "finalPhaseMinutes": 3.4637500000000006,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.4180555555555556,
+        "finalNoPurchaseMinutes": 1.0651388888888893,
+        "work": 10.0,
+        "workMinutes": 1.0583333333333333,
+        "idleMinutes": 0.0,
+        "drops": 256.0,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 8.53694444444444,
+      "allLongestGapP90": 1.8138888888888887,
+      "allLongestGapMax": 2.6313888888888908,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 0.938888888888889,
+        "3": 3.1705555555555556,
+        "4": 7.123472222222222,
+        "5": 8.571250000000003,
+        "6": 9.409583333333334
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 3.546073619631881,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 109,
+        "recovered": 109,
+        "medianRecoveredMinutes": 0.18472222222222237,
+        "recoveredP90Minutes": 0.5461111111111109
+      }
+    },
+    {
+      "group": "holdout/control/stake-first-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 10.718888888888888,
+        "firstMillionMinutes": 7.285277777777777,
+        "finalPhaseMinutes": 3.4823611111111106,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.5940277777777778,
+        "finalNoPurchaseMinutes": 1.0549999999999993,
+        "work": 10.0,
+        "workMinutes": 1.075,
+        "idleMinutes": 0.0,
+        "drops": 249.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 6.763055555555555,
+      "allLongestGapP90": 2.5199999999999982,
+      "allLongestGapMax": 3.830833333333333,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.0640277777777778,
+        "3": 2.6625,
+        "4": 6.255555555555556,
+        "5": 7.544027777777776,
+        "6": 8.791666666666666
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 2.1346808062675313,
+        "4": 46.42027372936081,
+        "5": 16.5528623540933,
+        "6": 23.173894563233777
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 113,
+        "recovered": 113,
+        "medianRecoveredMinutes": 0.1730555555555559,
+        "recoveredP90Minutes": 0.5038888888888892
+      }
+    },
+    {
+      "group": "holdout/coupled/cheapest-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 15.803055555555556,
+        "firstMillionMinutes": 10.072083333333333,
+        "finalPhaseMinutes": 5.571111111111113,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.122777777777778,
+        "finalNoPurchaseMinutes": 3.463472222222223,
+        "work": 7.5,
+        "workMinutes": 0.7833333333333334,
+        "idleMinutes": 0.0,
+        "drops": 499.0,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 12.071944444444444,
+      "allLongestGapP90": 3.3891666666666667,
+      "allLongestGapMax": 4.0819444444444475,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.5612499999999998,
+        "3": 4.867916666666667,
+        "4": 8.29416666666667,
+        "5": 10.016527777777778,
+        "6": 11.012222222222224
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 34,
+        "recovered": 34,
+        "medianRecoveredMinutes": 0.17875000000000038,
+        "recoveredP90Minutes": 0.45277777777777906
+      }
+    },
+    {
+      "group": "holdout/coupled/income-path-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 19.319027777777777,
+        "firstMillionMinutes": 14.136250000000002,
+        "finalPhaseMinutes": 4.784583333333336,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.6956944444444444,
+        "finalNoPurchaseMinutes": 3.634027777777779,
+        "work": 9.0,
+        "workMinutes": 0.9083333333333333,
+        "idleMinutes": 0.0,
+        "drops": 515.0,
+        "casinoPurchases": 34.0
+      },
+      "fastestWinMinutes": 13.40861111111111,
+      "allLongestGapP90": 5.630277777777778,
+      "allLongestGapMax": 10.665,
+      "winnerStakeUnlockMedians": {
+        "1": 5.467916666666666,
+        "2": 6.20972222222222,
+        "3": 8.86486111111111,
+        "4": 11.812361111111112,
+        "5": 13.758472222222224,
+        "6": 14.531805555555554
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.8143014139400013,
+        "2": 10.885808483640007,
+        "3": 19.843758058399782,
+        "4": 11.609123444175614,
+        "5": 18.172447906685225,
+        "6": 23.326244118003075
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 36,
+        "recovered": 36,
+        "medianRecoveredMinutes": 0.2027777777777781,
+        "recoveredP90Minutes": 0.38027777777777677
+      }
+    },
+    {
+      "group": "holdout/coupled/income-path-insurance-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 20.74625,
+        "firstMillionMinutes": 15.716944444444445,
+        "finalPhaseMinutes": 5.09777777777778,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.3390277777777775,
+        "finalNoPurchaseMinutes": 3.653194444444443,
+        "work": 10.0,
+        "workMinutes": 1.0166666666666666,
+        "idleMinutes": 0.0,
+        "drops": 537.0,
+        "casinoPurchases": 37.0
+      },
+      "fastestWinMinutes": 13.272222222222224,
+      "allLongestGapP90": 4.666666666666667,
+      "allLongestGapMax": 6.503611111111112,
+      "winnerStakeUnlockMedians": {
+        "1": 5.7991666666666655,
+        "2": 6.696249999999999,
+        "3": 10.139444444444443,
+        "4": 13.979305555555555,
+        "5": 14.61111111111111,
+        "6": 16.13888888888889
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 9.216747870789558,
+        "3": 19.843758058399782,
+        "4": 12.504437887058128,
+        "5": 18.172447906685225,
+        "6": 23.326244118003075
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 35,
+        "recovered": 35,
+        "medianRecoveredMinutes": 0.19833333333333295,
+        "recoveredP90Minutes": 0.4866666666666674
+      }
+    },
+    {
+      "group": "holdout/coupled/insurance-first-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 15.209722222222222,
+        "firstMillionMinutes": 9.45611111111111,
+        "finalPhaseMinutes": 5.4575,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.7383333333333326,
+        "finalNoPurchaseMinutes": 3.4661111111111107,
+        "work": 9.0,
+        "workMinutes": 0.9,
+        "idleMinutes": 0.0,
+        "drops": 494.5,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 12.974166666666667,
+      "allLongestGapP90": 3.146666666666665,
+      "allLongestGapMax": 4.198888888888888,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 1.0219444444444445,
+        "3": 4.9225,
+        "4": 7.7877777777777775,
+        "5": 9.525416666666667,
+        "6": 10.587777777777777
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 24,
+        "recovered": 24,
+        "medianRecoveredMinutes": 0.19000000000000009,
+        "recoveredP90Minutes": 0.2936111111111112
+      }
+    },
+    {
+      "group": "holdout/coupled/stake-first-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "winnerMedians": {
+        "minutes": 16.064861111111107,
+        "firstMillionMinutes": 10.692083333333333,
+        "finalPhaseMinutes": 5.358194444444443,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.1258333333333344,
+        "finalNoPurchaseMinutes": 3.4369444444444452,
+        "work": 8.0,
+        "workMinutes": 0.85,
+        "idleMinutes": 0.0,
+        "drops": 482.0,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 12.610833333333334,
+      "allLongestGapP90": 3.401388888888888,
+      "allLongestGapMax": 5.205000000000001,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.2894444444444446,
+        "3": 4.229305555555555,
+        "4": 7.530138888888889,
+        "5": 9.021666666666667,
+        "6": 10.813749999999999
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 19.843758058399782,
+        "4": 57.09674180134205,
+        "5": 106.49689180848269,
+        "6": 44.30096230228875
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 60,
+        "recovered": 60,
+        "medianRecoveredMinutes": 0.19138888888888866,
+        "recoveredP90Minutes": 0.49472222222222134
+      }
+    },
+    {
+      "group": "ordinary/caps-only/cheapest-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 25.47027777777778,
+        "firstMillionMinutes": 15.282499999999999,
+        "finalPhaseMinutes": 9.970416666666665,
+        "firstCasinoPurchaseMinutes": 0.5,
+        "longestInternalGapMinutes": 2.8704166666666664,
+        "finalNoPurchaseMinutes": 4.051666666666667,
+        "work": 8.5,
+        "workMinutes": 1.95,
+        "idleMinutes": 0.0,
+        "drops": 658.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 20.317500000000003,
+      "allLongestGapP90": 4.679999999999999,
+      "allLongestGapMax": 5.558888888888888,
+      "winnerStakeUnlockMedians": {
+        "1": 0.5,
+        "2": 0.6,
+        "3": 4.554027777777778,
+        "4": 12.532222222222224,
+        "5": 16.052777777777777,
+        "6": 18.01638888888889
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 34,
+        "recovered": 34,
+        "medianRecoveredMinutes": 0.22986111111111143,
+        "recoveredP90Minutes": 0.6241666666666664
+      }
+    },
+    {
+      "group": "ordinary/caps-only/insurance-first-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 26.32875,
+        "firstMillionMinutes": 16.108333333333334,
+        "finalPhaseMinutes": 10.347083333333332,
+        "firstCasinoPurchaseMinutes": 0.5,
+        "longestInternalGapMinutes": 2.7786111111111107,
+        "finalNoPurchaseMinutes": 4.071805555555555,
+        "work": 10.0,
+        "workMinutes": 2.15,
+        "idleMinutes": 0.0,
+        "drops": 651.5,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 22.61583333333333,
+      "allLongestGapP90": 4.530277777777778,
+      "allLongestGapMax": 8.535,
+      "winnerStakeUnlockMedians": {
+        "1": 0.5666666666666667,
+        "2": 1.5516666666666667,
+        "3": 6.067916666666666,
+        "4": 13.776666666666667,
+        "5": 17.441944444444445,
+        "6": 19.359305555555558
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 27,
+        "recovered": 27,
+        "medianRecoveredMinutes": 0.2308333333333318,
+        "recoveredP90Minutes": 0.6019444444444436
+      }
+    },
+    {
+      "group": "ordinary/control/cheapest-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 15.745000000000001,
+        "firstMillionMinutes": 10.52111111111111,
+        "finalPhaseMinutes": 4.7895833333333355,
+        "firstCasinoPurchaseMinutes": 0.5,
+        "longestInternalGapMinutes": 2.0583333333333336,
+        "finalNoPurchaseMinutes": 1.2827777777777782,
+        "work": 9.5,
+        "workMinutes": 2.2,
+        "idleMinutes": 0.0,
+        "drops": 257.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 12.946111111111112,
+      "allLongestGapP90": 4.911388888888889,
+      "allLongestGapMax": 5.399444444444445,
+      "winnerStakeUnlockMedians": {
+        "1": 0.5,
+        "2": 2.299722222222222,
+        "3": 5.729305555555555,
+        "4": 9.66,
+        "5": 12.155277777777776,
+        "6": 13.15125
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 67,
+        "recovered": 67,
+        "medianRecoveredMinutes": 0.3036111111111116,
+        "recoveredP90Minutes": 0.8225000000000003
+      }
+    },
+    {
+      "group": "ordinary/control/insurance-first-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 16.59236111111111,
+        "firstMillionMinutes": 11.904305555555556,
+        "finalPhaseMinutes": 4.568055555555556,
+        "firstCasinoPurchaseMinutes": 0.5,
+        "longestInternalGapMinutes": 2.382777777777778,
+        "finalNoPurchaseMinutes": 1.2086111111111117,
+        "work": 10.0,
+        "workMinutes": 2.225,
+        "idleMinutes": 0.0,
+        "drops": 264.0,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 13.789722222222222,
+      "allLongestGapP90": 2.9341666666666657,
+      "allLongestGapMax": 5.900277777777777,
+      "winnerStakeUnlockMedians": {
+        "1": 0.5666666666666667,
+        "2": 2.3099999999999996,
+        "3": 5.479999999999999,
+        "4": 10.998055555555554,
+        "5": 13.317083333333333,
+        "6": 14.178055555555556
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.9574835311274157,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 63,
+        "recovered": 63,
+        "medianRecoveredMinutes": 0.25,
+        "recoveredP90Minutes": 0.6044444444444442
+      }
+    },
+    {
+      "group": "ordinary/coupled/cheapest-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 22.461666666666666,
+        "firstMillionMinutes": 15.744305555555556,
+        "finalPhaseMinutes": 6.598611111111107,
+        "firstCasinoPurchaseMinutes": 0.5,
+        "longestInternalGapMinutes": 2.8329166666666667,
+        "finalNoPurchaseMinutes": 4.382916666666667,
+        "work": 8.0,
+        "workMinutes": 1.8250000000000002,
+        "idleMinutes": 0.0,
+        "drops": 509.0,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 18.79222222222222,
+      "allLongestGapP90": 5.224444444444447,
+      "allLongestGapMax": 5.747777777777778,
+      "winnerStakeUnlockMedians": {
+        "1": 0.5,
+        "2": 3.2913888888888887,
+        "3": 9.084444444444443,
+        "4": 13.704027777777778,
+        "5": 15.566527777777777,
+        "6": 16.719583333333333
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 13,
+        "recovered": 13,
+        "medianRecoveredMinutes": 0.248888888888888,
+        "recoveredP90Minutes": 0.3566666666666644
+      }
+    },
+    {
+      "group": "ordinary/coupled/insurance-first-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 22.856111111111108,
+        "firstMillionMinutes": 16.129166666666663,
+        "finalPhaseMinutes": 6.824305555555556,
+        "firstCasinoPurchaseMinutes": 0.5,
+        "longestInternalGapMinutes": 3.0197222222222235,
+        "finalNoPurchaseMinutes": 3.9548611111111125,
+        "work": 9.0,
+        "workMinutes": 2.0,
+        "idleMinutes": 0.0,
+        "drops": 507.5,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 18.225,
+      "allLongestGapP90": 4.038333333333329,
+      "allLongestGapMax": 5.900277777777777,
+      "winnerStakeUnlockMedians": {
+        "1": 0.5666666666666667,
+        "2": 2.565138888888889,
+        "3": 8.751944444444444,
+        "4": 14.140138888888892,
+        "5": 16.174999999999997,
+        "6": 17.124166666666667
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 12,
+        "recovered": 12,
+        "medianRecoveredMinutes": 0.14152777777777792,
+        "recoveredP90Minutes": 0.375555555555556
+      }
+    },
+    {
+      "group": "selection/caps-only/cheapest-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 18.256250000000005,
+        "firstMillionMinutes": 10.01888888888889,
+        "finalPhaseMinutes": 8.664027777777775,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.7695833333333333,
+        "finalNoPurchaseMinutes": 3.4701388888888904,
+        "work": 8.0,
+        "workMinutes": 0.8166666666666667,
+        "idleMinutes": 0.0,
+        "drops": 678.0,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 12.780277777777778,
+      "allLongestGapP90": 2.7111111111111086,
+      "allLongestGapMax": 4.739722222222223,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 0.225,
+        "3": 2.375,
+        "4": 7.483611111111112,
+        "5": 10.806666666666668,
+        "6": 12.58916666666667
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 20,
+        "recovered": 20,
+        "medianRecoveredMinutes": 0.23472222222222228,
+        "recoveredP90Minutes": 0.6747222222222216
+      }
+    },
+    {
+      "group": "selection/caps-only/income-path-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 23.909444444444443,
+        "firstMillionMinutes": 16.11625,
+        "finalPhaseMinutes": 7.288055555555555,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.686805555555556,
+        "finalNoPurchaseMinutes": 4.56611111111111,
+        "work": 9.0,
+        "workMinutes": 0.9333333333333333,
+        "idleMinutes": 0.0,
+        "drops": 683.5,
+        "casinoPurchases": 31.0
+      },
+      "fastestWinMinutes": 16.749444444444446,
+      "allLongestGapP90": 5.336944444444445,
+      "allLongestGapMax": 5.799444444444445,
+      "winnerStakeUnlockMedians": {
+        "1": 5.940138888888889,
+        "2": 6.6715277777777775,
+        "3": 7.28236111111111,
+        "4": 14.745000000000001,
+        "5": 17.49277777777778,
+        "6": 18.97013888888889
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 4.424038977978988,
+        "3": 6.253681061820724,
+        "4": 22.71555988335653,
+        "5": 30.23293806381689,
+        "6": 79.47972258512216
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 12,
+        "recovered": 12,
+        "medianRecoveredMinutes": 0.125555555555556,
+        "recoveredP90Minutes": 0.3111111111111105
+      }
+    },
+    {
+      "group": "selection/caps-only/income-path-insurance-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "winnerMedians": {
+        "minutes": 22.562222222222225,
+        "firstMillionMinutes": 14.836388888888894,
+        "finalPhaseMinutes": 7.629722222222227,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.1536111111111107,
+        "finalNoPurchaseMinutes": 4.348611111111109,
+        "work": 12,
+        "workMinutes": 1.2166666666666666,
+        "idleMinutes": 0.0,
+        "drops": 669,
+        "casinoPurchases": 34
+      },
+      "fastestWinMinutes": 17.966666666666665,
+      "allLongestGapP90": 5.391944444444444,
+      "allLongestGapMax": 13.046111111111111,
+      "winnerStakeUnlockMedians": {
+        "1": 5.61361111111111,
+        "2": 5.9255555555555555,
+        "3": 7.411388888888889,
+        "4": 14.243055555555559,
+        "5": 16.403611111111115,
+        "6": 17.518888888888895
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 4.424038977978988,
+        "3": 8.60229801273692,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.47972258512216
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 8,
+        "recovered": 8,
+        "medianRecoveredMinutes": 0.22972222222222266,
+        "recoveredP90Minutes": 0.2947222222222232
+      }
+    },
+    {
+      "group": "selection/caps-only/insurance-first-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 19.832916666666666,
+        "firstMillionMinutes": 10.891666666666666,
+        "finalPhaseMinutes": 9.233333333333334,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.3154166666666667,
+        "finalNoPurchaseMinutes": 3.611527777777777,
+        "work": 8.0,
+        "workMinutes": 0.8333333333333334,
+        "idleMinutes": 0.0,
+        "drops": 685.0,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 17.799166666666668,
+      "allLongestGapP90": 2.7963888888888895,
+      "allLongestGapMax": 3.542500000000003,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 0.6295833333333334,
+        "3": 3.534583333333333,
+        "4": 9.174861111111111,
+        "5": 12.565416666666664,
+        "6": 14.338055555555556
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 11,
+        "recovered": 11,
+        "medianRecoveredMinutes": 0.2705555555555558,
+        "recoveredP90Minutes": 0.46722222222222265
+      }
+    },
+    {
+      "group": "selection/caps-only/stake-first-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 19.436666666666667,
+        "firstMillionMinutes": 10.661666666666669,
+        "finalPhaseMinutes": 8.64125,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.8201388888888894,
+        "finalNoPurchaseMinutes": 3.5461111111111108,
+        "work": 10.0,
+        "workMinutes": 1.0,
+        "idleMinutes": 0.0,
+        "drops": 648.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 14.034166666666668,
+      "allLongestGapP90": 2.3844444444444464,
+      "allLongestGapMax": 2.6286111111111117,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 0.21666666666666667,
+        "3": 1.0036111111111112,
+        "4": 7.369444444444445,
+        "5": 10.794861111111112,
+        "6": 13.63430555555556
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 18.423292349726772,
+        "4": 90.79397864956192,
+        "5": 48.44489375074665,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 18,
+        "recovered": 18,
+        "medianRecoveredMinutes": 0.18722222222222246,
+        "recoveredP90Minutes": 0.3694444444444438
+      }
+    },
+    {
+      "group": "selection/control/cheapest-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 11.097777777777779,
+        "firstMillionMinutes": 7.280555555555557,
+        "finalPhaseMinutes": 3.3116666666666683,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.9075000000000002,
+        "finalNoPurchaseMinutes": 0.9965277777777777,
+        "work": 8.5,
+        "workMinutes": 0.8916666666666666,
+        "idleMinutes": 0.0,
+        "drops": 250.0,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 8.133888888888887,
+      "allLongestGapP90": 2.2758333333333334,
+      "allLongestGapMax": 2.7638888888888915,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.3298611111111112,
+        "3": 2.766388888888889,
+        "4": 6.800138888888891,
+        "5": 8.207916666666668,
+        "6": 9.145833333333334
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 51,
+        "recovered": 51,
+        "medianRecoveredMinutes": 0.19055555555555562,
+        "recoveredP90Minutes": 0.7211111111111108
+      }
+    },
+    {
+      "group": "selection/control/income-path-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 15.6375,
+        "firstMillionMinutes": 12.50236111111111,
+        "finalPhaseMinutes": 2.6069444444444407,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.5519444444444446,
+        "finalNoPurchaseMinutes": 1.4752777777777804,
+        "work": 10.5,
+        "workMinutes": 1.0166666666666666,
+        "idleMinutes": 0.0,
+        "drops": 335.0,
+        "casinoPurchases": 31.0
+      },
+      "fastestWinMinutes": 10.224166666666664,
+      "allLongestGapP90": 5.336944444444445,
+      "allLongestGapMax": 5.799444444444445,
+      "winnerStakeUnlockMedians": {
+        "1": 5.940138888888889,
+        "2": 6.761111111111111,
+        "3": 7.697361111111111,
+        "4": 11.509722222222223,
+        "5": 13.110694444444444,
+        "6": 13.676527777777778
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 1.106009744494747,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 10.851656200167248,
+        "6": 18.214102996397962
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 34,
+        "recovered": 34,
+        "medianRecoveredMinutes": 0.22388888888888897,
+        "recoveredP90Minutes": 0.41777777777777864
+      }
+    },
+    {
+      "group": "selection/control/income-path-insurance-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 18.08138888888889,
+        "firstMillionMinutes": 15.241111111111113,
+        "finalPhaseMinutes": 2.999722222222222,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.294027777777777,
+        "finalNoPurchaseMinutes": 1.2605555555555545,
+        "work": 11.0,
+        "workMinutes": 1.0833333333333333,
+        "idleMinutes": 0.0,
+        "drops": 347.0,
+        "casinoPurchases": 34.0
+      },
+      "fastestWinMinutes": 9.601666666666665,
+      "allLongestGapP90": 5.391944444444444,
+      "allLongestGapMax": 13.046111111111111,
+      "winnerStakeUnlockMedians": {
+        "1": 5.767499999999999,
+        "2": 7.200277777777778,
+        "3": 9.12527777777778,
+        "4": 14.494166666666668,
+        "5": 15.840416666666666,
+        "6": 16.831944444444446
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 1.106009744494747,
+        "3": 1.4346827929895345,
+        "4": 11.48345169292694,
+        "5": 10.893080682945573,
+        "6": 18.214102996397962
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 27,
+        "recovered": 27,
+        "medianRecoveredMinutes": 0.24027777777777903,
+        "recoveredP90Minutes": 0.6444444444444438
+      }
+    },
+    {
+      "group": "selection/control/insurance-first-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 11.380277777777776,
+        "firstMillionMinutes": 7.6040277777777785,
+        "finalPhaseMinutes": 3.3616666666666655,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.6997222222222224,
+        "finalNoPurchaseMinutes": 0.9900000000000004,
+        "work": 10.0,
+        "workMinutes": 1.0333333333333332,
+        "idleMinutes": 0.0,
+        "drops": 251.5,
+        "casinoPurchases": 38.0
+      },
+      "fastestWinMinutes": 8.4275,
+      "allLongestGapP90": 2.3222222222222224,
+      "allLongestGapMax": 3.3891666666666667,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 1.0469444444444445,
+        "3": 3.3430555555555554,
+        "4": 7.163472222222223,
+        "5": 8.588472222222222,
+        "6": 9.415972222222223
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.9574835311274157,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 34,
+        "recovered": 34,
+        "medianRecoveredMinutes": 0.1931944444444446,
+        "recoveredP90Minutes": 0.5299999999999999
+      }
+    },
+    {
+      "group": "selection/control/stake-first-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "winnerMedians": {
+        "minutes": 10.84444444444445,
+        "firstMillionMinutes": 7.635555555555557,
+        "finalPhaseMinutes": 3.208888888888893,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.1647222222222227,
+        "finalNoPurchaseMinutes": 1.0611111111111104,
+        "work": 9,
+        "workMinutes": 0.9333333333333333,
+        "idleMinutes": 0.0,
+        "drops": 258,
+        "casinoPurchases": 35
+      },
+      "fastestWinMinutes": 8.185555555555556,
+      "allLongestGapP90": 2.2758333333333334,
+      "allLongestGapMax": 2.7638888888888915,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.4077777777777778,
+        "3": 2.6338888888888885,
+        "4": 7.230277777777778,
+        "5": 8.256111111111114,
+        "6": 9.04166666666667
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 2.1346808062675313,
+        "4": 46.42027372936081,
+        "5": 16.5528623540933,
+        "6": 18.166793733742207
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 50,
+        "recovered": 50,
+        "medianRecoveredMinutes": 0.1862500000000002,
+        "recoveredP90Minutes": 0.7211111111111108
+      }
+    },
+    {
+      "group": "selection/coupled/cheapest-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 15.189444444444446,
+        "firstMillionMinutes": 9.504861111111111,
+        "finalPhaseMinutes": 5.234444444444444,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.24625,
+        "finalNoPurchaseMinutes": 3.4220833333333323,
+        "work": 7.5,
+        "workMinutes": 0.8083333333333333,
+        "idleMinutes": 0.0,
+        "drops": 497.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 12.389999999999997,
+      "allLongestGapP90": 2.50111111111111,
+      "allLongestGapMax": 3.4441666666666664,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.7531944444444445,
+        "3": 5.514999999999999,
+        "4": 7.6658333333333335,
+        "5": 9.334166666666668,
+        "6": 10.078194444444446
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 13,
+        "recovered": 13,
+        "medianRecoveredMinutes": 0.2099999999999999,
+        "recoveredP90Minutes": 0.3769444444444446
+      }
+    },
+    {
+      "group": "selection/coupled/income-path-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "winnerMedians": {
+        "minutes": 21.672222222222228,
+        "firstMillionMinutes": 16.630833333333335,
+        "finalPhaseMinutes": 5.041388888888893,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.7074999999999987,
+        "finalNoPurchaseMinutes": 3.6961111111111107,
+        "work": 11,
+        "workMinutes": 1.1666666666666667,
+        "idleMinutes": 0.0,
+        "drops": 583,
+        "casinoPurchases": 34
+      },
+      "fastestWinMinutes": 12.146388888888888,
+      "allLongestGapP90": 5.336944444444445,
+      "allLongestGapMax": 5.799444444444445,
+      "winnerStakeUnlockMedians": {
+        "1": 5.630277777777779,
+        "2": 6.620555555555555,
+        "3": 8.488055555555555,
+        "4": 13.507499999999999,
+        "5": 14.670833333333333,
+        "6": 17.155833333333337
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 9.216747870789558,
+        "3": 19.843758058399782,
+        "4": 11.609123444175614,
+        "5": 18.172447906685225,
+        "6": 23.326244118003075
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 6,
+        "recovered": 6,
+        "medianRecoveredMinutes": 0.12652777777777735,
+        "recoveredP90Minutes": 0.20277777777777714
+      }
+    },
+    {
+      "group": "selection/coupled/income-path-insurance-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "winnerMedians": {
+        "minutes": 20.018333333333334,
+        "firstMillionMinutes": 16.203611111111112,
+        "finalPhaseMinutes": 4.477777777777774,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 3.4344444444444435,
+        "finalNoPurchaseMinutes": 3.69222222222222,
+        "work": 9,
+        "workMinutes": 0.9333333333333333,
+        "idleMinutes": 0.0,
+        "drops": 535,
+        "casinoPurchases": 37
+      },
+      "fastestWinMinutes": 15.402777777777779,
+      "allLongestGapP90": 5.391944444444444,
+      "allLongestGapMax": 13.046111111111111,
+      "winnerStakeUnlockMedians": {
+        "1": 5.921388888888888,
+        "2": 7.986666666666667,
+        "3": 11.13444444444445,
+        "4": 14.101666666666668,
+        "5": 15.138888888888891,
+        "6": 16.20777777777778
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": 1.536124645131593,
+        "2": 9.216747870789558,
+        "3": 19.843758058399782,
+        "4": 11.609123444175614,
+        "5": 18.172447906685225,
+        "6": 23.326244118003075
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 7,
+        "recovered": 7,
+        "medianRecoveredMinutes": 0.22222222222222474,
+        "recoveredP90Minutes": 0.36638888888889104
+      }
+    },
+    {
+      "group": "selection/coupled/insurance-first-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "winnerMedians": {
+        "minutes": 18.197499999999998,
+        "firstMillionMinutes": 12.932222222222224,
+        "finalPhaseMinutes": 4.799444444444447,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.261388888888888,
+        "finalNoPurchaseMinutes": 3.2436111111111114,
+        "work": 10,
+        "workMinutes": 1.0833333333333333,
+        "idleMinutes": 0.0,
+        "drops": 490,
+        "casinoPurchases": 38
+      },
+      "fastestWinMinutes": 11.161666666666664,
+      "allLongestGapP90": 3.9608333333333356,
+      "allLongestGapMax": 4.372222222222223,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 1.011388888888889,
+        "3": 7.706111111111113,
+        "4": 10.779722222222222,
+        "5": 12.683055555555557,
+        "6": 13.438333333333334
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 9,
+        "recovered": 9,
+        "medianRecoveredMinutes": 0.377222222222224,
+        "recoveredP90Minutes": 0.9052777777777777
+      }
+    },
+    {
+      "group": "selection/coupled/stake-first-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "winnerMedians": {
+        "minutes": 16.15708333333334,
+        "firstMillionMinutes": 10.245138888888892,
+        "finalPhaseMinutes": 4.866944444444442,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.220000000000001,
+        "finalNoPurchaseMinutes": 3.250277777777778,
+        "work": 8.0,
+        "workMinutes": 0.8666666666666667,
+        "idleMinutes": 0.0,
+        "drops": 491.5,
+        "casinoPurchases": 35.0
+      },
+      "fastestWinMinutes": 13.005833333333337,
+      "allLongestGapP90": 2.415555555555556,
+      "allLongestGapMax": 2.9777777777777783,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.5306944444444444,
+        "3": 3.818888888888888,
+        "4": 7.24763888888889,
+        "5": 8.986250000000002,
+        "6": 10.388055555555558
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 19.843758058399782,
+        "4": 56.61228945409509,
+        "5": 106.49689180848269,
+        "6": 24.18635800928802
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 35,
+        "recovered": 35,
+        "medianRecoveredMinutes": 0.186944444444444,
+        "recoveredP90Minutes": 0.5691666666666673
+      }
+    },
+    {
+      "group": "stopping/caps-only/cheapest-fast",
+      "count": 16,
+      "wins": 15,
+      "outcomes": {
+        "HP_DEATH": 1,
+        "VICTORY": 15
+      },
+      "winnerMedians": {
+        "minutes": 17.7225,
+        "firstMillionMinutes": 10.027500000000002,
+        "finalPhaseMinutes": 7.274999999999999,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.0463888888888895,
+        "finalNoPurchaseMinutes": 4.609444444444444,
+        "work": 9,
+        "workMinutes": 0.9333333333333333,
+        "idleMinutes": 0.0,
+        "drops": 616,
+        "casinoPurchases": 32
+      },
+      "fastestWinMinutes": 12.354722222222222,
+      "allLongestGapP90": 3.109444444444443,
+      "allLongestGapMax": 3.3747222222222226,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 0.225,
+        "3": 2.192222222222222,
+        "4": 7.968611111111108,
+        "5": 10.956666666666667,
+        "6": 12.946666666666665
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": 79.07003411643792
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 41,
+        "recovered": 41,
+        "medianRecoveredMinutes": 0.1925000000000002,
+        "recoveredP90Minutes": 0.6252777777777766
+      }
+    },
+    {
+      "group": "stopping/caps-only/insurance-first-fast",
+      "count": 16,
+      "wins": 15,
+      "outcomes": {
+        "HP_DEATH": 1,
+        "VICTORY": 15
+      },
+      "winnerMedians": {
+        "minutes": 20.7525,
+        "firstMillionMinutes": 11.724722222222221,
+        "finalPhaseMinutes": 8.89583333333333,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.036388888888888,
+        "finalNoPurchaseMinutes": 7.867500000000009,
+        "work": 10,
+        "workMinutes": 1.0,
+        "idleMinutes": 0.0,
+        "drops": 737,
+        "casinoPurchases": 32
+      },
+      "fastestWinMinutes": 15.633055555555558,
+      "allLongestGapP90": 3.664722222222224,
+      "allLongestGapMax": 4.157499999999998,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 0.5975,
+        "3": 3.5066666666666664,
+        "4": 9.652777777777775,
+        "5": 12.551111111111108,
+        "6": null
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 14.184294478527525,
+        "3": 7.471382821936359,
+        "4": 22.71555988335653,
+        "5": 30.055456526044733,
+        "6": null
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 23,
+        "recovered": 23,
+        "medianRecoveredMinutes": 0.10916666666666591,
+        "recoveredP90Minutes": 0.2888888888888886
+      }
+    },
+    {
+      "group": "stopping/control/cheapest-fast",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 10.19361111111111,
+        "firstMillionMinutes": 7.376388888888888,
+        "finalPhaseMinutes": 3.2673611111111107,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.5883333333333334,
+        "finalNoPurchaseMinutes": 1.5786111111111116,
+        "work": 10.0,
+        "workMinutes": 1.0666666666666667,
+        "idleMinutes": 0.0,
+        "drops": 258.0,
+        "casinoPurchases": 32.0
+      },
+      "fastestWinMinutes": 8.118888888888888,
+      "allLongestGapP90": 3.3891666666666667,
+      "allLongestGapMax": 3.830833333333333,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.242361111111111,
+        "3": 2.888611111111111,
+        "4": 6.561944444444444,
+        "5": 7.982916666666666,
+        "6": 8.541527777777777
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 2.1346808062675313,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": 18.07315065518581
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 70,
+        "recovered": 70,
+        "medianRecoveredMinutes": 0.17930555555555544,
+        "recoveredP90Minutes": 0.5280555555555547
+      }
+    },
+    {
+      "group": "stopping/control/insurance-first-fast",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 11.415555555555557,
+        "firstMillionMinutes": 7.327361111111111,
+        "finalPhaseMinutes": 3.727777777777778,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.46375,
+        "finalNoPurchaseMinutes": 2.7988888888888885,
+        "work": 10.0,
+        "workMinutes": 1.0583333333333333,
+        "idleMinutes": 0.0,
+        "drops": 278.0,
+        "casinoPurchases": 32.0
+      },
+      "fastestWinMinutes": 8.477499999999997,
+      "allLongestGapP90": 2.0819444444444457,
+      "allLongestGapMax": 2.6313888888888908,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 1.2519444444444443,
+        "3": 3.3377777777777773,
+        "4": 7.251944444444446,
+        "5": 8.865694444444443,
+        "6": null
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 2.36889344262295,
+        "3": 1.4346827929895345,
+        "4": 11.357779941678265,
+        "5": 8.415527827292525,
+        "6": null
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 76,
+        "recovered": 76,
+        "medianRecoveredMinutes": 0.18194444444444477,
+        "recoveredP90Minutes": 0.6347222222222224
+      }
+    },
+    {
+      "group": "stopping/coupled/cheapest-fast",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 16.633472222222224,
+        "firstMillionMinutes": 10.2375,
+        "finalPhaseMinutes": 5.773472222222225,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 2.320833333333333,
+        "finalNoPurchaseMinutes": 4.845416666666669,
+        "work": 7.0,
+        "workMinutes": 0.75,
+        "idleMinutes": 0.0,
+        "drops": 541.0,
+        "casinoPurchases": 32.0
+      },
+      "fastestWinMinutes": 12.097777777777777,
+      "allLongestGapP90": 3.401388888888888,
+      "allLongestGapMax": 4.0819444444444475,
+      "winnerStakeUnlockMedians": {
+        "1": 0.2125,
+        "2": 1.7529166666666667,
+        "3": 5.4475,
+        "4": 8.714027777777778,
+        "5": 10.5575,
+        "6": 11.335
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": 23.023536457872396
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 17,
+        "recovered": 17,
+        "medianRecoveredMinutes": 0.19805555555555637,
+        "recoveredP90Minutes": 0.8850000000000013
+      }
+    },
+    {
+      "group": "stopping/coupled/insurance-first-fast",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "winnerMedians": {
+        "minutes": 18.71944444444445,
+        "firstMillionMinutes": 9.79652777777778,
+        "finalPhaseMinutes": 8.02152777777778,
+        "firstCasinoPurchaseMinutes": 0.2125,
+        "longestInternalGapMinutes": 1.7238888888888888,
+        "finalNoPurchaseMinutes": 7.62,
+        "work": 10.0,
+        "workMinutes": 1.0416666666666665,
+        "idleMinutes": 0.0,
+        "drops": 692.0,
+        "casinoPurchases": 32.0
+      },
+      "fastestWinMinutes": 14.726666666666668,
+      "allLongestGapP90": 3.2377777777777803,
+      "allLongestGapMax": 4.198888888888888,
+      "winnerStakeUnlockMedians": {
+        "1": 0.22083333333333333,
+        "2": 1.3290277777777777,
+        "3": 4.7693055555555555,
+        "4": 8.187916666666668,
+        "5": 9.808194444444444,
+        "6": null
+      },
+      "winnerStakeProxyPaybackMedians": {
+        "1": null,
+        "2": 19.740778688524586,
+        "3": 14.882818543799837,
+        "4": 44.373704920201114,
+        "5": null,
+        "6": null
+      },
+      "observedCasinoDrawdowns": {
+        "thresholdFraction": 0.1,
+        "count": 16,
+        "recovered": 16,
+        "medianRecoveredMinutes": 0.18736111111111123,
+        "recoveredP90Minutes": 0.2747222222222225
+      }
+    }
+  ],
+  "paired": {
+    "holdout/caps-only/cheapest-fast": {
+      "commonWins": 23,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 6.813333333333328,
+        "finalPhaseMinutes": 5.328055555555552,
+        "longestInternalGapMinutes": 0.1991666666666665,
+        "finalNoPurchaseMinutes": 2.5136111111111124,
+        "work": -1,
+        "workMinutes": -0.08333333333333326,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/caps-only/income-path-fast": {
+      "commonWins": 23,
+      "candidateOnlyWins": 1,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.9455555555555595,
+        "finalPhaseMinutes": 4.603333333333332,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 2.6738888888888885,
+        "work": -2,
+        "workMinutes": -0.18333333333333324,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/caps-only/income-path-insurance-fast": {
+      "commonWins": 24,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 6.363611111111107,
+        "finalPhaseMinutes": 4.405972222222223,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 2.5884722222222156,
+        "work": -2.0,
+        "workMinutes": -0.22499999999999992,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/caps-only/insurance-first-fast": {
+      "commonWins": 23,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 8.604444444444436,
+        "finalPhaseMinutes": 5.262500000000005,
+        "longestInternalGapMinutes": 0.6036111111111102,
+        "finalNoPurchaseMinutes": 2.568611111111113,
+        "work": -1,
+        "workMinutes": -0.10000000000000009,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/caps-only/stake-first-fast": {
+      "commonWins": 24,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 6.941111111111109,
+        "finalPhaseMinutes": 4.830277777777777,
+        "longestInternalGapMinutes": 0.32861111111110985,
+        "finalNoPurchaseMinutes": 2.57111111111111,
+        "work": -1.0,
+        "workMinutes": -0.10000000000000009,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/coupled/cheapest-fast": {
+      "commonWins": 24,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 4.322500000000001,
+        "finalPhaseMinutes": 2.068055555555555,
+        "longestInternalGapMinutes": 0.330277777777778,
+        "finalNoPurchaseMinutes": 2.4866666666666664,
+        "work": -3.0,
+        "workMinutes": -0.25833333333333336,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/coupled/income-path-fast": {
+      "commonWins": 23,
+      "candidateOnlyWins": 1,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 4.263888888888896,
+        "finalPhaseMinutes": 2.0816666666666688,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 2.045000000000001,
+        "work": -1,
+        "workMinutes": -0.08333333333333326,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/coupled/income-path-insurance-fast": {
+      "commonWins": 24,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 4.742638888888884,
+        "finalPhaseMinutes": 2.4679166666666683,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 2.178749999999999,
+        "work": -2.0,
+        "workMinutes": -0.1833333333333333,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/coupled/insurance-first-fast": {
+      "commonWins": 24,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 4.349444444444443,
+        "finalPhaseMinutes": 2.0908333333333355,
+        "longestInternalGapMinutes": 0.483055555555555,
+        "finalNoPurchaseMinutes": 2.4137499999999976,
+        "work": -1.5,
+        "workMinutes": -0.14999999999999997,
+        "idleMinutes": 0.0
+      }
+    },
+    "holdout/coupled/stake-first-fast": {
+      "commonWins": 24,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.298472222222221,
+        "finalPhaseMinutes": 1.7881944444444415,
+        "longestInternalGapMinutes": 0.5106944444444449,
+        "finalNoPurchaseMinutes": 2.387361111111111,
+        "work": -1.5,
+        "workMinutes": -0.16666666666666663,
+        "idleMinutes": 0.0
+      }
+    },
+    "ordinary/caps-only/cheapest-ordinary": {
+      "commonWins": 16,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 8.781944444444441,
+        "finalPhaseMinutes": 5.246249999999993,
+        "longestInternalGapMinutes": 0.2808333333333327,
+        "finalNoPurchaseMinutes": 2.691527777777776,
+        "work": -1.5,
+        "workMinutes": -0.32499999999999996,
+        "idleMinutes": 0.0
+      }
+    },
+    "ordinary/caps-only/insurance-first-ordinary": {
+      "commonWins": 16,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 9.542916666666668,
+        "finalPhaseMinutes": 5.618750000000001,
+        "longestInternalGapMinutes": 0.5093055555555579,
+        "finalNoPurchaseMinutes": 2.805555555555552,
+        "work": -1.5,
+        "workMinutes": -0.30000000000000004,
+        "idleMinutes": 0.0
+      }
+    },
+    "ordinary/coupled/cheapest-ordinary": {
+      "commonWins": 16,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 6.136666666666667,
+        "finalPhaseMinutes": 1.7263888888888888,
+        "longestInternalGapMinutes": 0.4511111111111118,
+        "finalNoPurchaseMinutes": 2.881111111111112,
+        "work": -1.0,
+        "workMinutes": -0.22499999999999998,
+        "idleMinutes": 0.0
+      }
+    },
+    "ordinary/coupled/insurance-first-ordinary": {
+      "commonWins": 16,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 6.080833333333328,
+        "finalPhaseMinutes": 2.308472222222222,
+        "longestInternalGapMinutes": 0.7327777777777761,
+        "finalNoPurchaseMinutes": 2.7786111111111174,
+        "work": -1.0,
+        "workMinutes": -0.2500000000000001,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/caps-only/cheapest-fast": {
+      "commonWins": 8,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 7.168611111111115,
+        "finalPhaseMinutes": 5.637083333333333,
+        "longestInternalGapMinutes": 0.5136111111111094,
+        "finalNoPurchaseMinutes": 2.311250000000002,
+        "work": -0.5,
+        "workMinutes": -0.08333333333333331,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/caps-only/income-path-fast": {
+      "commonWins": 8,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 7.076666666666665,
+        "finalPhaseMinutes": 4.1905555555555605,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 3.1477777777777787,
+        "work": -1.5,
+        "workMinutes": -0.1416666666666666,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/caps-only/income-path-insurance-fast": {
+      "commonWins": 7,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 6.935833333333338,
+        "finalPhaseMinutes": 4.219166666666666,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 3.046666666666666,
+        "work": 1,
+        "workMinutes": 0.08333333333333326,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/caps-only/insurance-first-fast": {
+      "commonWins": 8,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 9.27388888888889,
+        "finalPhaseMinutes": 5.780972222222223,
+        "longestInternalGapMinutes": 0.3809722222222218,
+        "finalNoPurchaseMinutes": 2.66,
+        "work": -1.0,
+        "workMinutes": -0.08333333333333331,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/caps-only/stake-first-fast": {
+      "commonWins": 7,
+      "candidateOnlyWins": 1,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 7.6775000000000055,
+        "finalPhaseMinutes": 5.208888888888884,
+        "longestInternalGapMinutes": -0.18861111111111084,
+        "finalNoPurchaseMinutes": 2.6036111111111078,
+        "work": 1,
+        "workMinutes": 0.03333333333333344,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/coupled/cheapest-fast": {
+      "commonWins": 8,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 4.021250000000003,
+        "finalPhaseMinutes": 2.2931944444444436,
+        "longestInternalGapMinutes": 0.35652777777777767,
+        "finalNoPurchaseMinutes": 2.214027777777777,
+        "work": -0.5,
+        "workMinutes": -0.025000000000000078,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/coupled/income-path-fast": {
+      "commonWins": 7,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 6.198611111111106,
+        "finalPhaseMinutes": 2.5866666666666696,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 2.073055555555561,
+        "work": 2,
+        "workMinutes": 0.1499999999999999,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/coupled/income-path-insurance-fast": {
+      "commonWins": 7,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 4.801666666666669,
+        "finalPhaseMinutes": 1.8075000000000045,
+        "longestInternalGapMinutes": 0.0,
+        "finalNoPurchaseMinutes": 2.2969444444444416,
+        "work": -2,
+        "workMinutes": -0.20000000000000007,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/coupled/insurance-first-fast": {
+      "commonWins": 7,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 5.222777777777777,
+        "finalPhaseMinutes": 1.1897222222222261,
+        "longestInternalGapMinutes": 0.5977777777777786,
+        "finalNoPurchaseMinutes": 2.228333333333333,
+        "work": 0,
+        "workMinutes": 0.033333333333333215,
+        "idleMinutes": 0.0
+      }
+    },
+    "selection/coupled/stake-first-fast": {
+      "commonWins": 7,
+      "candidateOnlyWins": 1,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.453888888888889,
+        "finalPhaseMinutes": 2.298055555555557,
+        "longestInternalGapMinutes": 0.2205555555555554,
+        "finalNoPurchaseMinutes": 2.1486111111111126,
+        "work": 0,
+        "workMinutes": -0.01666666666666683,
+        "idleMinutes": 0.0
+      }
+    },
+    "stopping/caps-only/cheapest-fast": {
+      "commonWins": 15,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 6.434999999999999,
+        "finalPhaseMinutes": 4.172222222222217,
+        "longestInternalGapMinutes": 0.1991666666666665,
+        "finalNoPurchaseMinutes": 3.065555555555553,
+        "work": -1,
+        "workMinutes": -0.08333333333333326,
+        "idleMinutes": 0.0
+      }
+    },
+    "stopping/caps-only/insurance-first-fast": {
+      "commonWins": 15,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 1,
+      "medianDeltas": {
+        "minutes": 9.508888888888894,
+        "finalPhaseMinutes": 5.643055555555559,
+        "longestInternalGapMinutes": 0.9922222222222197,
+        "finalNoPurchaseMinutes": 5.221388888888889,
+        "work": -1,
+        "workMinutes": -0.10000000000000009,
+        "idleMinutes": 0.0
+      }
+    },
+    "stopping/coupled/cheapest-fast": {
+      "commonWins": 16,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 4.890416666666664,
+        "finalPhaseMinutes": 2.6752777777777754,
+        "longestInternalGapMinutes": 0.4000000000000009,
+        "finalNoPurchaseMinutes": 3.2051388888888868,
+        "work": -3.0,
+        "workMinutes": -0.3166666666666666,
+        "idleMinutes": 0.0
+      }
+    },
+    "stopping/coupled/insurance-first-fast": {
+      "commonWins": 16,
+      "candidateOnlyWins": 0,
+      "controlOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 7.607083333333337,
+        "finalPhaseMinutes": 4.731250000000003,
+        "longestInternalGapMinutes": 0.4109722222222233,
+        "finalNoPurchaseMinutes": 5.274722222222224,
+        "work": -0.5,
+        "workMinutes": -0.0666666666666666,
+        "idleMinutes": 0.0
+      }
+    }
+  },
+  "incomeCaches": [
+    {
+      "path": "holdout/caps-only/income-cache.json",
+      "boards": 554,
+      "preloaded": 527,
+      "executions": 3456
+    },
+    {
+      "path": "holdout/control/income-cache.json",
+      "boards": 576,
+      "preloaded": 527,
+      "executions": 6272
+    },
+    {
+      "path": "holdout/coupled/income-cache.json",
+      "boards": 556,
+      "preloaded": 527,
+      "executions": 3712
+    },
+    {
+      "path": "selection/caps-only/income-cache.json",
+      "boards": 423,
+      "preloaded": 0,
+      "executions": 54144
+    },
+    {
+      "path": "selection/control/income-cache.json",
+      "boards": 438,
+      "preloaded": 0,
+      "executions": 56064
+    },
+    {
+      "path": "selection/coupled/income-cache.json",
+      "boards": 458,
+      "preloaded": 0,
+      "executions": 58624
+    }
+  ],
+  "newPhysicalExecutions": 182272,
+  "distinctRankingSeeds": 128,
+  "limitations": "Matched seeds reused across policies/configs; paths diverge. Winner medians condition on survival. Payback proxies use isolated means, ignore insurance/risk and real concurrent throughput. Recovery is a depleted initial-cash intervention, not an actual preceding losing cascade. Milestones observe decision-boundary cash.",
+  "stoppingVsUnlimited": {
+    "stopping/caps-only/cheapest-fast": {
+      "commonWins": 15,
+      "medianMinutesDelta": -1.3086111111111123,
+      "controlOnlyWins": 0,
+      "cutoffReached": 15
+    },
+    "stopping/caps-only/insurance-first-fast": {
+      "commonWins": 15,
+      "medianMinutesDelta": 0.7066666666666634,
+      "controlOnlyWins": 0,
+      "cutoffReached": 15
+    },
+    "stopping/control/cheapest-fast": {
+      "commonWins": 16,
+      "medianMinutesDelta": -0.3827777777777772,
+      "controlOnlyWins": 0,
+      "cutoffReached": 16
+    },
+    "stopping/control/insurance-first-fast": {
+      "commonWins": 16,
+      "medianMinutesDelta": 0.2504166666666663,
+      "controlOnlyWins": 0,
+      "cutoffReached": 16
+    },
+    "stopping/coupled/cheapest-fast": {
+      "commonWins": 16,
+      "medianMinutesDelta": 0.5352777777777762,
+      "controlOnlyWins": 0,
+      "cutoffReached": 16
+    },
+    "stopping/coupled/insurance-first-fast": {
+      "commonWins": 16,
+      "medianMinutesDelta": 3.0036111111111143,
+      "controlOnlyWins": 0,
+      "cutoffReached": 16
+    }
+  },
+  "purchaseCounts": {
+    "holdout/caps-only/cheapest-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        16,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "holdout/caps-only/income-path-fast": {
+      "finalCasinoPurchases": [
+        31,
+        32,
+        31,
+        32,
+        32,
+        31,
+        31,
+        32,
+        32,
+        31,
+        32,
+        32,
+        31,
+        31,
+        32,
+        31,
+        32,
+        32,
+        31,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    "holdout/caps-only/income-path-insurance-fast": {
+      "finalCasinoPurchases": [
+        34,
+        35,
+        35,
+        34,
+        34,
+        35,
+        34,
+        34,
+        35,
+        34,
+        35,
+        34,
+        35,
+        34,
+        35,
+        34,
+        35,
+        35,
+        35,
+        35,
+        34,
+        35,
+        35,
+        33
+      ]
+    },
+    "holdout/caps-only/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        19,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "holdout/caps-only/stake-first-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "holdout/control/cheapest-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "holdout/control/income-path-fast": {
+      "finalCasinoPurchases": [
+        31,
+        32,
+        31,
+        30,
+        32,
+        31,
+        29,
+        30,
+        31,
+        30,
+        31,
+        31,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+        29,
+        31,
+        31,
+        16,
+        30,
+        32
+      ]
+    },
+    "holdout/control/income-path-insurance-fast": {
+      "finalCasinoPurchases": [
+        34,
+        33,
+        33,
+        34,
+        35,
+        34,
+        34,
+        34,
+        33,
+        33,
+        33,
+        34,
+        34,
+        33,
+        34,
+        34,
+        34,
+        35,
+        33,
+        35,
+        33,
+        33,
+        34,
+        34
+      ]
+    },
+    "holdout/control/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "holdout/control/stake-first-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "holdout/coupled/cheapest-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "holdout/coupled/income-path-fast": {
+      "finalCasinoPurchases": [
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    "holdout/coupled/income-path-insurance-fast": {
+      "finalCasinoPurchases": [
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37,
+        37
+      ]
+    },
+    "holdout/coupled/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "holdout/coupled/stake-first-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "ordinary/caps-only/cheapest-ordinary": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "ordinary/caps-only/insurance-first-ordinary": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "ordinary/control/cheapest-ordinary": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "ordinary/control/insurance-first-ordinary": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "ordinary/coupled/cheapest-ordinary": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "ordinary/coupled/insurance-first-ordinary": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "selection/caps-only/cheapest-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "selection/caps-only/income-path-fast": {
+      "finalCasinoPurchases": [
+        31,
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        32
+      ]
+    },
+    "selection/caps-only/income-path-insurance-fast": {
+      "finalCasinoPurchases": [
+        19,
+        34,
+        34,
+        34,
+        35,
+        35,
+        34,
+        35
+      ]
+    },
+    "selection/caps-only/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "selection/caps-only/stake-first-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "selection/control/cheapest-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "selection/control/income-path-fast": {
+      "finalCasinoPurchases": [
+        32,
+        30,
+        31,
+        30,
+        30,
+        31,
+        31,
+        31
+      ]
+    },
+    "selection/control/income-path-insurance-fast": {
+      "finalCasinoPurchases": [
+        34,
+        34,
+        33,
+        34,
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    "selection/control/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "selection/control/stake-first-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        17,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "selection/coupled/cheapest-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "selection/coupled/income-path-fast": {
+      "finalCasinoPurchases": [
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        14,
+        34
+      ]
+    },
+    "selection/coupled/income-path-insurance-fast": {
+      "finalCasinoPurchases": [
+        37,
+        37,
+        37,
+        18,
+        37,
+        37,
+        37,
+        37
+      ]
+    },
+    "selection/coupled/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        10,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38,
+        38
+      ]
+    },
+    "selection/coupled/stake-first-fast": {
+      "finalCasinoPurchases": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    "stopping/caps-only/cheapest-fast": {
+      "finalCasinoPurchases": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        16,
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    "stopping/caps-only/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        19,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    "stopping/control/cheapest-fast": {
+      "finalCasinoPurchases": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    "stopping/control/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    "stopping/coupled/cheapest-fast": {
+      "finalCasinoPurchases": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    "stopping/coupled/insurance-first-fast": {
+      "finalCasinoPurchases": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    }
+  }
+}

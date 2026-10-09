@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "promotedSHA256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+  "coupledEqualExcludingMeta": true,
+  "exactPromotedConfigParitySessions": 2,
+  "parityExcludedFields": [
+    "result.configHash",
+    "result.configVersion"
+  ],
+  "sameSeedResultTracePhysicalSessions": true,
+  "unitTests": 431,
+  "unitTestFiles": 75,
+  "pagesBuildAndTypecheck": "passed",
+  "localBrowser": "Chromium missing; CI browser smoke and verify-live required"
+}

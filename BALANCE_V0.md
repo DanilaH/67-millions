@@ -2,7 +2,7 @@
 
 > **Non-authoritative view.** Runtime numeric source of truth is `balance.v0.json`. This file should be regenerated/updated whenever the JSON changes.
 
-Config version: `0.8-candidate-price0.5-payout1.5`. This is the T070 playtest candidate, not a frozen RC. Target successful median: ~30 real minutes.
+Config version: `0.9-ladder30k-playtest`. This is the T070 playtest candidate, not a frozen RC. Target successful median: ~30 real minutes.
 
 Historical 2026-10-01 T070 changes: job salaries ×1.5; job and EV/special/Insurance upgrade prices ×0.5; max-bet prices and all game rules, needs, Barry payments and physics are unchanged. See `reports/release/2026-10-01/README.md` for exact candidate-hash evidence and measurement limits.
 
@@ -101,13 +101,13 @@ Failure: salary 0; fine 25% potential payout; extra Happiness -8.
 |---:|---:|---:|
 | 0 | 500 ₽ | 0 ₽ |
 | 1 | 2 500 ₽ | 500 ₽ |
-| 2 | 12 500 ₽ | 1 800 ₽ |
-| 3 | 30 000 ₽ | 7 000 ₽ |
-| 4 | 40 000 ₽ | 250 000 ₽ |
-| 5 | 65 000 ₽ | 1 500 000 ₽ |
-| 6 | 100 000 ₽ | 6 000 000 ₽ |
+| 2 | 5 000 ₽ | 3 750 ₽ |
+| 3 | 10 000 ₽ | 25 714 ₽ |
+| 4 | 15 000 ₽ | 125 000 ₽ |
+| 5 | 22 000 ₽ | 420 000 ₽ |
+| 6 | 30 000 ₽ | 1 371 429 ₽ |
 
-**Price provenance:** 2026-10-05 economy candidate, SHA-256 `53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc`. See [selection and independent comparison](reports/pacing/2026-10-05-economy/README.md). First-level board prices, center and Insurance are unchanged. Other board tracks cost ×2/×4/×8/×12 at levels 2/3/4/5 relative to the previous config; effects and physics are unchanged. Purchased levels survive; future stakes use the new caps, while already-paid stakes retain their original amounts. Human pacing and continuous-burst dominance remain open.
+**Historical price provenance (superseded by the 2026-10-09 ladder candidate below):** 2026-10-05 economy candidate, SHA-256 `53c9ab00f72eecf71f379edab8938f7dc3d522fa3a28b4b05c292fd752f1afdc`. See [selection and independent comparison](reports/pacing/2026-10-05-economy/README.md). First-level board prices, center and Insurance are unchanged. Other board tracks cost ×2/×4/×8/×12 at levels 2/3/4/5 relative to the previous config; effects and physics are unchanged. Purchased levels survive; future stakes use the new caps, while already-paid stakes retain their original amounts. Human pacing and continuous-burst dominance remain open.
 
 ### Insurance
 - L1: 500 ₽; after 3 losing Drop(s), next Drop floor 0.75x.
@@ -141,8 +141,14 @@ Pocket upgrades now redistribute income from rare edges toward earlier regular r
 
 Prices, max bets, physical routes, base board and special effects are unchanged. Current paid roots retain the old multiplier table; the next paid world uses the candidate. [Payback and matched progression evidence](reports/pacing/2026-10-06-payback/README.md). This candidate improves sampled purchase-gap/final-phase distribution during concurrent play but increases modeled survival and slows solo play. The ~30-minute pacing and challenge gates remain OPEN; this is not a balance freeze.
 
-## 2026-10-07 paid capacity playtest candidate
+## Historical 2026-10-07 paid capacity playtest candidate
 
 New runs start with two simultaneous paid launches. The “Больше шаров” track unlocks 3 / 4 / 6 places for 5,000 / 25,000 / 1,000,000 ₽. Each click still buys exactly one root; Splitter descendants do not consume paid-root places. Late stake caps are 40,000 / 65,000 / 100,000 ₽; existing max-bet upgrade prices are unchanged. Old saves without the capacity field retain six places, and already-paid roots retain their original stake and payout rules.
 
 This is a user-authorized playtest candidate, not accepted final balance. Diverse-seed simulation evidence and remaining policy/pacing risks are recorded in [the final candidate audit](reports/pacing/2026-10-07-final-check/README.md). Human pacing (T071), long gaps between upgrades and optimal purchase/launch policy remain open.
+
+## 2026-10-09 full-ladder playtest candidate
+
+First stake opening remains 500→2,500 ₽ for 500 ₽. The current cap/price table above supersedes previous stake ladders. Capacity remains 2→3→4→6; prices now 5,000 / 25,000 / 300,000 ₽. Amplifier IV/V cost 600,000 / 2,700,000 ₽; Return III/IV 360,000 / 2,400,000 ₽; Splitter IV/V 1,200,000 / 5,400,000 ₽. Other prices and all effects, physics, pockets, needs, work, events and Barry remain unchanged. Already-paid original stakes and payouts survive; existing purchased levels stay, with no reset or refund. Legacy capacity migration remains six.
+
+[Selection, independent holdout, ordinary timing, stopping and limitations](reports/pacing/2026-10-09-ladder/README.md): coupled ordinary medians 22.46/22.86 modeled min; 672 labeled sessions / 32 distinct full-game seeds. Config differs from the simulated coupled input only in descriptive meta. T070/T071 and the ~30-minute human pacing gate remain OPEN; longer final accumulation (~4 min after the last purchase) needs human evaluation.

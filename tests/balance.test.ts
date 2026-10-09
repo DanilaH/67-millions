@@ -6,7 +6,7 @@ import { parseBalanceConfig } from '../src/config/balance';
 describe('balance config', () => {
   it('accepts canonical balance.v0.json', () => {
     const parsed = parseBalanceConfig(rawBalance);
-    expect(parsed.meta.version).toBe('0.8-candidate-price0.5-payout1.5');
+    expect(parsed.meta.version).toBe('0.9-ladder30k-playtest');
     expect(parsed.plinko.basePockets).toHaveLength(parsed.plinko.rows + 1);
   });
 

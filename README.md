@@ -91,3 +91,5 @@ The panel hides during jobs and casino play so it cannot intercept touch paths.
 2026-10-06 payback follow-up: [progression candidate and explicit tradeoffs](reports/pacing/2026-10-06-payback/README.md). Purchased center/inner payouts improve and upgraded edge payouts are reduced; bare board, prices and physics stay unchanged. Concurrent-play purchase gaps shrink and the final economy phase grows in matched samples. Solo pacing and increased modeled survival remain open concerns. The debug click-through deployment failure was reproduced and fixed separately in `9006666`.
 
 2026-10-07: [paid-capacity playtest candidate and verification](reports/release/2026-10-07/PAID_CAPACITY.md). New runs start at two simultaneous paid roots; legacy saves retain six. This supersedes the free-capacity rule for new runs and does not accept final balance.
+
+Current numeric playtest candidate (2026-10-09): `0.9-ladder30k-playtest`, [whole-ladder evidence](reports/pacing/2026-10-09-ladder/README.md). Ordinary modeled paths take about 22–23 minutes; final human balance and T071 remain open.

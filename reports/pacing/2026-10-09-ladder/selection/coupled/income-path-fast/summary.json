@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "purchaseCutoff": null,
+    "purchaseCutoffSemantics": "all casino track levels including stakes, capacity, insurance; work upgrades remain allowed",
+    "incomeEstimator": {
+      "count": 128,
+      "seedStart": 67146000,
+      "cache": "reports/pacing/2026-10-09-ladder/selection/coupled/income-cache.json",
+      "model": "normalized-paired-single-root-capacity-proxy-v2",
+      "lookahead": "entire same-track chain; cumulative prerequisite cost"
+    },
+    "configHash": "f9970a8d9ce898ddc23ff7dba4bbec08d44747517793f4884150abbc6507b9fc",
+    "revision": "329d2162f132b5603fff3c0494e3543fc29f8659",
+    "sources": {
+      "simulation/full-game/marginalIncome.ts": "4836601a1b1ac180cb4473ec8dbdf332c696a322d727546238d4e55f36caade0",
+      "simulation/full-game/adversarialAudit.ts": "a0093746d06d6e693000eb7b62584b62ddcade112c9604033fc5061abb4c1e84",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "income-path",
+    "mode": "continuous",
+    "pace": "fast",
+    "count": 8,
+    "seedStart": 67156000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 0.25,
+      "workSeconds": {
+        "courier": 6,
+        "trash": 5,
+        "dishes": 8
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 7,
+    "BARRY_LOSS": 1
+  },
+  "wins": 7,
+  "medianWinMinutes": 21.672222222222228,
+  "p10WinMinutes": 12.146388888888888,
+  "p90WinMinutes": 23.062777777777775,
+  "minimumWinMinutes": 12.146388888888888,
+  "medianAllMinutes": 20.50652777777778,
+  "medianWinWork": 11,
+  "medianWinDrops": 583,
+  "fastestSeed": 867841519
+}

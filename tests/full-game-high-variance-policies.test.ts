@@ -102,7 +102,7 @@ describe('high-variance full-game policies', () => {
   it('high-variance policies choose the largest quick bet that still preserves their smaller reserve', () => {
     const state = {
       ...createInitialGameState(balance, 13),
-      cash: 9_000,
+      cash: 5_500,
       plinkoMaxBetLevel: 2,
       plinkoJackpotBiasLevel:
         balance.plinko.jackpotBias[

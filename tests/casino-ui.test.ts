@@ -17,7 +17,7 @@ describe('T057 casino UI model', () => {
   it('builds the three canonical quick bets with actual capped amounts', () => {
     const state = {
       ...createInitialGameState(balance, 1_101),
-      cash: 10_000,
+      cash: 4_000,
       plinkoMaxBetLevel: 2,
       plinkoSelectedBetFraction: 0.5 as const,
     };
@@ -34,9 +34,9 @@ describe('T057 casino UI model', () => {
       1,
     ]);
     expect(bets.map((bet) => bet.amount)).toEqual([
-      3_125,
-      6_250,
-      10_000,
+      1_250,
+      2_500,
+      4_000,
     ]);
     expect(bets.map(bet => bet.label)).toEqual(bets.map(bet => `${bet.amount!.toLocaleString('ru-RU')} ₽`));
     expect(

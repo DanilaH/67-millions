@@ -149,7 +149,7 @@ describe('baseline full-game policies', () => {
   it('AGGRESSIVE falls back from 100% to the largest reserve-safe quick bet', () => {
     const state = {
       ...createInitialGameState(balance, 24),
-      cash: 30_000,
+      cash: 10_000,
       jobLevels: {
         dishes: 3,
         trash: 3,
@@ -199,7 +199,7 @@ describe('baseline full-game policies', () => {
   it('does not place a Drop that would consume the configured policy reserve', () => {
     const maxed = {
       ...createInitialGameState(balance, 23),
-      cash: 20_000,
+      cash: 15_000,
       jobLevels: {
         dishes: 3,
         trash: 3,
