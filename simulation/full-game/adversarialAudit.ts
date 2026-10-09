@@ -32,6 +32,8 @@ const incomeCount = Number(process.argv[9] ?? 128);
 const incomeSeed = Number(process.argv[10] ?? 67146000);
 const incomeCache = process.argv[11] ?? `${output}/income-cache.json`;
 const income = strategy.startsWith('income') ? createMarginalIncomeEstimator(config,incomeCount,incomeSeed,incomeCache) : null;
+const stopAfterPurchases = process.env.AUDIT_STOP_AFTER_PURCHASES === undefined ? null : Number(process.env.AUDIT_STOP_AFTER_PURCHASES);
+if (stopAfterPurchases !== null && (!Number.isInteger(stopAfterPurchases) || stopAfterPurchases < 0)) throw Error('Invalid purchase cutoff');
 const buy = (id: CasinoUpgradeId): FullGameDecision => id === 'capacity' ? {type:'BUY_PLINKO_CAPACITY'}
   : id === 'insurance' ? {type:'BUY_PLINKO_INSURANCE'} : id === 'maxBet' ? {type:'BUY_PLINKO_MAX_BET'}
   : id === 'center' || id === 'mid' || id === 'jackpot' ? {type:'BUY_PLINKO_POCKET',track:id}
@@ -52,10 +54,12 @@ for (let index = 0; index < count; index++) {
     if (strategy !== 'ignore-needs' && !['PLINKO','WORK','WAIT','BUY_PLINKO_MAX_BET','BUY_PLINKO_POCKET','BUY_PLINKO_SPECIAL','BUY_PLINKO_INSURANCE'].includes(original.type)) return original;
     const reserve = strategy === 'thin-reserve' ? getBarryPaymentDue(s,config)*1.15+1000 : strategy === 'ignore-needs' || strategy === 'casino-only' ? 0 : getBarryPaymentDue(s,config)*profile.reserveMultiplier + profile.reserveFlat;
     const boardLevels = s.plinkoCenterLevel+s.plinkoMidLevel+s.plinkoJackpotLevel+s.plinkoAmplifierLevel+s.plinkoReturnLevel+s.plinkoSplitterLevel+s.plinkoJackpotBiasLevel;
+    const casinoPurchases = boardLevels+s.plinkoMaxBetLevel+s.plinkoCapacityLevel+s.plinkoInsuranceLevel;
     const rank = (id: CasinoUpgradeId) => strategy.startsWith('insurance') && id === 'insurance' ? 0
       : strategy === 'stake-first' && id === 'maxBet' ? 0
       : strategy === 'specials-first' && ['amplifier','return','splitter','jackpotBias'].includes(id) ? 0 : 1;
-    if (s.eventModifiers.plinkoLockRemainingMinutes === 0 && strategy !== 'casino-only' && !(strategy === 'hoard-12' && boardLevels >= 12)) {
+    if (s.eventModifiers.plinkoLockRemainingMinutes === 0 && strategy !== 'casino-only' && !(strategy === 'hoard-12' && boardLevels >= 12)
+      && (stopAfterPurchases === null || casinoPurchases < stopAfterPurchases)) {
       const choices = buildCasinoUpgradePreviews(s,null,config)
         .filter(p => !p.maxed && p.lockedReason === null && p.nextPrice !== null)
         .filter(p => strategy.startsWith('insurance') || strategy.startsWith('income') && strategy.endsWith('insurance') || p.id !== 'insurance')
@@ -116,7 +120,7 @@ for (let index = 0; index < count; index++) {
 }
 mkdirSync(output,{recursive:true});
 const sources=Object.fromEntries(['simulation/full-game/marginalIncome.ts','simulation/full-game/adversarialAudit.ts','simulation/full-game/runner.ts','simulation/full-game/sharedWorld.ts','simulation/full-game/continuousSession.ts','src/core/plinko-rules/insurance.ts'].map(p=>[p,hash(readFileSync(p,'utf8'))]));
-const metadata={incomeEstimator:income?{count:incomeCount,seedStart:incomeSeed,cache:incomeCache,model:'normalized-paired-single-root-capacity-proxy-v2',lookahead:strategy.includes('path')?'entire same-track chain; cumulative prerequisite cost':'one level'}:null,configHash,revision:execSync('git rev-parse HEAD').toString().trim(),sources,strategy,mode,pace,count,seedStart,seedSampling:'SHA256(seedStart:index) first uint32; matched seeds across strategies',model:'shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement',timing:{decisionSeconds:pace==='fast'?0.25:2,workSeconds:pace==='fast'?{courier:6,trash:5,dishes:8}:{courier:12,trash:15,dishes:18},launchSpacingSeconds:0.25},limitations:'Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades.'};
+const metadata={purchaseCutoff:stopAfterPurchases,purchaseCutoffSemantics:"all casino track levels including stakes, capacity, insurance; work upgrades remain allowed",incomeEstimator:income?{count:incomeCount,seedStart:incomeSeed,cache:incomeCache,model:'normalized-paired-single-root-capacity-proxy-v2',lookahead:strategy.includes('path')?'entire same-track chain; cumulative prerequisite cost':'one level'}:null,configHash,revision:execSync('git rev-parse HEAD').toString().trim(),sources,strategy,mode,pace,count,seedStart,seedSampling:'SHA256(seedStart:index) first uint32; matched seeds across strategies',model:'shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement',timing:{decisionSeconds:pace==='fast'?0.25:2,workSeconds:pace==='fast'?{courier:6,trash:5,dishes:8}:{courier:12,trash:15,dishes:18},launchSpacingSeconds:0.25},limitations:'Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades.'};
 writeFileSync(`${output}/runs.json.gz`,gzipSync(JSON.stringify({metadata,runs})));
 const minutes=(r:typeof runs[number])=>Object.values(r.result.diagnostics.activeSeconds!).reduce((a,b)=>a+b,0)/60;
 const wins=runs.filter(r=>r.result.outcome==='VICTORY');

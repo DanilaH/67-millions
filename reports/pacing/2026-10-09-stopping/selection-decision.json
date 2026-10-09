@@ -1,0 +1,25 @@
+{
+  "scores": [
+    {
+      "cutoff": 24,
+      "eligible": true,
+      "meanGroupWinnerMedianMinutes": 21.035439814814815
+    },
+    {
+      "cutoff": 28,
+      "eligible": true,
+      "meanGroupWinnerMedianMinutes": 15.23689814814815
+    },
+    {
+      "cutoff": 32,
+      "eligible": true,
+      "meanGroupWinnerMedianMinutes": 13.028425925925927
+    }
+  ],
+  "selected": {
+    "cutoff": 32,
+    "eligible": true,
+    "meanGroupWinnerMedianMinutes": 13.028425925925927
+  },
+  "criterion": "Small selection only; prefer no fewer winners in every group, then smallest unweighted mean of six group winner medians. Fresh holdout compares fixed selected cutoff to unlimited. Not a global optimizer."
+}

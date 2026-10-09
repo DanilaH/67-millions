@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "purchaseCutoff": 32,
+    "purchaseCutoffSemantics": "all casino track levels including stakes, capacity, insurance; work upgrades remain allowed",
+    "incomeEstimator": null,
+    "configHash": "4864d56d75e4b319aaf5241fb9da4c325a31d589c5bdb194fc7697a0e14b6778",
+    "revision": "58e5d9c89fb0961d3c982364b9752db1db522e85",
+    "sources": {
+      "simulation/full-game/marginalIncome.ts": "4836601a1b1ac180cb4473ec8dbdf332c696a322d727546238d4e55f36caade0",
+      "simulation/full-game/adversarialAudit.ts": "a0093746d06d6e693000eb7b62584b62ddcade112c9604033fc5061abb4c1e84",
+      "simulation/full-game/runner.ts": "85707f62d6e4219087142d015a53794ca25408bbe8dbb6f846838421ed72f27f",
+      "simulation/full-game/sharedWorld.ts": "e3d6a8021a6eb0f452d2317dfa593168b1510e4fd769feab33ab753bcd82ab0e",
+      "simulation/full-game/continuousSession.ts": "070fd41cc42a0d921b366b564b931a902a1123603552ae022fe646bc55db7ee6",
+      "src/core/plinko-rules/insurance.ts": "fcec7b9d6a9ef33ebfd111e2ed9dc1218c79380aa65adf4df25e854bf1a31cd2"
+    },
+    "strategy": "cheapest",
+    "mode": "continuous",
+    "pace": "ordinary",
+    "count": 16,
+    "seedStart": 67155000,
+    "seedSampling": "SHA256(seedStart:index) first uint32; matched seeds across strategies",
+    "model": "shared production board resolver and Phaser Matter fork; core purchases including real paid capacity; core insurance settlement",
+    "timing": {
+      "decisionSeconds": 2,
+      "workSeconds": {
+        "courier": 12,
+        "trash": 15,
+        "dishes": 18
+      },
+      "launchSpacingSeconds": 0.25
+    },
+    "limitations": "Bot policies, assumed human input times, 8% work failures; no render/load/save delays. No claim of human difficulty. Decision clock carry unified across menus; drawdown not sampled within cascades."
+  },
+  "outcomes": {
+    "VICTORY": 16
+  },
+  "wins": 16,
+  "medianWinMinutes": 14.957777777777778,
+  "p10WinMinutes": 11.505555555555555,
+  "p90WinMinutes": 19.188333333333336,
+  "minimumWinMinutes": 8.018055555555556,
+  "medianAllMinutes": 14.957777777777778,
+  "medianWinWork": 10,
+  "medianWinDrops": 239.5,
+  "fastestSeed": 3154847900
+}

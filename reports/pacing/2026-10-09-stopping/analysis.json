@@ -1,0 +1,1790 @@
+{
+  "runs": 608,
+  "distinctSeeds": 32,
+  "groups": [
+    {
+      "group": "holdout/control/cheapest-stop-32-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 5.352222222222223,
+      "cutoffReached": 24,
+      "winnerMedians": {
+        "minutes": 10.240555555555556,
+        "work": 10.0,
+        "drops": 243.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.7056944444444442,
+        "lastPurchaseMinutes": 8.85861111111111,
+        "afterLastPurchaseMinutes": 1.59013888888889,
+        "millionToFinishMinutes": 2.9523611111111108
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "holdout/control/cheapest-stop-none-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 6.340000000000001,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 10.795555555555554,
+        "work": 10.0,
+        "drops": 252.5,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 1.7056944444444442,
+        "lastPurchaseMinutes": 9.746249999999998,
+        "afterLastPurchaseMinutes": 1.0413888888888883,
+        "millionToFinishMinutes": 3.374166666666665
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "holdout/control/insurance-first-stop-32-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 7.244444444444444,
+      "cutoffReached": 24,
+      "winnerMedians": {
+        "minutes": 12.562361111111112,
+        "work": 10.5,
+        "drops": 312.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.6758333333333328,
+        "lastPurchaseMinutes": 9.439027777777778,
+        "afterLastPurchaseMinutes": 2.852222222222222,
+        "millionToFinishMinutes": 3.757777777777778
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "holdout/control/insurance-first-stop-none-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 7.6644444444444435,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 11.605694444444444,
+        "work": 10.5,
+        "drops": 253.0,
+        "purchases": 38.0,
+        "longestInternalGapMinutes": 1.6758333333333328,
+        "lastPurchaseMinutes": 10.680416666666666,
+        "afterLastPurchaseMinutes": 1.0277777777777781,
+        "millionToFinishMinutes": 3.3101388888888885
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "holdout/control/stake-first-stop-32-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 6.255,
+      "cutoffReached": 24,
+      "winnerMedians": {
+        "minutes": 10.601388888888888,
+        "work": 10.0,
+        "drops": 245.5,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.7522222222222217,
+        "lastPurchaseMinutes": 9.051527777777775,
+        "afterLastPurchaseMinutes": 1.3606944444444442,
+        "millionToFinishMinutes": 3.023194444444445
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "holdout/control/stake-first-stop-none-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 7.03861111111111,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 11.19222222222222,
+        "work": 10.0,
+        "drops": 254.0,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 1.7522222222222217,
+        "lastPurchaseMinutes": 10.027222222222221,
+        "afterLastPurchaseMinutes": 1.0523611111111117,
+        "millionToFinishMinutes": 3.6011111111111114
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "holdout/priced-middle/cheapest-stop-32-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 5.859166666666667,
+      "cutoffReached": 24,
+      "winnerMedians": {
+        "minutes": 12.781527777777779,
+        "work": 8.5,
+        "drops": 332.5,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 2.2286111111111118,
+        "lastPurchaseMinutes": 11.18986111111111,
+        "afterLastPurchaseMinutes": 1.5309722222222235,
+        "millionToFinishMinutes": 3.0637500000000015
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "holdout/priced-middle/cheapest-stop-none-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 6.566666666666666,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 12.882083333333334,
+        "work": 8.5,
+        "drops": 330.5,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 2.2286111111111118,
+        "lastPurchaseMinutes": 11.831666666666667,
+        "afterLastPurchaseMinutes": 1.098333333333333,
+        "millionToFinishMinutes": 3.4336111111111114
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "holdout/priced-middle/insurance-first-stop-32-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 9.223888888888888,
+      "cutoffReached": 24,
+      "winnerMedians": {
+        "minutes": 14.051250000000001,
+        "work": 9.0,
+        "drops": 387.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.7618055555555556,
+        "lastPurchaseMinutes": 11.064027777777778,
+        "afterLastPurchaseMinutes": 2.891527777777778,
+        "millionToFinishMinutes": 3.842638888888889
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "holdout/priced-middle/insurance-first-stop-none-fast",
+      "count": 24,
+      "wins": 24,
+      "outcomes": {
+        "VICTORY": 24
+      },
+      "fastestWinMinutes": 9.283611111111108,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 13.62027777777778,
+        "work": 9.0,
+        "drops": 334.5,
+        "purchases": 38.0,
+        "longestInternalGapMinutes": 1.7618055555555556,
+        "lastPurchaseMinutes": 12.54055555555556,
+        "afterLastPurchaseMinutes": 1.1197222222222223,
+        "millionToFinishMinutes": 3.3777777777777773
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "holdout/priced-middle/stake-first-stop-32-fast",
+      "count": 24,
+      "wins": 23,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 23
+      },
+      "fastestWinMinutes": 5.873055555555555,
+      "cutoffReached": 23,
+      "winnerMedians": {
+        "minutes": 12.457222222222223,
+        "work": 9,
+        "drops": 305,
+        "purchases": 32,
+        "longestInternalGapMinutes": 2.0349999999999997,
+        "lastPurchaseMinutes": 11.022500000000003,
+        "afterLastPurchaseMinutes": 1.3569444444444438,
+        "millionToFinishMinutes": 2.8127777777777787
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 4,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 4,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6,
+        "plinkoCapacityLevel": 3,
+        "plinkoInsuranceLevel": 0
+      }
+    },
+    {
+      "group": "holdout/priced-middle/stake-first-stop-none-fast",
+      "count": 24,
+      "wins": 23,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 23
+      },
+      "fastestWinMinutes": 6.969722222222223,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 13.198888888888888,
+        "work": 9,
+        "drops": 313,
+        "purchases": 35,
+        "longestInternalGapMinutes": 2.0349999999999997,
+        "lastPurchaseMinutes": 11.64916666666667,
+        "afterLastPurchaseMinutes": 1.1450000000000007,
+        "millionToFinishMinutes": 3.3511111111111127
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6,
+        "plinkoCapacityLevel": 3,
+        "plinkoInsuranceLevel": 0
+      }
+    },
+    {
+      "group": "ordinary/control/cheapest-stop-32-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "fastestWinMinutes": 8.018055555555556,
+      "cutoffReached": 16,
+      "winnerMedians": {
+        "minutes": 14.957777777777778,
+        "work": 10.0,
+        "drops": 239.5,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 2.584722222222222,
+        "lastPurchaseMinutes": 13.66638888888889,
+        "afterLastPurchaseMinutes": 1.686388888888889,
+        "millionToFinishMinutes": 3.631111111111112
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "ordinary/control/cheapest-stop-none-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "fastestWinMinutes": 9.50638888888889,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 15.552916666666665,
+        "work": 10.0,
+        "drops": 233.5,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 2.584722222222222,
+        "lastPurchaseMinutes": 14.480555555555554,
+        "afterLastPurchaseMinutes": 1.3983333333333356,
+        "millionToFinishMinutes": 4.257916666666665
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "ordinary/control/insurance-first-stop-32-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "fastestWinMinutes": 14.043333333333331,
+      "cutoffReached": 16,
+      "winnerMedians": {
+        "minutes": 18.35902777777778,
+        "work": 10.5,
+        "drops": 309.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 2.606250000000001,
+        "lastPurchaseMinutes": 14.664722222222222,
+        "afterLastPurchaseMinutes": 3.4140277777777817,
+        "millionToFinishMinutes": 4.9645833333333345
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "ordinary/control/insurance-first-stop-none-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "fastestWinMinutes": 14.35611111111111,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 17.415694444444448,
+        "work": 10.5,
+        "drops": 263.0,
+        "purchases": 38.0,
+        "longestInternalGapMinutes": 2.606250000000001,
+        "lastPurchaseMinutes": 16.26638888888889,
+        "afterLastPurchaseMinutes": 1.386250000000001,
+        "millionToFinishMinutes": 4.559305555555558
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "ordinary/priced-middle/cheapest-stop-32-ordinary",
+      "count": 16,
+      "wins": 15,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 15
+      },
+      "fastestWinMinutes": 10.704444444444444,
+      "cutoffReached": 15,
+      "winnerMedians": {
+        "minutes": 19.23194444444444,
+        "work": 9,
+        "drops": 322,
+        "purchases": 32,
+        "longestInternalGapMinutes": 3.118055555555557,
+        "lastPurchaseMinutes": 17.526666666666674,
+        "afterLastPurchaseMinutes": 1.7183333333333317,
+        "millionToFinishMinutes": 4.010833333333334
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 4,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 4,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6,
+        "plinkoCapacityLevel": 3,
+        "plinkoInsuranceLevel": 0
+      }
+    },
+    {
+      "group": "ordinary/priced-middle/cheapest-stop-none-ordinary",
+      "count": 16,
+      "wins": 15,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 15
+      },
+      "fastestWinMinutes": 11.528333333333334,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 20.329444444444448,
+        "work": 9,
+        "drops": 332,
+        "purchases": 35,
+        "longestInternalGapMinutes": 3.118055555555557,
+        "lastPurchaseMinutes": 18.42027777777778,
+        "afterLastPurchaseMinutes": 1.350555555555555,
+        "millionToFinishMinutes": 4.405277777777782
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6,
+        "plinkoCapacityLevel": 3,
+        "plinkoInsuranceLevel": 0
+      }
+    },
+    {
+      "group": "ordinary/priced-middle/insurance-first-stop-32-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "fastestWinMinutes": 11.39722222222222,
+      "cutoffReached": 16,
+      "winnerMedians": {
+        "minutes": 21.344583333333333,
+        "work": 9.5,
+        "drops": 369.5,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 2.502222222222222,
+        "lastPurchaseMinutes": 18.214444444444446,
+        "afterLastPurchaseMinutes": 3.2937499999999984,
+        "millionToFinishMinutes": 4.6483333333333325
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "ordinary/priced-middle/insurance-first-stop-none-ordinary",
+      "count": 16,
+      "wins": 16,
+      "outcomes": {
+        "VICTORY": 16
+      },
+      "fastestWinMinutes": 11.468611111111109,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 21.235138888888887,
+        "work": 9.5,
+        "drops": 339.5,
+        "purchases": 38.0,
+        "longestInternalGapMinutes": 2.502222222222222,
+        "lastPurchaseMinutes": 19.98388888888889,
+        "afterLastPurchaseMinutes": 1.3611111111111105,
+        "millionToFinishMinutes": 4.511944444444442
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "selection/control/cheapest-stop-24-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 16.070833333333336,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 18.08222222222222,
+        "work": 9.5,
+        "drops": 501.0,
+        "purchases": 24.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 7.965138888888886,
+        "afterLastPurchaseMinutes": 10.022777777777783,
+        "millionToFinishMinutes": 10.026944444444446
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 2.0,
+        "plinkoSplitterLevel": 2.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 4.0,
+        "plinkoCapacityLevel": 2.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/cheapest-stop-28-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 8.870833333333335,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 12.369027777777777,
+        "work": 9.5,
+        "drops": 311.0,
+        "purchases": 28.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 8.929027777777776,
+        "afterLastPurchaseMinutes": 3.1440277777777776,
+        "millionToFinishMinutes": 4.210972222222225
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/cheapest-stop-32-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 7.942500000000002,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 11.496527777777777,
+        "work": 9.5,
+        "drops": 279.5,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 9.836527777777778,
+        "afterLastPurchaseMinutes": 1.5674999999999992,
+        "millionToFinishMinutes": 3.470833333333335
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/cheapest-stop-none-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 8.798888888888891,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 12.167083333333332,
+        "work": 9.5,
+        "drops": 283.0,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 10.947499999999998,
+        "afterLastPurchaseMinutes": 1.2116666666666664,
+        "millionToFinishMinutes": 3.8568055555555576
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/insurance-first-stop-24-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 21.401666666666664,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 23.620833333333337,
+        "work": 10.0,
+        "drops": 750.0,
+        "purchases": 24.0,
+        "longestInternalGapMinutes": 1.6756944444444444,
+        "lastPurchaseMinutes": 7.948194444444443,
+        "afterLastPurchaseMinutes": 17.236805555555556,
+        "millionToFinishMinutes": 16.619722222222222
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 2.0,
+        "plinkoAmplifierLevel": 2.0,
+        "plinkoReturnLevel": 2.0,
+        "plinkoSplitterLevel": 2.0,
+        "plinkoJackpotBiasLevel": 2.0,
+        "plinkoMaxBetLevel": 4.0,
+        "plinkoCapacityLevel": 2.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "selection/control/insurance-first-stop-28-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 15.316388888888888,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 17.255972222222223,
+        "work": 10.0,
+        "drops": 486.5,
+        "purchases": 28.0,
+        "longestInternalGapMinutes": 1.6756944444444444,
+        "lastPurchaseMinutes": 8.350694444444443,
+        "afterLastPurchaseMinutes": 9.120694444444446,
+        "millionToFinishMinutes": 9.265833333333333
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 2.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 4.0,
+        "plinkoCapacityLevel": 2.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "selection/control/insurance-first-stop-32-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 7.706388888888889,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 12.129027777777777,
+        "work": 10.0,
+        "drops": 318.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.6756944444444444,
+        "lastPurchaseMinutes": 8.926805555555555,
+        "afterLastPurchaseMinutes": 2.8425000000000002,
+        "millionToFinishMinutes": 3.8120833333333337
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "selection/control/insurance-first-stop-none-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 8.250555555555556,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 11.676944444444445,
+        "work": 10.0,
+        "drops": 273.0,
+        "purchases": 38.0,
+        "longestInternalGapMinutes": 1.6756944444444444,
+        "lastPurchaseMinutes": 10.616249999999999,
+        "afterLastPurchaseMinutes": 1.1327777777777772,
+        "millionToFinishMinutes": 3.6690277777777784
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 3.0
+      }
+    },
+    {
+      "group": "selection/control/stake-first-stop-24-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 15.841666666666669,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 18.16847222222222,
+        "work": 9.5,
+        "drops": 492.0,
+        "purchases": 24.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 8.309027777777777,
+        "afterLastPurchaseMinutes": 9.335416666666665,
+        "millionToFinishMinutes": 9.684583333333332
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 2.5,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 2.0,
+        "plinkoSplitterLevel": 2.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 4.5,
+        "plinkoCapacityLevel": 2.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/stake-first-stop-28-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 8.364722222222223,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 12.675555555555558,
+        "work": 9.5,
+        "drops": 310.0,
+        "purchases": 28.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 9.148472222222221,
+        "afterLastPurchaseMinutes": 3.1520833333333345,
+        "millionToFinishMinutes": 4.087916666666667
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/stake-first-stop-32-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 7.929722222222222,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 11.793888888888887,
+        "work": 9.5,
+        "drops": 272.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 9.973194444444445,
+        "afterLastPurchaseMinutes": 1.6095833333333323,
+        "millionToFinishMinutes": 3.6345833333333326
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/control/stake-first-stop-none-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 8.861666666666668,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 12.227638888888887,
+        "work": 9.5,
+        "drops": 279.5,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 1.5720833333333344,
+        "lastPurchaseMinutes": 11.05958333333333,
+        "afterLastPurchaseMinutes": 1.1343055555555557,
+        "millionToFinishMinutes": 4.179999999999998
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/cheapest-stop-24-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 18.91416666666667,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 20.294583333333335,
+        "work": 9.0,
+        "drops": 550.0,
+        "purchases": 24.0,
+        "longestInternalGapMinutes": 2.56486111111111,
+        "lastPurchaseMinutes": 11.131527777777784,
+        "afterLastPurchaseMinutes": 9.237222222222218,
+        "millionToFinishMinutes": 9.30638888888889
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 2.0,
+        "plinkoSplitterLevel": 2.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 4.0,
+        "plinkoCapacityLevel": 2.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/cheapest-stop-28-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 11.663611111111111,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 14.72638888888889,
+        "work": 9.0,
+        "drops": 391.0,
+        "purchases": 28.0,
+        "longestInternalGapMinutes": 2.56486111111111,
+        "lastPurchaseMinutes": 11.945833333333336,
+        "afterLastPurchaseMinutes": 2.8816666666666673,
+        "millionToFinishMinutes": 3.893194444444444
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/cheapest-stop-32-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 10.935555555555556,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 14.348333333333333,
+        "work": 9.0,
+        "drops": 359.5,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 2.56486111111111,
+        "lastPurchaseMinutes": 12.664027777777779,
+        "afterLastPurchaseMinutes": 1.4962500000000005,
+        "millionToFinishMinutes": 3.3577777777777795
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/cheapest-stop-none-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 11.181666666666667,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 14.959583333333335,
+        "work": 9.0,
+        "drops": 377.5,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 2.56486111111111,
+        "lastPurchaseMinutes": 13.60361111111111,
+        "afterLastPurchaseMinutes": 1.1444444444444457,
+        "millionToFinishMinutes": 3.700277777777779
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/insurance-first-stop-24-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "fastestWinMinutes": 24.485833333333336,
+      "cutoffReached": 7,
+      "winnerMedians": {
+        "minutes": 26.330833333333324,
+        "work": 9,
+        "drops": 825,
+        "purchases": 24,
+        "longestInternalGapMinutes": 1.9144444444444464,
+        "lastPurchaseMinutes": 10.11277777777778,
+        "afterLastPurchaseMinutes": 16.0525,
+        "millionToFinishMinutes": 15.58888888888889
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 2,
+        "plinkoAmplifierLevel": 2,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 2,
+        "plinkoJackpotBiasLevel": 2,
+        "plinkoMaxBetLevel": 4,
+        "plinkoCapacityLevel": 2,
+        "plinkoInsuranceLevel": 3
+      }
+    },
+    {
+      "group": "selection/priced-middle/insurance-first-stop-28-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "fastestWinMinutes": 18.49027777777778,
+      "cutoffReached": 7,
+      "winnerMedians": {
+        "minutes": 19.165277777777774,
+        "work": 9,
+        "drops": 548,
+        "purchases": 28,
+        "longestInternalGapMinutes": 1.9144444444444464,
+        "lastPurchaseMinutes": 10.431944444444444,
+        "afterLastPurchaseMinutes": 9.20138888888889,
+        "millionToFinishMinutes": 9.34111111111111
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 3,
+        "plinkoReturnLevel": 2,
+        "plinkoSplitterLevel": 3,
+        "plinkoJackpotBiasLevel": 3,
+        "plinkoMaxBetLevel": 4,
+        "plinkoCapacityLevel": 2,
+        "plinkoInsuranceLevel": 3
+      }
+    },
+    {
+      "group": "selection/priced-middle/insurance-first-stop-32-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "fastestWinMinutes": 11.771388888888888,
+      "cutoffReached": 7,
+      "winnerMedians": {
+        "minutes": 13.941388888888891,
+        "work": 9,
+        "drops": 380,
+        "purchases": 32,
+        "longestInternalGapMinutes": 1.9144444444444464,
+        "lastPurchaseMinutes": 11.252500000000001,
+        "afterLastPurchaseMinutes": 2.6841666666666657,
+        "millionToFinishMinutes": 3.8327777777777783
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 4,
+        "plinkoReturnLevel": 3,
+        "plinkoSplitterLevel": 3,
+        "plinkoJackpotBiasLevel": 3,
+        "plinkoMaxBetLevel": 5,
+        "plinkoCapacityLevel": 3,
+        "plinkoInsuranceLevel": 3
+      }
+    },
+    {
+      "group": "selection/priced-middle/insurance-first-stop-none-fast",
+      "count": 8,
+      "wins": 7,
+      "outcomes": {
+        "BARRY_LOSS": 1,
+        "VICTORY": 7
+      },
+      "fastestWinMinutes": 11.248055555555556,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 13.83416666666667,
+        "work": 9,
+        "drops": 346,
+        "purchases": 38,
+        "longestInternalGapMinutes": 1.9144444444444464,
+        "lastPurchaseMinutes": 13.01888888888889,
+        "afterLastPurchaseMinutes": 1.2513888888888876,
+        "millionToFinishMinutes": 3.730555555555555
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2,
+        "plinkoMidLevel": 3,
+        "plinkoJackpotLevel": 3,
+        "plinkoAmplifierLevel": 5,
+        "plinkoReturnLevel": 4,
+        "plinkoSplitterLevel": 5,
+        "plinkoJackpotBiasLevel": 4,
+        "plinkoMaxBetLevel": 6,
+        "plinkoCapacityLevel": 3,
+        "plinkoInsuranceLevel": 3
+      }
+    },
+    {
+      "group": "selection/priced-middle/stake-first-stop-24-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 16.391944444444444,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 19.715694444444445,
+        "work": 9.5,
+        "drops": 515.0,
+        "purchases": 24.0,
+        "longestInternalGapMinutes": 1.888333333333334,
+        "lastPurchaseMinutes": 11.42027777777778,
+        "afterLastPurchaseMinutes": 8.623194444444444,
+        "millionToFinishMinutes": 9.075
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 2.5,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 2.0,
+        "plinkoSplitterLevel": 2.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 4.5,
+        "plinkoCapacityLevel": 2.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/stake-first-stop-28-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 9.6,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 15.229166666666671,
+        "work": 9.5,
+        "drops": 382.0,
+        "purchases": 28.0,
+        "longestInternalGapMinutes": 1.888333333333334,
+        "lastPurchaseMinutes": 12.190277777777782,
+        "afterLastPurchaseMinutes": 3.304444444444448,
+        "millionToFinishMinutes": 4.621944444444445
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 3.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 3.0,
+        "plinkoJackpotBiasLevel": 3.0,
+        "plinkoMaxBetLevel": 5.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/stake-first-stop-32-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 9.02888888888889,
+      "cutoffReached": 8,
+      "winnerMedians": {
+        "minutes": 14.46138888888889,
+        "work": 9.5,
+        "drops": 315.0,
+        "purchases": 32.0,
+        "longestInternalGapMinutes": 1.888333333333334,
+        "lastPurchaseMinutes": 12.702083333333338,
+        "afterLastPurchaseMinutes": 1.4952777777777793,
+        "millionToFinishMinutes": 3.709305555555557
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 4.0,
+        "plinkoReturnLevel": 3.0,
+        "plinkoSplitterLevel": 4.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    },
+    {
+      "group": "selection/priced-middle/stake-first-stop-none-fast",
+      "count": 8,
+      "wins": 8,
+      "outcomes": {
+        "VICTORY": 8
+      },
+      "fastestWinMinutes": 9.558333333333334,
+      "cutoffReached": 0,
+      "winnerMedians": {
+        "minutes": 14.97527777777778,
+        "work": 9.5,
+        "drops": 339.0,
+        "purchases": 35.0,
+        "longestInternalGapMinutes": 1.888333333333334,
+        "lastPurchaseMinutes": 13.476250000000002,
+        "afterLastPurchaseMinutes": 1.241666666666665,
+        "millionToFinishMinutes": 4.21638888888889
+      },
+      "finalLevelWinnerMedians": {
+        "plinkoCenterLevel": 2.0,
+        "plinkoMidLevel": 3.0,
+        "plinkoJackpotLevel": 3.0,
+        "plinkoAmplifierLevel": 5.0,
+        "plinkoReturnLevel": 4.0,
+        "plinkoSplitterLevel": 5.0,
+        "plinkoJackpotBiasLevel": 4.0,
+        "plinkoMaxBetLevel": 6.0,
+        "plinkoCapacityLevel": 3.0,
+        "plinkoInsuranceLevel": 0.0
+      }
+    }
+  ],
+  "paired": {
+    "holdout/control/cheapest-stop-32-fast": {
+      "commonWins": 24,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.3843055555555539,
+        "work": 0.0,
+        "drops": -14.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.5097222222222229,
+        "millionToFinishMinutes": -0.3843055555555539
+      }
+    },
+    "holdout/control/insurance-first-stop-32-fast": {
+      "commonWins": 24,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.3401388888888883,
+        "work": 0.0,
+        "drops": 41.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.8223611111111107,
+        "millionToFinishMinutes": 0.3401388888888883
+      }
+    },
+    "holdout/control/stake-first-stop-32-fast": {
+      "commonWins": 24,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.5491666666666664,
+        "work": 0.0,
+        "drops": -19.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.3155555555555567,
+        "millionToFinishMinutes": -0.5491666666666664
+      }
+    },
+    "holdout/priced-middle/cheapest-stop-32-fast": {
+      "commonWins": 24,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.3690277777777773,
+        "work": 0.0,
+        "drops": -7.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.4211111111111119,
+        "millionToFinishMinutes": -0.3690277777777773
+      }
+    },
+    "holdout/priced-middle/insurance-first-stop-32-fast": {
+      "commonWins": 24,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.42916666666666803,
+        "work": 0.0,
+        "drops": 43.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.7297222222222226,
+        "millionToFinishMinutes": 0.42916666666666803
+      }
+    },
+    "holdout/priced-middle/stake-first-stop-32-fast": {
+      "commonWins": 23,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.5433333333333312,
+        "work": 0,
+        "drops": -18,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.2758333333333345,
+        "millionToFinishMinutes": -0.5433333333333312
+      }
+    },
+    "ordinary/control/cheapest-stop-32-ordinary": {
+      "commonWins": 16,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.5333333333333314,
+        "work": 0.0,
+        "drops": -10.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.3802777777777767,
+        "millionToFinishMinutes": -0.5333333333333314
+      }
+    },
+    "ordinary/control/insurance-first-stop-32-ordinary": {
+      "commonWins": 16,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.15111111111111342,
+        "work": 0.0,
+        "drops": 35.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 2.0909722222222236,
+        "millionToFinishMinutes": 0.15111111111111342
+      }
+    },
+    "ordinary/priced-middle/cheapest-stop-32-ordinary": {
+      "commonWins": 15,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.7933333333333259,
+        "work": 0,
+        "drops": -19,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.23583333333333467,
+        "millionToFinishMinutes": -0.7933333333333259
+      }
+    },
+    "ordinary/priced-middle/insurance-first-stop-32-ordinary": {
+      "commonWins": 16,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.034999999999999254,
+        "work": 0.0,
+        "drops": 31.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.8923611111111105,
+        "millionToFinishMinutes": -0.034999999999999254
+      }
+    },
+    "selection/control/cheapest-stop-24-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 6.066527777777781,
+        "work": 0.0,
+        "drops": 208.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 8.811111111111117,
+        "millionToFinishMinutes": 6.066527777777781
+      }
+    },
+    "selection/control/cheapest-stop-28-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.1298611111111132,
+        "work": 0.0,
+        "drops": 28.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.9729166666666675,
+        "millionToFinishMinutes": 0.1298611111111132
+      }
+    },
+    "selection/control/cheapest-stop-32-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.5458333333333334,
+        "work": 0.0,
+        "drops": -16.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.3388888888888891,
+        "millionToFinishMinutes": -0.5458333333333334
+      }
+    },
+    "selection/control/insurance-first-stop-24-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 12.72791666666667,
+        "work": 0.0,
+        "drops": 471.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 16.07680555555556,
+        "millionToFinishMinutes": 12.68013888888889
+      }
+    },
+    "selection/control/insurance-first-stop-28-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.619027777777779,
+        "work": 0.0,
+        "drops": 189.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 7.919722222222225,
+        "millionToFinishMinutes": 5.619027777777779
+      }
+    },
+    "selection/control/insurance-first-stop-32-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.10736111111111146,
+        "work": 0.0,
+        "drops": 29.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.4795833333333341,
+        "millionToFinishMinutes": 0.10736111111111146
+      }
+    },
+    "selection/control/stake-first-stop-24-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.740694444444445,
+        "work": 0.0,
+        "drops": 201.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 8.457083333333333,
+        "millionToFinishMinutes": 5.740694444444445
+      }
+    },
+    "selection/control/stake-first-stop-28-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.09930555555555465,
+        "work": 0.0,
+        "drops": 30.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.838611111111111,
+        "millionToFinishMinutes": 0.09930555555555465
+      }
+    },
+    "selection/control/stake-first-stop-32-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.4345833333333333,
+        "work": 0.0,
+        "drops": -9.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.3452777777777765,
+        "millionToFinishMinutes": -0.4345833333333333
+      }
+    },
+    "selection/priced-middle/cheapest-stop-24-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.560277777777778,
+        "work": 0.0,
+        "drops": 180.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 7.905416666666666,
+        "millionToFinishMinutes": 5.560277777777778
+      }
+    },
+    "selection/priced-middle/cheapest-stop-28-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.22944444444444478,
+        "work": 0.0,
+        "drops": 29.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.7958333333333314,
+        "millionToFinishMinutes": 0.22944444444444478
+      }
+    },
+    "selection/priced-middle/cheapest-stop-32-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.47111111111111104,
+        "work": 0.0,
+        "drops": -16.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.3884722222222222,
+        "millionToFinishMinutes": -0.47111111111111104
+      }
+    },
+    "selection/priced-middle/insurance-first-stop-24-fast": {
+      "commonWins": 7,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 12.296944444444447,
+        "work": 0,
+        "drops": 452,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 14.891388888888887,
+        "millionToFinishMinutes": 11.557500000000003
+      }
+    },
+    "selection/priced-middle/insurance-first-stop-28-fast": {
+      "commonWins": 7,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.532777777777779,
+        "work": 0,
+        "drops": 186,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 7.657500000000002,
+        "millionToFinishMinutes": 5.532777777777779
+      }
+    },
+    "selection/priced-middle/insurance-first-stop-32-fast": {
+      "commonWins": 7,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.07583333333333364,
+        "work": 0,
+        "drops": 26,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.3008333333333326,
+        "millionToFinishMinutes": 0.07583333333333364
+      }
+    },
+    "selection/priced-middle/stake-first-stop-24-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 5.057777777777775,
+        "work": 0.0,
+        "drops": 178.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 7.472916666666666,
+        "millionToFinishMinutes": 5.057777777777775
+      }
+    },
+    "selection/priced-middle/stake-first-stop-28-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": 0.4690277777777814,
+        "work": 0.0,
+        "drops": 44.0,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 1.9187500000000037,
+        "millionToFinishMinutes": 0.4690277777777814
+      }
+    },
+    "selection/priced-middle/stake-first-stop-32-fast": {
+      "commonWins": 8,
+      "controlOnlyWins": 0,
+      "candidateOnlyWins": 0,
+      "medianDeltas": {
+        "minutes": -0.5552777777777766,
+        "work": 0.0,
+        "drops": -18.5,
+        "longestInternalGapMinutes": 0.0,
+        "afterLastPurchaseMinutes": 0.3841666666666689,
+        "millionToFinishMinutes": -0.5552777777777766
+      }
+    }
+  },
+  "physicalPaidRoots": 199307,
+  "limitations": "Bounded cutoff/order search, not optimal stopping. Matched seeds diverge after purchases. Winner medians condition on survival. Modeled active time, not human pacing. No isolated income-ranking probes."
+}
