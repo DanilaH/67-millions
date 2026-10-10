@@ -324,6 +324,7 @@ Status: Open: all 24 balls resolve, but v14 strict CPU×4 screening narrowly fai
 Acceptance: worst allowed state remains playable; no sustained catastrophic frame drop.
 
 ### T073 [P0] Save/background/refresh soak
+2026-10-10: exclusive same-origin document ownership before platform/save bootstrap prevents competing tabs from overwriting the run; waiting tab loads fresh state on owner close. New desktop/touch and paid-root transfer regressions pass. See reports/release/2026-10-10-save-session/README.md. Cross-device cloud freshness and actual-device gates remain separate.
 Status: Local verification passed (2026-10-01): v14 warm-solver restore, 40-Drop background/settled reload soak, production cold and mid-Drop mouse/touch restore. Legacy pose-only checkpoints stop unchanged.
 Acceptance: no duplicate money, progression, listeners or physics bodies.
 
