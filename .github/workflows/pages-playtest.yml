@@ -26,6 +26,7 @@ jobs:
       - run: npm test
       - run: npm run build:pages
       - run: npx playwright install --with-deps chromium
+      - run: npm run smoke:save-session
       - run: npm run smoke:playtest
       - run: npm run smoke:pages
       - name: Record preview revision

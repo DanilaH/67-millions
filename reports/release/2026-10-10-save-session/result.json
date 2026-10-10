@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "checks": [
+    "desktop-cash",
+    "desktop-paid",
+    "touch-cash",
+    "touch-paid"
+  ],
+  "errors": []
+}

@@ -88,7 +88,7 @@ body {
   margin-bottom: 8px;
 }
 
-#save-recovery {
+#save-recovery, #save-session-wait {
   width: min(420px, calc(100vw - 64px));
   max-height: calc(100dvh - 64px);
   overflow: auto;
@@ -100,8 +100,8 @@ body {
   font: 16px/1.5 system-ui, sans-serif;
 }
 
-#save-recovery::backdrop { background: rgb(0 0 0 / 80%); }
-#save-recovery h2 { margin: 0 0 12px; font-size: 22px; }
+#save-recovery::backdrop, #save-session-wait::backdrop { background: rgb(0 0 0 / 80%); }
+#save-recovery h2, #save-session-wait h2 { margin: 0 0 12px; font-size: 22px; }
 #save-recovery button {
   min-height: 48px;
   width: 100%;

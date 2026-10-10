@@ -136,6 +136,16 @@ Autosave at minimum:
 
 ### Active non-Plinko action reload
 
+Same-origin tabs share one persistent run. Before platform/cloud bootstrap or
+reading the save, the document must own the exclusive Web Lock `67m.save:session`.
+A second tab waits without starting the platform or game; after the owner closes,
+it loads the latest complete save. Ownership lasts for the document lifetime,
+including background and BFCache, and is not released on visibility/pagehide.
+No cash/clock/RNG/pending-root merge is attempted. If Web Locks are unavailable,
+startup fails safely with a browser/HTTPS explanation instead of starting an
+unprotected writer. This is a local same-origin guard, not cross-device cloud
+freshness resolution. Already-open pre-fix builds must be reloaded once.
+
 - background without reload pauses exact runtime state;
 - reload during a timed action restores `activeAction` and remaining game-time;
 - reload during a work skill minigame may restart that same minigame from its deterministic initial layout with already-reserved shift costs; costs are not charged again;

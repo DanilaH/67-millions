@@ -7,6 +7,7 @@ import { createStartupPreloadDomView, StartupPreloadController } from '@danilah/
 
 import './style.css';
 import { createSaveRecovery } from './app/saveRecovery';
+import { acquireBrowserSaveSession } from './app/saveSession';
 import { withSaveRetry } from './core/save/retryStorage';
 import { installDebugPanel } from './app/debug';
 import { GAME_AUDIO_BLOCKED_EVENT } from './audio/audioLifecycle';
@@ -34,13 +35,15 @@ import { GAME_SAVE_REPOSITORY_REGISTRY_KEY } from './game/save/sceneSaveReposito
 const preload = new StartupPreloadController(createStartupPreloadDomView());
 preload.begin();
 
-const platformTask = createPlatformRuntime().then((platform) => {
-  startupTimeline.mark('platformReady');
-  return platform;
-});
 const artFormatTask = detectRuntimeImageFormat();
 
 try {
+  // Ownership precedes platform/cloud bootstrap, save reads and Phaser startup.
+  await acquireBrowserSaveSession();
+  const platformTask = createPlatformRuntime().then((platform) => {
+    startupTimeline.mark('platformReady');
+    return platform;
+  });
   const [platform, runtimeImageFormat] = await Promise.all([platformTask, artFormatTask]);
   const initialSize = getInitialGameSize();
   const analytics = new GameAnalytics(platform.analytics, balance);
