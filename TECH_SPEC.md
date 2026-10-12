@@ -203,6 +203,14 @@ Required guards:
 
 Performance is checked in M2/M3, not postponed to release.
 
+Static Plinko pins and guides are composited into the existing casino CSS
+backdrop when their roles/geometry change; viewport changes recompose it.
+Ball trails use four shared circle textures and a pool bounded by the configured
+ball cap. Collision rings use a bounded sprite pool and a pre-rendered atlas;
+ring geometry is sampled for presentation while opacity and expiration keep
+their original timing. No renderer change alters Matter bodies, fixed ticks,
+collision effects, RNG, payout calculation or save semantics.
+
 ## 13. Analytics
 
 Minimum stable events:

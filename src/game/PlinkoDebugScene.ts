@@ -132,7 +132,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private casinoLayer?: Phaser.GameObjects.Container;
   private staticBoardGraphics?: Phaser.GameObjects.Graphics;
   private ballImages: Phaser.GameObjects.Image[] = [];
-  private pegImages: Phaser.GameObjects.Image[] = [];
+  private boardCanvas?: HTMLCanvasElement;
+  private paintCasinoBoard?: (board: HTMLCanvasElement) => void;
+  private staticBoardSignature = '';
   private visitResultText?: Phaser.GameObjects.Text;
   private visitDetails = false;
   private visitStake = 0;
@@ -185,14 +187,17 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.launchChain = Promise.resolve();
 
     this.casinoLayer = this.add.container(0, 0);
-    createCasinoRoom(this, this.casinoLayer);
+    this.paintCasinoBoard = createCasinoRoom(this, this.casinoLayer);
+    this.boardCanvas = document.createElement('canvas');
+    this.boardCanvas.width = this.boardConfig.plinko.geometry.logicalViewportWidth;
+    this.boardCanvas.height = this.boardConfig.plinko.geometry.logicalViewportHeight;
+    this.staticBoardSignature = '';
     this.casinoLayer.add(addProductionImage(this, 'casino', 640, 380, 600, 590).setVisible(false));
 
-    this.staticBoardGraphics = this.add.graphics();
+    this.staticBoardGraphics = this.add.graphics().setVisible(false);
     this.casinoLayer.add(this.staticBoardGraphics);
-    this.effects = new PlinkoEffects(this, this.casinoLayer);
+    this.effects = new PlinkoEffects(this, this.casinoLayer, this.boardConfig.plinko.maxActiveBalls);
     this.ballImages = [];
-    this.pegImages = [];
     createPinTextures(this, this.boardConfig.plinko.geometry.pegRadius);
     const radius = this.boardConfig.plinko.geometry.ballRadius;
     const size = (radius + 4) * 2;
@@ -1290,15 +1295,8 @@ export class PlinkoDebugScene extends Phaser.Scene {
     const geometry = this.boardConfig.plinko.geometry;
     const layout = this.runtime.layout;
     const snapshot = this.visualSnapshot;
-
-    for (const [index, peg] of layout.pegs.entries()) {
-      const role = getPegVisualRole(peg.id, snapshot.pegRoles);
-      const texture = `67m:pin:${role}`;
-      const image = this.pegImages[index] ?? (this.pegImages[index] = this.add.image(peg.x, peg.y, texture));
-      if (!image.parentContainer) this.casinoLayer!.addAt(image, 5);
-      if (image.texture.key !== texture) image.setTexture(texture);
-      image.setPosition(peg.x, peg.y);
-    }
+    const signature = JSON.stringify([snapshot.pegRoles, snapshot.specialLevels.jackpotBiasLevel]);
+    if (signature === this.staticBoardSignature) return;
 
     const biasGeometry = deriveJackpotBiasGeometry(
       this.boardConfig,
@@ -1366,6 +1364,19 @@ export class PlinkoDebugScene extends Phaser.Scene {
           layout.pocketBottomY,
         ),
       );
+    }
+    if (this.boardCanvas) {
+      const context = this.boardCanvas.getContext('2d')!;
+      context.clearRect(0, 0, this.boardCanvas.width, this.boardCanvas.height);
+      graphics.generateTexture(this.boardCanvas, this.boardCanvas.width, this.boardCanvas.height);
+      for (const peg of layout.pegs) {
+        const role = getPegVisualRole(peg.id, snapshot.pegRoles);
+        const source = this.textures.get(`67m:pin:${role}`).getSourceImage() as HTMLCanvasElement;
+        context.drawImage(source, peg.x - source.width / 2, peg.y - source.height / 2);
+      }
+      this.paintCasinoBoard?.(this.boardCanvas);
+      this.staticBoardSignature = signature;
+      graphics.clear();
     }
   }
 
