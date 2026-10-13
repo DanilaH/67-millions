@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'src/main.ts'
+      - 'src/app/viewport.ts'
       - 'src/game/PlinkoDebugScene.ts'
       - 'src/game/casino/**'
       - 'src/game/ui/PersistentHud.ts'

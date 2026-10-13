@@ -104,7 +104,11 @@ try {
     },
   });
 
-  const viewport = installViewportRuntime(game, platform.activity);
+  // Casino's static backdrop remains at full resolution; budget the moving
+  // foreground separately. Cameras/input retain the same logical coordinates.
+  const viewport = installViewportRuntime(game, platform.activity, () => game.scene.isActive('plinko-debug') ? 0.75 : 1);
+  const refreshRenderBudget = () => viewport.refresh();
+  game.events.on(GAME_PRESENTABLE_EVENT, refreshRenderBudget);
   const removeBlockedListener = platform.activity.onBlockedChange((blocked) => {
     game.sound.mute = blocked;
     game.events.emit(GAME_AUDIO_BLOCKED_EVENT, blocked);
@@ -152,6 +156,7 @@ try {
     game.events.off(ACTION_PANEL_VISIBILITY_EVENT, updateDebugVisibility);
     debug.destroy();
     viewport.destroy();
+    game.events.off(GAME_PRESENTABLE_EVENT, refreshRenderBudget);
     saveRecovery.destroy();
     preload.destroy();
     platform.destroy();
