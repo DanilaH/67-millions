@@ -120,7 +120,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
   private save: SaveState | null = null;
   private repository: SaveRepository | null = null;
   private readonly balls = new Map<MatterJS.BodyType, DropBallState>();
-  private saveWriteChain: Promise<void> = Promise.resolve();
   private launchChain: Promise<void> = Promise.resolve();
   private physicsSaveQueued = false;
   private physicsDirty = false;
@@ -183,7 +182,6 @@ export class PlinkoDebugScene extends Phaser.Scene {
     this.physicsSaveQueued = false;
     this.physicsDirty = false;
     this.lastPersistedPhysicsTick = 0;
-    this.saveWriteChain = Promise.resolve();
     this.launchChain = Promise.resolve();
 
     this.casinoLayer = this.add.container(0, 0);
@@ -1052,14 +1050,10 @@ export class PlinkoDebugScene extends Phaser.Scene {
     if (!this.save || !this.repository) return;
 
     const repository = this.repository;
-    const snapshot = structuredClone(this.save);
-
-    this.saveWriteChain = this.saveWriteChain.then(async () => {
-      await repository.write(snapshot);
-      if (flush) await repository.flush();
-    });
-
-    await this.saveWriteChain;
+    // The project repository snapshots synchronously, and the pinned kit
+    // serializes its writes. A second scene clone/queue duplicates that work.
+    await repository.write(this.save);
+    if (flush) await repository.flush();
   }
 
   private async persistPendingPhysics(flush: boolean): Promise<void> {
