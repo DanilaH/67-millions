@@ -6,6 +6,7 @@ on:
       - 'src/main.ts'
       - 'src/game/PlinkoDebugScene.ts'
       - 'src/game/casino/**'
+      - 'src/game/ui/PersistentHud.ts'
       - 'src/game/BootstrapScene.ts'
       - 'src/phaser/plinko/**'
       - 'src/audio/**'
@@ -44,4 +45,18 @@ jobs:
         with:
           name: plinko-perf-${{ matrix.balls }}-balls
           path: artifacts/perf
+          if-no-files-found: warn
+      - name: Profile failed screening
+        if: failure()
+        continue-on-error: true
+        run: npm run perf:plinko
+        env:
+          PLINKO_PERF_STRESS: ${{ matrix.balls }}
+          PLINKO_PERF_PROFILE: 'on'
+          PLINKO_PERF_OUTPUT: artifacts/perf-profile
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: plinko-profile-${{ matrix.balls }}-balls
+          path: artifacts/perf-profile
           if-no-files-found: warn

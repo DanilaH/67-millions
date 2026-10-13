@@ -151,7 +151,12 @@ try {
   const after = metricMap(await cdp.send('Performance.getMetrics'));
   if (PROFILE) {
     mkdirSync(OUTPUT, { recursive: true });
-    writeFileSync(resolve(OUTPUT, 'cpu-profile.json'), JSON.stringify((await cdp.send('Profiler.stop')).profile));
+    const { profile } = await cdp.send('Profiler.stop');
+    writeFileSync(resolve(OUTPUT, 'cpu-profile.json'), JSON.stringify(profile));
+    const nodes = new Map(profile.nodes.map(node => [node.id, node.callFrame]));
+    const totals = new Map();
+    profile.samples?.forEach((id, index) => totals.set(id, (totals.get(id) ?? 0) + (profile.timeDeltas?.[index] ?? 0)));
+    console.log('CPU profile hotspots', JSON.stringify([...totals].sort((a, b) => b[1] - a[1]).slice(0, 15).map(([id, micros]) => ({ milliseconds: micros / 1000, ...nodes.get(id) }))));
   }
 
   const pageResult = await page.evaluate(() => ({

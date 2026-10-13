@@ -28,6 +28,8 @@ const drawNeedIcon = (g: Phaser.GameObjects.Graphics, id: HudNeed['id'], x: numb
 
 export class PersistentHud {
   private readonly graphics: Phaser.GameObjects.Graphics;
+  private readonly graphicsImage: Phaser.GameObjects.Image;
+  private readonly graphicsTexture: Phaser.Textures.CanvasTexture;
   private readonly heading: Phaser.GameObjects.Text[];
   private readonly needZones: Phaser.GameObjects.Zone[] = [];
   private readonly needTexts: Phaser.GameObjects.Text[];
@@ -44,7 +46,11 @@ export class PersistentHud {
 
   public constructor(private readonly scene: Phaser.Scene, private readonly config: BalanceConfig, private readonly onNeedAction?: (id: HudNeed['id']) => void) {
     const depth = VISUAL_METRICS.hudDepth;
-    this.graphics = scene.add.graphics().setDepth(depth);
+    this.graphics = scene.add.graphics().setVisible(false);
+    const graphicsKey = `67m:hud:${scene.sys.settings.key}`;
+    this.graphicsTexture = scene.textures.createCanvas(graphicsKey, 1280, 128)!;
+    this.graphicsImage = scene.add.image(0, 0, graphicsKey).setOrigin(0, 0).setDepth(depth);
+    scene.events.once('shutdown', () => scene.textures.remove(graphicsKey));
     const text = (x: number, y: number, size = 18) => scene.add.text(x, y, '', {
       color: visualHex('textMain'), fontFamily: VISUAL_FONT.sans, fontSize: `${size}px`, fontStyle: 'bold',
     }).setDepth(depth + 1);
@@ -122,7 +128,7 @@ export class PersistentHud {
     this.heading[0]!.setY(25); this.heading[1]!.setY(22); this.heading[2]!.setY(25); this.heading[3]!.setY(25);
     this.statusText.setY(80).setFontSize(19);
     this.scene.game.canvas.removeAttribute('data-hud-needs');
-    const g = this.graphics.clear();
+    const g = this.graphics.clear().save().translateCanvas(-view.left, 0);
     g.fillStyle(visualColor('inkPanel'), 0.94); g.fillRoundedRect(view.left + 14, 12, view.width - 28, 48, 14);
     this.heading[0]!.setText(`День ${hud.day} · ${hud.time}`);
     this.heading[1]!.setText(`${hud.cash.toLocaleString('ru-RU')} ₽`);
@@ -161,10 +167,20 @@ export class PersistentHud {
         this.needTexts[index]!.setText(`${Math.round(need.value)}→${Math.round(value)}`).setFontSize(16).setColor(visualHex(value > need.value ? 'mustard' : 'warning'));
       }
     });
+    this.cacheGraphics(view.left, view.width);
+  }
+
+  private cacheGraphics(left: number, width: number): void {
+    this.graphics.restore();
+    this.graphicsTexture.setSize(Math.ceil(width), 128);
+    this.graphicsTexture.getContext().clearRect(0, 0, Math.ceil(width), 128);
+    this.graphics.generateTexture(this.graphicsTexture.key, Math.ceil(width), 128);
+    this.graphicsImage.setPosition(left, 0).setSize(width, 128);
+    this.graphics.clear();
   }
 
   private renderCompact(hud: ReturnType<typeof deriveHudSnapshot>, left: number, viewportWidth: number): void {
-    const g = this.graphics.clear();
+    const g = this.graphics.clear().save().translateCanvas(-left, 0);
     const needsLeft = left + viewportWidth - 602;
     g.fillStyle(visualColor('inkPanel'), 0.97).fillRoundedRect(left + 14, 8, viewportWidth - 28, 120, 12);
     g.lineStyle(1, visualColor('lineDirty')).lineBetween(left + 310, 20, left + 310, 116);
@@ -206,6 +222,7 @@ export class PersistentHud {
       targets[need.id] = {x: x + 68, y: 72, width: 136, height: 96, textWidth: needText.width, textHeight: needText.height};
     });
     this.scene.game.canvas.setAttribute('data-hud-needs', JSON.stringify(targets));
+    this.cacheGraphics(left, viewportWidth);
   }
 
 }
