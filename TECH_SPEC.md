@@ -210,6 +210,8 @@ ball cap. Collision rings use a bounded sprite pool and a pre-rendered atlas;
 ring geometry is sampled for presentation while opacity and expiration keep
 their original timing. No renderer change alters Matter bodies, fixed ticks,
 collision effects, RNG, payout calculation or save semantics.
+WebGL context MSAA is disabled; texture antialias filtering and text resolution
+remain enabled. This avoids full-canvas multisample work on each rendered frame.
 
 ## 13. Analytics
 

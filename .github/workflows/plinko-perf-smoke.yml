@@ -3,6 +3,7 @@ name: Plinko performance smoke
 on:
   pull_request:
     paths:
+      - 'src/main.ts'
       - 'src/game/PlinkoDebugScene.ts'
       - 'src/game/casino/**'
       - 'src/game/BootstrapScene.ts'

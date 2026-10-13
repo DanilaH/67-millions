@@ -69,6 +69,9 @@ try {
     height: Math.round(initialSize.height),
     backgroundColor: '#0b0d10',
     transparent: true,
+    // Textures/text retain linear filtering; avoid full-canvas MSAA resolve on
+    // every mobile frame. The board and circular effects are already rasterized.
+    render: { antialiasGL: false },
     physics: {
       default: 'matter',
       matter: {

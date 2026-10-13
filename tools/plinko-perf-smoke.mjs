@@ -158,6 +158,7 @@ try {
     probe: window.__PLINKO_PERF__,
     frames: window.__PERF_FRAME_SAMPLES__ ?? [],
     save: JSON.parse(localStorage.getItem('67m.save') ?? 'null'),
+    diagnostics: window.__PLINKO_PERF__?.diagnostics?.(),
   }));
 
   const probe = pageResult.probe;
@@ -265,6 +266,7 @@ try {
 
   report.failures = failures;
   report.errors = errors;
+  report.diagnostics = pageResult.diagnostics;
 
   mkdirSync(OUTPUT, { recursive: true });
   writeFileSync(

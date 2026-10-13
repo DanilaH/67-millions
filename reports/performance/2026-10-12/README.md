@@ -20,3 +20,9 @@ The existing median ≤33.333 ms, p95 ≤50 ms and long-frame ratio ≤10% thres
 437 tests / 77 files pass, including fixed pool reuse and effect expiration. Typecheck, Yandex production build/upload-root audit and the general browser playtest pass. The browser playtest covers exact reload/Node payout parity, old paid shots, max-special roots and delayed frames. Pages UI verification is tracked by the deployment workflow.
 
 This is synthetic headless/software-GPU screening, not a benchmark on a real target phone. The 24-ball fixture starts at the legal ball cap with max special levels; it is a stress workload, not a modeled human launch policy. The measured margin near 30 FPS remains small. T072's real-device acceptance and T071's human pacing remain OPEN. No balance or physics tuning accompanies this optimization.
+
+## MSAA follow-up
+
+The six passing comparisons above used Chromium 134.0.6998.35. On Chromium 153.0.8010.12, GitHub Actions run 38224461579 still failed: one-ball median 49.9 ms / p95 50.1 ms; 24-ball median 50.0 ms / p95 66.7 ms. Those local passes do not close the CI gate.
+
+The follow-up disables WebGL context MSAA (`antialiasGL: false`) in the actual game configuration, retaining texture filtering, text resolution and the pre-rasterized board/effects. Two local follow-up screenings passed: one-ball median 16.7 ms / p95 16.8 ms; 24-ball median 16.7 ms / p95 33.4 ms, no remaining balls or browser errors. The probe now records the actual WebGL antialias setting. Updated Chromium 153 and Pages gates must pass before this is accepted for publication. Physical and economic code/config are unchanged.

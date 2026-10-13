@@ -950,7 +950,7 @@ export class PlinkoDebugScene extends Phaser.Scene {
       activeBallCount: this.balls.size,
       maxActiveBallCount: this.balls.size,
       error: null,
-      diagnostics: () => ({ bodies: this.matter.world.getAllBodies().length, audioListeners: this.game.events.listenerCount(GAME_AUDIO_BLOCKED_EVENT), pointerListeners: this.input.listenerCount('pointerdown'), textures: this.textures.getTextureKeys().length, ...Object.fromEntries(Object.entries(this.audio?.diagnostics() ?? {}).map(([key,value]) => [`plinko_${key}`, value])), ...Object.fromEntries(Object.entries(this.worldAudio?.diagnostics() ?? {}).map(([key,value]) => [`world_${key}`, value])) }),
+      diagnostics: () => ({ webglAntialias: String((this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).gl?.getContextAttributes()?.antialias), bodies: this.matter.world.getAllBodies().length, audioListeners: this.game.events.listenerCount(GAME_AUDIO_BLOCKED_EVENT), pointerListeners: this.input.listenerCount('pointerdown'), textures: this.textures.getTextureKeys().length, ...Object.fromEntries(Object.entries(this.audio?.diagnostics() ?? {}).map(([key,value]) => [`plinko_${key}`, value])), ...Object.fromEntries(Object.entries(this.worldAudio?.diagnostics() ?? {}).map(([key,value]) => [`world_${key}`, value])) }),
       start: async () => {
         const probe = window.__PLINKO_PERF__;
         if (!probe || (probe.phase !== 'ready' && probe.phase !== 'resolved')) return;
