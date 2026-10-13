@@ -27,35 +27,37 @@ export const getInitialGameSize = (): { width: number; height: number } =>
 
 export interface ViewportRuntimeHandle {
   destroy(): void;
+  refresh(): void;
 }
 
 export const installViewportRuntime = (
   game: Phaser.Game,
   activity: Pick<GameplayActivityCoordinator, 'setBlocked'>,
+  renderScale: () => number = () => 1,
 ): ViewportRuntimeHandle => {
   const gate = document.querySelector<HTMLElement>('#rotate-gate');
   if (!gate) throw new Error('Missing #rotate-gate bootstrap element');
 
-  const watcher = new BrowserViewportWatcher({
-    onApply: (viewport) => {
+  const apply = (viewport: ViewportState): void => {
       gate.setAttribute('aria-hidden', viewport.portrait ? 'false' : 'true');
       activity.setBlocked('orientation', viewport.portrait);
       if (viewport.portrait) return;
 
       const size = resolveGameViewport(viewport.width, viewport.height);
       const scale = size.scale;
-      const density = Math.max(1, resolveRenderPixelRatio(scale * window.devicePixelRatio, 2));
+      const density = Math.max(1, resolveRenderPixelRatio(scale * window.devicePixelRatio, 2)) * renderScale();
       const backingWidth = Math.round(size.width * density);
       const backingHeight = Math.round(size.height * density);
       if (game.scale.width !== backingWidth || game.scale.height !== backingHeight) game.scale.resize(backingWidth, backingHeight);
       game.canvas.style.width = `${Math.round(size.width * scale)}px`;
       game.canvas.style.height = `${Math.round(size.height * scale)}px`;
       game.scale.refresh();
-    },
-  });
+  };
+  const watcher = new BrowserViewportWatcher({ onApply: apply });
   watcher.start();
 
   return {
+    refresh: () => apply(readInitialViewport()),
     destroy: () => {
       watcher.destroy();
       activity.setBlocked('orientation', false);

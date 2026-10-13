@@ -4,7 +4,8 @@ import { isPlinkoPerfMode } from '../../app/perfMode';
 import { sceneViewport } from '../visual/scenePresentation';
 
 /** A fixed-cost backdrop: walls, floor perspective, lamps and neighbouring machines. */
-export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects.Container): void => {
+export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects.Container): ((board: HTMLCanvasElement) => void) => {
+  let board: HTMLCanvasElement | undefined;
   const g = scene.add.graphics().setVisible(false);
   const key = '67m:casino-room';
   const image = scene.add.image(0, 0, '__WHITE').setVisible(false); parent.add(image);
@@ -48,6 +49,7 @@ export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects
     const canvas = scene.textures.get(key).getSourceImage() as HTMLCanvasElement;
     const context = canvas.getContext('2d')!;
     context.drawImage(scene.textures.get(productionArtKey('casino')).getSourceImage() as CanvasImageSource, 340 - v.left, 85 - v.top, 600, 590);
+    if (board) context.drawImage(board, -v.left, -v.top);
     // Browser-composited static art avoids replaying a full-screen texture in
     // the software WebGL renderer on every fixed physics frame.
     scene.game.canvas.style.backgroundImage = isPlinkoPerfMode() && new URLSearchParams(location.search).get('art') === 'off'
@@ -57,4 +59,5 @@ export const createCasinoRoom = (scene: Phaser.Scene, parent: Phaser.GameObjects
   };
   draw(); scene.scale.on('resize', draw);
   scene.events.once('shutdown', () => { scene.scale.off('resize', draw); if (scene.textures.exists(key)) scene.textures.remove(key); });
+  return (layer) => { board = layer; draw(); };
 };

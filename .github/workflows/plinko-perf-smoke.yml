@@ -3,7 +3,11 @@ name: Plinko performance smoke
 on:
   pull_request:
     paths:
+      - 'src/main.ts'
+      - 'src/app/viewport.ts'
       - 'src/game/PlinkoDebugScene.ts'
+      - 'src/game/casino/**'
+      - 'src/game/ui/PersistentHud.ts'
       - 'src/game/BootstrapScene.ts'
       - 'src/phaser/plinko/**'
       - 'src/audio/**'
@@ -22,6 +26,10 @@ concurrency:
 jobs:
   chromium-mobile-profile:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        balls: [1, 24]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -31,9 +39,25 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build:perf
       - run: npm run perf:plinko
+        env:
+          PLINKO_PERF_STRESS: ${{ matrix.balls }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: plinko-bare-perf-smoke
+          name: plinko-perf-${{ matrix.balls }}-balls
           path: artifacts/perf
+          if-no-files-found: warn
+      - name: Profile failed screening
+        if: failure()
+        continue-on-error: true
+        run: npm run perf:plinko
+        env:
+          PLINKO_PERF_STRESS: ${{ matrix.balls }}
+          PLINKO_PERF_PROFILE: 'on'
+          PLINKO_PERF_OUTPUT: artifacts/perf-profile
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: plinko-profile-${{ matrix.balls }}-balls
+          path: artifacts/perf-profile
           if-no-files-found: warn

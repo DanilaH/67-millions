@@ -320,7 +320,7 @@ Acceptance: successful median around 30 real minutes; repetition reviewed; work-
 ## E22 — Reliability / performance
 
 ### T072 [P0] Low-end mobile + max-cascade performance pass
-Status: Open: all 24 balls resolve, but v14 strict CPU×4 screening narrowly fails (median 33.4 ms / p95 50.1 ms); actual target-phone gate unverified.
+Status: Actual target-phone gate remains open. 2026-10-12 static board compositing and pooled cached effect textures pass six sequential local CPU×4 screenings (three bare + three 24-ball runs); baseline passes bare and fails all three 24-ball runs. Full final saves match in six paired comparisons. See reports/performance/2026-10-12/README.md; synthetic screening is not phone certification.
 Acceptance: worst allowed state remains playable; no sustained catastrophic frame drop.
 
 ### T073 [P0] Save/background/refresh soak

@@ -1,0 +1,351 @@
+{
+  "cases": [
+    {
+      "variant": "dist",
+      "balls": 1,
+      "iteration": 1,
+      "measurements": {
+        "sampleCount": 218,
+        "durationMs": 5672.60000000149,
+        "medianFrameMs": 33.29999999999927,
+        "p95FrameMs": 33.400000000000546,
+        "maxFrameMs": 133.29999999999973,
+        "longFrameOver50MsRatio": 0.0045871559633027525,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 1,
+        "jsHeapUsedBefore": 9421652,
+        "jsHeapUsedAfter": 10094036,
+        "jsHeapUsedDelta": 672384
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "5f197b48d2d0f8c67155ef6456c51be0f29a3a8c845b4eecfccd96f46689ee43",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "fixed",
+      "balls": 1,
+      "iteration": 1,
+      "measurements": {
+        "sampleCount": 238,
+        "durationMs": 5677,
+        "medianFrameMs": 16.700000000000728,
+        "p95FrameMs": 33.400000000000546,
+        "maxFrameMs": 116.59999999999991,
+        "longFrameOver50MsRatio": 0.004201680672268907,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 1,
+        "jsHeapUsedBefore": 9526376,
+        "jsHeapUsedAfter": 10213892,
+        "jsHeapUsedDelta": 687516
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "967742f63b4720d95aeca430f4ce785157ad88899402d3b39041dc96e5171b8c",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "dist",
+      "balls": 24,
+      "iteration": 1,
+      "measurements": {
+        "sampleCount": 185,
+        "durationMs": 6883.400000002235,
+        "medianFrameMs": 33.30000000000018,
+        "p95FrameMs": 66.60000000000036,
+        "maxFrameMs": 166.69999999999982,
+        "longFrameOver50MsRatio": 0.06486486486486487,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 24,
+        "jsHeapUsedBefore": 9223100,
+        "jsHeapUsedAfter": 10151368,
+        "jsHeapUsedDelta": 928268
+      },
+      "failures": [
+        "p95 frame 66.60ms exceeds 50.00ms"
+      ],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "5f197b48d2d0f8c67155ef6456c51be0f29a3a8c845b4eecfccd96f46689ee43",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "fixed",
+      "balls": 24,
+      "iteration": 1,
+      "measurements": {
+        "sampleCount": 195,
+        "durationMs": 6476.300000000745,
+        "medianFrameMs": 33.30000000000018,
+        "p95FrameMs": 50,
+        "maxFrameMs": 133.30000000000018,
+        "longFrameOver50MsRatio": 0.041025641025641026,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 24,
+        "jsHeapUsedBefore": 9527772,
+        "jsHeapUsedAfter": 10409836,
+        "jsHeapUsedDelta": 882064
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "967742f63b4720d95aeca430f4ce785157ad88899402d3b39041dc96e5171b8c",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "dist",
+      "balls": 1,
+      "iteration": 2,
+      "measurements": {
+        "sampleCount": 213,
+        "durationMs": 5726.199999999255,
+        "medianFrameMs": 33.29999999999927,
+        "p95FrameMs": 33.400000000000546,
+        "maxFrameMs": 133.29999999999973,
+        "longFrameOver50MsRatio": 0.004694835680751174,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 1,
+        "jsHeapUsedBefore": 9536068,
+        "jsHeapUsedAfter": 10106324,
+        "jsHeapUsedDelta": 570256
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "5f197b48d2d0f8c67155ef6456c51be0f29a3a8c845b4eecfccd96f46689ee43",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "fixed",
+      "balls": 1,
+      "iteration": 2,
+      "measurements": {
+        "sampleCount": 236,
+        "durationMs": 5644.199999999255,
+        "medianFrameMs": 16.700000000000728,
+        "p95FrameMs": 33.400000000000546,
+        "maxFrameMs": 116.69999999999982,
+        "longFrameOver50MsRatio": 0.00423728813559322,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 1,
+        "jsHeapUsedBefore": 9748420,
+        "jsHeapUsedAfter": 10228792,
+        "jsHeapUsedDelta": 480372
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "967742f63b4720d95aeca430f4ce785157ad88899402d3b39041dc96e5171b8c",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "dist",
+      "balls": 24,
+      "iteration": 2,
+      "measurements": {
+        "sampleCount": 189,
+        "durationMs": 7067.800000000745,
+        "medianFrameMs": 33.399999999999636,
+        "p95FrameMs": 50.100000000000364,
+        "maxFrameMs": 166.5999999999999,
+        "longFrameOver50MsRatio": 0.06878306878306878,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 24,
+        "jsHeapUsedBefore": 9412436,
+        "jsHeapUsedAfter": 10264044,
+        "jsHeapUsedDelta": 851608
+      },
+      "failures": [
+        "median frame 33.40ms exceeds 33.33ms",
+        "p95 frame 50.10ms exceeds 50.00ms"
+      ],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "5f197b48d2d0f8c67155ef6456c51be0f29a3a8c845b4eecfccd96f46689ee43",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "fixed",
+      "balls": 24,
+      "iteration": 2,
+      "measurements": {
+        "sampleCount": 192,
+        "durationMs": 6495.60000000149,
+        "medianFrameMs": 33.30000000000018,
+        "p95FrameMs": 50,
+        "maxFrameMs": 133.29999999999973,
+        "longFrameOver50MsRatio": 0.036458333333333336,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 24,
+        "jsHeapUsedBefore": 9522588,
+        "jsHeapUsedAfter": 10403324,
+        "jsHeapUsedDelta": 880736
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "967742f63b4720d95aeca430f4ce785157ad88899402d3b39041dc96e5171b8c",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "dist",
+      "balls": 1,
+      "iteration": 3,
+      "measurements": {
+        "sampleCount": 200,
+        "durationMs": 5435,
+        "medianFrameMs": 33.29999999999927,
+        "p95FrameMs": 33.400000000000546,
+        "maxFrameMs": 133.4000000000001,
+        "longFrameOver50MsRatio": 0.02,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 1,
+        "jsHeapUsedBefore": 9490308,
+        "jsHeapUsedAfter": 10075528,
+        "jsHeapUsedDelta": 585220
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "5f197b48d2d0f8c67155ef6456c51be0f29a3a8c845b4eecfccd96f46689ee43",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "fixed",
+      "balls": 1,
+      "iteration": 3,
+      "measurements": {
+        "sampleCount": 226,
+        "durationMs": 5487.199999999255,
+        "medianFrameMs": 16.700000000000728,
+        "p95FrameMs": 33.400000000000546,
+        "maxFrameMs": 116.69999999999982,
+        "longFrameOver50MsRatio": 0.004424778761061947,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 1,
+        "jsHeapUsedBefore": 9538328,
+        "jsHeapUsedAfter": 10182988,
+        "jsHeapUsedDelta": 644660
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "967742f63b4720d95aeca430f4ce785157ad88899402d3b39041dc96e5171b8c",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "dist",
+      "balls": 24,
+      "iteration": 3,
+      "measurements": {
+        "sampleCount": 184,
+        "durationMs": 7281.699999999255,
+        "medianFrameMs": 33.399999999999636,
+        "p95FrameMs": 66.69999999999982,
+        "maxFrameMs": 216.5999999999999,
+        "longFrameOver50MsRatio": 0.09782608695652174,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 24,
+        "jsHeapUsedBefore": 9972964,
+        "jsHeapUsedAfter": 10273532,
+        "jsHeapUsedDelta": 300568
+      },
+      "failures": [
+        "median frame 33.40ms exceeds 33.33ms",
+        "p95 frame 66.70ms exceeds 50.00ms"
+      ],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "5f197b48d2d0f8c67155ef6456c51be0f29a3a8c845b4eecfccd96f46689ee43",
+        "cpuProfiler": false
+      }
+    },
+    {
+      "variant": "fixed",
+      "balls": 24,
+      "iteration": 3,
+      "measurements": {
+        "sampleCount": 190,
+        "durationMs": 6429,
+        "medianFrameMs": 33.30000000000018,
+        "p95FrameMs": 50,
+        "maxFrameMs": 150,
+        "longFrameOver50MsRatio": 0.04736842105263158,
+        "activeBallsAfterResolve": 0,
+        "maxActiveBalls": 24,
+        "jsHeapUsedBefore": 9527788,
+        "jsHeapUsedAfter": 10406124,
+        "jsHeapUsedDelta": 878336
+      },
+      "failures": [],
+      "provenance": {
+        "seed": 67072000,
+        "codeRevision": "10de21c665ed494dd35c2eee7987bffcc86c3eca",
+        "trackedDiffSha256": "d50c80908d5bc0b3f115abae831863623fdd7b51af3bcefed6135638dc02ed74",
+        "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+        "browserVersion": "134.0.6998.35",
+        "buildEntrySha256": "967742f63b4720d95aeca430f4ce785157ad88899402d3b39041dc96e5171b8c",
+        "cpuProfiler": false
+      }
+    }
+  ],
+  "pairedFinalSaveEquality": "6/6 complete saves identical",
+  "configSha256": "5d8447e21f7a73df8ca5cbb90aec8ddf272c8484a034f1092256d3552c22d02f",
+  "limits": "Sequential local Chromium CPUx4; synthetic software renderer, not a target phone. Early profiling/overlapping-browser exploratory runs excluded."
+}

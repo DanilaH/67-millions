@@ -1,14 +1,25 @@
 import { spawn } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
 import { chromium } from 'playwright';
+import { balance } from '../src/config/balance.ts';
+import { createInitialGameState } from '../src/core/state/GameState.ts';
+import { createSaveState } from '../src/core/save/SaveState.ts';
 
 const PORT = Number(process.env.PLINKO_PERF_PORT ?? 4173);
 const OUTPUT = resolve(process.env.PLINKO_PERF_OUTPUT ?? 'artifacts/perf');
 const URL = `http://127.0.0.1:${PORT}/?perf=plinko${process.env.PLINKO_PERF_STRESS === '24' ? '&stress=24' : ''}${process.env.PLINKO_PERF_ART === 'off' ? '&art=off' : ''}`;
 const CPU_THROTTLE = 4;
 const FALLBACK_FRAME_MS = 1000 / 30;
+const SEED = Number(process.env.PLINKO_PERF_SEED ?? 67072000);
+const PROFILE = process.env.PLINKO_PERF_PROFILE === 'on';
+const buildDirectory = resolve(process.env.PLINKO_PERF_BUILD_DIR ?? 'dist');
+const buildHtml = readFileSync(resolve(buildDirectory, 'index.html'), 'utf8');
+const buildEntry = buildHtml.match(/<script[^>]+src="([^"]+)"/)?.[1];
+if (!buildEntry) throw new Error('Missing performance build entry');
 
 const percentile = (values, q) => {
   if (values.length === 0) return 0;
@@ -44,6 +55,7 @@ const server = spawn(
   [
     resolve('node_modules/vite/bin/vite.js'),
     'preview',
+    ...(process.env.PLINKO_PERF_BUILD_DIR ? ['--outDir', process.env.PLINKO_PERF_BUILD_DIR] : []),
     '--host',
     '127.0.0.1',
     '--port',
@@ -84,6 +96,9 @@ try {
   });
 
   page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.addInitScript(save => localStorage.setItem('67m.save', JSON.stringify(save)), createSaveState(createInitialGameState(balance, SEED)));
   const cdp = await context.newCDPSession(page);
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU_THROTTLE });
   await cdp.send('Performance.enable');
@@ -117,6 +132,7 @@ try {
   if (process.env.PLINKO_PERF_AUDIO !== 'off') await page.mouse.click(1250, 710);
   await cdp.send('HeapProfiler.collectGarbage');
   const before = metricMap(await cdp.send('Performance.getMetrics'));
+  if (PROFILE) { await cdp.send('Profiler.enable'); await cdp.send('Profiler.start'); }
 
   await page.evaluate(async () => {
     await window.__PLINKO_PERF__?.start();
@@ -133,10 +149,21 @@ try {
   await page.waitForTimeout(250);
   await cdp.send('HeapProfiler.collectGarbage');
   const after = metricMap(await cdp.send('Performance.getMetrics'));
+  if (PROFILE) {
+    mkdirSync(OUTPUT, { recursive: true });
+    const { profile } = await cdp.send('Profiler.stop');
+    writeFileSync(resolve(OUTPUT, 'cpu-profile.json'), JSON.stringify(profile));
+    const nodes = new Map(profile.nodes.map(node => [node.id, node.callFrame]));
+    const totals = new Map();
+    profile.samples?.forEach((id, index) => totals.set(id, (totals.get(id) ?? 0) + (profile.timeDeltas?.[index] ?? 0)));
+    console.log('CPU profile hotspots', JSON.stringify([...totals].sort((a, b) => b[1] - a[1]).slice(0, 15).map(([id, micros]) => ({ milliseconds: micros / 1000, ...nodes.get(id) }))));
+  }
 
   const pageResult = await page.evaluate(() => ({
     probe: window.__PLINKO_PERF__,
     frames: window.__PERF_FRAME_SAMPLES__ ?? [],
+    save: JSON.parse(localStorage.getItem('67m.save') ?? 'null'),
+    diagnostics: window.__PLINKO_PERF__?.diagnostics?.(),
   }));
 
   const probe = pageResult.probe;
@@ -158,6 +185,15 @@ try {
   const longFrames = frameDeltas.filter((delta) => delta > 50).length;
   const report = {
     generatedAt: new Date().toISOString(),
+    provenance: {
+      seed: SEED,
+      codeRevision: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+      trackedDiffSha256: createHash('sha256').update(execFileSync('git', ['diff', 'HEAD'])).digest('hex'),
+      configSha256: createHash('sha256').update(readFileSync('balance.v0.json')).digest('hex'),
+      browserVersion: browser.version(),
+      buildEntrySha256: createHash('sha256').update(readFileSync(resolve(buildDirectory, buildEntry))).digest('hex'),
+      cpuProfiler: PROFILE,
+    },
     profile: {
       browser: 'chromium',
       viewport: { width: 1280, height: 720 },
@@ -202,7 +238,9 @@ try {
   };
 
   const failures = [];
+  if (errors.length) failures.push(...errors.map(error => `browser error: ${error}`));
   if (probe.phase !== 'resolved') failures.push(`probe phase is ${probe.phase}`);
+  if (process.env.PLINKO_PERF_STRESS === '24' && probe.maxActiveBallCount !== 24) failures.push('stress probe did not reach the 24-ball cap');
   if (frameDeltas.length < 60) failures.push('too few frame samples');
   if (report.measurements.medianFrameMs > report.thresholds.medianFrameMsMax) {
     failures.push(
@@ -232,12 +270,16 @@ try {
   }
 
   report.failures = failures;
+  report.errors = errors;
+  report.diagnostics = pageResult.diagnostics;
 
   mkdirSync(OUTPUT, { recursive: true });
   writeFileSync(
     resolve(OUTPUT, 'plinko.json'),
     JSON.stringify(report, null, 2) + '\n',
   );
+  writeFileSync(resolve(OUTPUT, 'settled-save.json'), JSON.stringify(pageResult.save, null, 2) + '\n');
+  await page.screenshot({ path: resolve(OUTPUT, 'resolved.png') });
 
   process.stdout.write(JSON.stringify(report, null, 2) + '\n');
 
