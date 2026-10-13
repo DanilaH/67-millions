@@ -320,6 +320,7 @@ Acceptance: successful median around 30 real minutes; repetition reviewed; work-
 ## E22 — Reliability / performance
 
 ### T072 [P0] Low-end mobile + max-cascade performance pass
+2026-10-13: final candidate passes both unchanged Chromium 153 CPU×4 gates in run 38388511104 (one-ball median 16.7 ms / p95 33.4; 24-ball median 33.3 / p95 50.0, 4.3% long frames, no remaining balls). Adds no MSAA, a 75% casino foreground backing scale, and reuse of the existing repository snapshot/write queue. Mouse/touch Pages smoke, full paid-root browser playtest, four save-session transfer cases and 437 tests pass. Executable aaa1e6a is published on Pages; deployment/live evidence: run 38388965357. Real target-phone acceptance stays OPEN.
 Status: Actual target-phone gate remains open. 2026-10-12 static board compositing and pooled cached effect textures pass six sequential local CPU×4 screenings (three bare + three 24-ball runs); baseline passes bare and fails all three 24-ball runs. Full final saves match in six paired comparisons. See reports/performance/2026-10-12/README.md; synthetic screening is not phone certification.
 Acceptance: worst allowed state remains playable; no sustained catastrophic frame drop.
 

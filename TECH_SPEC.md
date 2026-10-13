@@ -212,6 +212,12 @@ their original timing. No renderer change alters Matter bodies, fixed ticks,
 collision effects, RNG, payout calculation or save semantics.
 WebGL context MSAA is disabled; texture antialias filtering and text resolution
 remain enabled. This avoids full-canvas multisample work on each rendered frame.
+The casino foreground uses 75% of the previous backing width and height; its
+CSS size, logical world and input coordinates are unchanged. The static casino
+backdrop/pins retain full resolution. Scene presentation refresh restores the
+previous density in other scenes and reapplies the budget after viewport changes.
+Checkpoint writes reuse the project repository's synchronous immutable snapshot
+and the pinned kit's ordered write queue instead of a second scene clone/queue.
 
 ## 13. Analytics
 
