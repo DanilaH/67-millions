@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, extname } from 'node:path';
 import assert from 'node:assert/strict';
+import sharp from 'sharp';
 import { balance } from '../src/config/balance.ts';
 import { createInitialGameState } from '../src/core/state/GameState.ts';
 import { createSaveState } from '../src/core/save/SaveState.ts';
@@ -133,6 +134,24 @@ try {
     const bet = id => clickTarget('data-bet-targets', id);
     const exitCasino = () => click(170, 186);
     const fixture = createSaveState(createInitialGameState(balance, 67067000));
+    // Inspect a need while the casino exit button occupies the same area.
+    // Check the actual rendered pixel, not just the object's configured depth:
+    // Phaser Container children can ignore that depth entirely.
+    await loadSave(fixture);
+    await clickMap('casino'); await sceneReady('Казино Plinko');
+    const casinoNeeds = JSON.parse(await page.locator('canvas').getAttribute('data-hud-needs') ?? 'null');
+    await click(casinoNeeds?.happiness.x ?? 446, casinoNeeds?.happiness.y ?? 99);
+    await page.waitForTimeout(100);
+    const hudScreenshot = await page.screenshot({ path: `${output}/${touch ? 'touch' : 'mouse'}-casino-need.png` });
+    const { data: hudPixel } = await sharp(hudScreenshot).extract({
+      left: Math.round(rect.x + 32 * rect.width / 1280),
+      top: Math.round(rect.y + 154 * rect.height / 720), width: 1, height: 1,
+    }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    assert.deepEqual([...hudPixel], [23, 28, 32], 'need help renders above the overlapping casino exit button');
+    await click(170, 186); await page.waitForTimeout(100);
+    assert.equal(await page.locator('canvas').getAttribute('aria-label'), 'Казино Plinko', 'dismissing need help does not activate the covered exit button');
+    await exitCasino(); await sceneReady('Карта города');
+    await loadSave(fixture);
     if (touch) {
       await loadSave(fixture);
       const needTargets = JSON.parse(await page.locator('canvas').getAttribute('data-hud-needs'));

@@ -218,9 +218,9 @@ export class PlinkoDebugScene extends Phaser.Scene {
       this.casinoLayer.add(image);
     }
 
-    const hudStart = this.children.list.length;
+    // Keep the HUD on the scene display list: Container children render in
+    // insertion order, ignoring the HUD depth and covering its help with controls.
     this.casinoHud = new PersistentHud(this, this.boardConfig);
-    this.casinoLayer.add(this.children.list.slice(hudStart));
     this.infoText = this.add.text(28, 228, '', {
       color: visualHex('textMain'),
       fontFamily: VISUAL_FONT.mono,
