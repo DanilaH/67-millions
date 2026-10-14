@@ -52,6 +52,11 @@ export class PersistentHud {
     this.needTexts = Array.from({ length: 4 }, (_, index) => text(66 + index * 122, 82, 17));
     this.statusText = text(534, 80, 19).setInteractive({ useHandCursor: true });
     this.detail = text(24, 136, 22).setPadding(12, 10).setBackgroundColor(visualHex('inkPanel')).setWordWrapWidth(1160).setVisible(false);
+    // Consume the dismissal tap instead of activating a control behind the help.
+    this.detail.setInteractive().on('pointerup', () => {
+      this.detailTimer?.remove();
+      this.detail.setVisible(false); this.needAction.setVisible(false); this.selectedNeed = null;
+    });
     this.needAction = text(950, 136, 28).setPadding(12, 24).setFixedSize(300, 88).setAlign('center')
       .setColor(visualHex('inkDeep')).setBackgroundColor(visualHex('mustard')).setVisible(false)
       .setInteractive({ useHandCursor: true }).on('pointerup', () => {
